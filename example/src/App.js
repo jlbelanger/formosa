@@ -1,10 +1,10 @@
-import React from 'react'
-
-import { ExampleComponent } from 'formosa'
-import 'formosa/dist/index.css'
+import './style.scss';
+import 'formosa/dist/index.css';
+import { Form } from 'formosa';
+import React from 'react';
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
-}
+	return <Form text="Watch it" />
+};
 
-export default App
+export default App;

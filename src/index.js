@@ -1,6 +1,6 @@
-import React from 'react'
-import styles from './styles.module.css'
+import React from 'react';
+import './style.scss';
 
-export const ExampleComponent = ({ text }) => {
-  return <div className={styles.test}>Example Component: {text}</div>
-}
+export const Form = ({ text }) => {
+	return <div className="formosa">Form: {text}</div>
+};

@@ -1,30 +1,19 @@
-# formosa
-
-> todo
-
-[![NPM](https://img.shields.io/npm/v/formosa.svg)](https://www.npmjs.com/package/formosa) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-
-## Install
+# Formosa
 
 ```bash
-npm install --save formosa
+yarn add @jlbelanger/formosa
+# or
+npm install --save @jlbelanger/formosa
 ```
-
-## Usage
 
 ```jsx
-import React, { Component } from 'react'
-
-import MyComponent from 'formosa'
-import 'formosa/dist/index.css'
+import React, { Component } from 'react';
+import Form from 'formosa';
+import 'formosa/dist/index.css';
 
 class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
+	render() {
+		return <Form />
+	}
 }
 ```
-
-## License
-
-MIT © [jlbelanger](https://github.com/jlbelanger)

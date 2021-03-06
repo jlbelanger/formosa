@@ -1,53 +1,64 @@
 {
-  "name": "formosa",
-  "version": "1.0.0",
-  "description": "todo",
-  "author": "jlbelanger",
-  "license": "MIT",
-  "repository": "jlbelanger/formosa",
-  "main": "dist/index.js",
-  "module": "dist/index.modern.js",
-  "source": "src/index.js",
-  "engines": {
-    "node": ">=10"
-  },
-  "scripts": {
-    "build": "microbundle-crl --no-compress --format modern,cjs",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs",
-    "prepare": "run-s build",
-    "test": "run-s test:unit test:lint test:build",
-    "test:build": "run-s build",
-    "test:lint": "eslint .",
-    "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
-    "test:watch": "react-scripts test --env=jsdom",
-    "predeploy": "cd example && yarn install && yarn run build",
-    "deploy": "gh-pages -d example/build"
-  },
-  "peerDependencies": {
-    "react": "^16.0.0"
-  },
-  "devDependencies": {
-    "microbundle-crl": "^0.13.10",
-    "babel-eslint": "^10.0.3",
-    "cross-env": "^7.0.2",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-config-standard-react": "^9.2.0",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-react": "^7.17.0",
-    "eslint-plugin-standard": "^4.0.1",
-    "gh-pages": "^2.2.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.0.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "^3.4.1"
-  },
-  "files": [
-    "dist"
-  ]
+	"name": "@jlbelanger/formosa",
+	"version": "1.0.0",
+	"description": "React form components that work with JSON API.",
+	"author": {
+		"name": "Jenny Belanger",
+		"email": "mail@jennybelanger.com",
+		"url": "https://www.jennybelanger.com/"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jlbelanger/formosa.git"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.modern.js",
+	"source": "src/index.js",
+	"engines": {
+		"node": ">=10"
+	},
+	"scripts": {
+		"build": "microbundle-crl --no-compress --format modern,cjs",
+		"deploy": "gh-pages -d example/build",
+		"lint": "yarn lint:css && yarn lint:js",
+		"lint:css": "node_modules/.bin/stylelint 'src/scss/**/*.scss'",
+		"lint:js": "node_modules/.bin/eslint . --ext .js --ext .jsx",
+		"predeploy": "cd example && yarn install && yarn run build",
+		"prepare": "run-s build",
+		"start": "microbundle-crl watch --no-compress --format modern,cjs --css-modules false",
+		"test": "run-s test:unit test:lint test:build",
+		"test:build": "run-s build",
+		"test:lint": "eslint .",
+		"test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
+		"test:watch": "react-scripts test --env=jsdom"
+	},
+	"peerDependencies": {
+		"react": "^16.0.0"
+	},
+	"devDependencies": {
+		"babel-eslint": "^10.0.3",
+		"cross-env": "^7.0.2",
+		"dotenv": "^8.2.0",
+		"eslint-config-airbnb": "^18.2.1",
+		"eslint-plugin-jsdoc": "^30.7.9",
+		"gh-pages": "^2.2.0",
+		"jsona": "^1.8.0",
+		"microbundle-crl": "^0.13.10",
+		"node-sass": "^4.14.1",
+		"normalize.css": "^8.0.1",
+		"npm-run-all": "^4.1.5",
+		"prop-types": "^15.7.2",
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1",
+		"react-scripts": "^3.4.1",
+		"sass-lint": "^1.13.1",
+		"stylelint-config-standard-scss": "^1.1.0",
+		"stylelint-order": "^4.1.0",
+		"stylelint": "^13.8.0",
+		"stylelint-scss": "^3.18.0"
+	},
+	"files": [
+		"dist"
+	]
 }
