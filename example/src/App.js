@@ -1,10 +1,21 @@
 import './style.scss';
-import 'formosa/dist/index.css';
-import { Form } from 'formosa';
+import '@jlbelanger/formosa/dist/index.css';
+import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
+import Routes from './Routes';
 
-const App = () => {
-	return <Form text="Watch it" />
-};
+export default function App() {
+	return (
+		<BrowserRouter>
+			<main>
+				<header>
+					<h1>Formosa Example</h1>
+				</header>
 
-export default App;
+				<article>
+					<Routes />
+				</article>
+			</main>
+		</BrowserRouter>
+	);
+}
