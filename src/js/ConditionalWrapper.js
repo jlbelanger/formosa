@@ -4,9 +4,7 @@ import React from 'react';
 export default function ConditionalWrapper({ children, className, condition }) {
 	if (!condition) {
 		return (
-			<>
-				{children}
-			</>
+			<>{children}</>
 		);
 	}
 

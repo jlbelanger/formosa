@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FormContext from './FormContext';
 import FormInner from './FormInner';
-// import { Prompt } from 'react-router-dom'; // TODO
+import { Prompt } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 export default function Form({
@@ -55,7 +55,7 @@ export default function Form({
 			>
 				{children}
 			</FormInner>
-			{/* <Prompt when={warnOnUnload && formState.dirty.length > 0} message="You have unsaved changes. Are you sure you want to leave this page?" /> TODO */ }
+			<Prompt when={warnOnUnload && formState.dirty.length > 0} message="You have unsaved changes. Are you sure you want to leave this page?" />
 		</FormContext.Provider>
 	);
 }
