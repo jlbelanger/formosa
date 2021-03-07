@@ -42,24 +42,22 @@ export default function FormInner({
 			text,
 		};
 		const toasts = {
-			...formState.toasts,
+			...formStateRef.current.toasts,
 			[id]: toast,
 		};
-		setFormState({ ...formState, toasts });
+		setFormState({ ...formStateRef.current, toasts });
 		setTimeout(() => {
 			removeToast(id, formStateRef);
-		}, 3000);
+		}, 4000);
 	};
 	const onSubmit = (e) => {
 		e.preventDefault();
 
-		if (method === 'DELETE') {
-			if (!window.confirm('Are you sure you want to delete this?')) {
-				return;
-			}
+		if (method === 'DELETE' && !window.confirm('Are you sure you want to delete this?')) {
+			return;
 		}
 
-		if (preventEmptyRequest && formState.dirty.length <= 0) {
+		if (preventEmptyRequest && formStateRef.current.dirty.length <= 0) {
 			addToast('No changes to save.');
 			return;
 		}
@@ -76,14 +74,14 @@ export default function FormInner({
 			method,
 			path,
 			id,
-			formState,
+			formStateRef.current,
 			relationshipNames,
 			filterBody,
 			filterValuesBeforeSerialize,
 		);
 
 		setFormState({
-			...formState,
+			...formStateRef.current,
 			errors: {},
 			flash: '',
 		});
@@ -95,7 +93,7 @@ export default function FormInner({
 				}
 
 				const newState = {
-					...formState,
+					...formStateRef.current,
 					dirty: [],
 					dirtyIncluded: {},
 					errors: {},
@@ -149,7 +147,7 @@ export default function FormInner({
 					errors[key].push(error.title);
 				});
 				setFormState({
-					...formState,
+					...formStateRef.current,
 					errors,
 					flash: '',
 				});

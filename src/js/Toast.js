@@ -16,7 +16,7 @@ export default function Toast({
 	};
 	return (
 		<div className={`formosa-toast ${className}`.trim()}>
-			<div className="formosa-toast__text">{text} {id}</div>
+			<div className="formosa-toast__text">{text}</div>
 			<button className="formosa-toast__close" onClick={removeToast} type="button">
 				<CloseIcon className="formosa-toast__close-icon" height="16" width="16" />
 				Close
