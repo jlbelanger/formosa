@@ -39,7 +39,7 @@ export const getBody = (
 
 		body.data = data;
 
-		const included = getIncluded(data, formState, relationshipNames);
+		const included = getIncluded(data, formState.dirtyIncluded, relationshipNames);
 		if (included.length > 0) {
 			body.included = included;
 		}
@@ -52,7 +52,7 @@ export const getBody = (
 	return body;
 };
 
-const getIncluded = (data, formState, relationshipNames) => {
+const getIncluded = (data, dirtyIncluded, relationshipNames) => {
 	const included = [];
 
 	relationshipNames.forEach((relationshipName) => {
@@ -60,26 +60,27 @@ const getIncluded = (data, formState, relationshipNames) => {
 			// This relationship isn't defined.
 			return;
 		}
-		if (!Array.isArray(data.relationships[relationshipName])) {
+
+		if (!Array.isArray(data.relationships[relationshipName].data)) {
 			return;
 		}
 
-		data.relationships[relationshipName].forEach((rel) => {
+		data.relationships[relationshipName].data.forEach((rel) => {
 			if (Object.keys(rel).length <= 2) {
 				// This relationship only has an id and type.
 				return;
 			}
 
 			if (
-				Object.prototype.hasOwnProperty.call(formState.dirtyIncluded, rel.type)
-				&& Object.prototype.hasOwnProperty.call(formState.dirtyIncluded[rel.type], rel.id)
+				Object.prototype.hasOwnProperty.call(dirtyIncluded, rel.type)
+				&& Object.prototype.hasOwnProperty.call(dirtyIncluded[rel.type], rel.id)
 			) {
 				const relData = {
 					id: rel.id,
 					type: rel.type,
 					attributes: {},
 				};
-				formState.dirtyIncluded[rel.type][rel.id].forEach((key) => {
+				dirtyIncluded[rel.type][rel.id].forEach((key) => {
 					relData.attributes[key] = rel[key];
 				});
 				included.push(relData);
