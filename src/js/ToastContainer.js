@@ -1,17 +1,17 @@
 import React, { useContext } from 'react';
-import FormContext from './FormContext';
+import FormosaContext from './FormosaContext';
 import Toast from './Toast';
 
 export default function ToastContainer() {
-	const { formState } = useContext(FormContext);
+	const { formosaState } = useContext(FormosaContext);
 	return (
 		<div className="formosa-toast-container">
-			{Object.keys(formState.toasts).map((id) => (
+			{Object.keys(formosaState.toasts).map((id) => (
 				<Toast
-					className={formState.toasts[id].className}
+					className={formosaState.toasts[id].className}
 					key={id}
 					id={id}
-					text={formState.toasts[id].text}
+					text={formosaState.toasts[id].text}
 				/>
 			))}
 		</div>

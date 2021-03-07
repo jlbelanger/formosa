@@ -2,9 +2,9 @@ import React, { useContext, useRef } from 'react';
 import Api from './Helpers/Api';
 import Flash from './Flash';
 import FormContext from './FormContext';
+import FormosaContext from './FormosaContext';
 import { getBody } from './Helpers/JsonApi';
 import PropTypes from 'prop-types';
-import ToastContainer from './ToastContainer';
 import { useHistory } from 'react-router-dom';
 
 export default function FormInner({
@@ -29,11 +29,16 @@ export default function FormInner({
 	const { formState, setFormState } = useContext(FormContext);
 	const formStateRef = useRef(formState);
 	formStateRef.current = formState;
+
+	const { formosaState, setFormosaState } = useContext(FormosaContext);
+	const formosaStateRef = useRef(formosaState);
+	formosaStateRef.current = formosaState;
+
 	const history = useHistory();
-	const removeToast = (id, formStateRef) => {
-		const toasts = { ...formStateRef.current.toasts }
+	const removeToast = (id, formosaStateRef) => {
+		const toasts = { ...formosaStateRef.current.toasts }
 		delete toasts[id];
-		setFormState({ ...formStateRef.current, toasts });
+		setFormosaState({ ...formosaStateRef.current, toasts });
 	};
 	const addToast = (text, type = '') => {
 		const id = new Date().getTime();
@@ -42,12 +47,12 @@ export default function FormInner({
 			text,
 		};
 		const toasts = {
-			...formStateRef.current.toasts,
+			...formosaStateRef.current.toasts,
 			[id]: toast,
 		};
-		setFormState({ ...formStateRef.current, toasts });
+		setFormosaState({ ...formosaStateRef.current, toasts });
 		setTimeout(() => {
-			removeToast(id, formStateRef);
+			removeToast(id, formosaStateRef);
 		}, 4000);
 	};
 	const onSubmit = (e) => {
@@ -158,7 +163,6 @@ export default function FormInner({
 		<form onSubmit={onSubmit} style={style}>
 			{!hideFlash && <Flash />}
 			{children}
-			<ToastContainer />
 		</form>
 	);
 }
