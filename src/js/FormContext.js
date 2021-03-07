@@ -5,7 +5,7 @@ export default React.createContext(
 		dirty: [],
 		dirtyIncluded: {},
 		errors: {},
-		flash: '',
+		message: '',
 		row: {},
 	}
 );

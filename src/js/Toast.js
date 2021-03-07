@@ -10,7 +10,7 @@ export default function Toast({
 }) {
 	const { formState, setFormState } = useContext(FormContext);
 	const removeToast = () => {
-		const toasts = { ...formState.toasts }
+		const toasts = { ...formState.toasts };
 		delete toasts[id];
 		setFormState({ ...formState, toasts });
 	};

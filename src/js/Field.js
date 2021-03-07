@@ -8,6 +8,7 @@ import Label from './Label';
 import Password from './Input/Password';
 import PropTypes from 'prop-types';
 import Radio from './Input/Radio';
+import Select from './Input/Select';
 import Textarea from './Input/Textarea';
 
 export default function Field({
@@ -35,6 +36,8 @@ export default function Field({
 	let Component = Input;
 	if (type === 'password') {
 		Component = Password;
+	} else if (type === 'select') {
+		Component = Select;
 	} else if (type === 'textarea') {
 		Component = Textarea;
 	} else if (type === 'radio') {
@@ -81,8 +84,19 @@ export default function Field({
 
 	const hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
 
+	const wrapperClassNameList = ['formosa-field'];
+	if (wrapperClassNameList) {
+		wrapperClassNameList.push(wrapperClassName);
+	}
+	if (hasError) {
+		wrapperClassNameList.push('formosa-field--has-error');
+	}
+	if (postfix) {
+		wrapperClassNameList.push('formosa-field--has-postfix');
+	}
+
 	return (
-		<div className={`formosa-field ${wrapperClassName}${hasError ? ' formosa-field--has-error' : ''}${postfix ? ' formosa-field--with-postfix' : ''}`.trim()}>
+		<div className={wrapperClassNameList.join(' ')}>
 			{label && showLabelBefore && labelComponent}
 			<ConditionalWrapper className="formosa-postfix-container" condition={postfix}>
 				<div className={`formosa-field__input-wrapper formosa-field__input-wrapper--${type}`}>

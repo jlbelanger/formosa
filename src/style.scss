@@ -1,6 +1,15 @@
-.formosa {
-	border: 2px solid #fff;
-	font-size: 32px;
-	padding: 16px;
-	text-align: center;
-}
+@import 'scss/utilities/variables';
+@import 'scss/components/input';
+@import 'scss/components/button';
+@import 'scss/components/checkbox';
+@import 'scss/components/field';
+@import 'scss/components/focus';
+@import 'scss/components/has-many';
+@import 'scss/components/label';
+@import 'scss/components/message';
+@import 'scss/components/prefix';
+@import 'scss/components/radio';
+@import 'scss/components/select';
+@import 'scss/components/spinner';
+@import 'scss/components/textarea';
+@import 'scss/components/toast';

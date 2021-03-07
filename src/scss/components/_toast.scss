@@ -1,0 +1,84 @@
+.formosa-toast-container {
+	align-items: flex-end;
+	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	right: 0;
+	z-index: 9998;
+}
+
+.formosa-toast {
+	align-items: center;
+	animation-duration: 4s;
+	animation-fill-mode: forwards;
+	animation-name: formosa-slide-in-out;
+	background: $formosa-primary-background-color;
+	color: $formosa-primary-color;
+	display: flex;
+	margin: $formosa-toast-margin;
+	width: max-content;
+}
+
+.formosa-toast__text {
+	padding: $formosa-toast-padding;
+}
+
+.formosa-toast__close {
+	background: transparent;
+	border: 0;
+	font-size: 0;
+	height: 32px;
+	margin: 0 8px 0 0;
+	width: 32px;
+
+	path {
+		fill: $formosa-primary-color;
+	}
+
+	&:hover,
+	&:active,
+	&:focus {
+		background: transparent;
+	}
+}
+
+.formosa-toast--error {
+	background: $formosa-error-background-color;
+	color: $formosa-error-color;
+
+	.formosa-toast__close {
+		path {
+			fill: $formosa-error-color;
+		}
+	}
+}
+
+.formosa-toast--success {
+	background: $formosa-success-background-color;
+	color: $formosa-success-color;
+
+	.formosa-toast__close {
+		path {
+			fill: $formosa-success-color;
+		}
+	}
+}
+
+@keyframes formosa-slide-in-out {
+	0% {
+		transform: translateX(200%) translateZ(0);
+	}
+
+	16% {
+		transform: translateX(0%) translateZ(0);
+	}
+
+	84% {
+		transform: translateX(0%) translateZ(0);
+	}
+
+	100% {
+		transform: translateX(200%) translateZ(0);
+	}
+}

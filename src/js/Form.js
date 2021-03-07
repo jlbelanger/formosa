@@ -9,7 +9,7 @@ export default function Form({
 	children,
 	clearOnSubmit,
 	defaultRow,
-	hideFlash,
+	hideMessage,
 	id,
 	filterBody,
 	filterValuesBeforeSerialize,
@@ -21,15 +21,15 @@ export default function Form({
 	relationshipNames,
 	row,
 	style,
-	successFlashMessage,
-	successToastMessage,
+	successMessageText,
+	successToastText,
 	warnOnUnload,
 }) {
 	const [formState, setFormState] = useState({
 		dirty: [],
 		dirtyIncluded: {},
 		errors: {},
-		flash: '',
+		message: '',
 		row,
 		toasts: {},
 	});
@@ -40,7 +40,7 @@ export default function Form({
 				afterSubmit={afterSubmit}
 				clearOnSubmit={clearOnSubmit}
 				defaultRow={defaultRow}
-				hideFlash={hideFlash}
+				hideMessage={hideMessage}
 				id={id}
 				filterBody={filterBody}
 				filterValuesBeforeSerialize={filterValuesBeforeSerialize}
@@ -51,12 +51,17 @@ export default function Form({
 				redirectOnSuccess={redirectOnSuccess}
 				relationshipNames={relationshipNames}
 				style={style}
-				successFlashMessage={successFlashMessage}
-				successToastMessage={successToastMessage}
+				successMessageText={successMessageText}
+				successToastText={successToastText}
 			>
 				{children}
 			</FormInner>
-			<Prompt when={warnOnUnload && formState.dirty.length > 0} message="You have unsaved changes. Are you sure you want to leave this page?" />
+			{warnOnUnload && (
+				<Prompt
+					when={formState.dirty.length > 0}
+					message="You have unsaved changes. Are you sure you want to leave this page?"
+				/>
+			)}
 		</FormContext.Provider>
 	);
 }
@@ -68,7 +73,7 @@ Form.propTypes = {
 	defaultRow: PropTypes.object,
 	filterBody: PropTypes.func,
 	filterValuesBeforeSerialize: PropTypes.func,
-	hideFlash: PropTypes.bool,
+	hideMessage: PropTypes.bool,
 	id: PropTypes.string,
 	method: PropTypes.string.isRequired,
 	params: PropTypes.string,
@@ -81,8 +86,8 @@ Form.propTypes = {
 	relationshipNames: PropTypes.array,
 	row: PropTypes.object,
 	style: PropTypes.object,
-	successFlashMessage: PropTypes.string,
-	successToastMessage: PropTypes.string,
+	successMessageText: PropTypes.string,
+	successToastText: PropTypes.string,
 	warnOnUnload: PropTypes.bool,
 };
 
@@ -92,7 +97,7 @@ Form.defaultProps = {
 	defaultRow: {},
 	filterBody: null,
 	filterValuesBeforeSerialize: null,
-	hideFlash: false,
+	hideMessage: false,
 	id: '',
 	params: '',
 	preventEmptyRequest: false,
@@ -100,7 +105,7 @@ Form.defaultProps = {
 	relationshipNames: [],
 	row: {},
 	style: {},
-	successFlashMessage: '',
-	successToastMessage: '',
-	warnOnUnload: true,
+	successMessageText: '',
+	successToastText: '',
+	warnOnUnload: false,
 };

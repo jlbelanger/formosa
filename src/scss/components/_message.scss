@@ -1,0 +1,13 @@
+.formosa-message {
+	padding: $formosa-message-padding;
+}
+
+.formosa-message--error {
+	background: $formosa-error-background-color;
+	color: $formosa-error-color;
+}
+
+.formosa-message--success {
+	background: $formosa-success-background-color;
+	color: $formosa-success-color;
+}

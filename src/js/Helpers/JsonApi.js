@@ -1,3 +1,42 @@
+const getIncluded = (data, dirtyIncluded, relationshipNames) => {
+	const included = [];
+
+	relationshipNames.forEach((relationshipName) => {
+		if (!Object.prototype.hasOwnProperty.call(data.relationships, relationshipName)) {
+			// This relationship isn't defined.
+			return;
+		}
+
+		if (!Array.isArray(data.relationships[relationshipName].data)) {
+			return;
+		}
+
+		data.relationships[relationshipName].data.forEach((rel) => {
+			if (Object.keys(rel).length <= 2) {
+				// This relationship only has an id and type.
+				return;
+			}
+
+			if (
+				Object.prototype.hasOwnProperty.call(dirtyIncluded, rel.type)
+				&& Object.prototype.hasOwnProperty.call(dirtyIncluded[rel.type], rel.id)
+			) {
+				const relData = {
+					id: rel.id,
+					type: rel.type,
+					attributes: {},
+				};
+				dirtyIncluded[rel.type][rel.id].forEach((key) => {
+					relData.attributes[key] = rel[key];
+				});
+				included.push(relData);
+			}
+		});
+	});
+
+	return included;
+};
+
 export const getBody = (
 	method,
 	type,
@@ -11,7 +50,7 @@ export const getBody = (
 
 	if (method === 'PUT' || method === 'POST') {
 		body = {};
-		let data = {
+		const data = {
 			type,
 			attributes: {},
 			relationships: {},
@@ -50,43 +89,4 @@ export const getBody = (
 	}
 
 	return body;
-};
-
-const getIncluded = (data, dirtyIncluded, relationshipNames) => {
-	const included = [];
-
-	relationshipNames.forEach((relationshipName) => {
-		if (!Object.prototype.hasOwnProperty.call(data.relationships, relationshipName)) {
-			// This relationship isn't defined.
-			return;
-		}
-
-		if (!Array.isArray(data.relationships[relationshipName].data)) {
-			return;
-		}
-
-		data.relationships[relationshipName].data.forEach((rel) => {
-			if (Object.keys(rel).length <= 2) {
-				// This relationship only has an id and type.
-				return;
-			}
-
-			if (
-				Object.prototype.hasOwnProperty.call(dirtyIncluded, rel.type)
-				&& Object.prototype.hasOwnProperty.call(dirtyIncluded[rel.type], rel.id)
-			) {
-				const relData = {
-					id: rel.id,
-					type: rel.type,
-					attributes: {},
-				};
-				dirtyIncluded[rel.type][rel.id].forEach((key) => {
-					relData.attributes[key] = rel[key];
-				});
-				included.push(relData);
-			}
-		});
-	});
-
-	return included;
 };

@@ -1,5 +1,11 @@
+$formosa-dark-mode: true;
+
+@import '../../src/style';
+
 body {
-	background: #000;
-	color: #fff;
-	font-family: sans-serif;
+	background: if($formosa-dark-mode, #000, #fff);
+	color: if($formosa-dark-mode, #fff, #000);
+	font-family: $formosa-input-font-family;
+	font-size: $formosa-input-font-size;
+	margin: 32px;
 }

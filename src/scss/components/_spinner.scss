@@ -1,0 +1,34 @@
+.formosa-spinner {
+	align-content: center;
+	align-items: center;
+	align-self: center;
+	bottom: 0;
+	display: flex;
+	font-size: 0;
+	justify-content: center;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 9999;
+
+	&::before {
+		animation-duration: 1s;
+		animation-iteration-count: infinite;
+		animation-name: formosa-spin;
+		animation-timing-function: linear;
+		border-color: $formosa-spinner-color $formosa-spinner-color-alternate $formosa-spinner-color-alternate $formosa-spinner-color-alternate;
+		border-radius: 100px;
+		border-style: solid;
+		border-width: $formosa-spinner-border-width;
+		content: '';
+		display: block;
+		height: $formosa-spinner-size;
+		width: $formosa-spinner-size;
+	}
+}
+
+@keyframes formosa-spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}

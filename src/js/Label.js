@@ -8,16 +8,24 @@ export default function Label({
 	required,
 	type,
 }) {
-	let className = 'formosa-field__label';
+	let className = 'formosa-label';
 	if (required) {
-		className += ' formosa-field__label--required';
+		className += ' formosa-label--required';
 	}
 	if (type === 'checkbox') {
-		className += ' formosa-field__label--checkbox';
+		className += ' formosa-label--checkbox';
+	} else if (type === 'has-many') {
+		htmlFor = '';
 	}
+
+	const props = {};
+	if (htmlFor) {
+		props.htmlFor = htmlFor;
+	}
+
 	return (
 		<>
-			<label className={className} htmlFor={htmlFor}>{label}</label>
+			<label className={className} {...props}>{label}</label>
 			{note && <small>{`(${note})`}</small>}
 		</>
 	);

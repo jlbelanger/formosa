@@ -1,0 +1,19 @@
+.formosa-label {
+	display: block;
+	font-weight: bold;
+	margin-bottom: $formosa-margin-small;
+
+	&[for] {
+		cursor: pointer;
+	}
+}
+
+.formosa-label--checkbox {
+	display: inline-block;
+	font-weight: normal;
+	margin: 0;
+}
+
+.formosa-radio__label {
+	cursor: pointer;
+}

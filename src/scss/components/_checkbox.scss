@@ -1,0 +1,30 @@
+input[type="checkbox"] {
+	appearance: none;
+	cursor: pointer;
+	height: $formosa-checkbox-size;
+	margin: 0 $formosa-checkbox-margin 0 0;
+	vertical-align: middle;
+	width: $formosa-checkbox-size;
+}
+
+.formosa-field__input-wrapper--checkbox {
+	position: relative;
+}
+
+.formosa-field__check-icon {
+	bottom: 0;
+	height: #{$formosa-checkbox-size - $formosa-input-padding};
+	left: #{$formosa-input-padding / 2};
+	pointer-events: none;
+	position: absolute;
+	top: #{$formosa-input-padding / 2};
+	width: #{$formosa-checkbox-size - $formosa-input-padding};
+
+	path {
+		fill: transparent;
+	}
+
+	:checked + & path {
+		fill: $formosa-input-color;
+	}
+}

@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
+import { ReactComponent as CaretIcon } from '../../svg/caret.svg';
 import FormContext from '../FormContext';
 import PropTypes from 'prop-types';
 
-export default function Textarea({
+export default function Select({
 	className,
 	id,
 	name,
+	options,
 	required,
-	rows,
 }) {
 	const { formState, setFormState } = useContext(FormContext);
 	const onChange = (e) => {
@@ -30,30 +31,41 @@ export default function Textarea({
 		props.required = required;
 	}
 
+	const keys = Object.keys(options);
+
 	return (
-		<textarea
-			className={`formosa-field__input ${className}`.trim()}
-			id={id || name}
-			name={name}
-			onChange={onChange}
-			rows={rows}
-			value={formState.row[name] || ''}
-			{...props}
-		/>
+		<>
+			<select
+				className={`formosa-field__input ${className}`.trim()}
+				id={id || name}
+				name={name}
+				onChange={onChange}
+				value={formState.row[name] || ''}
+				{...props}
+			>
+				<option />
+				{keys.map((key) => (
+					<option key={key} value={key}>{options[key]}</option>
+				))}
+			</select>
+			<CaretIcon className="formosa-field__caret-icon" height="16" width="16" />
+		</>
 	);
 }
 
-Textarea.propTypes = {
+Select.propTypes = {
 	className: PropTypes.string,
 	id: PropTypes.string,
 	name: PropTypes.string.isRequired,
+	options: PropTypes.oneOfType([
+		PropTypes.array,
+		PropTypes.object,
+	]).isRequired,
 	required: PropTypes.bool,
-	rows: PropTypes.number,
 };
 
-Textarea.defaultProps = {
+Select.defaultProps = {
 	className: '',
 	id: null,
 	required: false,
-	rows: 3,
 };

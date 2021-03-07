@@ -1,9 +1,9 @@
 import React, { useContext, useRef } from 'react';
 import Api from './Helpers/Api';
-import Flash from './Flash';
 import FormContext from './FormContext';
 import FormosaContext from './FormosaContext';
 import { getBody } from './Helpers/JsonApi';
+import Message from './Message';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ export default function FormInner({
 	defaultRow,
 	filterBody,
 	filterValuesBeforeSerialize,
-	hideFlash,
+	hideMessage,
 	id,
 	method,
 	params,
@@ -23,8 +23,8 @@ export default function FormInner({
 	redirectOnSuccess,
 	relationshipNames,
 	style,
-	successFlashMessage,
-	successToastMessage,
+	successMessageText,
+	successToastText,
 }) {
 	const { formState, setFormState } = useContext(FormContext);
 	const formStateRef = useRef(formState);
@@ -35,24 +35,24 @@ export default function FormInner({
 	formosaStateRef.current = formosaState;
 
 	const history = useHistory();
-	const removeToast = (id, formosaStateRef) => {
-		const toasts = { ...formosaStateRef.current.toasts }
-		delete toasts[id];
+	const removeToast = (toastId) => {
+		const toasts = { ...formosaStateRef.current.toasts };
+		delete toasts[toastId];
 		setFormosaState({ ...formosaStateRef.current, toasts });
 	};
 	const addToast = (text, type = '') => {
-		const id = new Date().getTime();
+		const toastId = new Date().getTime();
 		const toast = {
 			className: type ? `formosa-toast--${type}` : '',
 			text,
 		};
 		const toasts = {
 			...formosaStateRef.current.toasts,
-			[id]: toast,
+			[toastId]: toast,
 		};
 		setFormosaState({ ...formosaStateRef.current, toasts });
 		setTimeout(() => {
-			removeToast(id, formosaStateRef);
+			removeToast(toastId);
 		}, 4000);
 	};
 	const onSubmit = (e) => {
@@ -82,13 +82,13 @@ export default function FormInner({
 			formStateRef.current,
 			relationshipNames,
 			filterBody,
-			filterValuesBeforeSerialize,
+			filterValuesBeforeSerialize
 		);
 
 		setFormState({
 			...formStateRef.current,
 			errors: {},
-			flash: '',
+			message: '',
 		});
 
 		Api.request(method, url, body === null ? null : JSON.stringify(body))
@@ -102,7 +102,7 @@ export default function FormInner({
 					dirty: [],
 					dirtyIncluded: {},
 					errors: {},
-					flash: successFlashMessage,
+					message: successMessageText,
 				};
 				if (clearOnSubmit) {
 					newState.row = defaultRow;
@@ -116,8 +116,8 @@ export default function FormInner({
 					}
 					history.push(redirectPath);
 				}
-				if (successToastMessage) {
-					addToast(successToastMessage, 'success');
+				if (successToastText) {
+					addToast(successToastText, 'success');
 				}
 				afterSubmit(response);
 			})
@@ -154,14 +154,14 @@ export default function FormInner({
 				setFormState({
 					...formStateRef.current,
 					errors,
-					flash: '',
+					message: '',
 				});
 			});
 	};
 
 	return (
 		<form onSubmit={onSubmit} style={style}>
-			{!hideFlash && <Flash />}
+			{!hideMessage && <Message />}
 			{children}
 		</form>
 	);
@@ -174,7 +174,7 @@ FormInner.propTypes = {
 	defaultRow: PropTypes.object.isRequired,
 	filterBody: PropTypes.func,
 	filterValuesBeforeSerialize: PropTypes.func,
-	hideFlash: PropTypes.bool,
+	hideMessage: PropTypes.bool,
 	id: PropTypes.string.isRequired,
 	method: PropTypes.string.isRequired,
 	params: PropTypes.string.isRequired,
@@ -186,15 +186,15 @@ FormInner.propTypes = {
 	]),
 	relationshipNames: PropTypes.array.isRequired,
 	style: PropTypes.object.isRequired,
-	successFlashMessage: PropTypes.string.isRequired,
-	successToastMessage: PropTypes.string.isRequired,
+	successMessageText: PropTypes.string.isRequired,
+	successToastText: PropTypes.string.isRequired,
 };
 
 FormInner.defaultProps = {
 	clearOnSubmit: false,
 	filterBody: null,
 	filterValuesBeforeSerialize: null,
-	hideFlash: false,
+	hideMessage: false,
 	preventEmptyRequest: false,
 	redirectOnSuccess: null,
 };

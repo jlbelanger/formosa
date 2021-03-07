@@ -1,0 +1,15 @@
+button {
+	background: $formosa-button-background-color;
+	border: $formosa-input-border-width solid $formosa-button-background-color;
+	color: $formosa-button-color;
+	cursor: pointer;
+	font-family: $formosa-input-font-family;
+	font-size: $formosa-input-font-size;
+	padding: $formosa-input-padding 12px;
+}
+
+.formosa-button--remove {
+	background: $formosa-error-background-color;
+	border-color: transparent;
+	color: $formosa-error-color;
+}

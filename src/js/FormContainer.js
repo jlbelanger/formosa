@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import FormosaContext from './FormosaContext';
+import PropTypes from 'prop-types';
 import Spinner from './Spinner';
 import ToastContainer from './ToastContainer';
 
@@ -16,3 +17,7 @@ export default function FormContainer({ children }) {
 		</FormosaContext.Provider>
 	);
 }
+
+FormContainer.propTypes = {
+	children: PropTypes.node.isRequired,
+};

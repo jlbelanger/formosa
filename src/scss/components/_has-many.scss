@@ -1,0 +1,9 @@
+.formosa-has-many {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.formosa-has-many__item + .formosa-has-many__item {
+	margin-top: $formosa-margin-medium;
+}

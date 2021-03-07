@@ -1,0 +1,16 @@
+select {
+	appearance: none;
+	cursor: pointer;
+	padding-right: #{$formosa-select-arrow-size + ($formosa-input-padding * 2)};
+}
+
+.formosa-field__caret-icon {
+	height: $formosa-select-arrow-size;
+	left: #{-1 * ($formosa-select-arrow-size + $formosa-input-padding + $formosa-input-border-width)};
+	position: relative;
+	width: $formosa-select-arrow-size;
+
+	path {
+		fill: $formosa-input-color;
+	}
+}

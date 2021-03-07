@@ -30,8 +30,8 @@ export default function Input({
 		});
 	};
 
-	let value = formState.row[name] || '';
-	let checked = type === 'checkbox' && value;
+	const value = formState.row[name] || '';
+	const checked = type === 'checkbox' && value;
 
 	const props = {};
 	if (autoComplete) {

@@ -1,0 +1,44 @@
+$formosa-primary-background-color: #9cf !default;
+$formosa-primary-color: #000 !default;
+
+$formosa-error-background-color: #c66 !default;
+$formosa-error-color: #000 !default;
+
+$formosa-success-background-color: #6c6 !default;
+$formosa-success-color: #000 !default;
+
+$formosa-dark-mode: false !default;
+
+$formosa-margin-small: 4px !default;
+$formosa-margin-medium: 8px !default;
+$formosa-margin-large: 24px !default;
+
+$formosa-button-background-color: $formosa-primary-background-color !default;
+$formosa-button-color: $formosa-primary-color !default;
+
+$formosa-checkbox-size: 28px !default;
+$formosa-checkbox-margin: 6px !default;
+
+$formosa-focus-border-color: #4ad !default;
+$formosa-focus-border-width: 3px;
+$formosa-focus-box-shadow-color: #6cf !default;
+
+$formosa-input-background-color: if($formosa-dark-mode, #222, #fff) !default;
+$formosa-input-border-color: if($formosa-dark-mode, #555, #ccc) !default;
+$formosa-input-border-width: 1px !default;
+$formosa-input-color: if($formosa-dark-mode, #fff, #000) !default;
+$formosa-input-font-family: sans-serif !default;
+$formosa-input-font-size: 18px !default;
+$formosa-input-padding: 8px !default;
+
+$formosa-message-padding: 16px !default;
+
+$formosa-select-arrow-size: 12px !default;
+
+$formosa-spinner-color: $formosa-primary-background-color !default;
+$formosa-spinner-color-alternate: #fff !default;
+$formosa-spinner-border-width: 12px !default;
+$formosa-spinner-size: 50px !default;
+
+$formosa-toast-margin: 8px !default;
+$formosa-toast-padding: 16px !default;

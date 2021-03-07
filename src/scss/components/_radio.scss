@@ -1,0 +1,31 @@
+.formosa-radio {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.formosa-radio__item + .formosa-radio__item {
+	margin-top: $formosa-margin-medium;
+}
+
+input[type="radio"] {
+	appearance: none;
+	border-color: $formosa-input-background-color;
+	border-radius: 100px;
+	border-width: 6px;
+	box-shadow: 0 0 0 $formosa-input-border-width $formosa-input-border-color;
+	cursor: pointer;
+	height: $formosa-checkbox-size;
+	margin: 0 $formosa-checkbox-margin 0 0;
+	padding: 0;
+	vertical-align: middle;
+	width: $formosa-checkbox-size;
+
+	&:checked {
+		background: $formosa-input-color;
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 $formosa-input-border-width $formosa-focus-border-color, 0 0 0 $formosa-focus-border-width $formosa-focus-box-shadow-color;
+	}
+}

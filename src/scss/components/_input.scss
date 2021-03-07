@@ -1,0 +1,18 @@
+input,
+select,
+textarea {
+	background: $formosa-input-background-color;
+	border: $formosa-input-border-width solid $formosa-input-border-color;
+	color: $formosa-input-color;
+	font-family: $formosa-input-font-family;
+	font-size: $formosa-input-font-size;
+	padding: $formosa-input-padding;
+
+	&:invalid {
+		box-shadow: none;
+
+		&:focus {
+			box-shadow: 0 0 0 $formosa-focus-border-width $formosa-focus-box-shadow-color;
+		}
+	}
+}
