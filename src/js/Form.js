@@ -31,6 +31,7 @@ export default function Form({
 		errors: {},
 		flash: '',
 		row,
+		toasts: {},
 	});
 
 	return (

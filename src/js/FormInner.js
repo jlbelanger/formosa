@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import Api from './Helpers/Api';
 import Flash from './Flash';
 import FormContext from './FormContext';
 import { getBody } from './Helpers/JsonApi';
 import PropTypes from 'prop-types';
-// import { toast } from 'react-toastify'; // TODO
+import ToastContainer from './ToastContainer';
 import { useHistory } from 'react-router-dom';
 
 export default function FormInner({
@@ -27,7 +27,29 @@ export default function FormInner({
 	successToastMessage,
 }) {
 	const { formState, setFormState } = useContext(FormContext);
+	const formStateRef = useRef(formState);
+	formStateRef.current = formState;
 	const history = useHistory();
+	const removeToast = (id, formStateRef) => {
+		const toasts = { ...formStateRef.current.toasts }
+		delete toasts[id];
+		setFormState({ ...formStateRef.current, toasts });
+	};
+	const addToast = (text, type = '') => {
+		const id = new Date().getTime();
+		const toast = {
+			className: type ? `formosa-toast--${type}` : '',
+			text,
+		};
+		const toasts = {
+			...formState.toasts,
+			[id]: toast,
+		};
+		setFormState({ ...formState, toasts });
+		setTimeout(() => {
+			removeToast(id, formStateRef);
+		}, 3000);
+	};
 	const onSubmit = (e) => {
 		e.preventDefault();
 
@@ -37,17 +59,17 @@ export default function FormInner({
 			}
 		}
 
+		if (preventEmptyRequest && formState.dirty.length <= 0) {
+			addToast('No changes to save.');
+			return;
+		}
+
 		let url = path;
 		if (id) {
 			url = `${path}/${id}`;
 		}
 		if (params) {
 			url += `?${params}`;
-		}
-
-		if (preventEmptyRequest && formState.dirty.length <= 0) {
-			// toast('No changes to save.'); // TODO
-			return;
 		}
 
 		const body = getBody(
@@ -59,6 +81,7 @@ export default function FormInner({
 			filterBody,
 			filterValuesBeforeSerialize,
 		);
+
 		setFormState({
 			...formState,
 			errors: {},
@@ -91,15 +114,15 @@ export default function FormInner({
 					history.push(redirectPath);
 				}
 				if (successToastMessage) {
-					// toast.success(successToastMessage); // TODO
+					addToast(successToastMessage, 'success');
 				}
 				afterSubmit(response);
 			})
 			.catch((response) => {
 				if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
-					// toast.error('Error.'); // TODO
+					addToast('Error.', 'error');
 				} else {
-					// toast.error('Server error.'); // TODO
+					addToast('Server error.', 'error');
 					throw response;
 				}
 
@@ -137,6 +160,7 @@ export default function FormInner({
 		<form onSubmit={onSubmit} style={style}>
 			{!hideFlash && <Flash />}
 			{children}
+			<ToastContainer />
 		</form>
 	);
 }

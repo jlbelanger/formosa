@@ -7,5 +7,6 @@ export default React.createContext(
 		errors: {},
 		flash: '',
 		row: {},
+		toasts: {},
 	}
 );
