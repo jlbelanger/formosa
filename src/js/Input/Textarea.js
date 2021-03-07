@@ -31,7 +31,7 @@ export default function Textarea({
 
 	return (
 		<textarea
-			className={`field__input ${className}`.trim()}
+			className={`formosa-field__input ${className}`.trim()}
 			id={id || name}
 			name={name}
 			onChange={onChange}

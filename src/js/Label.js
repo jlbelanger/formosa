@@ -8,12 +8,12 @@ export default function Label({
 	required,
 	type,
 }) {
-	let className = 'field__label';
+	let className = 'formosa-field__label';
 	if (required) {
-		className += ' field__label--required';
+		className += ' formosa-field__label--required';
 	}
 	if (type === 'checkbox') {
-		className += ' field__label--checkbox';
+		className += ' formosa-field__label--checkbox';
 	}
 	return (
 		<>

@@ -43,23 +43,23 @@ export default function Radio({
 	const numKeys = keys.length;
 
 	return (
-		<ul className="radio">
+		<ul className="formosa-radio">
 			{keys.map((value, i) => {
 				const checked = formState.row[name] === value;
 				let className = '';
 				if (numKeys > 1) {
-					className = 'infix';
+					className = 'formosa-infix';
 					if (i === 0) {
-						className = 'prefix';
+						className = 'formosa-prefix';
 					} else if (i === numKeys - 1) {
-						className = 'postfix';
+						className = 'formosa-postfix';
 					}
 				}
 				return (
-					<li className="radio__item" key={value}>
-						<label className={`radio__label button ${className}${checked ? ' active' : ''}`.trim()}>
+					<li className="formosa-radio__item" key={value}>
+						<label className={`formosa-radio__label ${className}${checked ? ' formosa-radio__label--checked' : ''}`.trim()}>
 							<input
-								className={`field__input radio__input ${className}`.trim()}
+								className={`formosa-field__input formosa-radio__input ${className}`.trim()}
 								checked={checked}
 								name={name}
 								onChange={onChange}

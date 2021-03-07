@@ -58,7 +58,7 @@ export default function Input({
 	return (
 		<>
 			<input
-				className={`field__input ${className}`.trim()}
+				className={`formosa-field__input ${className}`.trim()}
 				id={id || name}
 				name={name}
 				onChange={onChange}
@@ -66,7 +66,7 @@ export default function Input({
 				value={value}
 				{...props}
 			/>
-			{suffix && <span className="suffix">{suffix}</span>}
+			{suffix && <span className="formosa-suffix">{suffix}</span>}
 		</>
 	);
 }

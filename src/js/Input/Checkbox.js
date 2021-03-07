@@ -21,7 +21,7 @@ export default function Checkbox({
 				required={required}
 				type="checkbox"
 			/>
-			<CheckIcon className="field__check" height="16" width="16" />
+			<CheckIcon className="formosa-field__check-icon" height="16" width="16" />
 		</>
 	);
 }

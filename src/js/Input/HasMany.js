@@ -59,7 +59,7 @@ export default function HasMany({
 		setNewValue('');
 		setTempId(tempId + 1);
 
-		document.getElementById('new-value').focus();
+		document.getElementById(`new-${nameKey}`).focus();
 	};
 	const onChange = (e) => {
 		const row = { ...formState.row };
@@ -102,7 +102,7 @@ export default function HasMany({
 	};
 
 	return (
-		<ul className="has-many-list">
+		<ul className="formosa-has-many">
 			{values.map((value) => {
 				let isRemovable = value.id.startsWith('temp-');
 				if (!isRemovable && removable) {
@@ -111,10 +111,10 @@ export default function HasMany({
 				const key = `included.${value.type}.${value.id}.attributes.${nameKey}`;
 				const hasError = Object.prototype.hasOwnProperty.call(formState.errors, key);
 				return (
-					<li className="has-many-list__item" key={value.id}>
-						<div className={`${hasError ? 'field--has-error' : ''}`} style={{ display: 'flex' }}>
+					<li className="formosa-has-many__item" key={value.id}>
+						<div className={`formosa-has-many__wrapper ${hasError ? 'formosa-field--has-error' : ''}`.trim()}>
 							<input
-								className="field__input has-many-list__input prefix"
+								className="formosa-field__input formosa-has-many__input formosa-prefix"
 								data-id={value.id}
 								name={key}
 								onChange={onChange}
@@ -123,7 +123,7 @@ export default function HasMany({
 								value={value[nameKey]}
 							/>
 							<button
-								className="postfix button--danger"
+								className="formosa-button formosa-postfix formosa-button--remove"
 								data-id={value.id}
 								disabled={!isRemovable}
 								onClick={onRemove}
@@ -132,20 +132,20 @@ export default function HasMany({
 								Remove
 							</button>
 						</div>
-						{hasError && <div className="field__error">{formState.errors[key].join((<br />))}</div>}
+						{hasError && <div className="formosa-field__error">{formState.errors[key].join((<br />))}</div>}
 					</li>
 				);
 			})}
-			<li className="has-many-list__item has-many-list__item--new">
+			<li className="formosa-has-many__item formosa-has-many__item--new">
 				<input
-					className="has-many-list__input prefix"
-					id="new-value"
+					className="formosa-has-many__input formosa-prefix"
+					id={`new-${nameKey}`}
 					onChange={onChangeNewValue}
 					onKeyDown={onKeyDown}
 					type="text"
 					value={newValue}
 				/>
-				<button className="postfix" onClick={onAdd} type="button">Add</button>
+				<button className="formosa-button formosa-postfix formosa-button--add" onClick={onAdd} type="button">Add</button>
 			</li>
 		</ul>
 	);

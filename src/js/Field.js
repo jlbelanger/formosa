@@ -11,7 +11,6 @@ import Radio from './Input/Radio';
 import Textarea from './Input/Textarea';
 
 export default function Field({
-	after,
 	afterChange,
 	autoComplete,
 	className,
@@ -23,6 +22,7 @@ export default function Field({
 	note,
 	options,
 	pattern,
+	postfix,
 	recordType,
 	removable,
 	required,
@@ -82,22 +82,21 @@ export default function Field({
 	const hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
 
 	return (
-		<div className={`field ${wrapperClassName}${hasError ? ' field--has-error' : ''}${after ? ' field--with-after' : ''}`.trim()}>
+		<div className={`formosa-field ${wrapperClassName}${hasError ? ' formosa-field--has-error' : ''}${postfix ? ' formosa-field--with-postfix' : ''}`.trim()}>
 			{label && showLabelBefore && labelComponent}
-			<ConditionalWrapper className="after-wrapper" condition={after}>
-				<div className={`field__input-wrapper field__input-wrapper--${type}`}>
+			<ConditionalWrapper className="formosa-postfix-container" condition={postfix}>
+				<div className={`formosa-field__input-wrapper formosa-field__input-wrapper--${type}`}>
 					{input}
 					{label && !showLabelBefore && labelComponent}
 				</div>
-				{after}
+				{postfix}
 			</ConditionalWrapper>
-			{hasError && <div className="field__error">{formState.errors[name].join((<br />))}</div>}
+			{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
 		</div>
 	);
 }
 
 Field.propTypes = {
-	after: PropTypes.node,
 	afterChange: PropTypes.func,
 	autoComplete: PropTypes.string,
 	className: PropTypes.string,
@@ -112,6 +111,7 @@ Field.propTypes = {
 		PropTypes.object,
 	]),
 	pattern: PropTypes.string,
+	postfix: PropTypes.node,
 	recordType: PropTypes.string,
 	removable: PropTypes.func,
 	required: PropTypes.bool,
@@ -122,7 +122,6 @@ Field.propTypes = {
 };
 
 Field.defaultProps = {
-	after: null,
 	afterChange: null,
 	autoComplete: '',
 	className: '',
@@ -133,6 +132,7 @@ Field.defaultProps = {
 	note: '',
 	options: [],
 	pattern: '',
+	postfix: null,
 	recordType: null,
 	removable: null,
 	required: false,

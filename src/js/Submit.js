@@ -3,8 +3,8 @@ import React from 'react';
 
 export default function Submit({ className, label }) {
 	return (
-		<div className="field field--submit">
-			<button className={`form__submit ${className}`.trim()} type="submit">{label}</button>
+		<div className="formosa-field formosa-field--submit">
+			<button className={`formosa-button formosa-button--submit ${className}`.trim()} type="submit">{label}</button>
 		</div>
 	);
 }

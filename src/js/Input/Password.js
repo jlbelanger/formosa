@@ -22,13 +22,13 @@ export default function Password({
 		<>
 			<Input
 				autoComplete={autoComplete}
-				className="prefix"
+				className="formosa-prefix"
 				id={id}
 				name={name}
 				required={required}
 				type={tempType}
 			/>
-			<button className="postfix button--secondary" onClick={togglePassword} type="button">
+			<button className="formosa-button formosa-postfix formosa-button--toggle-password" onClick={togglePassword} type="button">
 				{tempType === 'password' ? 'Show' : 'Hide'}
 			</button>
 		</>
