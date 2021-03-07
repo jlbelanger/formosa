@@ -31,13 +31,7 @@ export default function Input({
 	};
 
 	let value = formState.row[name] || '';
-	let checked = false;
-	if (type === 'checkbox') {
-		if (value) {
-			checked = true;
-		}
-		value = 1;
-	}
+	let checked = type === 'checkbox' && value;
 
 	const props = {};
 	if (autoComplete) {
@@ -45,6 +39,8 @@ export default function Input({
 	}
 	if (checked) {
 		props.checked = checked;
+	} else if (type === 'checkbox') {
+		props.checked = false;
 	}
 	if (inputMode) {
 		props.inputMode = inputMode;
