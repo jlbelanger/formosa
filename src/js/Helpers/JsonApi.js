@@ -85,7 +85,7 @@ export const getBody = (
 	formState,
 	relationshipNames,
 	filterBody,
-	filterValuesBeforeSerialize
+	filterValues
 ) => {
 	let body = null;
 
@@ -103,8 +103,8 @@ export const getBody = (
 		}
 
 		let values = { ...formState.row };
-		if (filterValuesBeforeSerialize) {
-			values = filterValuesBeforeSerialize(values);
+		if (filterValues) {
+			values = filterValues(values);
 		}
 
 		keys.forEach((key) => {

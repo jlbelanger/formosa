@@ -123,7 +123,7 @@ export default function HasMany({
 								value={value[nameKey]}
 							/>
 							<button
-								className="formosa-button formosa-postfix formosa-button--remove"
+								className="formosa-button formosa-postfix formosa-button--danger"
 								data-id={value.id}
 								disabled={!isRemovable}
 								onClick={onRemove}

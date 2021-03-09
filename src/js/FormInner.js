@@ -13,8 +13,7 @@ export default function FormInner({
 	clearOnSubmit,
 	defaultRow,
 	filterBody,
-	filterValuesBeforeSerialize,
-	hideMessage,
+	filterValues,
 	id,
 	method,
 	params,
@@ -22,9 +21,10 @@ export default function FormInner({
 	preventEmptyRequest,
 	redirectOnSuccess,
 	relationshipNames,
-	style,
+	showMessage,
 	successMessageText,
 	successToastText,
+	...otherProps
 }) {
 	const { formState, setFormState } = useContext(FormContext);
 	const formStateRef = useRef(formState);
@@ -55,7 +55,7 @@ export default function FormInner({
 			removeToast(toastId);
 		}, 4000);
 	};
-	const onSubmit = (e) => {
+	const submitApiRequest = (e) => {
 		e.preventDefault();
 
 		if (method === 'DELETE' && !window.confirm('Are you sure you want to delete this?')) {
@@ -82,7 +82,7 @@ export default function FormInner({
 			formStateRef.current,
 			relationshipNames,
 			filterBody,
-			filterValuesBeforeSerialize
+			filterValues
 		);
 
 		setFormState({
@@ -110,16 +110,14 @@ export default function FormInner({
 				setFormState(newState);
 
 				if (redirectOnSuccess) {
-					let redirectPath = redirectOnSuccess;
-					if (typeof redirectPath === 'function') {
-						redirectPath = redirectOnSuccess(response);
-					}
-					history.push(redirectPath);
+					history.push(redirectOnSuccess);
 				}
 				if (successToastText) {
 					addToast(successToastText, 'success');
 				}
-				afterSubmit(response);
+				if (afterSubmit) {
+					afterSubmit(response);
+				}
 			})
 			.catch((response) => {
 				if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
@@ -158,43 +156,51 @@ export default function FormInner({
 				});
 			});
 	};
+	if (method && path && !Object.prototype.hasOwnProperty.call(otherProps, 'onSubmit')) {
+		otherProps.onSubmit = submitApiRequest;
+	}
 
 	return (
-		<form onSubmit={onSubmit} style={style}>
-			{!hideMessage && <Message />}
+		<form {...otherProps}>
+			{showMessage && <Message />}
 			{children}
 		</form>
 	);
 }
 
 FormInner.propTypes = {
-	afterSubmit: PropTypes.func.isRequired,
+	afterSubmit: PropTypes.func,
 	children: PropTypes.node.isRequired,
 	clearOnSubmit: PropTypes.bool,
-	defaultRow: PropTypes.object.isRequired,
+	defaultRow: PropTypes.object,
 	filterBody: PropTypes.func,
-	filterValuesBeforeSerialize: PropTypes.func,
-	hideMessage: PropTypes.bool,
-	id: PropTypes.string.isRequired,
-	method: PropTypes.string.isRequired,
-	params: PropTypes.string.isRequired,
-	path: PropTypes.string.isRequired,
+	filterValues: PropTypes.func,
+	id: PropTypes.string,
+	method: PropTypes.string,
+	params: PropTypes.string,
+	path: PropTypes.string,
 	preventEmptyRequest: PropTypes.bool,
-	redirectOnSuccess: PropTypes.oneOfType([
-		PropTypes.string,
-		PropTypes.func,
-	]),
-	relationshipNames: PropTypes.array.isRequired,
-	style: PropTypes.object.isRequired,
-	successMessageText: PropTypes.string.isRequired,
-	successToastText: PropTypes.string.isRequired,
+	redirectOnSuccess: PropTypes.string,
+	relationshipNames: PropTypes.array,
+	showMessage: PropTypes.bool,
+	successMessageText: PropTypes.string,
+	successToastText: PropTypes.string,
 };
 
 FormInner.defaultProps = {
+	afterSubmit: null,
 	clearOnSubmit: false,
+	defaultRow: {},
 	filterBody: null,
-	filterValuesBeforeSerialize: null,
-	hideMessage: false,
+	filterValues: null,
+	id: '',
+	method: null,
+	params: '',
+	path: null,
 	preventEmptyRequest: false,
-	redirectOnSuccess: null,
+	redirectOnSuccess: '',
+	relationshipNames: [],
+	showMessage: true,
+	successMessageText: '',
+	successToastText: '',
 };

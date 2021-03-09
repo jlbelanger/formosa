@@ -7,6 +7,7 @@ export default function Label({
 	note,
 	required,
 	type,
+	...otherProps
 }) {
 	let className = 'formosa-label';
 	if (required) {
@@ -25,7 +26,7 @@ export default function Label({
 
 	return (
 		<>
-			<label className={className} {...props}>{label}</label>
+			<label className={className} {...props} {...otherProps}>{label}</label>
 			{note && <small>{`(${note})`}</small>}
 		</>
 	);
