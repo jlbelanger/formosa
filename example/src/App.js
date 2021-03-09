@@ -1,8 +1,18 @@
 import './style.scss';
+import {
+	Field,
+	Form,
+	FormContainer,
+	Submit,
+} from '@jlbelanger/formosa';
 import React from 'react';
-import { FormContainer, Form, Field, Submit } from '@jlbelanger/formosa';
 
 export default function App() {
+	const row = {
+		id: '123',
+		name: 'John',
+	};
+
 	return (
 		<main>
 			<header>
@@ -10,7 +20,9 @@ export default function App() {
 			</header>
 
 			<FormContainer>
-				<Form method="POST" path="foo">
+				<Form>
+					<h2>Basic form</h2>
+
 					<Field
 						label="Text"
 						name="text"
@@ -98,6 +110,29 @@ export default function App() {
 					/>
 
 					<Submit />
+				</Form>
+
+				<hr />
+
+				<Form method="POST" path="users">
+					<h2>JSON:API add form</h2>
+					<Field label="Name" name="name" type="text" />
+					<Submit />
+				</Form>
+
+				<hr />
+
+				<Form method="PUT" path="users" id={row.id} row={row}>
+					<h2>JSON:API edit form</h2>
+					<Field label="Name" name="name" type="text" />
+					<Submit />
+				</Form>
+
+				<hr />
+
+				<Form method="DELETE" path="users" id={row.id}>
+					<h2>JSON:API delete form</h2>
+					<Submit className="formosa-button--danger" label="Delete" />
 				</Form>
 			</FormContainer>
 		</main>

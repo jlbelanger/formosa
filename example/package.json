@@ -12,10 +12,7 @@
 	"dependencies": {
 		"@jlbelanger/formosa": "link:..",
 		"react": "^17.0.1",
-		"react-router-dom": "^5.2.0"
-	},
-	"eslintConfig": {
-		"extends": "react-app"
+		"react-dom": "^17.0.1"
 	},
 	"browserslist": [
 		">0.2%",
