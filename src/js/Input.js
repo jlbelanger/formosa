@@ -3,16 +3,12 @@ import FormContext from './FormContext';
 import PropTypes from 'prop-types';
 
 export default function Input({
-	autoComplete,
 	className,
 	id,
-	inputMode,
 	name,
-	pattern,
-	required,
-	size,
 	suffix,
 	type,
+	...otherProps
 }) {
 	const { formState, setFormState } = useContext(FormContext);
 	const onChange = (e) => {
@@ -34,25 +30,10 @@ export default function Input({
 	const checked = type === 'checkbox' && value;
 
 	const props = {};
-	if (autoComplete) {
-		props.autoComplete = autoComplete;
-	}
 	if (checked) {
 		props.checked = checked;
 	} else if (type === 'checkbox') {
 		props.checked = false;
-	}
-	if (inputMode) {
-		props.inputMode = inputMode;
-	}
-	if (pattern) {
-		props.pattern = pattern;
-	}
-	if (required) {
-		props.required = required;
-	}
-	if (size) {
-		props.size = size;
 	}
 
 	return (
@@ -65,6 +46,7 @@ export default function Input({
 				type={type}
 				value={value}
 				{...props}
+				{...otherProps}
 			/>
 			{suffix && <span className="formosa-suffix">{suffix}</span>}
 		</>
@@ -72,26 +54,16 @@ export default function Input({
 }
 
 Input.propTypes = {
-	autoComplete: PropTypes.string,
 	className: PropTypes.string,
 	id: PropTypes.string,
-	inputMode: PropTypes.string,
 	name: PropTypes.string.isRequired,
-	pattern: PropTypes.string,
-	required: PropTypes.bool,
-	size: PropTypes.number,
 	suffix: PropTypes.string,
 	type: PropTypes.string,
 };
 
 Input.defaultProps = {
-	autoComplete: '',
 	className: '',
 	id: null,
-	inputMode: '',
-	pattern: '',
-	required: false,
-	size: null,
 	suffix: '',
 	type: 'text',
 };

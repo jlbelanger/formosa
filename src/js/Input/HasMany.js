@@ -78,7 +78,7 @@ export default function HasMany({
 		setNewValue(e.target.value);
 	};
 	const onKeyDown = (e) => {
-		if (e.key === 'Enter') {
+		if (e.key === 'Enter' && newValue) {
 			e.preventDefault();
 			e.stopPropagation();
 			onAdd();
@@ -153,11 +153,12 @@ export default function HasMany({
 
 HasMany.propTypes = {
 	name: PropTypes.string.isRequired,
-	nameKey: PropTypes.string.isRequired,
+	nameKey: PropTypes.string,
 	recordType: PropTypes.string.isRequired,
 	removable: PropTypes.func,
 };
 
 HasMany.defaultProps = {
+	nameKey: 'name',
 	removable: null,
 };

@@ -79,7 +79,7 @@ export default function Radio({
 Radio.propTypes = {
 	afterChange: PropTypes.func,
 	name: PropTypes.string.isRequired,
-	nameKey: PropTypes.string.isRequired,
+	nameKey: PropTypes.string,
 	options: PropTypes.oneOfType([
 		PropTypes.array,
 		PropTypes.object,
@@ -89,5 +89,6 @@ Radio.propTypes = {
 
 Radio.defaultProps = {
 	afterChange: null,
+	nameKey: 'name',
 	required: false,
 };

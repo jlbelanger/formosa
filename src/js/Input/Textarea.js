@@ -6,8 +6,7 @@ export default function Textarea({
 	className,
 	id,
 	name,
-	required,
-	rows,
+	...otherProps
 }) {
 	const { formState, setFormState } = useContext(FormContext);
 	const onChange = (e) => {
@@ -25,20 +24,14 @@ export default function Textarea({
 		});
 	};
 
-	const props = {};
-	if (required) {
-		props.required = required;
-	}
-
 	return (
 		<textarea
 			className={`formosa-field__input ${className}`.trim()}
 			id={id || name}
 			name={name}
 			onChange={onChange}
-			rows={rows}
 			value={formState.row[name] || ''}
-			{...props}
+			{...otherProps}
 		/>
 	);
 }
@@ -47,13 +40,9 @@ Textarea.propTypes = {
 	className: PropTypes.string,
 	id: PropTypes.string,
 	name: PropTypes.string.isRequired,
-	required: PropTypes.bool,
-	rows: PropTypes.number,
 };
 
 Textarea.defaultProps = {
 	className: '',
 	id: null,
-	required: false,
-	rows: 3,
 };

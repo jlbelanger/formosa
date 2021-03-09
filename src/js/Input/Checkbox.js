@@ -5,21 +5,19 @@ import Input from '../Input';
 import PropTypes from 'prop-types';
 
 export default function Checkbox({
-	className,
 	id,
 	name,
-	required,
+	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
 	return (
 		<>
 			<Input
 				checked={!!formState.row[name]}
-				className={className}
 				id={id || name}
 				name={name}
-				required={required}
 				type="checkbox"
+				{...otherProps}
 			/>
 			<CheckIcon className="formosa-field__check-icon" height="16" width="16" />
 		</>
@@ -27,14 +25,10 @@ export default function Checkbox({
 }
 
 Checkbox.propTypes = {
-	className: PropTypes.string,
 	id: PropTypes.string,
 	name: PropTypes.string.isRequired,
-	required: PropTypes.bool,
 };
 
 Checkbox.defaultProps = {
-	className: '',
 	id: null,
-	required: false,
 };

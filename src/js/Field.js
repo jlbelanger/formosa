@@ -12,25 +12,15 @@ import Select from './Input/Select';
 import Textarea from './Input/Textarea';
 
 export default function Field({
-	afterChange,
-	autoComplete,
-	className,
 	id,
-	inputMode,
 	label,
 	name,
-	nameKey,
 	note,
-	options,
-	pattern,
 	postfix,
-	recordType,
-	removable,
 	required,
-	size,
-	suffix,
 	type,
 	wrapperClassName,
+	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
 	let Component = Input;
@@ -49,21 +39,11 @@ export default function Field({
 	}
 	const input = (
 		<Component
-			afterChange={afterChange}
-			autoComplete={autoComplete}
-			className={className}
 			id={id}
-			inputMode={inputMode}
 			name={name}
-			nameKey={nameKey}
-			options={options}
-			pattern={pattern}
-			recordType={recordType}
-			removable={removable}
 			required={required}
-			size={size}
-			suffix={suffix}
 			type={type}
+			{...otherProps}
 		/>
 	);
 
@@ -111,47 +91,22 @@ export default function Field({
 }
 
 Field.propTypes = {
-	afterChange: PropTypes.func,
-	autoComplete: PropTypes.string,
-	className: PropTypes.string,
 	id: PropTypes.string,
-	inputMode: PropTypes.string,
 	label: PropTypes.string,
 	name: PropTypes.string.isRequired,
-	nameKey: PropTypes.string,
 	note: PropTypes.string,
-	options: PropTypes.oneOfType([
-		PropTypes.array,
-		PropTypes.object,
-	]),
-	pattern: PropTypes.string,
 	postfix: PropTypes.node,
-	recordType: PropTypes.string,
-	removable: PropTypes.func,
 	required: PropTypes.bool,
-	size: PropTypes.number,
-	suffix: PropTypes.string,
 	type: PropTypes.string,
 	wrapperClassName: PropTypes.string,
 };
 
 Field.defaultProps = {
-	afterChange: null,
-	autoComplete: '',
-	className: '',
 	id: null,
-	inputMode: '',
 	label: '',
-	nameKey: 'name',
 	note: '',
-	options: [],
-	pattern: '',
 	postfix: null,
-	recordType: null,
-	removable: null,
 	required: false,
-	size: null,
-	suffix: '',
 	type: 'text',
 	wrapperClassName: '',
 };

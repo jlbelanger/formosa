@@ -8,7 +8,7 @@ export default function Select({
 	id,
 	name,
 	options,
-	required,
+	...otherProps
 }) {
 	const { formState, setFormState } = useContext(FormContext);
 	const onChange = (e) => {
@@ -26,11 +26,6 @@ export default function Select({
 		});
 	};
 
-	const props = {};
-	if (required) {
-		props.required = required;
-	}
-
 	const keys = Object.keys(options);
 
 	return (
@@ -41,7 +36,7 @@ export default function Select({
 				name={name}
 				onChange={onChange}
 				value={formState.row[name] || ''}
-				{...props}
+				{...otherProps}
 			>
 				<option />
 				{keys.map((key) => (
@@ -61,11 +56,9 @@ Select.propTypes = {
 		PropTypes.array,
 		PropTypes.object,
 	]).isRequired,
-	required: PropTypes.bool,
 };
 
 Select.defaultProps = {
 	className: '',
 	id: null,
-	required: false,
 };
