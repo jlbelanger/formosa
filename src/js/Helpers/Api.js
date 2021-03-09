@@ -1,4 +1,4 @@
-import { Deserializer } from 'jsonapi-serializer';
+import { deserialize } from './JsonApi';
 import { trackPromise } from 'react-promise-tracker';
 
 export default class Api {
@@ -64,10 +64,7 @@ export default class Api {
 				})
 				.then((json) => {
 					if (Object.prototype.hasOwnProperty.call(json, 'data')) {
-						const deserializerOptions = {
-							keyForAttribute: 'snake_case',
-						};
-						return new Deserializer(deserializerOptions).deserialize(json);
+						return deserialize(json);
 					}
 					return json;
 				})

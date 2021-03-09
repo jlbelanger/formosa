@@ -1,3 +1,44 @@
+export const deserialize = (body) => {
+	if (Array.isArray(body.data)) {
+		const output = [];
+		body.data.forEach((data) => {
+			output.push(deserializeSingle(data, body.included));
+		});
+		return output;
+	}
+	return deserializeSingle(body.data, body.included);
+};
+
+const deserializeSingle = (data, included = []) => {
+	const output = {
+		id: data.id,
+		type: data.type,
+		...data.attributes,
+	};
+
+	if (Object.prototype.hasOwnProperty.call(data, 'relationships')) {
+		let includedRecord;
+		Object.keys(data.relationships).forEach((relationshipName) => {
+			output[relationshipName] = data.relationships[relationshipName].data;
+			if (Array.isArray(output[relationshipName])) {
+				output[relationshipName].forEach((rel, i) => {
+					includedRecord = findIncluded(included, rel.id, rel.type);
+					output[relationshipName][i] = deserializeSingle(includedRecord, included);
+				});
+			} else if (output[relationshipName] !== null) {
+				includedRecord = findIncluded(included, output[relationshipName].id, output[relationshipName].type);
+				output[relationshipName] = deserializeSingle(includedRecord, included);
+			}
+		});
+	}
+
+	return output;
+};
+
+const findIncluded = (included, id, type) => {
+	return included.find((data) => (data.id === id && data.type === type));
+};
+
 const getIncluded = (data, dirtyIncluded, relationshipNames) => {
 	const included = [];
 
@@ -85,6 +126,13 @@ export const getBody = (
 
 		if (filterBody) {
 			body = filterBody(body);
+		}
+
+		if (Object.keys(data.attributes).length <= 0) {
+			delete data.attributes;
+		}
+		if (Object.keys(data.relationships).length <= 0) {
+			delete data.relationships;
 		}
 	}
 
