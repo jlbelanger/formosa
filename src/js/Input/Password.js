@@ -15,15 +15,15 @@ export default function Password({
 	};
 
 	return (
-		<>
+		<div className="formosa-field__password-wrapper">
 			<Input
 				className="formosa-prefix"
-				type={tempType}
 				{...otherProps}
+				type={tempType}
 			/>
 			<button className="formosa-button formosa-postfix formosa-button--toggle-password" onClick={togglePassword} type="button">
 				{tempType === 'password' ? 'Show' : 'Hide'}
 			</button>
-		</>
+		</div>
 	);
 }
