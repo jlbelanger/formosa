@@ -1,6 +1,7 @@
 .DS_Store
 .env
 .env.production
+.gitcommit
 .rpt2_cache
 build
 dist

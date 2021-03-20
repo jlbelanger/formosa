@@ -2,9 +2,13 @@
 
 A [React](https://www.npmjs.com/package/react) form component library. It works well with [JSON:API](https://jsonapi.org/) and [react-router-dom](https://www.npmjs.com/package/react-router-dom), but they are not required.
 
+## Demo
+
+https://formosa.jennybelanger.com/
+
 ## Setup
 
-Run:
+This package isn't actually published, but if it was, you would run:
 
 ```bash
 npm install --save @jlbelanger/formosa
@@ -64,7 +68,7 @@ import { Form } from '@jlbelanger/formosa';
 
 |Attribute   |Default |Notes|
 |------------|--------|-----|
-|row         |`{}`    |The default values. For edit forms, the existing record's values should be specified here.|
+|row         |`{}`    |Default values for fields. For edit forms, the existing record's values should be specified here.|
 |showMessage |`true`  |If true, the inline `<Message>` component will be included at the top of the form. Set this to `false` if you want to include the `<Message>` somewhere else.|
 |warnOnUnload|`false` |If true, a warning dialog will appear if the user tries to leave the page without saving their changes. Requires `react-router-dom`.|
 
