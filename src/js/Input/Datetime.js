@@ -58,6 +58,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--day"
 				data-datetime="day"
+				maxLength={2}
 				onChange={onChange}
 				placeholder="DD"
 				size={2}
@@ -66,15 +67,18 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--year"
 				data-datetime="year"
+				maxLength={4}
 				onChange={onChange}
 				placeholder="YYYY"
 				size={4}
+				suffix=","
 				value={values.year}
 			/>
 
 			<Input
 				className="formosa-field__input--date formosa-field__input--hour"
 				data-datetime="hour"
+				maxLength={2}
 				onChange={onChange}
 				placeholder="hh"
 				size={2}
@@ -84,6 +88,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--minute"
 				data-datetime="minute"
+				maxLength={2}
 				onChange={onChange}
 				placeholder="mm"
 				size={2}
@@ -93,6 +98,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--second"
 				data-datetime="second"
+				maxLength={2}
 				onChange={onChange}
 				placeholder="ss"
 				size={2}
