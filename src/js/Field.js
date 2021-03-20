@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import Checkbox from './Input/Checkbox';
 import ConditionalWrapper from './ConditionalWrapper';
+import Datetime from './Input/Datetime';
 import FormContext from './FormContext';
 import HasMany from './Input/HasMany';
 import Input from './Input';
@@ -18,6 +19,7 @@ export default function Field({
 	note,
 	postfix,
 	required,
+	suffix,
 	type,
 	wrapperClassName,
 	...otherProps
@@ -34,6 +36,8 @@ export default function Field({
 		Component = Radio;
 	} else if (type === 'checkbox') {
 		Component = Checkbox;
+	} else if (type === 'datetime') {
+		Component = Datetime;
 	} else if (type === 'has-many') {
 		Component = HasMany;
 	}
@@ -42,6 +46,7 @@ export default function Field({
 			id={id}
 			name={name}
 			required={required}
+			suffix={suffix}
 			type={type}
 			{...otherProps}
 		/>
@@ -65,7 +70,7 @@ export default function Field({
 	const hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
 
 	const wrapperClassNameList = ['formosa-field'];
-	if (wrapperClassNameList) {
+	if (wrapperClassName) {
 		wrapperClassNameList.push(wrapperClassName);
 	}
 	if (hasError) {
@@ -75,11 +80,16 @@ export default function Field({
 		wrapperClassNameList.push('formosa-field--has-postfix');
 	}
 
+	const inputWrapperClassNameList = ['formosa-field__input-wrapper', `formosa-field__input-wrapper--${type}`];
+	if (suffix) {
+		inputWrapperClassNameList.push('formosa-field--has-suffix');
+	}
+
 	return (
 		<div className={wrapperClassNameList.join(' ')}>
 			{label && showLabelBefore && labelComponent}
 			<ConditionalWrapper className="formosa-postfix-container" condition={postfix}>
-				<div className={`formosa-field__input-wrapper formosa-field__input-wrapper--${type}`}>
+				<div className={inputWrapperClassNameList.join(' ')}>
 					{input}
 					{label && !showLabelBefore && labelComponent}
 				</div>
@@ -97,6 +107,7 @@ Field.propTypes = {
 	note: PropTypes.string,
 	postfix: PropTypes.node,
 	required: PropTypes.bool,
+	suffix: PropTypes.string,
 	type: PropTypes.string,
 	wrapperClassName: PropTypes.string,
 };
@@ -107,6 +118,7 @@ Field.defaultProps = {
 	note: '',
 	postfix: null,
 	required: false,
+	suffix: '',
 	type: 'text',
 	wrapperClassName: '',
 };

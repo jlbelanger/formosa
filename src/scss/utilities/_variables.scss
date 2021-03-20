@@ -34,6 +34,7 @@ $formosa-input-padding: 8px !default;
 $formosa-message-padding: 16px !default;
 
 $formosa-select-arrow-size: 12px !default;
+$formosa-select-padding-right: $formosa-select-arrow-size + ($formosa-input-padding * 2) !default;
 
 $formosa-spinner-color: $formosa-primary-background-color !default;
 $formosa-spinner-color-alternate: #fff !default;

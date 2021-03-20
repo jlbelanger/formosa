@@ -56,7 +56,7 @@ export default function Input({
 Input.propTypes = {
 	className: PropTypes.string,
 	id: PropTypes.string,
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 	suffix: PropTypes.string,
 	type: PropTypes.string,
 };
@@ -64,6 +64,7 @@ Input.propTypes = {
 Input.defaultProps = {
 	className: '',
 	id: null,
+	name: '',
 	suffix: '',
 	type: 'text',
 };

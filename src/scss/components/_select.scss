@@ -1,13 +1,20 @@
+.formosa-field__select-wrapper {
+	display: table;
+	position: relative;
+}
+
 select {
 	appearance: none;
 	cursor: pointer;
-	padding-right: #{$formosa-select-arrow-size + ($formosa-input-padding * 2)};
+	padding-right: $formosa-select-padding-right;
 }
 
 .formosa-field__caret-icon {
 	height: $formosa-select-arrow-size;
-	left: #{-1 * ($formosa-select-arrow-size + $formosa-input-padding + $formosa-input-border-width)};
-	position: relative;
+	margin-top: #{$formosa-select-arrow-size * -.5};
+	position: absolute;
+	right: #{$formosa-input-padding + $formosa-input-border-width};
+	top: 50%;
 	width: $formosa-select-arrow-size;
 
 	path {

@@ -92,6 +92,12 @@ export default function App() {
 					/>
 
 					<Field
+						label="Datetime"
+						name="datetime"
+						type="datetime"
+					/>
+
+					<Field
 						label="Radio"
 						name="radio"
 						type="radio"
