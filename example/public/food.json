@@ -1,0 +1,36 @@
+{
+	"data": [
+		{
+			"id": "1",
+			"type": "food",
+			"attributes": {
+				"name": "Apple",
+				"slug": "apple"
+			}
+		},
+		{
+			"id": "2",
+			"type": "food",
+			"attributes": {
+				"name": "Peach",
+				"slug": "peach"
+			}
+		},
+		{
+			"id": "3",
+			"type": "food",
+			"attributes": {
+				"name": "Banana",
+				"slug": "banana"
+			}
+		},
+		{
+			"id": "4",
+			"type": "food",
+			"attributes": {
+				"name": "Pear",
+				"slug": "pear"
+			}
+		}
+	]
+}

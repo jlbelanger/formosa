@@ -1,4 +1,8 @@
 export default (options, nameKey) => {
+	if (!options) {
+		return [];
+	}
+
 	let output = options;
 	if (Array.isArray(output)) {
 		output = {};

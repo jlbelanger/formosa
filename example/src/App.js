@@ -1,17 +1,31 @@
 import './style.scss';
 import {
+	Api,
 	Field,
 	Form,
 	FormContainer,
 	Submit,
 } from '@jlbelanger/formosa';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function App() {
-	const row = {
-		id: '123',
-		name: 'John',
-	};
+	const [row, setRow] = useState(null);
+	const [rows, setRows] = useState(null);
+	useEffect(() => {
+		if (rows === null) {
+			Api.get('food.json')
+				.then((response) => {
+					setRows(response);
+				});
+		}
+		if (row === null) {
+			Api.get('food/1.json')
+				.then((response) => {
+					setRow(response);
+				});
+		}
+		return () => {};
+	});
 
 	return (
 		<main>
@@ -98,6 +112,13 @@ export default function App() {
 					/>
 
 					<Field
+						label="Select from API"
+						name="select_api"
+						type="select"
+						options={rows}
+					/>
+
+					<Field
 						label="Checkbox"
 						name="checkbox"
 						type="checkbox"
@@ -134,6 +155,13 @@ export default function App() {
 					/>
 
 					<Field
+						label="Radio from API"
+						name="radio_api"
+						type="radio"
+						options={rows}
+					/>
+
+					<Field
 						label="Has many"
 						name="has_many"
 						type="has-many"
@@ -156,26 +184,32 @@ export default function App() {
 
 				<hr />
 
-				<Form method="POST" path="users">
+				<Form method="POST" path="food">
 					<h2>JSON:API add form</h2>
 					<Field label="Name" name="name" type="text" />
+					<Field label="Slug" name="slug" type="text" />
 					<Submit />
 				</Form>
 
 				<hr />
 
-				<Form method="PUT" path="users" id={row.id} row={row}>
-					<h2>JSON:API edit form</h2>
-					<Field label="Name" name="name" type="text" />
-					<Submit />
-				</Form>
+				{row && (
+					<>
+						<Form method="PUT" path="food" id={row.id} row={row}>
+							<h2>JSON:API edit form</h2>
+							<Field label="Name" name="name" type="text" />
+							<Field label="Slug" name="slug" type="text" />
+							<Submit />
+						</Form>
 
-				<hr />
+						<hr />
 
-				<Form method="DELETE" path="users" id={row.id}>
-					<h2>JSON:API delete form</h2>
-					<Submit className="formosa-button--danger" label="Delete" />
-				</Form>
+						<Form method="DELETE" path="food" id={row.id}>
+							<h2>JSON:API delete form</h2>
+							<Submit className="formosa-button--danger" label="Delete" />
+						</Form>
+					</>
+				)}
 			</FormContainer>
 		</main>
 	);

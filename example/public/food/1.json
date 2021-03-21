@@ -1,0 +1,10 @@
+{
+	"data": {
+		"id": "1",
+		"type": "food",
+		"attributes": {
+			"name": "Apple",
+			"slug": "apple"
+		}
+	}
+}

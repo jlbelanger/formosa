@@ -61,7 +61,7 @@ Select.propTypes = {
 	options: PropTypes.oneOfType([
 		PropTypes.array,
 		PropTypes.object,
-	]).isRequired,
+	]),
 	wrapperClassName: PropTypes.string,
 };
 
@@ -71,5 +71,6 @@ Select.defaultProps = {
 	id: null,
 	name: '',
 	nameKey: 'name',
+	options: [],
 	wrapperClassName: '',
 };

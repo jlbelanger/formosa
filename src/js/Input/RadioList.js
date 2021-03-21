@@ -37,11 +37,12 @@ RadioList.propTypes = {
 	options: PropTypes.oneOfType([
 		PropTypes.array,
 		PropTypes.object,
-	]).isRequired,
+	]),
 	required: PropTypes.bool,
 };
 
 RadioList.defaultProps = {
 	nameKey: 'name',
+	options: [],
 	required: false,
 };
