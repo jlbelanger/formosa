@@ -1,0 +1,21 @@
+.formosa-fields {
+	display: table;
+
+	.formosa-field {
+		display: table-row;
+	}
+
+	.formosa-label,
+	.formosa-field__input-wrapper {
+		display: table-cell;
+		padding: 8px;
+	}
+
+	.formosa-label {
+		padding-left: 0;
+		padding-right: 0;
+		padding-top: #{$formosa-input-padding + $formosa-input-border-width + 8px};
+		text-align: right;
+		vertical-align: top;
+	}
+}

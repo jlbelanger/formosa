@@ -121,6 +121,18 @@ export default function App() {
 				<hr />
 
 				<Form method="POST" path="users">
+					<h2>Horizontal form</h2>
+					<div className="formosa-fields">
+						<Field label="First name" name="first_name" type="text" />
+						<Field label="Last name" name="last_name" type="text" />
+						<Field label="URL" name="url" type="text" />
+					</div>
+					<Submit />
+				</Form>
+
+				<hr />
+
+				<Form method="POST" path="users">
 					<h2>JSON:API add form</h2>
 					<Field label="Name" name="name" type="text" />
 					<Submit />
