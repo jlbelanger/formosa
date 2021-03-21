@@ -86,6 +86,18 @@ export default function App() {
 					/>
 
 					<Field
+						label="Select array"
+						name="select_array"
+						type="select"
+						options={[
+							'Apple',
+							'Peach',
+							'Banana',
+							'Pear',
+						]}
+					/>
+
+					<Field
 						label="Checkbox"
 						name="checkbox"
 						type="checkbox"
@@ -107,6 +119,18 @@ export default function App() {
 							banana: 'Banana',
 							pear: 'Pear',
 						}}
+					/>
+
+					<Field
+						label="Radio array"
+						name="radio_array"
+						type="radio"
+						options={[
+							'Apple',
+							'Peach',
+							'Banana',
+							'Pear',
+						]}
 					/>
 
 					<Field

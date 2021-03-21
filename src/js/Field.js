@@ -8,7 +8,7 @@ import Input from './Input';
 import Label from './Label';
 import Password from './Input/Password';
 import PropTypes from 'prop-types';
-import Radio from './Input/Radio';
+import RadioList from './Input/RadioList';
 import Select from './Input/Select';
 import Textarea from './Input/Textarea';
 
@@ -33,7 +33,7 @@ export default function Field({
 	} else if (type === 'textarea') {
 		Component = Textarea;
 	} else if (type === 'radio') {
-		Component = Radio;
+		Component = RadioList;
 	} else if (type === 'checkbox') {
 		Component = Checkbox;
 	} else if (type === 'datetime') {
