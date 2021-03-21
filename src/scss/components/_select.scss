@@ -1,4 +1,4 @@
-.formosa-field__select-wrapper {
+.formosa-select-wrapper {
 	display: table;
 	position: relative;
 }
@@ -9,7 +9,7 @@ select {
 	padding-right: $formosa-select-padding-right;
 }
 
-.formosa-field__caret-icon {
+.formosa-icon--caret {
 	height: $formosa-select-arrow-size;
 	margin-top: #{$formosa-select-arrow-size * -.5};
 	position: absolute;

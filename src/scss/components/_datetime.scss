@@ -1,12 +1,12 @@
 $formasa-datetime-margin: 4px !default;
 
-.formosa-field__datetime-wrapper {
+.formosa-datetime-wrapper {
 	align-items: center;
 	display: flex;
 	flex-wrap: wrap;
 }
 
-.formosa-field__datetime-wrapper .formosa-suffix,
+.formosa-datetime-wrapper .formosa-suffix,
 .formosa-field__input--date {
 	margin-bottom: $formasa-datetime-margin;
 	margin-right: $formasa-datetime-margin;

@@ -1,3 +1,7 @@
 .formosa-prefix {
 	border-right-width: 0;
+
+	&:focus {
+		position: relative;
+	}
 }

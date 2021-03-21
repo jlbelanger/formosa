@@ -19,7 +19,7 @@ export default function Checkbox({
 				type="checkbox"
 				{...otherProps}
 			/>
-			<CheckIcon className="formosa-field__check-icon" height="16" width="16" />
+			<CheckIcon className="formosa-icon--check" height="16" width="16" />
 		</>
 	);
 }

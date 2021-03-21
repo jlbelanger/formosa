@@ -11,7 +11,7 @@ input[type="checkbox"] {
 	position: relative;
 }
 
-.formosa-field__check-icon {
+.formosa-icon--check {
 	bottom: 0;
 	height: #{$formosa-checkbox-size - $formosa-input-padding};
 	left: #{$formosa-input-padding / 2};

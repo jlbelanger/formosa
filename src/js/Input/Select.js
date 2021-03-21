@@ -33,7 +33,7 @@ export default function Select({
 	const keys = Object.keys(normalizedOptions);
 
 	return (
-		<div className={`formosa-field__select-wrapper ${wrapperClassName}`.trim()}>
+		<div className={`formosa-select-wrapper ${wrapperClassName}`.trim()}>
 			<select
 				className={`formosa-field__input ${className}`.trim()}
 				id={id || name}
@@ -47,7 +47,7 @@ export default function Select({
 					<option key={value} value={value}>{normalizedOptions[value]}</option>
 				))}
 			</select>
-			<CaretIcon className="formosa-field__caret-icon" height="16" width="16" />
+			<CaretIcon className="formosa-icon--caret" height="16" width="16" />
 		</div>
 	);
 }

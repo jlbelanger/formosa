@@ -33,7 +33,7 @@ export default function Datetime({
 	};
 
 	return (
-		<div className="formosa-field__datetime-wrapper">
+		<div className="formosa-datetime-wrapper">
 			<Select
 				data-datetime="month"
 				onChange={onChange}
