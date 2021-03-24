@@ -9,6 +9,7 @@ export default function RadioList({
 	nameKey,
 	options,
 	required,
+	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
 	const normalizedOptions = normalizeOptions(options, nameKey);
@@ -24,6 +25,7 @@ export default function RadioList({
 						name={name}
 						required={required}
 						value={value}
+						{...otherProps}
 					/>
 				</li>
 			))}
