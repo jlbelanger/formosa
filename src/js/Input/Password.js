@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Input from '../Input';
+import PropTypes from 'prop-types';
 
 export default function Password({
+	className,
 	...otherProps
 }) {
 	const [tempType, setTempType] = useState('password');
@@ -16,7 +18,7 @@ export default function Password({
 	return (
 		<>
 			<Input
-				className="formosa-prefix"
+				className={`${className} formosa-field__input--password formosa-prefix`.trim()}
 				{...otherProps}
 				type={tempType}
 			/>
@@ -26,3 +28,11 @@ export default function Password({
 		</>
 	);
 }
+
+Password.propTypes = {
+	className: PropTypes.string,
+};
+
+Password.defaultProps = {
+	className: '',
+};

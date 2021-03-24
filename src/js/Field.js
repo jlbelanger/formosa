@@ -15,6 +15,7 @@ import Textarea from './Input/Textarea';
 export default function Field({
 	id,
 	label,
+	labelPosition,
 	name,
 	note,
 	postfix,
@@ -65,11 +66,10 @@ export default function Field({
 			type={type}
 		/>
 	);
-	const showLabelBefore = type !== 'checkbox';
 
 	const hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
 
-	const wrapperClassNameList = ['formosa-field'];
+	const wrapperClassNameList = ['formosa-field', `formosa-field--${name}`];
 	if (wrapperClassName) {
 		wrapperClassNameList.push(wrapperClassName);
 	}
@@ -80,18 +80,19 @@ export default function Field({
 		wrapperClassNameList.push('formosa-field--has-postfix');
 	}
 
-	const inputWrapperClassNameList = ['formosa-field__input-wrapper', `formosa-field__input-wrapper--${type}`];
+	const inputWrapperClassNameList = ['formosa-input-wrapper', `formosa-input-wrapper--${type}`];
 	if (suffix) {
 		inputWrapperClassNameList.push('formosa-field--has-suffix');
 	}
 
 	return (
 		<div className={wrapperClassNameList.join(' ')}>
-			{label && showLabelBefore && labelComponent}
+			{label && labelPosition === 'before' && labelComponent}
+			{label && labelPosition === 'after' && <div className="formosa-label-wrapper" />}
 			<ConditionalWrapper className="formosa-postfix-container" condition={postfix}>
 				<div className={inputWrapperClassNameList.join(' ')}>
 					{input}
-					{label && !showLabelBefore && labelComponent}
+					{label && labelPosition === 'after' && labelComponent}
 				</div>
 				{postfix}
 			</ConditionalWrapper>
@@ -103,6 +104,7 @@ export default function Field({
 Field.propTypes = {
 	id: PropTypes.string,
 	label: PropTypes.string,
+	labelPosition: PropTypes.string,
 	name: PropTypes.string.isRequired,
 	note: PropTypes.string,
 	postfix: PropTypes.node,
@@ -115,6 +117,7 @@ Field.propTypes = {
 Field.defaultProps = {
 	id: null,
 	label: '',
+	labelPosition: 'before',
 	note: '',
 	postfix: null,
 	required: false,

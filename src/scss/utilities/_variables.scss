@@ -19,8 +19,10 @@ $formosa-button-color: $formosa-primary-color !default;
 $formosa-checkbox-size: 28px !default;
 $formosa-checkbox-margin: 6px !default;
 
+$formosa-horizontal-fields-padding: 8px !default;
+
 $formosa-focus-border-color: #4ad !default;
-$formosa-focus-border-width: 3px;
+$formosa-focus-border-width: 3px !default;
 $formosa-focus-box-shadow-color: #6cf !default;
 
 $formosa-input-background-color: if($formosa-dark-mode, #222, #fff) !default;
@@ -32,6 +34,8 @@ $formosa-input-font-size: 18px !default;
 $formosa-input-padding: 8px !default;
 
 $formosa-message-padding: 16px !default;
+
+$formosa-password-button-width: 70px !default;
 
 $formosa-select-arrow-size: 12px !default;
 $formosa-select-padding-right: $formosa-select-arrow-size + ($formosa-input-padding * 2) !default;

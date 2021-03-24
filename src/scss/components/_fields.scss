@@ -5,17 +5,23 @@
 		display: table-row;
 	}
 
-	.formosa-label,
-	.formosa-field__input-wrapper {
+	.formosa-field > .formosa-label-wrapper,
+	.formosa-field > .formosa-input-wrapper {
 		display: table-cell;
-		padding: 8px;
+		padding: $formosa-horizontal-fields-padding;
+	}
+
+	.formosa-field > .formosa-label-wrapper {
+		text-align: right;
+		vertical-align: top;
+		white-space: nowrap;
+		width: 0;
 	}
 
 	.formosa-label {
+		display: inline-block;
 		padding-left: 0;
 		padding-right: 0;
-		padding-top: #{$formosa-input-padding + $formosa-input-border-width + 8px};
-		text-align: right;
-		vertical-align: top;
+		padding-top: #{$formosa-input-padding + $formosa-input-border-width};
 	}
 }

@@ -7,7 +7,7 @@ input[type="checkbox"] {
 	width: $formosa-checkbox-size;
 }
 
-.formosa-field__input-wrapper--checkbox {
+.formosa-input-wrapper--checkbox {
 	position: relative;
 }
 
@@ -20,11 +20,22 @@ input[type="checkbox"] {
 	top: #{$formosa-input-padding / 2};
 	width: #{$formosa-checkbox-size - $formosa-input-padding};
 
+	.formosa-fields & {
+		left: #{($formosa-input-padding / 2) + $formosa-horizontal-fields-padding};
+		top: #{($formosa-input-padding / 2) + $formosa-horizontal-fields-padding};
+	}
+
 	path {
 		fill: transparent;
 	}
 
 	:checked + & path {
 		fill: $formosa-input-color;
+	}
+
+	& + .formosa-label-wrapper {
+		.formosa-label {
+			font-weight: normal;
+		}
 	}
 }

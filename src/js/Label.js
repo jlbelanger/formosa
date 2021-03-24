@@ -13,22 +13,22 @@ export default function Label({
 	if (required) {
 		className += ' formosa-label--required';
 	}
+
+	let wrapperClassName = 'formosa-label-wrapper';
 	if (type === 'checkbox') {
-		className += ' formosa-label--checkbox';
-	} else if (type === 'has-many') {
-		htmlFor = '';
+		wrapperClassName += ' formosa-label-wrapper--checkbox';
 	}
 
 	const props = {};
-	if (htmlFor) {
+	if (htmlFor && type !== 'has-many') {
 		props.htmlFor = htmlFor;
 	}
 
 	return (
-		<>
+		<div className={wrapperClassName}>
 			<label className={className} {...props} {...otherProps}>{label}</label>
 			{note && <small>{`(${note})`}</small>}
-		</>
+		</div>
 	);
 }
 

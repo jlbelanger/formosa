@@ -1,17 +1,19 @@
-.formosa-label {
+.formosa-label-wrapper {
 	display: block;
-	font-weight: bold;
 	margin-bottom: $formosa-margin-small;
+}
+
+.formosa-label-wrapper--checkbox {
+	display: inline-block;
+	margin: 0;
+}
+
+.formosa-label {
+	font-weight: bold;
 
 	&[for] {
 		cursor: pointer;
 	}
-}
-
-.formosa-label--checkbox {
-	display: inline-block;
-	font-weight: normal;
-	margin: 0;
 }
 
 .formosa-radio__label {

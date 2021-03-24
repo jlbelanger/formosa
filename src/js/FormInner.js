@@ -13,6 +13,7 @@ export default function FormInner({
 	defaultRow,
 	filterBody,
 	filterValues,
+	htmlId,
 	id,
 	method,
 	params,
@@ -153,6 +154,9 @@ export default function FormInner({
 	if (method && path && !Object.prototype.hasOwnProperty.call(otherProps, 'onSubmit')) {
 		otherProps.onSubmit = submitApiRequest;
 	}
+	if (htmlId) {
+		otherProps.id = htmlId;
+	}
 
 	return (
 		<form {...otherProps}>
@@ -169,6 +173,7 @@ FormInner.propTypes = {
 	defaultRow: PropTypes.object,
 	filterBody: PropTypes.func,
 	filterValues: PropTypes.func,
+	htmlId: PropTypes.string,
 	id: PropTypes.string,
 	method: PropTypes.string,
 	params: PropTypes.string,
@@ -186,6 +191,7 @@ FormInner.defaultProps = {
 	defaultRow: {},
 	filterBody: null,
 	filterValues: null,
+	htmlId: '',
 	id: '',
 	method: null,
 	params: '',

@@ -172,14 +172,15 @@ export default function App() {
 
 				<hr />
 
-				<Form method="POST" path="users">
+				<Form>
 					<h2>Horizontal form</h2>
 					<div className="formosa-fields">
 						<Field label="First name" name="first_name" type="text" />
 						<Field label="Last name" name="last_name" type="text" />
 						<Field label="URL" name="url" type="text" />
+						<Field label="Agree?" name="agree" type="checkbox" />
+						<Submit />
 					</div>
-					<Submit />
 				</Form>
 
 				<hr />
