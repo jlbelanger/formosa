@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { ReactComponent as CloseIcon } from '../svg/x.svg';
-import FormContext from './FormContext';
+import FormosaContext from './FormosaContext';
 import PropTypes from 'prop-types';
 
 export default function Toast({
@@ -8,11 +8,11 @@ export default function Toast({
 	id,
 	text,
 }) {
-	const { formState, setFormState } = useContext(FormContext);
+	const { formosaState, setFormosaState } = useContext(FormosaContext);
 	const removeToast = () => {
-		const toasts = { ...formState.toasts };
+		const toasts = { ...formosaState.toasts };
 		delete toasts[id];
-		setFormState({ ...formState, toasts });
+		setFormosaState({ ...formosaState, toasts });
 	};
 	return (
 		<div className={`formosa-toast ${className}`.trim()}>
