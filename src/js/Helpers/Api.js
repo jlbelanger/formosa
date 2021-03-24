@@ -23,6 +23,7 @@ export default class Api {
 			method,
 			headers: {
 				'Content-Type': 'application/json',
+				'X-Requested-With': 'XMLHttpRequest',
 			},
 		};
 		if (Api.getToken()) {
