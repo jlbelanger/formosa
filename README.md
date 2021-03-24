@@ -1,6 +1,6 @@
 # Formosa
 
-A [React](https://www.npmjs.com/package/react) form component library. It works well with [JSON:API](https://jsonapi.org/) and [react-router-dom](https://www.npmjs.com/package/react-router-dom), but they are not required.
+A [React](https://www.npmjs.com/package/react) form component library. It works well with [JSON:API](https://jsonapi.org/), but it is not required.
 
 ## Demo
 
@@ -70,7 +70,6 @@ import { Form } from '@jlbelanger/formosa';
 |------------|--------|-----|
 |row         |`{}`    |Default values for fields. For edit forms, the existing record's values should be specified here.|
 |showMessage |`true`  |If true, the inline `<Message>` component will be included at the top of the form. Set this to `false` if you want to include the `<Message>` somewhere else.|
-|warnOnUnload|`false` |If true, a warning dialog will appear if the user tries to leave the page without saving their changes. Requires `react-router-dom`.|
 
 The following attributes are for JSON:API forms only.
 
@@ -86,7 +85,6 @@ The following attributes are for JSON:API forms only.
 |filterValues       |`null`  |Function to modify the form values before they are separated into attributes and relationships, converted to JSON, and sent to the API.|
 |params             |`''`    |Additional query args to include in the API request. (eg. `include=user`)|
 |preventEmptyRequest|`false` |If true, a toast message will appear if the user tries to save the form without making any changes.|
-|redirectOnSuccess  |`''`    |Path to redirect to after a successful form submission (eg. `/users`).|
 |relationshipNames  |`[]`    |If the form contains any inputs that control relationship values, this needs to be set to properly serialize the API request.|
 |successMessageText |`''`    |Text to be shown in the `<Message>` component after a successful form submission. (eg. `Profile updated successfully.`)|
 |successToastText   |`''`    |Text to be shown in a toast after a successful form submission. (eg. `Profile updated successfully.`)|

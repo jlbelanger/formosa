@@ -5,7 +5,6 @@ import FormosaContext from './FormosaContext';
 import { getBody } from './Helpers/JsonApi';
 import Message from './Message';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 
 export default function FormInner({
 	afterSubmit,
@@ -19,7 +18,6 @@ export default function FormInner({
 	params,
 	path,
 	preventEmptyRequest,
-	redirectOnSuccess,
 	relationshipNames,
 	showMessage,
 	successMessageText,
@@ -34,7 +32,6 @@ export default function FormInner({
 	const formosaStateRef = useRef(formosaState);
 	formosaStateRef.current = formosaState;
 
-	const history = useHistory();
 	const removeToast = (toastId) => {
 		const toasts = { ...formosaStateRef.current.toasts };
 		delete toasts[toastId];
@@ -109,9 +106,6 @@ export default function FormInner({
 				}
 				setFormState(newState);
 
-				if (redirectOnSuccess) {
-					history.push(redirectOnSuccess);
-				}
 				if (successToastText) {
 					addToast(successToastText, 'success');
 				}
@@ -180,7 +174,6 @@ FormInner.propTypes = {
 	params: PropTypes.string,
 	path: PropTypes.string,
 	preventEmptyRequest: PropTypes.bool,
-	redirectOnSuccess: PropTypes.string,
 	relationshipNames: PropTypes.array,
 	showMessage: PropTypes.bool,
 	successMessageText: PropTypes.string,
@@ -198,7 +191,6 @@ FormInner.defaultProps = {
 	params: '',
 	path: null,
 	preventEmptyRequest: false,
-	redirectOnSuccess: '',
 	relationshipNames: [],
 	showMessage: true,
 	successMessageText: '',
