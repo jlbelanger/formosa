@@ -14,7 +14,6 @@ export default function Form({
 		errors: {},
 		message: '',
 		row,
-		toasts: {},
 	});
 
 	return (

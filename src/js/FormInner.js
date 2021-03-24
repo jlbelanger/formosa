@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import Api from './Helpers/Api';
 import FormContext from './FormContext';
 import FormosaContext from './FormosaContext';
@@ -26,33 +26,8 @@ export default function FormInner({
 	...otherProps
 }) {
 	const { formState, setFormState } = useContext(FormContext);
-	const formStateRef = useRef(formState);
-	formStateRef.current = formState;
+	const { formosaState } = useContext(FormosaContext);
 
-	const { formosaState, setFormosaState } = useContext(FormosaContext);
-	const formosaStateRef = useRef(formosaState);
-	formosaStateRef.current = formosaState;
-
-	const removeToast = (toastId) => {
-		const toasts = { ...formosaStateRef.current.toasts };
-		delete toasts[toastId];
-		setFormosaState({ ...formosaStateRef.current, toasts });
-	};
-	const addToast = (text, type = '') => {
-		const toastId = new Date().getTime();
-		const toast = {
-			className: type ? `formosa-toast--${type}` : '',
-			text,
-		};
-		const toasts = {
-			...formosaStateRef.current.toasts,
-			[toastId]: toast,
-		};
-		setFormosaState({ ...formosaStateRef.current, toasts });
-		setTimeout(() => {
-			removeToast(toastId);
-		}, 4000);
-	};
 	const submitApiRequest = (e) => {
 		e.preventDefault();
 
@@ -60,8 +35,8 @@ export default function FormInner({
 			return;
 		}
 
-		if (preventEmptyRequest && formStateRef.current.dirty.length <= 0) {
-			addToast('No changes to save.');
+		if (preventEmptyRequest && formState.dirty.length <= 0) {
+			formosaState.addToast('No changes to save.');
 			return;
 		}
 
@@ -77,14 +52,14 @@ export default function FormInner({
 			method,
 			path,
 			id,
-			formStateRef.current,
+			formState,
 			relationshipNames,
 			filterBody,
 			filterValues
 		);
 
 		setFormState({
-			...formStateRef.current,
+			...formState,
 			errors: {},
 			message: '',
 		});
@@ -96,7 +71,7 @@ export default function FormInner({
 				}
 
 				const newState = {
-					...formStateRef.current,
+					...formState,
 					dirty: [],
 					dirtyIncluded: {},
 					errors: {},
@@ -108,7 +83,7 @@ export default function FormInner({
 				setFormState(newState);
 
 				if (successToastText) {
-					addToast(successToastText, 'success');
+					formosaState.addToast(successToastText, 'success');
 				}
 				if (afterSubmit) {
 					afterSubmit(response);
@@ -116,9 +91,9 @@ export default function FormInner({
 			})
 			.catch((response) => {
 				if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
-					addToast('Error.', 'error');
+					formosaState.addToast('Error.', 'error');
 				} else {
-					addToast('Server error.', 'error');
+					formosaState.addToast('Server error.', 'error');
 					throw response;
 				}
 
@@ -145,7 +120,7 @@ export default function FormInner({
 					errors[key].push(error.title);
 				});
 				setFormState({
-					...formStateRef.current,
+					...formState,
 					errors,
 					message: '',
 				});
