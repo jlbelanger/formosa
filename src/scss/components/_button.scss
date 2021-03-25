@@ -12,4 +12,10 @@ button {
 	background: $formosa-error-background-color;
 	border-color: transparent;
 	color: $formosa-error-color;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: scale-color($formosa-error-background-color, $lightness: -15%);
+	}
 }
