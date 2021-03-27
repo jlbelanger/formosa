@@ -1,0 +1,142 @@
+$input-margin: ($formosa-input-height - ($formosa-input-border-width * 2) - $formosa-autocomplete-value-height) / 2;
+$top: if($formosa-input-border-width > 0, calc(100% + #{$formosa-focus-border-width}), 100%);
+
+.formosa-autocomplete {
+	background-color: $formosa-input-background-color;
+	min-height: $formosa-input-height;
+	position: relative;
+}
+
+.formosa-autocomplete__options {
+	background-color: $formosa-autocomplete-options-background-color;
+	left: #{$formosa-input-border-width * -1};
+	list-style: none;
+	margin: 0;
+	max-height: 50vh;
+	overflow: auto;
+	padding: 0;
+	position: absolute;
+	right: #{$formosa-input-border-width * -1};
+	top: #{$top};
+	z-index: 9996;
+}
+
+.formosa-autocomplete__input {
+	height: $formosa-autocomplete-value-height;
+}
+
+input.formosa-autocomplete__input {
+	box-sizing: border-box;
+	height: $formosa-input-height;
+	left: #{($formosa-input-border-width + $input-margin) * -1};
+	padding: $formosa-autocomplete-value-padding-top $formosa-input-padding;
+	position: relative;
+	top: #{($formosa-input-border-width + $input-margin) * -1};
+	width: calc(100% + #{($formosa-input-border-width + $input-margin) * 2});
+}
+
+.formosa-autocomplete__option + .formosa-autocomplete__option {
+	border-top: 1px solid $formosa-autocomplete-options-border-color;
+}
+
+.formosa-autocomplete__option--highlighted {
+	.formosa-autocomplete__option__button {
+		background-color: $formosa-autocomplete-options-background-color-highlighted;
+	}
+}
+
+.formosa-autocomplete__option__button {
+	background-color: transparent;
+	border: 0;
+	color: $formosa-input-color;
+	min-height: 44px;
+	overflow: hidden;
+	padding: $formosa-input-padding;
+	text-align: left;
+	text-overflow: ellipsis;
+	width: 100%;
+
+	&:focus {
+		box-shadow: inset 0 0 0 $formosa-focus-border-width $formosa-focus-box-shadow-color;
+	}
+}
+
+.formosa-autocomplete__values {
+	display: flex;
+	flex-wrap: wrap;
+	line-height: 1;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+
+	.formosa-autocomplete--clearable & {
+		width: calc(100% - #{$formosa-autocomplete-clear-size});
+	}
+}
+
+.formosa-autocomplete__value {
+	background-color: $formosa-autocomplete-value-background-color;
+	height: $formosa-autocomplete-value-height;
+	line-height: $formosa-autocomplete-value-height;
+	margin: $input-margin;
+	overflow: hidden;
+	padding-left: $formosa-autocomplete-value-padding-top;
+	padding-right: $formosa-autocomplete-value-height;
+	position: relative;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	.formosa-autocomplete--disabled & {
+		padding-right: $formosa-autocomplete-value-padding-top;
+	}
+
+	&.formosa-autocomplete__value--input {
+		background-color: transparent;
+		flex: 1 1 auto;
+		overflow: visible;
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+.formosa-autocomplete__value__remove,
+.formosa-autocomplete__clear {
+	border-color: transparent;
+	font-size: 0;
+	padding: 0;
+
+	path {
+		fill: $formosa-autocomplete-clear-color;
+	}
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: transparent;
+
+		path {
+			fill: $formosa-autocomplete-clear-color-hover;
+		}
+	}
+}
+
+.formosa-autocomplete__value__remove {
+	background-color: transparent;
+	bottom: 0;
+	height: $formosa-autocomplete-value-height;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: $formosa-autocomplete-value-height;
+
+	&:focus {
+		box-shadow: inset 0 0 0 $formosa-focus-border-width $formosa-focus-box-shadow-color;
+	}
+}
+
+.formosa-autocomplete__clear {
+	background-color: $formosa-input-background-color;
+	height: $formosa-autocomplete-clear-size;
+	width: $formosa-autocomplete-clear-size;
+}

@@ -1,7 +1,9 @@
+$formosa-color-danger: #c66 !default;
+
 $formosa-primary-background-color: #9bc !default;
 $formosa-primary-color: #000 !default;
 
-$formosa-error-background-color: #c66 !default;
+$formosa-error-background-color: $formosa-color-danger !default;
 $formosa-error-color: #000 !default;
 
 $formosa-success-background-color: #6c6 !default;
@@ -9,9 +11,31 @@ $formosa-success-color: #000 !default;
 
 $formosa-dark-mode: false !default;
 
+$formosa-input-background-color: if($formosa-dark-mode, #222, #fff) !default;
+$formosa-input-border-color: if($formosa-dark-mode, #555, #ccc) !default;
+$formosa-input-border-width: 1px !default;
+$formosa-input-color: if($formosa-dark-mode, #fff, #000) !default;
+$formosa-input-font-family: sans-serif !default;
+$formosa-input-font-size: 18px !default;
+$formosa-input-padding: 8px !default;
+$formosa-input-line-height: 1.5 !default;
+$formosa-input-height: ($formosa-input-border-width * 2) + ($formosa-input-padding * 2) + ($formosa-input-font-size * $formosa-input-line-height) !default;
+
 $formosa-margin-small: 4px !default;
 $formosa-margin-medium: 8px !default;
 $formosa-margin-large: 24px !default;
+
+$formosa-autocomplete-clear-size: $formosa-input-height - ($formosa-input-border-width * 2) !default;
+$formosa-autocomplete-clear-color: if($formosa-dark-mode, #ddd, #333) !default;
+$formosa-autocomplete-clear-color-hover: if($formosa-dark-mode, #fff, #000) !default;
+
+$formosa-autocomplete-options-background-color: scale-color($formosa-input-background-color, $lightness: 10%) !default;
+$formosa-autocomplete-options-background-color-highlighted: scale-color($formosa-input-background-color, $lightness: 25%) !default;
+$formosa-autocomplete-options-border-color: scale-color($formosa-autocomplete-options-background-color, $lightness: 15%) !default;
+
+$formosa-autocomplete-value-background-color: scale-color($formosa-input-background-color, $lightness: 10%) !default;
+$formosa-autocomplete-value-padding-top: 8px !default;
+$formosa-autocomplete-value-height: ($formosa-autocomplete-value-padding-top * 2) + $formosa-input-font-size !default;
 
 $formosa-button-background-color: $formosa-primary-background-color !default;
 $formosa-button-color: $formosa-primary-color !default;
@@ -25,15 +49,6 @@ $formosa-horizontal-fields-padding: 8px !default;
 $formosa-focus-border-color: #4ad !default;
 $formosa-focus-border-width: 3px !default;
 $formosa-focus-box-shadow-color: #6cf !default;
-
-$formosa-input-background-color: if($formosa-dark-mode, #222, #fff) !default;
-$formosa-input-border-color: if($formosa-dark-mode, #555, #ccc) !default;
-$formosa-input-border-width: 1px !default;
-$formosa-input-color: if($formosa-dark-mode, #fff, #000) !default;
-$formosa-input-font-family: sans-serif !default;
-$formosa-input-font-size: 18px !default;
-$formosa-input-padding: 8px !default;
-$formosa-input-line-height: 1.5 !default;
 
 $formosa-message-padding: 16px !default;
 

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Autocomplete from './Input/Autocomplete';
 import Checkbox from './Input/Checkbox';
 import ConditionalWrapper from './ConditionalWrapper';
 import Datetime from './Input/Datetime';
@@ -39,6 +40,8 @@ export default function Field({
 		Component = Checkbox;
 	} else if (type === 'datetime') {
 		Component = Datetime;
+	} else if (type === 'autocomplete') {
+		Component = Autocomplete;
 	} else if (type === 'has-many') {
 		Component = HasMany;
 	}

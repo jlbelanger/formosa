@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export default function HasMany({
 	name,
-	nameKey,
+	labelKey,
 	recordType,
 	removable,
 }) {
@@ -44,13 +44,13 @@ export default function HasMany({
 		newValues.push({
 			id: `temp-${tempId}`,
 			type: recordType,
-			[nameKey]: newValue,
+			[labelKey]: newValue,
 		});
 
 		setFormState({
 			...formState,
 			dirty: getNewDirty(),
-			dirtyIncluded: getNewDirtyIncluded(recordType, `temp-${tempId}`, nameKey),
+			dirtyIncluded: getNewDirtyIncluded(recordType, `temp-${tempId}`, labelKey),
 			row: {
 				...formState.row,
 				[name]: newValues,
@@ -59,18 +59,18 @@ export default function HasMany({
 		setNewValue('');
 		setTempId(tempId + 1);
 
-		document.getElementById(`new-${nameKey}`).focus();
+		document.getElementById(`new-${labelKey}`).focus();
 	};
 	const onChange = (e) => {
 		const row = { ...formState.row };
 		row[name] = [...row[name]];
 		const id = e.target.getAttribute('data-id');
 		const i = row[name].findIndex((value) => value.id === id);
-		row[name][i][nameKey] = e.target.value;
+		row[name][i][labelKey] = e.target.value;
 		setFormState({
 			...formState,
 			dirty: getNewDirty(),
-			dirtyIncluded: getNewDirtyIncluded(row[name][i].type, row[name][i].id, nameKey),
+			dirtyIncluded: getNewDirtyIncluded(row[name][i].type, row[name][i].id, labelKey),
 			row,
 		});
 	};
@@ -108,7 +108,7 @@ export default function HasMany({
 				if (!isRemovable && removable) {
 					isRemovable = removable(value);
 				}
-				const key = `included.${value.type}.${value.id}.attributes.${nameKey}`;
+				const key = `included.${value.type}.${value.id}.attributes.${labelKey}`;
 				const hasError = Object.prototype.hasOwnProperty.call(formState.errors, key);
 				return (
 					<li className="formosa-has-many__item" key={value.id}>
@@ -120,7 +120,7 @@ export default function HasMany({
 								onChange={onChange}
 								required
 								type="text"
-								value={value[nameKey]}
+								value={value[labelKey]}
 							/>
 							<button
 								className="formosa-button formosa-postfix formosa-button--danger"
@@ -139,7 +139,7 @@ export default function HasMany({
 			<li className="formosa-has-many__item formosa-has-many__item--new">
 				<input
 					className="formosa-has-many__input formosa-prefix"
-					id={`new-${nameKey}`}
+					id={`new-${labelKey}`}
 					onChange={onChangeNewValue}
 					onKeyDown={onKeyDown}
 					type="text"
@@ -153,12 +153,12 @@ export default function HasMany({
 
 HasMany.propTypes = {
 	name: PropTypes.string.isRequired,
-	nameKey: PropTypes.string,
+	labelKey: PropTypes.string,
 	recordType: PropTypes.string.isRequired,
 	removable: PropTypes.func,
 };
 
 HasMany.defaultProps = {
-	nameKey: 'name',
+	labelKey: 'name',
 	removable: null,
 };
