@@ -1,3 +1,5 @@
+import set from 'set-value';
+
 export const deserialize = (body) => {
 	if (Array.isArray(body.data)) {
 		const output = [];
@@ -113,7 +115,7 @@ export const getBody = (
 					data: values[key],
 				};
 			} else {
-				data.attributes[key] = values[key];
+				set(data.attributes, key, values[key]);
 			}
 		});
 
