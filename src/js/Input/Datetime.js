@@ -6,10 +6,11 @@ import PropTypes from 'prop-types';
 import Select from './Select';
 
 export default function Datetime({
+	convertToTimezone,
 	name,
 }) {
 	const { formState, setFormState } = useContext(FormContext);
-	const [values, setValues] = useState(stringToObject(formState.row[name] || ''));
+	const [values, setValues] = useState(stringToObject(formState.row[name] || '', convertToTimezone));
 	const onChange = (e) => {
 		const key = e.target.getAttribute('data-datetime');
 		const newValues = {
@@ -121,5 +122,10 @@ export default function Datetime({
 }
 
 Datetime.propTypes = {
+	convertToTimezone: PropTypes.string,
 	name: PropTypes.string.isRequired,
+};
+
+Datetime.defaultProps = {
+	convertToTimezone: 'UTC',
 };

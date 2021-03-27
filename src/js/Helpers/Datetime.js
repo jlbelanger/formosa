@@ -3,7 +3,7 @@ const pad = (n, width, z = '0') => {
 	return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 };
 
-export const stringToObject = (datetimeString) => {
+export const stringToObject = (datetimeString, timeZone) => {
 	const output = {
 		year: '',
 		month: '',
@@ -20,7 +20,7 @@ export const stringToObject = (datetimeString) => {
 
 	// hour12 doesn't work in Chromium: https://github.com/microsoft/vscode/issues/117970
 	let value = new Date(`${datetimeString.replace(' ', 'T')}.000Z`);
-	value = value.toLocaleString('en-CA', { hourCycle: 'h23' });
+	value = value.toLocaleString('en-CA', { hourCycle: 'h23', timeZone });
 
 	const date = value.substring(0, 10).split('-');
 	output.year = date[0];
