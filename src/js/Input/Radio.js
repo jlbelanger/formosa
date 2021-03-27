@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import FormContext from '../FormContext';
+import get from 'get-value';
 import PropTypes from 'prop-types';
 
 export default function Radio({
@@ -28,7 +29,7 @@ export default function Radio({
 			afterChange(e);
 		}
 	};
-	const checked = formState.row[name] === value;
+	const checked = get(formState.row, name) === value;
 
 	return (
 		<label className={`formosa-radio__label ${checked ? ' formosa-radio__label--checked' : ''}`.trim()}>

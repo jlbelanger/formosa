@@ -4,7 +4,10 @@
 		"type": "food",
 		"attributes": {
 			"name": "Apple",
-			"slug": "apple"
+			"slug": "apple",
+			"metadata": {
+				"colour": "red"
+			}
 		}
 	}
 }

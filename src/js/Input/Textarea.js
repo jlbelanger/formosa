@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import FormContext from '../FormContext';
+import get from 'get-value';
 import PropTypes from 'prop-types';
 
 export default function Textarea({
@@ -30,7 +31,7 @@ export default function Textarea({
 			id={id || name}
 			name={name}
 			onChange={onChange}
-			value={formState.row[name] || ''}
+			value={get(formState.row, name) || ''}
 			{...otherProps}
 		/>
 	);

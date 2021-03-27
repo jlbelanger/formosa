@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { ReactComponent as CaretIcon } from '../../svg/caret.svg';
 import FormContext from '../FormContext';
+import get from 'get-value';
 import normalizeOptions from '../Helpers/Options';
 import PropTypes from 'prop-types';
 
@@ -39,7 +40,7 @@ export default function Select({
 				id={id || name}
 				name={name}
 				onChange={onChange}
-				value={formState.row[name] || ''}
+				value={get(formState.row, name) || ''}
 				{...otherProps}
 			>
 				{!hideBlank && <option />}

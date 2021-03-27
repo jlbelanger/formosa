@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import FormContext from './FormContext';
+import get from 'get-value';
 import PropTypes from 'prop-types';
 
 export default function Input({
@@ -26,7 +27,7 @@ export default function Input({
 		});
 	};
 
-	const value = formState.row[name] || '';
+	const value = get(formState.row, name) || '';
 	const checked = type === 'checkbox' && value;
 
 	const props = {};

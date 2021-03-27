@@ -1,6 +1,7 @@
 import { objectToString, stringToObject } from '../Helpers/Datetime';
 import React, { useContext, useState } from 'react';
 import FormContext from '../FormContext';
+import get from 'get-value';
 import Input from '../Input';
 import PropTypes from 'prop-types';
 import Select from './Select';
@@ -10,7 +11,7 @@ export default function Datetime({
 	name,
 }) {
 	const { formState, setFormState } = useContext(FormContext);
-	const [values, setValues] = useState(stringToObject(formState.row[name] || '', convertToTimezone));
+	const [values, setValues] = useState(stringToObject(get(formState.row, name) || '', convertToTimezone));
 	const onChange = (e) => {
 		const key = e.target.getAttribute('data-datetime');
 		const newValues = {

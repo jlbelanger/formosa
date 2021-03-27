@@ -187,8 +187,9 @@ export default function App() {
 
 				<Form method="POST" path="food">
 					<h2>JSON:API add form</h2>
-					<Field label="Name" name="name" type="text" />
-					<Field label="Slug" name="slug" type="text" />
+					<Field label="Name" name="name" />
+					<Field label="Slug" name="slug" />
+					<Field label="Colour" name="metadata.colour" options={['red', 'blue', 'green']} type="select" />
 					<Submit />
 				</Form>
 
@@ -198,8 +199,9 @@ export default function App() {
 					<>
 						<Form method="PUT" path="food" id={row.id} row={row}>
 							<h2>JSON:API edit form</h2>
-							<Field label="Name" name="name" type="text" />
-							<Field label="Slug" name="slug" type="text" />
+							<Field label="Name" name="name" />
+							<Field label="Slug" name="slug" />
+							<Field label="Colour" name="metadata.colour" options={['red', 'blue', 'green']} type="select" />
 							<Submit />
 						</Form>
 

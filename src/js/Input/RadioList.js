@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import FormContext from '../FormContext';
+import get from 'get-value';
 import normalizeOptions from '../Helpers/Options';
 import PropTypes from 'prop-types';
 import Radio from './Radio';
@@ -20,7 +21,7 @@ export default function RadioList({
 			{keys.map((value) => (
 				<li className="formosa-radio__item" key={value}>
 					<Radio
-						checked={formState.row[name] === value}
+						checked={get(formState.row, name) === value}
 						label={normalizedOptions[value]}
 						name={name}
 						required={required}

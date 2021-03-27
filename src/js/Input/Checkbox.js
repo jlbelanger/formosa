@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { ReactComponent as CheckIcon } from '../../svg/check.svg';
 import FormContext from '../FormContext';
+import get from 'get-value';
 import Input from '../Input';
 import PropTypes from 'prop-types';
 
@@ -13,7 +14,7 @@ export default function Checkbox({
 	return (
 		<>
 			<Input
-				checked={!!formState.row[name]}
+				checked={!!get(formState.row, name)}
 				id={id || name}
 				name={name}
 				type="checkbox"
