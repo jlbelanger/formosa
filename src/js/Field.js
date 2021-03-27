@@ -93,10 +93,10 @@ export default function Field({
 				<div className={inputWrapperClassNameList.join(' ')}>
 					{input}
 					{label && labelPosition === 'after' && labelComponent}
+					{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
 				</div>
 				{postfix}
 			</ConditionalWrapper>
-			{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
 		</div>
 	);
 }
