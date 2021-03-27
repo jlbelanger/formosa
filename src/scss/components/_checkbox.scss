@@ -13,16 +13,16 @@ input[type="checkbox"] {
 
 .formosa-icon--check {
 	bottom: 0;
-	height: #{$formosa-checkbox-size - $formosa-input-padding};
-	left: #{$formosa-input-padding / 2};
+	height: #{$formosa-checkbox-size - $formosa-checkbox-padding};
+	left: #{$formosa-checkbox-padding / 2};
 	pointer-events: none;
 	position: absolute;
-	top: #{$formosa-input-padding / 2};
-	width: #{$formosa-checkbox-size - $formosa-input-padding};
+	top: #{$formosa-checkbox-padding / 2};
+	width: #{$formosa-checkbox-size - $formosa-checkbox-padding};
 
 	.formosa-fields & {
-		left: #{($formosa-input-padding / 2) + $formosa-horizontal-fields-padding};
-		top: #{($formosa-input-padding / 2) + $formosa-horizontal-fields-padding};
+		left: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
+		top: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
 	}
 
 	path {

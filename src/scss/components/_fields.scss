@@ -1,5 +1,6 @@
 .formosa-fields {
 	display: table;
+	width: 100%;
 
 	.formosa-field {
 		display: table-row;
@@ -8,14 +9,19 @@
 	.formosa-field > .formosa-label-wrapper,
 	.formosa-field > .formosa-input-wrapper {
 		display: table-cell;
-		padding: $formosa-horizontal-fields-padding;
+		padding: $formosa-horizontal-fields-padding 0;
 	}
 
 	.formosa-field > .formosa-label-wrapper {
+		padding-right: $formosa-horizontal-fields-padding;
 		text-align: right;
 		vertical-align: top;
 		white-space: nowrap;
 		width: 0;
+	}
+
+	.formosa-field > .formosa-input-wrapper {
+		padding-left: $formosa-horizontal-fields-padding;
 	}
 
 	.formosa-label {

@@ -6,6 +6,10 @@ button {
 	font-family: $formosa-input-font-family;
 	font-size: $formosa-input-font-size;
 	padding: $formosa-input-padding 12px;
+
+	path {
+		fill: $formosa-button-color;
+	}
 }
 
 .formosa-button--danger {

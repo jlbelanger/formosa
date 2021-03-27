@@ -18,6 +18,7 @@ $formosa-button-color: $formosa-primary-color !default;
 
 $formosa-checkbox-size: 28px !default;
 $formosa-checkbox-margin: 6px !default;
+$formosa-checkbox-padding: 8px !default;
 
 $formosa-horizontal-fields-padding: 8px !default;
 
@@ -32,6 +33,7 @@ $formosa-input-color: if($formosa-dark-mode, #fff, #000) !default;
 $formosa-input-font-family: sans-serif !default;
 $formosa-input-font-size: 18px !default;
 $formosa-input-padding: 8px !default;
+$formosa-input-line-height: 1.5 !default;
 
 $formosa-message-padding: 16px !default;
 
