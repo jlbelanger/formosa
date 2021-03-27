@@ -19,3 +19,9 @@
 .formosa-radio__label {
 	cursor: pointer;
 }
+
+.formosa-label--required {
+	&::after {
+		content: ' *';
+	}
+}
