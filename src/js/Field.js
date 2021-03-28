@@ -16,6 +16,7 @@ import Textarea from './Input/Textarea';
 export default function Field({
 	id,
 	label,
+	labelNote,
 	labelPosition,
 	name,
 	note,
@@ -64,7 +65,7 @@ export default function Field({
 		<Label
 			htmlFor={id || name}
 			label={label}
-			note={note}
+			note={labelNote}
 			required={required}
 			type={type}
 		/>
@@ -96,6 +97,7 @@ export default function Field({
 				<div className={inputWrapperClassNameList.join(' ')}>
 					{input}
 					{label && labelPosition === 'after' && labelComponent}
+					{note && <div className="formosa-field__note">{note}</div>}
 					{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
 				</div>
 				{postfix}
@@ -107,6 +109,7 @@ export default function Field({
 Field.propTypes = {
 	id: PropTypes.string,
 	label: PropTypes.string,
+	labelNote: PropTypes.string,
 	labelPosition: PropTypes.string,
 	name: PropTypes.string.isRequired,
 	note: PropTypes.string,
@@ -120,6 +123,7 @@ Field.propTypes = {
 Field.defaultProps = {
 	id: null,
 	label: '',
+	labelNote: '',
 	labelPosition: 'before',
 	note: '',
 	postfix: null,

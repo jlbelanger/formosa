@@ -100,6 +100,7 @@ import { Field } from '@jlbelanger/formosa';
 |name            |N/A     |Required.|
 |id              |`null`  |If not specified, it will default to the value of `name`.|
 |label           |`''`    |     |
+|labelNote       |`''`    |     |
 |note            |`''`    |     |
 |postfix         |`null`  |     |
 |type            |`'text'`|Accepts any standard HTML type (eg. text, email, select, textarea) as well as 'has-many'.|

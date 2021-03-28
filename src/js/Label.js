@@ -27,7 +27,7 @@ export default function Label({
 	return (
 		<div className={wrapperClassName}>
 			<label className={className} {...props} {...otherProps}>{label}</label>
-			{note && <small>{`(${note})`}</small>}
+			{note && <span className="formosa-label__note">{note}</span>}
 		</div>
 	);
 }
