@@ -10,6 +10,7 @@ import Label from './Label';
 import Password from './Input/Password';
 import PropTypes from 'prop-types';
 import RadioList from './Input/RadioList';
+import Search from './Input/Search';
 import Select from './Input/Select';
 import Textarea from './Input/Textarea';
 
@@ -41,6 +42,8 @@ export default function Field({
 		Component = Checkbox;
 	} else if (type === 'datetime') {
 		Component = Datetime;
+	} else if (type === 'search') {
+		Component = Search;
 	} else if (type === 'autocomplete') {
 		Component = Autocomplete;
 	} else if (type === 'has-many') {

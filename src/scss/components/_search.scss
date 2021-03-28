@@ -1,0 +1,22 @@
+.formosa-search-wrapper {
+	display: table;
+	position: relative;
+}
+
+.formosa-field__input--search {
+	padding-right: #{$formosa-search-icon-size + ($formosa-input-padding * 2)};
+}
+
+.formosa-icon--search {
+	height: $formosa-search-icon-size;
+	margin-top: #{$formosa-search-icon-size / -2};
+	pointer-events: none;
+	position: absolute;
+	right: $formosa-input-padding;
+	top: 50%;
+	width: $formosa-search-icon-size;
+
+	path {
+		fill: $formosa-input-color;
+	}
+}
