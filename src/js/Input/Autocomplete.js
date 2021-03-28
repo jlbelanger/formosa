@@ -33,6 +33,8 @@ export default function Autocomplete({
 			} else {
 				values = [values];
 			}
+		} else if (!values) {
+			values = [];
 		}
 		return values;
 	});
@@ -47,7 +49,13 @@ export default function Autocomplete({
 		return () => {};
 	}, [url]);
 
-	const filteredOptions = optionValues !== null && filter ? filterByKey(optionValues, 'label', filter) : [];
+	const isSelected = (option) => ((get(formState.row, name) || []).indexOf(option.value) > -1);
+
+	let filteredOptions = [];
+	if (optionValues !== null && filter) {
+		filteredOptions = filterByKey(optionValues, 'label', filter);
+		filteredOptions = filteredOptions.filter((option) => (!isSelected(option)));
+	}
 
 	const focus = () => {
 		setTimeout(() => {
@@ -60,7 +68,7 @@ export default function Autocomplete({
 
 	const addValue = (value) => {
 		const row = { ...formState.row };
-		let newValues = get(row, name);
+		let newValues = get(row, name) || [];
 		if (max === 1) {
 			newValues = value.value;
 		} else {
@@ -85,6 +93,8 @@ export default function Autocomplete({
 			if (elem) {
 				elem.focus();
 			}
+		} else {
+			focus();
 		}
 	};
 
@@ -180,7 +190,6 @@ export default function Autocomplete({
 	}
 
 	const canAddValues = !disabled && (max === null || selectedValues.length < max);
-	const isSelected = (option) => (selectedValues.indexOf(option) > -1);
 
 	return (
 		<div
@@ -228,10 +237,6 @@ export default function Autocomplete({
 				{isOpen && filteredOptions.length > 0 && (
 					<ul className="formosa-autocomplete__options">
 						{filteredOptions.map((option, index) => {
-							if (isSelected(option)) {
-								return null;
-							}
-
 							const optionClassName = ['formosa-autocomplete__option'];
 							if (highlightedIndex === index) {
 								optionClassName.push('formosa-autocomplete__option--highlighted');
