@@ -1,3 +1,4 @@
+import get from 'get-value';
 import set from 'set-value';
 
 export const deserialize = (body) => {
@@ -32,6 +33,10 @@ const deserializeSingle = (data, included = []) => {
 				output[relationshipName] = deserializeSingle(includedRecord, included);
 			}
 		});
+	}
+
+	if (Object.prototype.hasOwnProperty.call(data, 'meta')) {
+		output.meta = data.meta;
 	}
 
 	return output;
@@ -96,6 +101,7 @@ export const getBody = (
 		const data = {
 			type,
 			attributes: {},
+			meta: {},
 			relationships: {},
 		};
 		const keys = method === 'PUT' ? formState.dirty : Object.keys(formState.row);
@@ -114,6 +120,8 @@ export const getBody = (
 				data.relationships[key] = {
 					data: values[key],
 				};
+			} else if (key.startsWith('meta.')) {
+				set(data, key, get(values, key));
 			} else {
 				set(data.attributes, key, values[key]);
 			}
@@ -132,6 +140,9 @@ export const getBody = (
 
 		if (Object.keys(data.attributes).length <= 0) {
 			delete data.attributes;
+		}
+		if (Object.keys(data.meta).length <= 0) {
+			delete data.meta;
 		}
 		if (Object.keys(data.relationships).length <= 0) {
 			delete data.relationships;
