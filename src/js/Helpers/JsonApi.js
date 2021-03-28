@@ -5,14 +5,17 @@ export const deserialize = (body) => {
 	if (Array.isArray(body.data)) {
 		const output = [];
 		body.data.forEach((data) => {
-			output.push(deserializeSingle(data, body.included));
+			output.push(deserializeSingle(data, body.data, body.included));
 		});
 		return output;
 	}
-	return deserializeSingle(body.data, body.included);
+	return deserializeSingle(body.data, [], body.included);
 };
 
-const deserializeSingle = (data, included = []) => {
+const deserializeSingle = (data, otherRows = [], included = []) => {
+	if (!data) {
+		return data;
+	}
 	const output = {
 		id: data.id,
 		type: data.type,
@@ -26,11 +29,25 @@ const deserializeSingle = (data, included = []) => {
 			if (Array.isArray(output[relationshipName])) {
 				output[relationshipName].forEach((rel, i) => {
 					includedRecord = findIncluded(included, rel.id, rel.type);
-					output[relationshipName][i] = deserializeSingle(includedRecord, included);
+					if (includedRecord) {
+						output[relationshipName][i] = deserializeSingle(includedRecord, otherRows, included);
+					} else {
+						includedRecord = findIncluded(otherRows, rel.id, rel.type);
+						if (includedRecord) {
+							output[relationshipName][i] = deserializeSingle(includedRecord, otherRows, included);
+						}
+					}
 				});
 			} else if (output[relationshipName] !== null) {
 				includedRecord = findIncluded(included, output[relationshipName].id, output[relationshipName].type);
-				output[relationshipName] = deserializeSingle(includedRecord, included);
+				if (includedRecord) {
+					output[relationshipName] = deserializeSingle(includedRecord, otherRows, included);
+				} else {
+					includedRecord = findIncluded(otherRows, output[relationshipName].id, output[relationshipName].type);
+					if (includedRecord) {
+						output[relationshipName] = deserializeSingle(includedRecord, otherRows, included);
+					}
+				}
 			}
 		});
 	}
