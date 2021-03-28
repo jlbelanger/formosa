@@ -179,10 +179,21 @@ export default function Autocomplete({
 
 	const clear = () => {
 		setFilter('');
+		setFormState({
+			...formState,
+			row: {
+				...formState.row,
+				[name]: [],
+			},
+		});
+		setSelectedValues([]);
+		focus();
 	};
 
+	const showClear = clearable && max !== 1 && selectedValues.length > 0;
+
 	const className = ['formosa-autocomplete'];
-	if (clearable && max !== 1) {
+	if (showClear) {
 		className.push('formosa-autocomplete--clearable');
 	}
 	if (disabled) {
@@ -258,7 +269,7 @@ export default function Autocomplete({
 					</ul>
 				)}
 
-				{clearable && max !== 1 && (
+				{showClear && (
 					<div>
 						<button className="formosa-autocomplete__clear" onClick={clear} type="button">
 							<CloseIcon height="12" width="12" />
