@@ -1,16 +1,7 @@
 import get from 'get-value';
 import set from 'set-value';
 
-export const deserialize = (body) => {
-	if (Array.isArray(body.data)) {
-		const output = [];
-		body.data.forEach((data) => {
-			output.push(deserializeSingle(data, body.data, body.included));
-		});
-		return output;
-	}
-	return deserializeSingle(body.data, [], body.included);
-};
+const findIncluded = (included, id, type) => (included.find((data) => (data.id === id && data.type === type)));
 
 const deserializeSingle = (data, otherRows = [], included = []) => {
 	if (!data) {
@@ -59,8 +50,15 @@ const deserializeSingle = (data, otherRows = [], included = []) => {
 	return output;
 };
 
-const findIncluded = (included, id, type) => {
-	return included.find((data) => (data.id === id && data.type === type));
+export const deserialize = (body) => {
+	if (Array.isArray(body.data)) {
+		const output = [];
+		body.data.forEach((data) => {
+			output.push(deserializeSingle(data, body.data, body.included));
+		});
+		return output;
+	}
+	return deserializeSingle(body.data, [], body.included);
 };
 
 const getIncluded = (data, dirtyIncluded, relationshipNames) => {
