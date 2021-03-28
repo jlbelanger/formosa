@@ -126,6 +126,13 @@ export default function Autocomplete({
 
 	const onKeyDown = (e) => {
 		const filterValue = e.target.value;
+		if (e.key === 'Enter' && filterValue && filteredOptions.length > 0) {
+			e.preventDefault();
+		}
+	};
+
+	const onKeyUp = (e) => {
+		const filterValue = e.target.value;
 		const numValues = selectedValues ? selectedValues.length : 0;
 		if (e.key === 'Backspace' && !filterValue && selectedValues.length > 0) {
 			removeValue(selectedValues[numValues - 1]);
@@ -209,6 +216,7 @@ export default function Autocomplete({
 								onChange={onChange}
 								onFocus={onFocus}
 								onKeyDown={onKeyDown}
+								onKeyUp={onKeyUp}
 								placeholder={placeholder}
 								type="text"
 								value={filter}
