@@ -49,15 +49,24 @@ export default function Field({
 	} else if (type === 'has-many') {
 		Component = HasMany;
 	}
+	const inputProps = { ...otherProps };
+	if (id) {
+		inputProps.id = id;
+	}
+	if (name) {
+		inputProps.name = name;
+	}
+	if (required) {
+		inputProps.required = required;
+	}
+	if (suffix) {
+		inputProps.suffix = suffix;
+	}
+	if (type) {
+		inputProps.type = type;
+	}
 	const input = (
-		<Component
-			id={id}
-			name={name}
-			required={required}
-			suffix={suffix}
-			type={type}
-			{...otherProps}
-		/>
+		<Component {...inputProps} />
 	);
 
 	if (type === 'hidden') {
