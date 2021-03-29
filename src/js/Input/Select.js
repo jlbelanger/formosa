@@ -45,6 +45,11 @@ export default function Select({
 		return () => {};
 	}, [url]);
 
+	useEffect(() => {
+		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+		return () => {};
+	}, [options]);
+
 	return (
 		<div className={`formosa-select-wrapper ${wrapperClassName}`.trim()}>
 			<select

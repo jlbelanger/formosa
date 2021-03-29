@@ -49,6 +49,11 @@ export default function Autocomplete({
 		return () => {};
 	}, [url]);
 
+	useEffect(() => {
+		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+		return () => {};
+	}, [options]);
+
 	const isSelected = (option) => ((get(formState.row, name) || []).indexOf(option.value) > -1);
 
 	let filteredOptions = [];

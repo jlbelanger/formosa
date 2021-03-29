@@ -28,6 +28,11 @@ export default function RadioList({
 		return () => {};
 	}, [url]);
 
+	useEffect(() => {
+		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+		return () => {};
+	}, [options]);
+
 	return (
 		<ul className="formosa-radio">
 			{optionValues && optionValues.map(({ label, value }) => (
