@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import Autocomplete from './Input/Autocomplete';
 import Checkbox from './Input/Checkbox';
-import ConditionalWrapper from './ConditionalWrapper';
 import Datetime from './Input/Datetime';
 import FormContext from './FormContext';
 import HasMany from './Input/HasMany';
@@ -21,6 +20,7 @@ export default function Field({
 	labelPosition,
 	name,
 	note,
+	prefix,
 	postfix,
 	required,
 	suffix,
@@ -92,8 +92,14 @@ export default function Field({
 	if (hasError) {
 		wrapperClassNameList.push('formosa-field--has-error');
 	}
+	if (prefix) {
+		wrapperClassNameList.push('formosa-field--has-prefix');
+	}
 	if (postfix) {
 		wrapperClassNameList.push('formosa-field--has-postfix');
+	}
+	if (labelPosition === 'after') {
+		wrapperClassNameList.push('formosa-field--label-after');
 	}
 
 	const inputWrapperClassNameList = ['formosa-input-wrapper', `formosa-input-wrapper--${type}`];
@@ -105,15 +111,14 @@ export default function Field({
 		<div className={wrapperClassNameList.join(' ')}>
 			{label && labelPosition === 'before' && labelComponent}
 			{label && labelPosition === 'after' && <div className="formosa-label-wrapper" />}
-			<ConditionalWrapper className="formosa-postfix-container" condition={postfix}>
-				<div className={inputWrapperClassNameList.join(' ')}>
-					{input}
-					{label && labelPosition === 'after' && labelComponent}
-					{note && <div className="formosa-field__note">{note}</div>}
-					{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
-				</div>
+			<div className={inputWrapperClassNameList.join(' ')}>
+				{prefix}
+				{input}
+				{label && labelPosition === 'after' && labelComponent}
+				{note && <div className="formosa-field__note">{note}</div>}
+				{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
 				{postfix}
-			</ConditionalWrapper>
+			</div>
 		</div>
 	);
 }
@@ -125,6 +130,7 @@ Field.propTypes = {
 	labelPosition: PropTypes.string,
 	name: PropTypes.string.isRequired,
 	note: PropTypes.string,
+	prefix: PropTypes.node,
 	postfix: PropTypes.node,
 	required: PropTypes.bool,
 	suffix: PropTypes.string,
@@ -138,6 +144,7 @@ Field.defaultProps = {
 	labelNote: '',
 	labelPosition: 'before',
 	note: '',
+	prefix: null,
 	postfix: null,
 	required: false,
 	suffix: '',
