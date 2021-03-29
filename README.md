@@ -70,6 +70,7 @@ import { Form } from '@jlbelanger/formosa';
 |------------|--------|-----|
 |row         |`{}`    |Default values for fields. For edit forms, the existing record's values should be specified here.|
 |showMessage |`true`  |If true, the inline `<Message>` component will be included at the top of the form. Set this to `false` if you want to include the `<Message>` somewhere else.|
+|htmlId      |`''`    |Since `id` is used for JSON:API, this attribute sets the `id=""` attribute on the form.|
 
 The following attributes are for JSON:API forms only.
 
@@ -95,16 +96,19 @@ The following attributes are for JSON:API forms only.
 import { Field } from '@jlbelanger/formosa';
 ```
 
-|Attribute       |Default |Notes|
-|----------------|--------|-----|
-|name            |N/A     |Required.|
-|id              |`null`  |If not specified, it will default to the value of `name`.|
-|label           |`''`    |     |
-|labelNote       |`''`    |     |
-|note            |`''`    |     |
-|postfix         |`null`  |     |
-|type            |`'text'`|Accepts any standard HTML type (eg. text, email, select, textarea) as well as 'has-many'.|
-|wrapperClassName|`''`    |     |
+|Attribute       |Default   |Notes|
+|----------------|----------|-----|
+|name            |N/A       |Required.|
+|id              |`null`    |If not specified, it will default to the value of `name`.|
+|label           |`''`      |     |
+|labelNote       |`''`      |     |
+|labelPosition   |`'before'`|Alternately, `'after'`.|
+|note            |`''`      |     |
+|prefix          |`null`    |     |
+|postfix         |`null`    |     |
+|suffix          |`null`    |     |
+|type            |`'text'`  |Accepts any standard HTML type (eg. text, email, select, textarea) as well as 'has-many' and 'autocomplete'.|
+|wrapperClassName|`''`      |     |
 
 ### [Submit](https://github.com/jlbelanger/formosa/blob/master/src/js/Submit.js)
 
@@ -115,6 +119,8 @@ import { Submit } from '@jlbelanger/formosa';
 |Attribute |Default |
 |----------|--------|
 |label     |`'Save'`|
+|prefix    |`null`  |
+|postfix   |`null`  |
 
 ### [Label](https://github.com/jlbelanger/formosa/blob/master/src/js/Label.js)
 
