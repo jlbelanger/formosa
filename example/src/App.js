@@ -44,7 +44,7 @@ export default function App() {
 	const optionsObjectAutocomplete = {
 		apple: 'Apple',
 		apricot: 'Apricot',
-		avacado: 'Avacado',
+		avocado: 'Avocado',
 		banana: 'Banana',
 		blackberry: 'Blackberry',
 		blueberry: 'Blueberry',
@@ -83,7 +83,7 @@ export default function App() {
 	const optionsArrayAutocomplete = [
 		'Apple',
 		'Apricot',
-		'Avacado',
+		'Avocado',
 		'Banana',
 		'Blackberry',
 		'Blueberry',
@@ -122,7 +122,7 @@ export default function App() {
 	const optionsArrayOfObjectsAutocomplete = [
 		{ id: '1', randomLabelName: 'Apple' },
 		{ id: '2', randomLabelName: 'Apricot' },
-		{ id: '3', randomLabelName: 'Avacado' },
+		{ id: '3', randomLabelName: 'Avocado' },
 		{ id: '4', randomLabelName: 'Banana' },
 		{ id: '5', randomLabelName: 'Blackberry' },
 		{ id: '6', randomLabelName: 'Blueberry' },
@@ -328,6 +328,13 @@ export default function App() {
 					/>
 
 					<Field
+						label="Multiple autocomplete"
+						name="multiple_autocomplete"
+						type="autocomplete"
+						options={optionsObjectAutocomplete}
+					/>
+
+					<Field
 						label="Has many"
 						name="has_many"
 						type="has-many"
@@ -341,9 +348,9 @@ export default function App() {
 				<Form>
 					<h2>Horizontal form</h2>
 					<div className="formosa-fields">
-						<Field label="First name" name="first_name" type="text" />
-						<Field label="Last name" name="last_name" type="text" />
-						<Field label="URL" name="url" type="text" />
+						<Field label="Name" name="name" />
+						<Field label="URL" name="url" type="url" />
+						<Field label="Colour" name="metadata.colour" options={['red', 'blue', 'green']} type="select" />
 						<Field label="Agree?" name="agree" type="checkbox" />
 						<Submit />
 					</div>
