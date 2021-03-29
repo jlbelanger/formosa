@@ -1,11 +1,6 @@
 .formosa-label-wrapper {
 	display: block;
-	margin-bottom: $formosa-margin-small;
-}
-
-.formosa-label-wrapper--checkbox {
-	display: inline-block;
-	margin: 0;
+	margin-bottom: $formosa-label-margin;
 }
 
 .formosa-label {

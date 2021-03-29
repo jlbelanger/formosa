@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import ConditionalWrapper from './ConditionalWrapper';
 import FormContext from './FormContext';
 import get from 'get-value';
 import PropTypes from 'prop-types';
@@ -38,7 +39,7 @@ export default function Input({
 	}
 
 	return (
-		<>
+		<ConditionalWrapper className="formosa-suffix-container" condition={suffix}>
 			<input
 				className={`formosa-field__input ${className}`.trim()}
 				id={id || name}
@@ -50,7 +51,7 @@ export default function Input({
 				{...otherProps}
 			/>
 			{suffix && <span className="formosa-suffix">{suffix}</span>}
-		</>
+		</ConditionalWrapper>
 	);
 }
 

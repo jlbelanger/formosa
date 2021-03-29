@@ -3,6 +3,7 @@ $top: if($formosa-input-border-width > 0, calc(100% + #{$formosa-focus-border-wi
 
 .formosa-autocomplete {
 	background-color: $formosa-input-background-color;
+	border: $formosa-input-border-width solid $formosa-input-border-color;
 	min-height: $formosa-input-height;
 	position: relative;
 }
@@ -26,6 +27,7 @@ $top: if($formosa-input-border-width > 0, calc(100% + #{$formosa-focus-border-wi
 }
 
 input.formosa-autocomplete__input {
+	border: 0;
 	box-sizing: border-box;
 	height: $formosa-input-height;
 	left: #{($formosa-input-border-width + $input-margin) * -1};
@@ -94,9 +96,12 @@ input.formosa-autocomplete__input {
 	&.formosa-autocomplete__value--input {
 		background-color: transparent;
 		flex: 1 1 auto;
-		overflow: visible;
 		padding-left: 0;
 		padding-right: 0;
+
+		&:focus-within {
+			overflow: visible;
+		}
 	}
 }
 

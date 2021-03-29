@@ -20,8 +20,8 @@ $formosa-input-font-size: 18px !default;
 $formosa-input-padding: 8px !default;
 $formosa-input-line-height: 1.5 !default;
 $formosa-input-height: ($formosa-input-border-width * 2) + ($formosa-input-padding * 2) + ($formosa-input-font-size * $formosa-input-line-height) !default;
+$formosa-input-height: if($formosa-input-height % 2 == 0, $formosa-input-height, $formosa-input-height - 1); // Ensure height is even.
 
-$formosa-margin-small: 4px !default;
 $formosa-margin-medium: 8px !default;
 $formosa-margin-large: 24px !default;
 
@@ -40,15 +40,17 @@ $formosa-autocomplete-value-height: ($formosa-autocomplete-value-padding-top * 2
 $formosa-button-background-color: $formosa-primary-background-color !default;
 $formosa-button-color: $formosa-primary-color !default;
 
-$formosa-checkbox-size: 28px !default;
+$formosa-checkbox-size: 32px !default;
 $formosa-checkbox-margin: 6px !default;
-$formosa-checkbox-padding: 8px !default;
+$formosa-checkbox-padding: 12px !default;
 
 $formosa-horizontal-fields-padding: 8px !default;
 
 $formosa-focus-border-color: #4ad !default;
 $formosa-focus-border-width: 3px !default;
 $formosa-focus-box-shadow-color: #6cf !default;
+
+$formosa-label-margin: 4px !default;
 
 $formosa-message-padding: 16px !default;
 
