@@ -99,6 +99,7 @@ import { Field } from '@jlbelanger/formosa';
 |Attribute       |Default   |Notes|
 |----------------|----------|-----|
 |name            |N/A       |Required.|
+|component       |`null`    |If none of the standard `type`s do what you need, use your own component.|
 |id              |`null`    |If not specified, it will default to the value of `name`.|
 |label           |`''`      |     |
 |labelNote       |`''`      |     |

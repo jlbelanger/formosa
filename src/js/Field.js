@@ -14,6 +14,7 @@ import Select from './Input/Select';
 import Textarea from './Input/Textarea';
 
 export default function Field({
+	component,
 	id,
 	label,
 	labelNote,
@@ -29,25 +30,27 @@ export default function Field({
 	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
-	let Component = Input;
-	if (type === 'password') {
-		Component = Password;
+	let InputComponent = Input;
+	if (component) {
+		InputComponent = component;
+	} else if (type === 'password') {
+		InputComponent = Password;
 	} else if (type === 'select') {
-		Component = Select;
+		InputComponent = Select;
 	} else if (type === 'textarea') {
-		Component = Textarea;
+		InputComponent = Textarea;
 	} else if (type === 'radio') {
-		Component = RadioList;
+		InputComponent = RadioList;
 	} else if (type === 'checkbox') {
-		Component = Checkbox;
+		InputComponent = Checkbox;
 	} else if (type === 'datetime') {
-		Component = Datetime;
+		InputComponent = Datetime;
 	} else if (type === 'search') {
-		Component = Search;
+		InputComponent = Search;
 	} else if (type === 'autocomplete') {
-		Component = Autocomplete;
+		InputComponent = Autocomplete;
 	} else if (type === 'has-many') {
-		Component = HasMany;
+		InputComponent = HasMany;
 	}
 	const inputProps = { ...otherProps };
 	if (id) {
@@ -66,7 +69,7 @@ export default function Field({
 		inputProps.type = type;
 	}
 	const input = (
-		<Component {...inputProps} />
+		<InputComponent {...inputProps} />
 	);
 
 	if (type === 'hidden') {
@@ -124,6 +127,7 @@ export default function Field({
 }
 
 Field.propTypes = {
+	component: PropTypes.node,
 	id: PropTypes.string,
 	label: PropTypes.string,
 	labelNote: PropTypes.string,
@@ -139,6 +143,7 @@ Field.propTypes = {
 };
 
 Field.defaultProps = {
+	component: null,
 	id: null,
 	label: '',
 	labelNote: '',
