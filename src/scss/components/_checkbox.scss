@@ -1,5 +1,6 @@
 input[type="checkbox"] {
 	appearance: none;
+	border-radius: $formosa-checkbox-border-radius;
 	cursor: pointer;
 	height: $formosa-checkbox-size;
 	margin: 0 $formosa-checkbox-margin 0 0;

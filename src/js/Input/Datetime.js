@@ -60,19 +60,21 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--day"
 				data-datetime="day"
+				inputMode="numeric"
 				maxLength={2}
 				onChange={onChange}
 				placeholder="DD"
-				size={2}
+				size={4}
 				value={values.day}
 			/>
 			<Input
 				className="formosa-field__input--date formosa-field__input--year"
 				data-datetime="year"
+				inputMode="numeric"
 				maxLength={4}
 				onChange={onChange}
 				placeholder="YYYY"
-				size={4}
+				size={6}
 				suffix=","
 				value={values.year}
 			/>
@@ -80,30 +82,33 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--hour"
 				data-datetime="hour"
+				inputMode="numeric"
 				maxLength={2}
 				onChange={onChange}
 				placeholder="hh"
-				size={2}
+				size={4}
 				suffix=":"
 				value={values.hour}
 			/>
 			<Input
 				className="formosa-field__input--date formosa-field__input--minute"
 				data-datetime="minute"
+				inputMode="numeric"
 				maxLength={2}
 				onChange={onChange}
 				placeholder="mm"
-				size={2}
+				size={4}
 				suffix=":"
 				value={values.minute}
 			/>
 			<Input
 				className="formosa-field__input--date formosa-field__input--second"
 				data-datetime="second"
+				inputMode="numeric"
 				maxLength={2}
 				onChange={onChange}
 				placeholder="ss"
-				size={2}
+				size={4}
 				value={values.second}
 			/>
 			<Select

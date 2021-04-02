@@ -4,6 +4,7 @@ $top: if($formosa-input-border-width > 0, calc(100% + #{$formosa-focus-border-wi
 .formosa-autocomplete {
 	background-color: $formosa-input-background-color;
 	border: $formosa-input-border-width solid $formosa-input-border-color;
+	border-radius: $formosa-input-border-radius;
 	min-height: $formosa-input-height;
 	position: relative;
 }
@@ -27,6 +28,7 @@ $top: if($formosa-input-border-width > 0, calc(100% + #{$formosa-focus-border-wi
 }
 
 input.formosa-autocomplete__input {
+	background: transparent;
 	border: 0;
 	box-sizing: border-box;
 	height: $formosa-input-height;

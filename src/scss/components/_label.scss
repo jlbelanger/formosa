@@ -20,3 +20,10 @@
 		content: ' *';
 	}
 }
+
+.formosa-field--label-after {
+	.formosa-label-wrapper {
+		display: inline-block;
+		margin: 0;
+	}
+}

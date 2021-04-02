@@ -3,6 +3,7 @@ select,
 textarea {
 	background: $formosa-input-background-color;
 	border: $formosa-input-border-width solid $formosa-input-border-color;
+	border-radius: $formosa-input-border-radius;
 	color: $formosa-input-color;
 	font-family: $formosa-input-font-family;
 	font-size: $formosa-input-font-size;
@@ -21,4 +22,16 @@ button,
 input,
 select {
 	line-height: $formosa-input-line-height;
+}
+
+button,
+input,
+select,
+textarea {
+	margin: 0;
+}
+
+input,
+textarea {
+	-webkit-appearance: none; // So focus style work on iOS.
 }

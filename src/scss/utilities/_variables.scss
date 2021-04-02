@@ -13,6 +13,7 @@ $formosa-dark-mode: false !default;
 
 $formosa-input-background-color: if($formosa-dark-mode, #222, #fff) !default;
 $formosa-input-border-color: if($formosa-dark-mode, #555, #ccc) !default;
+$formosa-input-border-radius: 0 !default;
 $formosa-input-border-width: 1px !default;
 $formosa-input-color: if($formosa-dark-mode, #fff, #000) !default;
 $formosa-input-font-family: sans-serif !default;
@@ -43,6 +44,7 @@ $formosa-button-color: $formosa-primary-color !default;
 $formosa-checkbox-size: 32px !default;
 $formosa-checkbox-margin: 6px !default;
 $formosa-checkbox-padding: 12px !default;
+$formosa-checkbox-border-radius: 0 !default;
 
 $formosa-horizontal-fields-padding: 8px !default;
 
