@@ -191,6 +191,7 @@ export default function App() {
 						label="Password"
 						name="password"
 						type="password"
+						autoComplete="off"
 					/>
 
 					<Field
@@ -348,9 +349,9 @@ export default function App() {
 				<Form>
 					<h2>Horizontal form</h2>
 					<div className="formosa-fields">
-						<Field label="Name" name="name" />
-						<Field label="URL" name="url" type="url" />
-						<Field label="Colour" name="metadata.colour" options={['red', 'blue', 'green']} type="select" />
+						<Field label="Name" id="horizontal-name" name="name" />
+						<Field label="URL" id="horizontal-url" name="url" type="url" />
+						<Field label="Colour" id="horizontal-colour" name="metadata.colour" options={['red', 'blue', 'green']} type="select" />
 						<Field label="Agree?" name="agree" type="checkbox" />
 						<Submit />
 					</div>
@@ -360,9 +361,9 @@ export default function App() {
 
 				<Form method="POST" path="food">
 					<h2>JSON:API add form</h2>
-					<Field label="Name" name="name" />
-					<Field label="Slug" name="slug" />
-					<Field label="Colour" name="metadata.colour" options={['red', 'blue', 'green']} type="select" />
+					<Field label="Name" id="add-name" name="name" />
+					<Field label="Slug" id="add-slug" name="slug" />
+					<Field label="Colour" id="add-colour" name="metadata.colour" options={['red', 'blue', 'green']} type="select" />
 					<Submit />
 				</Form>
 
@@ -372,9 +373,9 @@ export default function App() {
 					<>
 						<Form method="PUT" path="food" id={row.id} row={row}>
 							<h2>JSON:API edit form</h2>
-							<Field label="Name" name="name" />
-							<Field label="Slug" name="slug" />
-							<Field label="Colour" name="metadata.colour" options={['red', 'blue', 'green']} type="select" />
+							<Field label="Name" id="edit-name" name="name" />
+							<Field label="Slug" id="edit-slug" name="slug" />
+							<Field label="Colour" id="edit-colour" name="metadata.colour" options={['red', 'blue', 'green']} type="select" />
 							<Submit />
 						</Form>
 

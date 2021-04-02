@@ -38,6 +38,7 @@ export default function Datetime({
 		<div className="formosa-datetime-wrapper">
 			<Select
 				data-datetime="month"
+				id={`${name}-month`}
 				onChange={onChange}
 				options={{
 					1: 'January',
@@ -60,6 +61,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--day"
 				data-datetime="day"
+				id={`${name}-day`}
 				inputMode="numeric"
 				maxLength={2}
 				onChange={onChange}
@@ -70,6 +72,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--year"
 				data-datetime="year"
+				id={`${name}-year`}
 				inputMode="numeric"
 				maxLength={4}
 				onChange={onChange}
@@ -82,6 +85,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--hour"
 				data-datetime="hour"
+				id={`${name}-hour`}
 				inputMode="numeric"
 				maxLength={2}
 				onChange={onChange}
@@ -93,6 +97,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--minute"
 				data-datetime="minute"
+				id={`${name}-minute`}
 				inputMode="numeric"
 				maxLength={2}
 				onChange={onChange}
@@ -104,6 +109,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--second"
 				data-datetime="second"
+				id={`${name}-second`}
 				inputMode="numeric"
 				maxLength={2}
 				onChange={onChange}
@@ -114,6 +120,7 @@ export default function Datetime({
 			<Select
 				data-datetime="ampm"
 				hideBlank
+				id={`${name}-ampm`}
 				onChange={onChange}
 				options={{
 					am: 'am',
