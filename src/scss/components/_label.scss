@@ -4,7 +4,7 @@
 }
 
 .formosa-label {
-	font-weight: bold;
+	font-weight: $formosa-label-font-weight;
 
 	&[for] {
 		cursor: pointer;

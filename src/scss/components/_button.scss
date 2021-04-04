@@ -1,11 +1,12 @@
 button {
 	background: $formosa-button-background-color;
-	border: $formosa-input-border-width solid $formosa-button-background-color;
+	border: $formosa-input-border-width solid $formosa-button-border-color;
+	border-radius: $formosa-input-border-radius;
 	color: $formosa-button-color;
 	cursor: pointer;
 	font-family: $formosa-input-font-family;
 	font-size: $formosa-input-font-size;
-	padding: $formosa-input-padding 12px;
+	padding: $formosa-button-padding $formosa-button-padding-side;
 
 	path {
 		fill: $formosa-button-color;

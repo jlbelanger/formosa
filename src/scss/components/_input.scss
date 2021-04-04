@@ -35,3 +35,8 @@ input,
 textarea {
 	-webkit-appearance: none; // So focus style work on iOS.
 }
+
+input:not([size]) {
+	box-sizing: border-box;
+	width: 100%;
+}

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 export default function Password({
 	className,
+	wrapperClassName,
 	...otherProps
 }) {
 	const [tempType, setTempType] = useState('password');
@@ -16,7 +17,7 @@ export default function Password({
 	};
 
 	return (
-		<>
+		<div className={`formosa-password-wrapper ${wrapperClassName}`.trim()}>
 			<Input
 				className={`${className} formosa-field__input--password formosa-prefix`.trim()}
 				{...otherProps}
@@ -25,14 +26,16 @@ export default function Password({
 			<button className="formosa-button formosa-postfix formosa-button--toggle-password" onClick={togglePassword} type="button">
 				{tempType === 'password' ? 'Show' : 'Hide'}
 			</button>
-		</>
+		</div>
 	);
 }
 
 Password.propTypes = {
 	className: PropTypes.string,
+	wrapperClassName: PropTypes.string,
 };
 
 Password.defaultProps = {
 	className: '',
+	wrapperClassName: '',
 };
