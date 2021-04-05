@@ -1,9 +1,16 @@
 .formosa-has-many {
-	list-style: none;
-	margin: 0;
-	padding: 0;
+	border-spacing: 0;
+	margin: #{-1 * $formosa-has-many-padding} #{-1 * $formosa-has-many-padding-side};
 }
 
-.formosa-has-many__item + .formosa-has-many__item {
-	margin-top: $formosa-margin-medium;
+.formosa-has-many__column {
+	padding: $formosa-has-many-padding $formosa-has-many-padding-side;
+}
+
+.formosa-has-many__button {
+	width: 100%;
+}
+
+.formosa-has-many__column--button {
+	width: 0;
 }

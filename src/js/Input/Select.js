@@ -3,8 +3,10 @@ import Api from '../Helpers/Api';
 import { ReactComponent as CaretIcon } from '../../svg/caret.svg';
 import FormContext from '../FormContext';
 import get from 'get-value';
+import getNewDirty from '../Helpers/FormState';
 import { normalizeOptions } from '../Helpers/Options';
 import PropTypes from 'prop-types';
+import set from 'set-value';
 
 export default function Select({
 	className,
@@ -21,17 +23,13 @@ export default function Select({
 	const { formState, setFormState } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
 	const onChange = (e) => {
-		const newDirty = [...formState.dirty];
-		if (!newDirty.includes(e.target.name)) {
-			newDirty.push(e.target.name);
-		}
+		const newRow = { ...formState.row };
+		set(newRow, e.target.name, e.target.value);
+
 		setFormState({
 			...formState,
-			dirty: newDirty,
-			row: {
-				...formState.row,
-				[e.target.name]: e.target.value,
-			},
+			dirty: getNewDirty(formState.dirty, e.target.name),
+			row: newRow,
 		});
 	};
 

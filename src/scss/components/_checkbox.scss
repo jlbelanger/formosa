@@ -21,7 +21,7 @@ input[type="checkbox"] {
 	top: #{$formosa-checkbox-padding / 2};
 	width: #{$formosa-checkbox-size - $formosa-checkbox-padding};
 
-	.formosa-fields & {
+	.formosa-horizontal & {
 		left: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
 		top: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
 	}

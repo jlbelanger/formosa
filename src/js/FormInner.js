@@ -73,7 +73,7 @@ export default function FormInner({
 				const newState = {
 					...formState,
 					dirty: [],
-					dirtyIncluded: {},
+					dirtyIncluded: [],
 					errors: {},
 					message: successMessageText,
 				};

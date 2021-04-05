@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import FormContext from '../FormContext';
 import get from 'get-value';
+import getNewDirty from '../Helpers/FormState';
 import PropTypes from 'prop-types';
+import set from 'set-value';
 
 export default function Radio({
 	afterChange,
@@ -13,17 +15,13 @@ export default function Radio({
 }) {
 	const { formState, setFormState } = useContext(FormContext);
 	const onChange = (e) => {
-		const newDirty = [...formState.dirty];
-		if (!newDirty.includes(e.target.name)) {
-			newDirty.push(e.target.name);
-		}
+		const newRow = { ...formState.row };
+		set(newRow, e.target.name, e.target.value);
+
 		setFormState({
 			...formState,
-			dirty: newDirty,
-			row: {
-				...formState.row,
-				[e.target.name]: e.target.value,
-			},
+			dirty: getNewDirty(formState.dirty, e.target.name),
+			row: newRow,
 		});
 		if (afterChange) {
 			afterChange(e);

@@ -2,9 +2,12 @@ import React, { useContext } from 'react';
 import ConditionalWrapper from './ConditionalWrapper';
 import FormContext from './FormContext';
 import get from 'get-value';
+import getNewDirty from './Helpers/FormState';
 import PropTypes from 'prop-types';
+import set from 'set-value';
 
 export default function Input({
+	afterChange,
 	className,
 	id,
 	name,
@@ -14,18 +17,19 @@ export default function Input({
 }) {
 	const { formState, setFormState } = useContext(FormContext);
 	const onChange = (e) => {
-		const newDirty = [...formState.dirty];
-		if (!newDirty.includes(e.target.name)) {
-			newDirty.push(e.target.name);
-		}
+		const newRow = { ...formState.row };
+		const newValue = type === 'checkbox' ? e.target.checked : e.target.value;
+		set(newRow, e.target.name, newValue);
+
 		setFormState({
 			...formState,
-			dirty: newDirty,
-			row: {
-				...formState.row,
-				[e.target.name]: type === 'checkbox' ? e.target.checked : e.target.value,
-			},
+			dirty: getNewDirty(formState.dirty, e.target.name),
+			row: newRow,
 		});
+
+		if (afterChange) {
+			afterChange(e);
+		}
 	};
 
 	const value = get(formState.row, name) || '';
@@ -56,6 +60,7 @@ export default function Input({
 }
 
 Input.propTypes = {
+	afterChange: PropTypes.func,
 	className: PropTypes.string,
 	id: PropTypes.string,
 	name: PropTypes.string,
@@ -64,6 +69,7 @@ Input.propTypes = {
 };
 
 Input.defaultProps = {
+	afterChange: null,
 	className: '',
 	id: null,
 	name: '',

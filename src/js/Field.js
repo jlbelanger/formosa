@@ -1,17 +1,9 @@
 import React, { useContext } from 'react';
-import Autocomplete from './Input/Autocomplete';
-import Checkbox from './Input/Checkbox';
-import Datetime from './Input/Datetime';
 import FormContext from './FormContext';
+import getInputElement from './FieldInput';
 import HasMany from './Input/HasMany';
-import Input from './Input';
 import Label from './Label';
-import Password from './Input/Password';
 import PropTypes from 'prop-types';
-import RadioList from './Input/RadioList';
-import Search from './Input/Search';
-import Select from './Input/Select';
-import Textarea from './Input/Textarea';
 
 export default function Field({
 	component,
@@ -26,32 +18,11 @@ export default function Field({
 	required,
 	suffix,
 	type,
+	wrapperAttributes,
 	wrapperClassName,
 	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
-	let InputComponent = Input;
-	if (component) {
-		InputComponent = component;
-	} else if (type === 'password') {
-		InputComponent = Password;
-	} else if (type === 'select') {
-		InputComponent = Select;
-	} else if (type === 'textarea') {
-		InputComponent = Textarea;
-	} else if (type === 'radio') {
-		InputComponent = RadioList;
-	} else if (type === 'checkbox') {
-		InputComponent = Checkbox;
-	} else if (type === 'datetime') {
-		InputComponent = Datetime;
-	} else if (type === 'search') {
-		InputComponent = Search;
-	} else if (type === 'autocomplete') {
-		InputComponent = Autocomplete;
-	} else if (type === 'has-many') {
-		InputComponent = HasMany;
-	}
 	const inputProps = { ...otherProps };
 	if (id) {
 		inputProps.id = id;
@@ -67,6 +38,11 @@ export default function Field({
 	}
 	if (type) {
 		inputProps.type = type;
+	}
+	let InputComponent = getInputElement(type, component);
+	if (type === 'has-many') {
+		// This prevents a dependency cycle.
+		InputComponent = HasMany;
 	}
 	const input = (
 		<InputComponent {...inputProps} />
@@ -111,7 +87,7 @@ export default function Field({
 	}
 
 	return (
-		<div className={wrapperClassNameList.join(' ')}>
+		<div className={wrapperClassNameList.join(' ')} {...wrapperAttributes}>
 			{label && labelPosition === 'before' && labelComponent}
 			{label && labelPosition === 'after' && <div className="formosa-label-wrapper" />}
 			<div className={inputWrapperClassNameList.join(' ')}>
@@ -119,15 +95,15 @@ export default function Field({
 				{input}
 				{label && labelPosition === 'after' && labelComponent}
 				{note && <div className="formosa-field__note">{note}</div>}
-				{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
 				{postfix}
+				{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
 			</div>
 		</div>
 	);
 }
 
 Field.propTypes = {
-	component: PropTypes.node,
+	component: PropTypes.func,
 	id: PropTypes.string,
 	label: PropTypes.string,
 	labelNote: PropTypes.string,
@@ -139,6 +115,7 @@ Field.propTypes = {
 	required: PropTypes.bool,
 	suffix: PropTypes.string,
 	type: PropTypes.string,
+	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
 };
 
@@ -154,5 +131,6 @@ Field.defaultProps = {
 	required: false,
 	suffix: '',
 	type: 'text',
+	wrapperAttributes: {},
 	wrapperClassName: '',
 };

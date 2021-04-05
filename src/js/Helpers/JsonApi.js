@@ -61,12 +61,42 @@ export const deserialize = (body) => {
 	return deserializeSingle(body.data, [], body.included);
 };
 
+const cleanSingleRelationship = (values) => ({
+	id: values.id,
+	type: values.type,
+});
+
+const cleanRelationship = (values) => {
+	if (Array.isArray(values)) {
+		return values.map((value) => cleanSingleRelationship(value));
+	}
+	return cleanSingleRelationship(values);
+};
+
 const getIncluded = (data, dirtyIncluded, relationshipNames) => {
 	const included = [];
+
+	const dirtyKeys = {};
+	dirtyIncluded.forEach((key) => {
+		if (!key.startsWith('_new.')) {
+			const currentKeys = [];
+			key.split('.').forEach((k) => {
+				currentKeys.push(k);
+				if (typeof get(dirtyKeys, currentKeys.join('.')) === 'undefined') {
+					set(dirtyKeys, currentKeys.join('.'), {});
+				}
+			});
+		}
+	});
 
 	relationshipNames.forEach((relationshipName) => {
 		if (!Object.prototype.hasOwnProperty.call(data.relationships, relationshipName)) {
 			// This relationship isn't defined.
+			return;
+		}
+
+		if (!Object.prototype.hasOwnProperty.call(dirtyKeys, relationshipName)) {
+			// No related records' attributes have changed.
 			return;
 		}
 
@@ -80,18 +110,28 @@ const getIncluded = (data, dirtyIncluded, relationshipNames) => {
 				return;
 			}
 
-			if (
-				Object.prototype.hasOwnProperty.call(dirtyIncluded, rel.type)
-				&& Object.prototype.hasOwnProperty.call(dirtyIncluded[rel.type], rel.id)
-			) {
+			if (Object.prototype.hasOwnProperty.call(dirtyKeys[relationshipName], rel.id)) {
 				const relData = {
 					id: rel.id,
 					type: rel.type,
 					attributes: {},
 				};
-				dirtyIncluded[rel.type][rel.id].forEach((key) => {
-					relData.attributes[key] = rel[key];
-				});
+
+				if (Object.keys(dirtyKeys[relationshipName][rel.id]).length === 0) {
+					// This is a new record; include all attributes.
+					Object.keys(rel).forEach((key) => {
+						if (key !== 'id' && key !== 'type') {
+							set(relData.attributes, key, rel[key]);
+						}
+					});
+				} else {
+					// This is an existing record; include only the dirty attributes.
+					Object.keys(rel).forEach((key) => {
+						if (Object.prototype.hasOwnProperty.call(dirtyKeys[relationshipName][rel.id], key)) {
+							set(relData.attributes, key, rel[key]);
+						}
+					});
+				}
 				included.push(relData);
 			}
 		});
@@ -131,13 +171,18 @@ export const getBody = (
 		}
 
 		keys.forEach((key) => {
-			if (relationshipNames.includes(key)) {
+			const cleanKey = key.replace(/\..+$/, '');
+			if (relationshipNames.includes(cleanKey)) {
+				data.relationships[cleanKey] = {
+					data: values[cleanKey],
+				};
+			} else if (relationshipNames.includes(key)) {
 				data.relationships[key] = {
 					data: values[key],
 				};
 			} else if (key.startsWith('meta.')) {
 				set(data, key, get(values, key));
-			} else {
+			} else if (key !== '_new' && !key.startsWith('_new.')) {
 				set(data.attributes, key, values[key]);
 			}
 		});
@@ -148,6 +193,12 @@ export const getBody = (
 		if (included.length > 0) {
 			body.included = included;
 		}
+
+		Object.keys(data.relationships).forEach((relationshipName) => {
+			if (Array.isArray(data.relationships[relationshipName].data)) {
+				data.relationships[relationshipName].data = data.relationships[relationshipName].data.map((rel) => (cleanRelationship(rel)));
+			}
+		});
 
 		if (filterBody) {
 			body = filterBody(body);

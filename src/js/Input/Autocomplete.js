@@ -183,14 +183,14 @@ export default function Autocomplete({
 	};
 
 	const clear = () => {
-		setFilter('');
+		const newRow = { ...formState.row };
+		set(newRow, name, []);
 		setFormState({
 			...formState,
-			row: {
-				...formState.row,
-				[name]: [],
-			},
+			row: newRow,
 		});
+
+		setFilter('');
 		setSelectedValues([]);
 		focus();
 	};

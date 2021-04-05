@@ -12,12 +12,20 @@
 			"id": "2",
 			"type": "food",
 			"attributes": {
-				"name": "Peach",
-				"slug": "peach"
+				"name": "Apricot",
+				"slug": "apricot"
 			}
 		},
 		{
 			"id": "3",
+			"type": "food",
+			"attributes": {
+				"name": "Avocado",
+				"slug": "avocado"
+			}
+		},
+		{
+			"id": "4",
 			"type": "food",
 			"attributes": {
 				"name": "Banana",
@@ -25,11 +33,259 @@
 			}
 		},
 		{
-			"id": "4",
+			"id": "5",
+			"type": "food",
+			"attributes": {
+				"name": "Blackberry",
+				"slug": "blackberry"
+			}
+		},
+		{
+			"id": "6",
+			"type": "food",
+			"attributes": {
+				"name": "Blueberry",
+				"slug": "blueberry"
+			}
+		},
+		{
+			"id": "7",
+			"type": "food",
+			"attributes": {
+				"name": "Cherry",
+				"slug": "cherry"
+			}
+		},
+		{
+			"id": "8",
+			"type": "food",
+			"attributes": {
+				"name": "Coconut",
+				"slug": "coconut"
+			}
+		},
+		{
+			"id": "9",
+			"type": "food",
+			"attributes": {
+				"name": "Cranberry",
+				"slug": "cranberry"
+			}
+		},
+		{
+			"id": "10",
+			"type": "food",
+			"attributes": {
+				"name": "Durian",
+				"slug": "durian"
+			}
+		},
+		{
+			"id": "11",
+			"type": "food",
+			"attributes": {
+				"name": "Eggplant",
+				"slug": "eggplant"
+			}
+		},
+		{
+			"id": "12",
+			"type": "food",
+			"attributes": {
+				"name": "Fig",
+				"slug": "fig"
+			}
+		},
+		{
+			"id": "13",
+			"type": "food",
+			"attributes": {
+				"name": "Grape",
+				"slug": "grape"
+			}
+		},
+		{
+			"id": "14",
+			"type": "food",
+			"attributes": {
+				"name": "Honeyberry",
+				"slug": "honeyberry"
+			}
+		},
+		{
+			"id": "15",
+			"type": "food",
+			"attributes": {
+				"name": "Jackfruit",
+				"slug": "jackfruit"
+			}
+		},
+		{
+			"id": "16",
+			"type": "food",
+			"attributes": {
+				"name": "Kiwi",
+				"slug": "kiwi"
+			}
+		},
+		{
+			"id": "17",
+			"type": "food",
+			"attributes": {
+				"name": "Lemon",
+				"slug": "lemon"
+			}
+		},
+		{
+			"id": "18",
+			"type": "food",
+			"attributes": {
+				"name": "Lime",
+				"slug": "lime"
+			}
+		},
+		{
+			"id": "19",
+			"type": "food",
+			"attributes": {
+				"name": "Mango",
+				"slug": "mango"
+			}
+		},
+		{
+			"id": "20",
+			"type": "food",
+			"attributes": {
+				"name": "Melon",
+				"slug": "melon"
+			}
+		},
+		{
+			"id": "21",
+			"type": "food",
+			"attributes": {
+				"name": "Nectarine",
+				"slug": "nectarine"
+			}
+		},
+		{
+			"id": "22",
+			"type": "food",
+			"attributes": {
+				"name": "Orange",
+				"slug": "orange"
+			}
+		},
+		{
+			"id": "23",
+			"type": "food",
+			"attributes": {
+				"name": "Peach",
+				"slug": "peach"
+			}
+		},
+		{
+			"id": "24",
 			"type": "food",
 			"attributes": {
 				"name": "Pear",
 				"slug": "pear"
+			}
+		},
+		{
+			"id": "25",
+			"type": "food",
+			"attributes": {
+				"name": "Persimmon",
+				"slug": "persimmon"
+			}
+		},
+		{
+			"id": "26",
+			"type": "food",
+			"attributes": {
+				"name": "Pineapple",
+				"slug": "pineapple"
+			}
+		},
+		{
+			"id": "27",
+			"type": "food",
+			"attributes": {
+				"name": "Plum",
+				"slug": "plum"
+			}
+		},
+		{
+			"id": "28",
+			"type": "food",
+			"attributes": {
+				"name": "Pumpkin",
+				"slug": "pumpkin"
+			}
+		},
+		{
+			"id": "29",
+			"type": "food",
+			"attributes": {
+				"name": "Quinoa",
+				"slug": "quinoa"
+			}
+		},
+		{
+			"id": "30",
+			"type": "food",
+			"attributes": {
+				"name": "Raspberry",
+				"slug": "raspberry"
+			}
+		},
+		{
+			"id": "31",
+			"type": "food",
+			"attributes": {
+				"name": "Strawberry",
+				"slug": "strawberry"
+			}
+		},
+		{
+			"id": "32",
+			"type": "food",
+			"attributes": {
+				"name": "Tomato",
+				"slug": "tomato"
+			}
+		},
+		{
+			"id": "33",
+			"type": "food",
+			"attributes": {
+				"name": "Uglifruit",
+				"slug": "uglifruit"
+			}
+		},
+		{
+			"id": "34",
+			"type": "food",
+			"attributes": {
+				"name": "Vanilla",
+				"slug": "vanilla"
+			}
+		},
+		{
+			"id": "35",
+			"type": "food",
+			"attributes": {
+				"name": "Watermelon",
+				"slug": "watermelon"
+			}
+		},
+		{
+			"id": "36",
+			"type": "food",
+			"attributes": {
+				"name": "Zucchini",
+				"slug": "zucchini"
 			}
 		}
 	]

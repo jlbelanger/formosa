@@ -2,25 +2,81 @@ $formosa-dark-mode: true;
 
 @import '../../src/style';
 
+$background-color: if($formosa-dark-mode, #000, #fff);
+$color: if($formosa-dark-mode, #fff, #000);
+$margin: 20px;
+
 body {
-	background: if($formosa-dark-mode, #000, #fff);
-	color: if($formosa-dark-mode, #fff, #000);
+	background: $background-color;
+	color: $color;
 	font-family: $formosa-input-font-family;
 	font-size: $formosa-input-font-size;
-	margin: 20px;
+	margin: $margin;
 }
 
-hr {
-	border-color: $formosa-input-border-color;
-	border-style: dotted;
-	border-width: 1px 0 0;
-	margin: 32px 0;
+main {
+	margin: 0 auto;
+	max-width: 900px;
+}
+
+#header {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
 }
 
 h1 {
-	font-size: 32px;
+	font-size: 60px;
+	margin: 0;
 }
 
-h2 {
-	font-size: 24px;
+a {
+	color: #0cf;
+
+	&:hover,
+	&:active,
+	&:focus {
+		text-decoration: none;
+	}
+}
+
+#nav {
+	display: flex;
+	flex-wrap: wrap;
+	list-style: none;
+	margin: 0 -1px $margin;
+	padding: 0;
+}
+
+.nav__item {
+	flex: 1 1 auto;
+	margin: 1px;
+}
+
+.nav__link {
+	align-items: center;
+	background: $formosa-primary-background-color;
+	color: $formosa-primary-color;
+	display: flex;
+	justify-content: center;
+	min-height: 44px;
+	padding: 8px;
+	text-decoration: none;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background: scale-color($formosa-primary-background-color, $lightness: -10%);
+	}
+}
+
+.nav__link--active {
+	background: $background-color;
+	color: $color;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background: $background-color;
+	}
 }

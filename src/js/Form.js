@@ -10,7 +10,7 @@ export default function Form({
 }) {
 	const [formState, setFormState] = useState({
 		dirty: [],
-		dirtyIncluded: {},
+		dirtyIncluded: [],
 		errors: {},
 		message: '',
 		row,

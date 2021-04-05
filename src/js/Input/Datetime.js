@@ -2,9 +2,11 @@ import { objectToString, stringToObject } from '../Helpers/Datetime';
 import React, { useContext, useState } from 'react';
 import FormContext from '../FormContext';
 import get from 'get-value';
+import getNewDirty from '../Helpers/FormState';
 import Input from '../Input';
 import PropTypes from 'prop-types';
 import Select from './Select';
+import set from 'set-value';
 
 export default function Datetime({
 	convertToTimezone,
@@ -20,17 +22,13 @@ export default function Datetime({
 		};
 		setValues(newValues);
 
-		const newDirty = [...formState.dirty];
-		if (!newDirty.includes(name)) {
-			newDirty.push(name);
-		}
+		const newRow = { ...formState.row };
+		set(newRow, name, objectToString(newValues));
+
 		setFormState({
 			...formState,
-			dirty: newDirty,
-			row: {
-				...formState.row,
-				[name]: objectToString(newValues),
-			},
+			dirty: getNewDirty(formState.dirty, name),
+			row: newRow,
 		});
 	};
 
