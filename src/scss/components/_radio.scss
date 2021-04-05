@@ -11,13 +11,13 @@
 input[type="radio"] {
 	appearance: none;
 	border-color: $formosa-input-background-color;
-	border-radius: 100px;
+	border-radius: $formosa-radio-border-radius;
 	border-width: $formosa-radio-border-width;
 	box-shadow: 0 0 0 $formosa-input-border-width $formosa-input-border-color;
 	cursor: pointer;
 	height: $formosa-radio-size;
 	line-height: $formosa-input-line-height;
-	margin: 0 $formosa-checkbox-margin 0 0;
+	margin: 0 $formosa-radio-margin-side 0 0;
 	padding: 0;
 	vertical-align: middle;
 	width: $formosa-radio-size;
@@ -27,6 +27,6 @@ input[type="radio"] {
 	}
 
 	&:focus {
-		box-shadow: 0 0 0 $formosa-input-border-width $formosa-focus-border-color, 0 0 0 $formosa-focus-border-width $formosa-focus-box-shadow-color;
+		box-shadow: 0 0 0 $formosa-input-border-width $formosa-focus-border-color, 0 0 0 #{$formosa-input-border-width + $formosa-focus-border-width} $formosa-focus-box-shadow-color;
 	}
 }
