@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import FormContext from './FormContext';
+import get from 'get-value';
 import getInputElement from './FieldInput';
 import HasMany from './Input/HasMany';
 import Label from './Label';
@@ -94,7 +95,7 @@ export default function Field({
 				{prefix}
 				{input}
 				{label && labelPosition === 'after' && labelComponent}
-				{note && <div className="formosa-field__note">{note}</div>}
+				{note && <div className="formosa-field__note">{typeof note === 'function' ? note(get(formState.row, name)) : note}</div>}
 				{postfix}
 				{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
 			</div>
@@ -109,7 +110,11 @@ Field.propTypes = {
 	labelNote: PropTypes.string,
 	labelPosition: PropTypes.string,
 	name: PropTypes.string.isRequired,
-	note: PropTypes.string,
+	note: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+		PropTypes.string,
+	]),
 	prefix: PropTypes.node,
 	postfix: PropTypes.node,
 	required: PropTypes.bool,
