@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import set from 'set-value';
 
 export default function Select({
+	afterChange,
 	className,
 	hideBlank,
 	id,
@@ -31,6 +32,10 @@ export default function Select({
 			dirty: getNewDirty(formState.dirty, e.target.name),
 			row: newRow,
 		});
+
+		if (afterChange) {
+			afterChange(e);
+		}
 	};
 
 	useEffect(() => {
@@ -69,6 +74,7 @@ export default function Select({
 }
 
 Select.propTypes = {
+	afterChange: PropTypes.func,
 	className: PropTypes.string,
 	hideBlank: PropTypes.bool,
 	id: PropTypes.string,
@@ -90,6 +96,7 @@ Select.propTypes = {
 };
 
 Select.defaultProps = {
+	afterChange: null,
 	className: '',
 	hideBlank: false,
 	id: null,
