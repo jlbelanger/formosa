@@ -20,6 +20,7 @@ export default function Autocomplete({
 	options,
 	url,
 	valueKey,
+	...otherProps
 }) {
 	const { formState, setFormState } = useContext(FormContext);
 	const [filter, setFilter] = useState('');
@@ -239,6 +240,7 @@ export default function Autocomplete({
 					{canAddValues && (
 						<li className="formosa-autocomplete__value formosa-autocomplete__value--input">
 							<input
+								{...otherProps}
 								autoComplete="off"
 								className="formosa-autocomplete__input"
 								id={id || name}
