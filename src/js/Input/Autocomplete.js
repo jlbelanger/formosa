@@ -4,6 +4,7 @@ import Api from '../Helpers/Api';
 import { ReactComponent as CloseIcon } from '../../svg/x.svg';
 import FormContext from '../FormContext';
 import get from 'get-value';
+import getNewDirty from '../Helpers/FormState';
 import PropTypes from 'prop-types';
 import set from 'set-value';
 
@@ -82,6 +83,7 @@ export default function Autocomplete({
 		set(row, name, newValues);
 		setFormState({
 			...formState,
+			dirty: getNewDirty(formState.dirty, name),
 			row,
 		});
 
@@ -115,6 +117,7 @@ export default function Autocomplete({
 		set(row, name, newValues);
 		setFormState({
 			...formState,
+			dirty: getNewDirty(formState.dirty, name),
 			row,
 		});
 
@@ -187,6 +190,7 @@ export default function Autocomplete({
 		set(newRow, name, []);
 		setFormState({
 			...formState,
+			dirty: getNewDirty(formState.dirty, name),
 			row: newRow,
 		});
 
