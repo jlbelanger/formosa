@@ -16,6 +16,11 @@ textarea {
 			box-shadow: 0 0 0 $formosa-focus-border-width $formosa-focus-box-shadow-color;
 		}
 	}
+
+	&[disabled],
+	&[readonly] {
+		opacity: $formosa-disabled-opacity;
+	}
 }
 
 button,
