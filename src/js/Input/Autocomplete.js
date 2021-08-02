@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import set from 'set-value';
 
 export default function Autocomplete({
+	afterChange,
 	clearable,
 	disabled,
 	id,
@@ -77,16 +78,17 @@ export default function Autocomplete({
 		const row = { ...formState.row };
 		let newValues = get(row, name) || [];
 		if (max === 1) {
-			newValues = value.value;
+			newValues = value;
 		} else {
-			newValues.push(value.value);
+			newValues.push(value);
 		}
 		set(row, name, newValues);
-		setFormState({
+		const newFormState = {
 			...formState,
 			dirty: getNewDirty(formState.dirty, name),
 			row,
-		});
+		};
+		setFormState(newFormState);
 
 		if (max === 1) {
 			setSelectedValues([value]);
@@ -104,6 +106,10 @@ export default function Autocomplete({
 		} else {
 			focus();
 		}
+
+		if (afterChange) {
+			afterChange({ target: { name } }, newFormState);
+		}
 	};
 
 	const removeValue = (value) => {
@@ -116,11 +122,12 @@ export default function Autocomplete({
 			newValues = null;
 		}
 		set(row, name, newValues);
-		setFormState({
+		const newFormState = {
 			...formState,
 			dirty: getNewDirty(formState.dirty, name),
 			row,
-		});
+		};
+		setFormState(newFormState);
 
 		if (max === 1) {
 			setSelectedValues([]);
@@ -132,6 +139,10 @@ export default function Autocomplete({
 		}
 
 		focus();
+
+		if (afterChange) {
+			afterChange({ target: { name } }, newFormState);
+		}
 	};
 
 	const onChange = (e) => {
@@ -294,6 +305,7 @@ export default function Autocomplete({
 }
 
 Autocomplete.propTypes = {
+	afterChange: PropTypes.func,
 	clearable: PropTypes.bool,
 	disabled: PropTypes.bool,
 	id: PropTypes.string,
@@ -317,6 +329,7 @@ Autocomplete.propTypes = {
 };
 
 Autocomplete.defaultProps = {
+	afterChange: null,
 	clearable: true,
 	disabled: false,
 	id: '',
