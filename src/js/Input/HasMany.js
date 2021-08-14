@@ -131,7 +131,7 @@ export default function HasMany({
 										<Component
 											{...attribute}
 											afterChange={afterChange}
-											data-unique-name={`${value.type}.${value.id}.${attribute.name}`}
+											data-unique-name={`${name}.${value.id}.${attribute.name}`}
 											name={`${name}.${i}.${attribute.name}`}
 										/>
 										{hasError && <div className="formosa-field__error">{formState.errors[rowKey].join((<br />))}</div>}
