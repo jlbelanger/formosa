@@ -7,5 +7,7 @@ export default React.createContext(
 		errors: {},
 		message: '',
 		row: {},
+		setRow: null,
+		setValues: null,
 	}
 );

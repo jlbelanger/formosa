@@ -5,6 +5,11 @@
 		"attributes": {
 			"name": "Apple",
 			"slug": "apple",
+			"description": "Lorem ipsum dolor sit amet.",
+			"is_public": true,
+			"shape": "sphere",
+			"category": "fruit",
+			"date": "1968-11-22 12:00:00",
 			"metadata": {
 				"colour": "red"
 			}

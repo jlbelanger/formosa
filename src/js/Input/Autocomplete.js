@@ -4,9 +4,7 @@ import Api from '../Helpers/Api';
 import { ReactComponent as CloseIcon } from '../../svg/x.svg';
 import FormContext from '../FormContext';
 import get from 'get-value';
-import getNewDirty from '../Helpers/FormState';
 import PropTypes from 'prop-types';
-import set from 'set-value';
 
 export default function Autocomplete({
 	afterChange,
@@ -23,7 +21,7 @@ export default function Autocomplete({
 	valueKey,
 	...otherProps
 }) {
-	const { formState, setFormState } = useContext(FormContext);
+	const { formState } = useContext(FormContext);
 	const [filter, setFilter] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
@@ -75,26 +73,20 @@ export default function Autocomplete({
 	};
 
 	const addValue = (value) => {
-		const row = { ...formState.row };
-		let newValues = get(row, name) || [];
+		let newValue;
 		if (max === 1) {
-			newValues = value;
-		} else {
-			newValues.push(value);
-		}
-		set(row, name, newValues);
-		const newFormState = {
-			...formState,
-			dirty: getNewDirty(formState.dirty, name),
-			row,
-		};
-		setFormState(newFormState);
+			newValue = value;
 
-		if (max === 1) {
 			setSelectedValues([value]);
 		} else {
+			newValue = get(formState.row, name) || [];
+			newValue.push(value);
+
 			setSelectedValues([...selectedValues, value]);
 		}
+
+		const e = { target: { name } };
+		formState.setValues(formState, e, name, newValue, afterChange);
 
 		setIsOpen(false);
 		setFilter('');
@@ -106,43 +98,28 @@ export default function Autocomplete({
 		} else {
 			focus();
 		}
-
-		if (afterChange) {
-			afterChange({ target: { name } }, newFormState);
-		}
 	};
 
 	const removeValue = (value) => {
-		const row = { ...formState.row };
-		let newValues = get(row, name);
+		let newValue = get(formState.row, name);
 		if (max !== 1) {
-			const index = newValues.indexOf(value);
-			newValues.splice(index, 1);
-		} else {
-			newValues = null;
-		}
-		set(row, name, newValues);
-		const newFormState = {
-			...formState,
-			dirty: getNewDirty(formState.dirty, name),
-			row,
-		};
-		setFormState(newFormState);
+			let index = newValue.indexOf(value);
+			newValue.splice(index, 1);
 
-		if (max === 1) {
-			setSelectedValues([]);
-		} else {
 			const newSelectedValues = [...selectedValues];
-			const index = newSelectedValues.indexOf(value);
+			index = newSelectedValues.indexOf(value);
 			newSelectedValues.splice(index, 1);
 			setSelectedValues(newSelectedValues);
+		} else {
+			newValue = null;
+
+			setSelectedValues([]);
 		}
+
+		const e = { target: { name } };
+		formState.setValues(formState, e, name, newValue, afterChange);
 
 		focus();
-
-		if (afterChange) {
-			afterChange({ target: { name } }, newFormState);
-		}
 	};
 
 	const onChange = (e) => {
@@ -198,13 +175,8 @@ export default function Autocomplete({
 	};
 
 	const clear = () => {
-		const newRow = { ...formState.row };
-		set(newRow, name, []);
-		setFormState({
-			...formState,
-			dirty: getNewDirty(formState.dirty, name),
-			row: newRow,
-		});
+		const e = { target: { name } };
+		formState.setValues(formState, e, name, [], afterChange);
 
 		setFilter('');
 		setSelectedValues([]);
@@ -232,22 +204,32 @@ export default function Autocomplete({
 		>
 			<div style={{ display: 'flex' }}>
 				<ul className="formosa-autocomplete__values">
-					{selectedValues && selectedValues.map((value) => (
-						<li className="formosa-autocomplete__value" key={JSON.stringify(value)}>
-							{labelFn ? labelFn(value) : value.label}
-							{!disabled && (
-								<button
-									className="formosa-autocomplete__value__remove"
-									data-value={JSON.stringify(value)}
-									onClick={onClickRemoveOption}
-									type="button"
-								>
-									<CloseIcon height="12" width="12" />
-									Remove
-								</button>
-							)}
-						</li>
-					))}
+					{selectedValues && selectedValues.map((value) => {
+						let label;
+						if (labelFn) {
+							label = labelFn(value);
+						} else if (Object.prototype.hasOwnProperty.call(value, 'label')) {
+							label = value.label;
+						} else {
+							label = value;
+						}
+						return (
+							<li className="formosa-autocomplete__value" key={JSON.stringify(value)}>
+								{label}
+								{!disabled && (
+									<button
+										className="formosa-autocomplete__value__remove"
+										data-value={JSON.stringify(value)}
+										onClick={onClickRemoveOption}
+										type="button"
+									>
+										<CloseIcon height="12" width="12" />
+										Remove
+									</button>
+								)}
+							</li>
+						);
+					})}
 					{canAddValues && (
 						<li className="formosa-autocomplete__value formosa-autocomplete__value--input">
 							<input

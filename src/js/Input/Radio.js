@@ -1,9 +1,7 @@
 import React, { useContext } from 'react';
 import FormContext from '../FormContext';
 import get from 'get-value';
-import getNewDirty from '../Helpers/FormState';
 import PropTypes from 'prop-types';
-import set from 'set-value';
 
 export default function Radio({
 	afterChange,
@@ -13,19 +11,9 @@ export default function Radio({
 	value,
 	...otherProps
 }) {
-	const { formState, setFormState } = useContext(FormContext);
+	const { formState } = useContext(FormContext);
 	const onChange = (e) => {
-		const newRow = { ...formState.row };
-		set(newRow, e.target.name, e.target.value);
-
-		setFormState({
-			...formState,
-			dirty: getNewDirty(formState.dirty, e.target.name),
-			row: newRow,
-		});
-		if (afterChange) {
-			afterChange(e);
-		}
+		formState.setValues(formState, e, e.target.name, e.target.value, afterChange);
 	};
 	const checked = get(formState.row, name) === value;
 

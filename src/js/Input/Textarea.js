@@ -1,26 +1,18 @@
 import React, { useContext } from 'react';
 import FormContext from '../FormContext';
 import get from 'get-value';
-import getNewDirty from '../Helpers/FormState';
 import PropTypes from 'prop-types';
-import set from 'set-value';
 
 export default function Textarea({
+	afterChange,
 	className,
 	id,
 	name,
 	...otherProps
 }) {
-	const { formState, setFormState } = useContext(FormContext);
+	const { formState } = useContext(FormContext);
 	const onChange = (e) => {
-		const newRow = { ...formState.row };
-		set(newRow, e.target.name, e.target.value);
-
-		setFormState({
-			...formState,
-			dirty: getNewDirty(formState.dirty, e.target.name),
-			row: newRow,
-		});
+		formState.setValues(formState, e, e.target.name, e.target.value, afterChange);
 	};
 
 	return (
@@ -36,12 +28,14 @@ export default function Textarea({
 }
 
 Textarea.propTypes = {
+	afterChange: PropTypes.func,
 	className: PropTypes.string,
 	id: PropTypes.string,
 	name: PropTypes.string.isRequired,
 };
 
 Textarea.defaultProps = {
+	afterChange: null,
 	className: '',
 	id: null,
 };
