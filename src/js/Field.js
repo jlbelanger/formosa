@@ -98,7 +98,7 @@ export default function Field({
 				{label && labelPosition === 'after' && labelComponent}
 				{note && <div className="formosa-field__note">{typeof note === 'function' ? note(get(formState.row, name)) : note}</div>}
 				{postfix}
-				{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
+				{hasError && <div className="formosa-field__error" id={`${id || name}-error`}>{formState.errors[name].join((<br />))}</div>}
 			</div>
 		</div>
 	);
