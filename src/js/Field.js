@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 export default function Field({
 	component,
 	id,
+	inputWrapperAttributes,
 	label,
 	labelNote,
 	labelPosition,
@@ -91,7 +92,7 @@ export default function Field({
 		<div className={wrapperClassNameList.join(' ')} {...wrapperAttributes}>
 			{label && labelPosition === 'before' && labelComponent}
 			{label && labelPosition === 'after' && <div className="formosa-label-wrapper" />}
-			<div className={inputWrapperClassNameList.join(' ')}>
+			<div className={inputWrapperClassNameList.join(' ')} {...inputWrapperAttributes}>
 				{prefix}
 				{input}
 				{label && labelPosition === 'after' && labelComponent}
@@ -106,6 +107,7 @@ export default function Field({
 Field.propTypes = {
 	component: PropTypes.func,
 	id: PropTypes.string,
+	inputWrapperAttributes: PropTypes.object,
 	label: PropTypes.string,
 	labelNote: PropTypes.string,
 	labelPosition: PropTypes.string,
@@ -127,6 +129,7 @@ Field.propTypes = {
 Field.defaultProps = {
 	component: null,
 	id: null,
+	inputWrapperAttributes: {},
 	label: '',
 	labelNote: '',
 	labelPosition: 'before',
