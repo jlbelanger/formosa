@@ -35,7 +35,7 @@ Submit.propTypes = {
 
 Submit.defaultProps = {
 	className: '',
-	label: 'Save',
+	label: 'Submit',
 	prefix: null,
 	postfix: null,
 };
