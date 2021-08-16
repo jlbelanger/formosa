@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 export default function Label({
+	className,
 	htmlFor,
 	label,
 	note,
@@ -9,9 +10,9 @@ export default function Label({
 	type,
 	...otherProps
 }) {
-	let className = 'formosa-label';
+	let labelClassName = 'formosa-label';
 	if (required) {
-		className += ' formosa-label--required';
+		labelClassName += ' formosa-label--required';
 	}
 
 	let wrapperClassName = 'formosa-label-wrapper';
@@ -26,13 +27,14 @@ export default function Label({
 
 	return (
 		<div className={wrapperClassName}>
-			<label className={className} {...props} {...otherProps}>{label}</label>
+			<label className={`${labelClassName} ${className}`.trim()} {...props} {...otherProps}>{label}</label>
 			{note && <span className="formosa-label__note">{note}</span>}
 		</div>
 	);
 }
 
 Label.propTypes = {
+	className: PropTypes.string,
 	htmlFor: PropTypes.string,
 	label: PropTypes.string,
 	note: PropTypes.string,
@@ -41,6 +43,7 @@ Label.propTypes = {
 };
 
 Label.defaultProps = {
+	className: '',
 	htmlFor: '',
 	label: '',
 	note: '',
