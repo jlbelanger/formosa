@@ -104,12 +104,16 @@ export default function Autocomplete({
 		let newValue = get(formState.row, name);
 		if (max !== 1) {
 			let index = newValue.indexOf(value);
-			newValue.splice(index, 1);
+			if (index > -1) {
+				newValue.splice(index, 1);
+			}
 
 			const newSelectedValues = [...selectedValues];
 			index = newSelectedValues.indexOf(value);
-			newSelectedValues.splice(index, 1);
-			setSelectedValues(newSelectedValues);
+			if (index > -1) {
+				newSelectedValues.splice(index, 1);
+				setSelectedValues(newSelectedValues);
+			}
 		} else {
 			newValue = null;
 
@@ -171,7 +175,11 @@ export default function Autocomplete({
 	};
 
 	const onClickRemoveOption = (e) => {
-		removeValue(JSON.parse(e.target.getAttribute('data-value')));
+		let button = e.target;
+		while (button && button.tagName.toUpperCase() !== 'BUTTON') {
+			button = button.parentNode;
+		}
+		removeValue(selectedValues[button.getAttribute('data-index')]);
 	};
 
 	const clear = () => {
@@ -204,7 +212,7 @@ export default function Autocomplete({
 		>
 			<div style={{ display: 'flex' }}>
 				<ul className="formosa-autocomplete__values">
-					{selectedValues && selectedValues.map((value) => {
+					{selectedValues && selectedValues.map((value, i) => {
 						let label;
 						if (labelFn) {
 							label = labelFn(value);
@@ -219,7 +227,7 @@ export default function Autocomplete({
 								{!disabled && (
 									<button
 										className="formosa-autocomplete__value__remove"
-										data-value={JSON.stringify(value)}
+										data-index={i}
 										onClick={onClickRemoveOption}
 										type="button"
 									>
