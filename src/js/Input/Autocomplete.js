@@ -55,7 +55,10 @@ export default function Autocomplete({
 		return () => {};
 	}, [options]);
 
-	const isSelected = (option) => ((get(formState.row, name) || []).indexOf(option.value) > -1);
+	const isSelected = (option) => {
+		const values = get(formState.row, name) || [];
+		return values.findIndex((value) => (value.value === option.value)) > -1;
+	};
 
 	let filteredOptions = [];
 	if (optionValues !== null && filter) {
