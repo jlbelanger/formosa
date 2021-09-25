@@ -206,7 +206,7 @@ export const getBody = (
 		});
 
 		if (filterBody) {
-			body = filterBody(body);
+			body = filterBody(body, formState.row);
 		}
 
 		if (Object.keys(data.attributes).length <= 0) {
