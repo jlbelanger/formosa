@@ -174,18 +174,18 @@ export const getBody = (
 			const cleanKey = key.replace(/\..+$/, '');
 			if (relationshipNames.includes(cleanKey)) {
 				data.relationships[cleanKey] = {
-					data: values[cleanKey],
+					data: get(values, cleanKey),
 				};
 			} else if (relationshipNames.includes(key)) {
 				data.relationships[key] = {
-					data: values[key],
+					data: get(values, cleanKey),
 				};
 			} else if (key.startsWith('meta.')) {
 				set(data, key, get(values, key));
 			} else if (key === 'meta') {
 				data.meta = values.meta;
 			} else if (key !== '_new' && !key.startsWith('_new.')) {
-				set(data.attributes, key, values[key]);
+				set(data.attributes, key, get(values, key));
 			}
 		});
 
