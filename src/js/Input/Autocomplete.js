@@ -82,8 +82,12 @@ export default function Autocomplete({
 
 			setSelectedValues([value]);
 		} else {
-			newValue = get(formState.row, name) || [];
-			newValue.push(value);
+			newValue = get(formState.row, name);
+			if (newValue) {
+				newValue = [...newValue, value];
+			} else {
+				newValue = [value];
+			}
 
 			setSelectedValues([...selectedValues, value]);
 		}
