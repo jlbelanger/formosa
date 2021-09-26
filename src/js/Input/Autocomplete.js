@@ -210,10 +210,12 @@ export default function Autocomplete({
 
 	const canAddValues = !disabled && (max === null || selectedValues.length < max);
 
+	const dataValue = JSON.stringify(get(formState.row, name));
+
 	return (
 		<div
 			className={className.join(' ')}
-			data-value={JSON.stringify(get(formState.row, name))}
+			data-value={dataValue === undefined ? '' : dataValue}
 			id={`${id || name}-wrapper`}
 			tabIndex={-1}
 		>
