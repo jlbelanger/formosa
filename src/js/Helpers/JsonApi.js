@@ -1,9 +1,24 @@
 import get from 'get-value';
 import set from 'set-value';
 
-const findIncluded = (included, id, type) => (included.find((data) => (data.id === id && data.type === type)));
+const findIncluded = (included, id, type, mainRecord) => {
+	if (mainRecord && id === mainRecord.id && type === mainRecord.type) {
+		const output = {
+			id: mainRecord.id,
+			type: mainRecord.type,
+		};
+		if (Object.prototype.hasOwnProperty.call(mainRecord, 'attributes')) {
+			output.attributes = mainRecord.attributes;
+		}
+		if (Object.prototype.hasOwnProperty.call(mainRecord, 'meta')) {
+			output.meta = mainRecord.meta;
+		}
+		return output;
+	}
+	return included.find((data) => (data.id === id && data.type === type));
+};
 
-const deserializeSingle = (data, otherRows = [], included = []) => {
+const deserializeSingle = (data, otherRows = [], included = [], mainRecord = null) => {
 	if (!data) {
 		return data;
 	}
@@ -19,24 +34,24 @@ const deserializeSingle = (data, otherRows = [], included = []) => {
 			output[relationshipName] = data.relationships[relationshipName].data;
 			if (Array.isArray(output[relationshipName])) {
 				output[relationshipName].forEach((rel, i) => {
-					includedRecord = findIncluded(included, rel.id, rel.type);
+					includedRecord = findIncluded(included, rel.id, rel.type, mainRecord);
 					if (includedRecord) {
-						output[relationshipName][i] = deserializeSingle(includedRecord, otherRows, included);
+						output[relationshipName][i] = deserializeSingle(includedRecord, otherRows, included, mainRecord);
 					} else {
-						includedRecord = findIncluded(otherRows, rel.id, rel.type);
+						includedRecord = findIncluded(otherRows, rel.id, rel.type, mainRecord);
 						if (includedRecord) {
-							output[relationshipName][i] = deserializeSingle(includedRecord, otherRows, included);
+							output[relationshipName][i] = deserializeSingle(includedRecord, otherRows, included, mainRecord);
 						}
 					}
 				});
 			} else if (output[relationshipName] !== null) {
-				includedRecord = findIncluded(included, output[relationshipName].id, output[relationshipName].type);
+				includedRecord = findIncluded(included, output[relationshipName].id, output[relationshipName].type, mainRecord);
 				if (includedRecord) {
-					output[relationshipName] = deserializeSingle(includedRecord, otherRows, included);
+					output[relationshipName] = deserializeSingle(includedRecord, otherRows, included, mainRecord);
 				} else {
-					includedRecord = findIncluded(otherRows, output[relationshipName].id, output[relationshipName].type);
+					includedRecord = findIncluded(otherRows, output[relationshipName].id, output[relationshipName].type, mainRecord);
 					if (includedRecord) {
-						output[relationshipName] = deserializeSingle(includedRecord, otherRows, included);
+						output[relationshipName] = deserializeSingle(includedRecord, otherRows, included, mainRecord);
 					}
 				}
 			}
@@ -54,11 +69,11 @@ export const deserialize = (body) => {
 	if (Array.isArray(body.data)) {
 		const output = [];
 		body.data.forEach((data) => {
-			output.push(deserializeSingle(data, body.data, body.included));
+			output.push(deserializeSingle(data, body.data, body.included, null));
 		});
 		return output;
 	}
-	return deserializeSingle(body.data, [], body.included);
+	return deserializeSingle(body.data, [], body.included, body.data);
 };
 
 const cleanSingleRelationship = (values) => ({
