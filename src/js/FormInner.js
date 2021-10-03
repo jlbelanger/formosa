@@ -92,6 +92,9 @@ export default function FormInner({
 			.catch((response) => {
 				if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
 					formosaState.addToast('Error.', 'error');
+				} else if (Object.prototype.hasOwnProperty.call(response, 'message')) {
+					formosaState.addToast(response.message, 'error');
+					return;
 				} else {
 					formosaState.addToast('Server error.', 'error');
 					throw response;
