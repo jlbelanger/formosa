@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FormContext from './FormContext';
 import FormInner from './FormInner';
 import getNewDirty from './Helpers/FormState';
@@ -39,6 +39,13 @@ export default function Form({
 			fs.setRow(newRow);
 		},
 	});
+
+	useEffect(() => {
+		setFormState({
+			...formState,
+			row,
+		});
+	}, [row]);
 
 	return (
 		<FormContext.Provider value={{ formState, setFormState }}>
