@@ -231,7 +231,7 @@ export default function Autocomplete({
 							label = value;
 						}
 						return (
-							<li className="formosa-autocomplete__value" key={JSON.stringify(value)}>
+							<li className="formosa-autocomplete__value formosa-autocomplete__value--item" key={JSON.stringify(value)}>
 								{label}
 								{!disabled && (
 									<button
