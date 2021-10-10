@@ -27,19 +27,17 @@ export default function Autocomplete({
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
-	const [selectedValues, setSelectedValues] = useState(() => {
-		let values = get(formState.row, name) || null;
-		if (max === 1) {
-			if (!values) {
-				values = [];
-			} else {
-				values = [values];
-			}
-		} else if (!values) {
-			values = [];
+
+	let selectedValues = get(formState.row, name) || null;
+	if (max === 1) {
+		if (!selectedValues) {
+			selectedValues = [];
+		} else {
+			selectedValues = [selectedValues];
 		}
-		return values;
-	});
+	} else if (!selectedValues) {
+		selectedValues = [];
+	}
 
 	useEffect(() => {
 		if (optionValues === null && url) {
@@ -81,7 +79,7 @@ export default function Autocomplete({
 		if (max === 1) {
 			newValue = value;
 
-			setSelectedValues([value]);
+			selectedValues = [value];
 		} else {
 			newValue = get(formState.row, name);
 			if (newValue) {
@@ -90,7 +88,7 @@ export default function Autocomplete({
 				newValue = [value];
 			}
 
-			setSelectedValues([...selectedValues, value]);
+			selectedValues = [...selectedValues, value];
 		}
 
 		const e = { target: { name } };
@@ -124,12 +122,12 @@ export default function Autocomplete({
 			index = newSelectedValues.indexOf(value);
 			if (index > -1) {
 				newSelectedValues.splice(index, 1);
-				setSelectedValues(newSelectedValues);
+				selectedValues = newSelectedValues;
 			}
 		} else {
 			newValue = null;
 
-			setSelectedValues([]);
+			selectedValues = [];
 		}
 
 		const e = { target: { name } };
@@ -199,7 +197,7 @@ export default function Autocomplete({
 		formState.setValues(formState, e, name, [], afterChange);
 
 		setFilter('');
-		setSelectedValues([]);
+		selectedValues = [];
 		focus();
 	};
 
