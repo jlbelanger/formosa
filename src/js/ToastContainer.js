@@ -11,6 +11,7 @@ export default function ToastContainer() {
 					className={formosaState.toasts[id].className}
 					key={id}
 					id={id}
+					milliseconds={formosaState.toasts[id].milliseconds}
 					text={formosaState.toasts[id].text}
 				/>
 			))}

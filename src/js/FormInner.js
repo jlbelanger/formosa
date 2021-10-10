@@ -93,7 +93,7 @@ export default function FormInner({
 				if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
 					formosaState.addToast('Error.', 'error');
 				} else if (Object.prototype.hasOwnProperty.call(response, 'message')) {
-					formosaState.addToast(response.message, 'error');
+					formosaState.addToast(response.message, 'error', 10000);
 					return;
 				} else {
 					formosaState.addToast('Server error.', 'error');

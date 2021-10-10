@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 export default function Toast({
 	className,
 	id,
+	milliseconds,
 	text,
 }) {
 	const { formosaState, setFormosaState } = useContext(FormosaContext);
@@ -15,7 +16,7 @@ export default function Toast({
 		setFormosaState({ ...formosaState, toasts });
 	};
 	return (
-		<div className={`formosa-toast ${className}`.trim()}>
+		<div className={`formosa-toast ${className}`.trim()} style={{ animationDuration: `${milliseconds}ms` }}>
 			<div className="formosa-toast__text">{text}</div>
 			<button className="formosa-toast__close" onClick={removeToast} type="button">
 				<CloseIcon className="formosa-toast__close-icon" height="16" width="16" />
@@ -28,6 +29,7 @@ export default function Toast({
 Toast.propTypes = {
 	className: PropTypes.string,
 	id: PropTypes.string.isRequired,
+	milliseconds: PropTypes.number.isRequired,
 	text: PropTypes.string.isRequired,
 };
 
