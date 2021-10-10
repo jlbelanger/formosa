@@ -7,6 +7,7 @@ import get from 'get-value';
 import PropTypes from 'prop-types';
 
 export default function Autocomplete({
+	afterAdd,
 	afterChange,
 	clearable,
 	disabled,
@@ -104,6 +105,10 @@ export default function Autocomplete({
 			}
 		} else {
 			focus();
+		}
+
+		if (afterAdd) {
+			afterAdd();
 		}
 	};
 
@@ -304,6 +309,7 @@ export default function Autocomplete({
 }
 
 Autocomplete.propTypes = {
+	afterAdd: PropTypes.func,
 	afterChange: PropTypes.func,
 	clearable: PropTypes.bool,
 	disabled: PropTypes.bool,
@@ -328,6 +334,7 @@ Autocomplete.propTypes = {
 };
 
 Autocomplete.defaultProps = {
+	afterAdd: null,
 	afterChange: null,
 	clearable: true,
 	disabled: false,
