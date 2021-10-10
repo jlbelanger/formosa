@@ -18,7 +18,7 @@ export default function Form({
 		message: '',
 		row,
 		setRow,
-		setValues: (fs, e, name, value, afterChange) => {
+		setValues: (fs, e, name, value, afterChange = null) => {
 			let newDirty = getNewDirty(fs.dirty, name);
 			const newRow = { ...fs.row };
 			set(newRow, name, value);
