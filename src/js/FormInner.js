@@ -7,6 +7,7 @@ import Message from './Message';
 import PropTypes from 'prop-types';
 
 export default function FormInner({
+	afterNoSubmit,
 	afterSubmit,
 	children,
 	clearOnSubmit,
@@ -37,6 +38,9 @@ export default function FormInner({
 
 		if (preventEmptyRequest && formState.dirty.length <= 0) {
 			formosaState.addToast('No changes to save.');
+			if (afterNoSubmit) {
+				afterNoSubmit();
+			}
 			return;
 		}
 
@@ -145,6 +149,7 @@ export default function FormInner({
 }
 
 FormInner.propTypes = {
+	afterNoSubmit: PropTypes.func,
 	afterSubmit: PropTypes.func,
 	children: PropTypes.node.isRequired,
 	clearOnSubmit: PropTypes.bool,
@@ -164,6 +169,7 @@ FormInner.propTypes = {
 };
 
 FormInner.defaultProps = {
+	afterNoSubmit: null,
 	afterSubmit: null,
 	clearOnSubmit: false,
 	defaultRow: {},
