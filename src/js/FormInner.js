@@ -109,6 +109,7 @@ export default function FormInner({
 				response.errors.forEach((error) => {
 					if (Object.prototype.hasOwnProperty.call(error, 'source')) {
 						key = error.source.pointer.replace('/data/attributes/', '');
+						key = key.replace('/data/meta/', 'meta.');
 						if (key.startsWith('/included/')) {
 							const i = key.replace(/^\/included\/(\d+)\/.+$/g, '$1');
 							const includedRecord = body.included[parseInt(i, 10)];

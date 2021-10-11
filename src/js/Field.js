@@ -102,7 +102,11 @@ export default function Field({
 					</div>
 				)}
 				{postfix}
-				{hasError && <div className="formosa-field__error" id={`${id || name}-error`}>{formState.errors[name].join((<br />))}</div>}
+				{hasError && (
+					<div className="formosa-field__error" id={`${id || name}-error`}>
+						{formState.errors[name].map((e) => (<div>{e}</div>))}
+					</div>
+				)}
 			</div>
 		</div>
 	);
