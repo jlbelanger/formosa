@@ -36,7 +36,9 @@ export default function Form({
 				dirty: newDirty,
 				row: newRow,
 			});
-			fs.setRow(newRow);
+			if (fs.setRow) {
+				fs.setRow(newRow);
+			}
 		},
 	});
 
