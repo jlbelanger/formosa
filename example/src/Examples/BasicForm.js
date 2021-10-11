@@ -10,9 +10,14 @@ export default function BasicForm() {
 		'Pear',
 	];
 
+	const onSubmit = (e) => {
+		e.preventDefault();
+		alert('Form has been submitted.');
+	};
+
 	return (
 		<>
-			<Form row={row} setRow={setRow}>
+			<Form onSubmit={onSubmit} row={row} setRow={setRow}>
 				<Field
 					label="Text"
 					name="text"
