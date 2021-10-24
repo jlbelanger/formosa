@@ -2,17 +2,16 @@ import { objectToString, stringToObject } from '../Helpers/Datetime';
 import React, { useContext, useState } from 'react';
 import FormContext from '../FormContext';
 import get from 'get-value';
-import getNewDirty from '../Helpers/FormState';
 import Input from '../Input';
 import PropTypes from 'prop-types';
 import Select from './Select';
-import set from 'set-value';
 
 export default function Datetime({
+	afterChange,
 	convertToTimezone,
 	name,
 }) {
-	const { formState, setFormState } = useContext(FormContext);
+	const { formState } = useContext(FormContext);
 	const [values, setValues] = useState(stringToObject(get(formState.row, name) || '', convertToTimezone));
 	const onChange = (e) => {
 		const key = e.target.getAttribute('data-datetime');
@@ -22,14 +21,7 @@ export default function Datetime({
 		};
 		setValues(newValues);
 
-		const newRow = { ...formState.row };
-		set(newRow, name, objectToString(newValues));
-
-		setFormState({
-			...formState,
-			dirty: getNewDirty(formState.dirty, name),
-			row: newRow,
-		});
+		formState.setValues(formState, e, name, objectToString(newValues), afterChange);
 	};
 
 	return (
@@ -133,10 +125,12 @@ export default function Datetime({
 }
 
 Datetime.propTypes = {
+	afterChange: PropTypes.func,
 	convertToTimezone: PropTypes.string,
 	name: PropTypes.string.isRequired,
 };
 
 Datetime.defaultProps = {
+	afterChange: null,
 	convertToTimezone: 'UTC',
 };

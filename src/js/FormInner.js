@@ -7,6 +7,7 @@ import Message from './Message';
 import PropTypes from 'prop-types';
 
 export default function FormInner({
+	afterNoSubmit,
 	afterSubmit,
 	children,
 	clearOnSubmit,
@@ -37,6 +38,9 @@ export default function FormInner({
 
 		if (preventEmptyRequest && formState.dirty.length <= 0) {
 			formosaState.addToast('No changes to save.');
+			if (afterNoSubmit) {
+				afterNoSubmit();
+			}
 			return;
 		}
 
@@ -92,6 +96,9 @@ export default function FormInner({
 			.catch((response) => {
 				if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
 					formosaState.addToast('Error.', 'error');
+				} else if (Object.prototype.hasOwnProperty.call(response, 'message')) {
+					formosaState.addToast(response.message, 'error', 10000);
+					return;
 				} else {
 					formosaState.addToast('Server error.', 'error');
 					throw response;
@@ -102,6 +109,7 @@ export default function FormInner({
 				response.errors.forEach((error) => {
 					if (Object.prototype.hasOwnProperty.call(error, 'source')) {
 						key = error.source.pointer.replace('/data/attributes/', '');
+						key = key.replace('/data/meta/', 'meta.');
 						if (key.startsWith('/included/')) {
 							const i = key.replace(/^\/included\/(\d+)\/.+$/g, '$1');
 							const includedRecord = body.included[parseInt(i, 10)];
@@ -142,6 +150,7 @@ export default function FormInner({
 }
 
 FormInner.propTypes = {
+	afterNoSubmit: PropTypes.func,
 	afterSubmit: PropTypes.func,
 	children: PropTypes.node.isRequired,
 	clearOnSubmit: PropTypes.bool,
@@ -161,6 +170,7 @@ FormInner.propTypes = {
 };
 
 FormInner.defaultProps = {
+	afterNoSubmit: null,
 	afterSubmit: null,
 	clearOnSubmit: false,
 	defaultRow: {},

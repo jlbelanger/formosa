@@ -1,7 +1,9 @@
 import { Field, Form, Submit } from '@jlbelanger/formosa';
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Options() {
+	const [row, setRow] = useState({});
+
 	const optionsObject = {
 		apple: 'Apple',
 		peach: 'Peach',
@@ -17,10 +19,10 @@ export default function Options() {
 	];
 
 	const optionsArrayOfObjects = [
-		{ id: '1', randomLabelName: 'Apple' },
-		{ id: '2', randomLabelName: 'Peach' },
-		{ id: '3', randomLabelName: 'Banana' },
-		{ id: '4', randomLabelName: 'Pear' },
+		{ randomValueName: '1', randomLabelName: 'Apple' },
+		{ randomValueName: '2', randomLabelName: 'Peach' },
+		{ randomValueName: '3', randomLabelName: 'Banana' },
+		{ randomValueName: '4', randomLabelName: 'Pear' },
 	];
 
 	const optionsObjectAutocomplete = {
@@ -102,153 +104,163 @@ export default function Options() {
 	];
 
 	const optionsArrayOfObjectsAutocomplete = [
-		{ id: '1', randomLabelName: 'Apple' },
-		{ id: '2', randomLabelName: 'Apricot' },
-		{ id: '3', randomLabelName: 'Avocado' },
-		{ id: '4', randomLabelName: 'Banana' },
-		{ id: '5', randomLabelName: 'Blackberry' },
-		{ id: '6', randomLabelName: 'Blueberry' },
-		{ id: '7', randomLabelName: 'Cherry' },
-		{ id: '8', randomLabelName: 'Coconut' },
-		{ id: '9', randomLabelName: 'Cranberry' },
-		{ id: '10', randomLabelName: 'Durian' },
-		{ id: '11', randomLabelName: 'Eggplant' },
-		{ id: '12', randomLabelName: 'Fig' },
-		{ id: '13', randomLabelName: 'Grape' },
-		{ id: '14', randomLabelName: 'Honeyberry' },
-		{ id: '15', randomLabelName: 'Jackfruit' },
-		{ id: '16', randomLabelName: 'Kiwi' },
-		{ id: '17', randomLabelName: 'Lemon' },
-		{ id: '18', randomLabelName: 'Lime' },
-		{ id: '19', randomLabelName: 'Mango' },
-		{ id: '20', randomLabelName: 'Melon' },
-		{ id: '21', randomLabelName: 'Nectarine' },
-		{ id: '22', randomLabelName: 'Orange' },
-		{ id: '23', randomLabelName: 'Peach' },
-		{ id: '24', randomLabelName: 'Pear' },
-		{ id: '25', randomLabelName: 'Persimmon' },
-		{ id: '26', randomLabelName: 'Pineapple' },
-		{ id: '27', randomLabelName: 'Plum' },
-		{ id: '28', randomLabelName: 'Pumpkin' },
-		{ id: '29', randomLabelName: 'Quinoa' },
-		{ id: '30', randomLabelName: 'Raspberry' },
-		{ id: '31', randomLabelName: 'Strawberry' },
-		{ id: '32', randomLabelName: 'Tomato' },
-		{ id: '33', randomLabelName: 'Uglifruit' },
-		{ id: '34', randomLabelName: 'Vanilla' },
-		{ id: '35', randomLabelName: 'Watermelon' },
-		{ id: '36', randomLabelName: 'Zucchini' },
+		{ randomValueName: '1', randomLabelName: 'Apple' },
+		{ randomValueName: '2', randomLabelName: 'Apricot' },
+		{ randomValueName: '3', randomLabelName: 'Avocado' },
+		{ randomValueName: '4', randomLabelName: 'Banana' },
+		{ randomValueName: '5', randomLabelName: 'Blackberry' },
+		{ randomValueName: '6', randomLabelName: 'Blueberry' },
+		{ randomValueName: '7', randomLabelName: 'Cherry' },
+		{ randomValueName: '8', randomLabelName: 'Coconut' },
+		{ randomValueName: '9', randomLabelName: 'Cranberry' },
+		{ randomValueName: '10', randomLabelName: 'Durian' },
+		{ randomValueName: '11', randomLabelName: 'Eggplant' },
+		{ randomValueName: '12', randomLabelName: 'Fig' },
+		{ randomValueName: '13', randomLabelName: 'Grape' },
+		{ randomValueName: '14', randomLabelName: 'Honeyberry' },
+		{ randomValueName: '15', randomLabelName: 'Jackfruit' },
+		{ randomValueName: '16', randomLabelName: 'Kiwi' },
+		{ randomValueName: '17', randomLabelName: 'Lemon' },
+		{ randomValueName: '18', randomLabelName: 'Lime' },
+		{ randomValueName: '19', randomLabelName: 'Mango' },
+		{ randomValueName: '20', randomLabelName: 'Melon' },
+		{ randomValueName: '21', randomLabelName: 'Nectarine' },
+		{ randomValueName: '22', randomLabelName: 'Orange' },
+		{ randomValueName: '23', randomLabelName: 'Peach' },
+		{ randomValueName: '24', randomLabelName: 'Pear' },
+		{ randomValueName: '25', randomLabelName: 'Persimmon' },
+		{ randomValueName: '26', randomLabelName: 'Pineapple' },
+		{ randomValueName: '27', randomLabelName: 'Plum' },
+		{ randomValueName: '28', randomLabelName: 'Pumpkin' },
+		{ randomValueName: '29', randomLabelName: 'Quinoa' },
+		{ randomValueName: '30', randomLabelName: 'Raspberry' },
+		{ randomValueName: '31', randomLabelName: 'Strawberry' },
+		{ randomValueName: '32', randomLabelName: 'Tomato' },
+		{ randomValueName: '33', randomLabelName: 'Uglifruit' },
+		{ randomValueName: '34', randomLabelName: 'Vanilla' },
+		{ randomValueName: '35', randomLabelName: 'Watermelon' },
+		{ randomValueName: '36', randomLabelName: 'Zucchini' },
 	];
 
 	return (
-		<Form>
-			<Field
-				label="Select"
-				name="select"
-				type="select"
-				note={JSON.stringify(optionsArray)}
-				options={optionsArray}
-			/>
+		<>
+			<Form row={row} setRow={setRow}>
+				<Field
+					label="Select"
+					name="select"
+					type="select"
+					note={`options={${JSON.stringify(optionsArray, null, 1)}}`}
+					options={optionsArray}
+				/>
 
-			<Field
-				label="Select object"
-				name="select_object"
-				type="select"
-				note={JSON.stringify(optionsObject)}
-				options={optionsObject}
-			/>
+				<Field
+					label="Select object"
+					name="select_object"
+					type="select"
+					note={`options={${JSON.stringify(optionsObject, null, 1)}}`}
+					options={optionsObject}
+				/>
 
-			<Field
-				label="Select array of objects"
-				labelKey="randomLabelName"
-				name="select_array_objects"
-				type="select"
-				note={JSON.stringify(optionsArrayOfObjects)}
-				options={optionsArrayOfObjects}
-				valueKey="id"
-			/>
+				<Field
+					label="Select array of objects"
+					labelKey="randomLabelName"
+					name="select_array_objects"
+					type="select"
+					note={`options={${JSON.stringify(optionsArrayOfObjects, null, 1)}}`}
+					options={optionsArrayOfObjects}
+					valueKey="randomValueName"
+				/>
 
-			<Field
-				label="Select from API"
-				name="select_api"
-				type="select"
-				url="food.json"
-				valueKey={(option) => (JSON.stringify({ id: option.id, type: option.type }))}
-			/>
+				<Field
+					label="Select from API"
+					name="select_api"
+					type="select"
+					url="food.json"
+					valueKey={(option) => (JSON.stringify({ id: option.id, type: option.type }))}
+				/>
 
-			<Field
-				label="Radio"
-				name="radio"
-				type="radio"
-				note={JSON.stringify(optionsArray)}
-				options={optionsArray}
-			/>
+				<Field
+					label="Radio"
+					name="radio"
+					type="radio"
+					note={`options={${JSON.stringify(optionsArray, null, 1)}}`}
+					options={optionsArray}
+				/>
 
-			<Field
-				label="Radio object"
-				name="radio_object"
-				type="radio"
-				note={JSON.stringify(optionsObject)}
-				options={optionsObject}
-			/>
+				<Field
+					label="Radio object"
+					name="radio_object"
+					type="radio"
+					note={`options={${JSON.stringify(optionsObject, null, 1)}}`}
+					options={optionsObject}
+				/>
 
-			<Field
-				label="Radio array of objects"
-				labelKey="randomLabelName"
-				name="radio_array_objects"
-				type="radio"
-				note={JSON.stringify(optionsArrayOfObjects)}
-				options={optionsArrayOfObjects}
-				valueKey="id"
-			/>
+				<Field
+					label="Radio array of objects"
+					labelKey="randomLabelName"
+					name="radio_array_objects"
+					type="radio"
+					note={`options={${JSON.stringify(optionsArrayOfObjects, null, 1)}}`}
+					options={optionsArrayOfObjects}
+					valueKey="randomValueName"
+				/>
 
-			<Field
-				label="Radio from API"
-				name="radio_api"
-				type="radio"
-				wrapperAttributes={{
-					style: { maxHeight: '200px', overflow: 'auto' },
-				}}
-				url="food.json"
-				valueKey={(option) => (JSON.stringify({ id: option.id, type: option.type }))}
-			/>
+				<Field
+					label="Radio from API"
+					name="radio_api"
+					type="radio"
+					inputWrapperAttributes={{
+						style: {
+							border: '1px solid #333',
+							boxSizing: 'border-box',
+							maxHeight: '190px',
+							padding: '10px',
+							overflow: 'auto',
+						},
+					}}
+					url="food.json"
+					valueKey={(option) => (JSON.stringify({ id: option.id, type: option.type }))}
+				/>
 
-			<Field
-				label="Autocomplete"
-				name="autocomplete"
-				max={1}
-				type="autocomplete"
-				options={optionsArrayAutocomplete}
-			/>
+				<Field
+					label="Autocomplete"
+					name="autocomplete"
+					max={1}
+					type="autocomplete"
+					options={optionsArrayAutocomplete}
+				/>
 
-			<Field
-				label="Autocomplete object"
-				name="autocomplete_object"
-				max={1}
-				type="autocomplete"
-				options={optionsObjectAutocomplete}
-			/>
+				<Field
+					label="Autocomplete object"
+					name="autocomplete_object"
+					max={1}
+					type="autocomplete"
+					options={optionsObjectAutocomplete}
+				/>
 
-			<Field
-				label="Autocomplete array of objects"
-				labelKey="randomLabelName"
-				name="autocomplete_array_objects"
-				max={1}
-				type="autocomplete"
-				options={optionsArrayOfObjectsAutocomplete}
-				valueKey="id"
-			/>
+				<Field
+					label="Autocomplete array of objects"
+					labelKey="randomLabelName"
+					name="autocomplete_array_objects"
+					max={1}
+					type="autocomplete"
+					options={optionsArrayOfObjectsAutocomplete}
+					valueKey="randomValueName"
+				/>
 
-			<Field
-				label="Autocomplete from API"
-				name="autocomplete_api"
-				max={1}
-				type="autocomplete"
-				url="food.json"
-				valueKey={(option) => (JSON.stringify({ id: option.id, type: option.type }))}
-			/>
+				<Field
+					label="Autocomplete from API"
+					name="autocomplete_api"
+					max={1}
+					type="autocomplete"
+					url="food.json"
+					valueKey={(option) => (JSON.stringify({ id: option.id, type: option.type }))}
+				/>
 
-			<Submit />
-		</Form>
+				<Submit />
+			</Form>
+
+			<code className="code"><pre>{JSON.stringify(row, null, 2)}</pre></code>
+		</>
 	);
 }

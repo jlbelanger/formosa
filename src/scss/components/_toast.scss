@@ -10,13 +10,13 @@
 
 .formosa-toast {
 	align-items: center;
-	animation-duration: 4s;
 	animation-fill-mode: forwards;
 	animation-name: formosa-slide-in-out;
 	background: $formosa-primary-background-color;
 	color: $formosa-primary-color;
 	display: flex;
 	margin: $formosa-toast-margin;
+	max-width: 50vw;
 	width: max-content;
 }
 
@@ -70,11 +70,11 @@
 		transform: translateX(200%) translateZ(0);
 	}
 
-	16% {
+	10% {
 		transform: translateX(0%) translateZ(0);
 	}
 
-	84% {
+	90% {
 		transform: translateX(0%) translateZ(0);
 	}
 

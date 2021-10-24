@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 export default function Field({
 	component,
 	id,
+	inputWrapperAttributes,
 	label,
 	labelNote,
 	labelPosition,
@@ -91,13 +92,21 @@ export default function Field({
 		<div className={wrapperClassNameList.join(' ')} {...wrapperAttributes}>
 			{label && labelPosition === 'before' && labelComponent}
 			{label && labelPosition === 'after' && <div className="formosa-label-wrapper" />}
-			<div className={inputWrapperClassNameList.join(' ')}>
+			<div className={inputWrapperClassNameList.join(' ')} {...inputWrapperAttributes}>
 				{prefix}
 				{input}
 				{label && labelPosition === 'after' && labelComponent}
-				{note && <div className="formosa-field__note">{typeof note === 'function' ? note(get(formState.row, name)) : note}</div>}
+				{note && (
+					<div className="formosa-field__note">
+						{typeof note === 'function' ? note(get(formState.row, name), formState.row) : note}
+					</div>
+				)}
 				{postfix}
-				{hasError && <div className="formosa-field__error">{formState.errors[name].join((<br />))}</div>}
+				{hasError && (
+					<div className="formosa-field__error" id={`${id || name}-error`}>
+						{formState.errors[name].map((e) => (<div>{e}</div>))}
+					</div>
+				)}
 			</div>
 		</div>
 	);
@@ -106,6 +115,7 @@ export default function Field({
 Field.propTypes = {
 	component: PropTypes.func,
 	id: PropTypes.string,
+	inputWrapperAttributes: PropTypes.object,
 	label: PropTypes.string,
 	labelNote: PropTypes.string,
 	labelPosition: PropTypes.string,
@@ -127,6 +137,7 @@ Field.propTypes = {
 Field.defaultProps = {
 	component: null,
 	id: null,
+	inputWrapperAttributes: {},
 	label: '',
 	labelNote: '',
 	labelPosition: 'before',

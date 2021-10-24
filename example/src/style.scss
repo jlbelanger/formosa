@@ -5,6 +5,9 @@ $formosa-dark-mode: true;
 $background-color: if($formosa-dark-mode, #000, #fff);
 $color: if($formosa-dark-mode, #fff, #000);
 $margin: 20px;
+$content-width: 700px;
+$sidebar-width: 400px;
+$breakpoint: $content-width + $sidebar-width + 20px;
 
 body {
 	background: $background-color;
@@ -16,7 +19,11 @@ body {
 
 main {
 	margin: 0 auto;
-	max-width: 900px;
+	max-width: $content-width;
+
+	@media screen and (min-width: #{$breakpoint}) {
+		padding-right: $sidebar-width;
+	}
 }
 
 #header {
@@ -83,4 +90,34 @@ a {
 
 .formosa-field__note {
 	word-wrap: break-word;
+}
+
+.code {
+	pre {
+		background: #333;
+		box-sizing: border-box;
+		font-size: 16px;
+		line-height: 1.5;
+		margin: $margin 0 0;
+		overflow: auto;
+		padding: 12px;
+		white-space: pre-wrap;
+
+		&::before {
+			content: 'Row:';
+			display: block;
+			font-family: sans-serif;
+			font-weight: bold;
+		}
+
+		@media screen and (min-width: #{$breakpoint}) {
+			bottom: 0;
+			margin: 0;
+			position: fixed;
+			right: 0;
+			top: 0;
+			width: $sidebar-width;
+			z-index: 999;
+		}
+	}
 }

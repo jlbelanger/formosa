@@ -21,11 +21,12 @@ export default function FormContainer({ children }) {
 				delete toasts[toastId];
 				setFormosaState({ ...formosaStateRef.current, toasts });
 			};
-			const addToast = (text, type = '') => {
+			const addToast = (text, type = '', milliseconds = 5000) => {
 				const toastId = new Date().getTime();
 				const toast = {
 					className: type ? `formosa-toast--${type}` : '',
 					text,
+					milliseconds,
 				};
 				const toasts = {
 					...formosaStateRef.current.toasts,
@@ -34,7 +35,7 @@ export default function FormContainer({ children }) {
 				setFormosaState({ ...formosaStateRef.current, toasts });
 				setTimeout(() => {
 					formosaStateRef.current.removeToast(toastId);
-				}, 4000);
+				}, milliseconds);
 			};
 			setFormosaState({
 				...formosaStateRef.current,

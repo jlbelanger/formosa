@@ -2,9 +2,7 @@ import React, { useContext } from 'react';
 import ConditionalWrapper from './ConditionalWrapper';
 import FormContext from './FormContext';
 import get from 'get-value';
-import getNewDirty from './Helpers/FormState';
 import PropTypes from 'prop-types';
-import set from 'set-value';
 
 export default function Input({
 	afterChange,
@@ -15,21 +13,10 @@ export default function Input({
 	type,
 	...otherProps
 }) {
-	const { formState, setFormState } = useContext(FormContext);
+	const { formState } = useContext(FormContext);
 	const onChange = (e) => {
-		const newRow = { ...formState.row };
 		const newValue = type === 'checkbox' ? e.target.checked : e.target.value;
-		set(newRow, e.target.name, newValue);
-
-		setFormState({
-			...formState,
-			dirty: getNewDirty(formState.dirty, e.target.name),
-			row: newRow,
-		});
-
-		if (afterChange) {
-			afterChange(e);
-		}
+		formState.setValues(formState, e, e.target.name, newValue, afterChange);
 	};
 
 	const value = get(formState.row, name) || '';
