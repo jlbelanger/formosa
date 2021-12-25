@@ -1,6 +1,6 @@
 import Input from '../Input';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React from 'react'; // eslint-disable-line import/no-unresolved
 import { ReactComponent as SearchIcon } from '../../svg/search.svg';
 
 export default function Search({

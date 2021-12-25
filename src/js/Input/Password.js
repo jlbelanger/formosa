@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; // eslint-disable-line import/no-unresolved
 import Input from '../Input';
 import PropTypes from 'prop-types';
 

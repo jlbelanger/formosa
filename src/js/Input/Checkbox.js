@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react'; // eslint-disable-line import/no-unresolved
 import { ReactComponent as CheckIcon } from '../../svg/check.svg';
 import FormContext from '../FormContext';
 import get from 'get-value';

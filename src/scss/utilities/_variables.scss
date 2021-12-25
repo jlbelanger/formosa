@@ -22,6 +22,7 @@ $formosa-input-font-family: sans-serif !default;
 $formosa-input-font-size: 18px !default;
 $formosa-input-padding: 8px !default;
 $formosa-input-line-height: 1.5 !default;
+// stylelint-disable-next-line max-line-length
 $formosa-input-height: ($formosa-input-border-width * 2) + ($formosa-input-padding * 2) + ($formosa-input-font-size * $formosa-input-line-height) !default;
 $formosa-input-height: if($formosa-input-height % 2 == 0, $formosa-input-height, $formosa-input-height - 1); // Ensure height is even.
 

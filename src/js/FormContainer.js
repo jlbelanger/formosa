@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react'; // eslint-disable-line import/no-unresolved
 import FormosaContext from './FormosaContext';
 import PropTypes from 'prop-types';
 import Spinner from './Spinner';

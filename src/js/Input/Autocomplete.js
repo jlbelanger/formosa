@@ -1,5 +1,5 @@
 import { filterByKey, normalizeOptions } from '../Helpers/Options';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react'; // eslint-disable-line import/no-unresolved
 import Api from '../Helpers/Api';
 import { ReactComponent as CloseIcon } from '../../svg/x.svg';
 import FormContext from '../FormContext';

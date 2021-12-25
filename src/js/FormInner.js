@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext } from 'react'; // eslint-disable-line import/no-unresolved
 import Api from './Helpers/Api';
 import FormContext from './FormContext';
 import FormosaContext from './FormosaContext';

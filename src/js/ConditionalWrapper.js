@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React from 'react'; // eslint-disable-line import/no-unresolved
 
 export default function ConditionalWrapper({ children, className, condition }) {
 	if (!condition) {
-		return (
-			<>{children}</>
-		);
+		return children;
 	}
 
 	return (

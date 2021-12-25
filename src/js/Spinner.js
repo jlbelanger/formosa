@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; // eslint-disable-line import/no-unresolved
 import { usePromiseTracker } from 'react-promise-tracker';
 
 const Spinner = () => {

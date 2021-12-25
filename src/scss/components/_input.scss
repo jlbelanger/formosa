@@ -38,7 +38,7 @@ textarea {
 
 input,
 textarea {
-	-webkit-appearance: none; // So focus style work on iOS.
+	appearance: none; // So focus style works on iOS.
 }
 
 input:not([size]) {
