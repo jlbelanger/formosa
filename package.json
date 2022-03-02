@@ -2,7 +2,7 @@
 	"name": "@jlbelanger/formosa",
 	"version": "1.0.0",
 	"description": "React form components that work with JSON API.",
-	"license": "MIT",
+	"license": "GPL-3.0-only",
 	"author": {
 		"name": "Jenny Belanger",
 		"email": "mail@jennybelanger.com",
