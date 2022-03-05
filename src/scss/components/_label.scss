@@ -1,6 +1,10 @@
 .formosa-label-wrapper {
 	display: block;
 	margin-bottom: $formosa-label-margin;
+
+	&:empty {
+		display: none;
+	}
 }
 
 .formosa-label {
@@ -25,5 +29,15 @@
 	.formosa-label-wrapper {
 		display: inline-block;
 		margin: 0;
+
+		&:empty {
+			display: none;
+		}
+
+		.formosa-horizontal & {
+			&:empty {
+				display: inline-block;
+			}
+		}
 	}
 }

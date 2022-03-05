@@ -1,5 +1,9 @@
 .formosa-message {
 	padding: $formosa-message-padding;
+
+	h1 + & {
+		margin-top: $formosa-margin-large;
+	}
 }
 
 .formosa-message--error {
