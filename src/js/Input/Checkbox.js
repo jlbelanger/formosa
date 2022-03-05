@@ -6,6 +6,8 @@ import Input from '../Input';
 import PropTypes from 'prop-types';
 
 export default function Checkbox({
+	iconAttributes,
+	iconClassName,
 	id,
 	name,
 	...otherProps
@@ -20,16 +22,20 @@ export default function Checkbox({
 				type="checkbox"
 				{...otherProps}
 			/>
-			<CheckIcon className="formosa-icon--check" height="16" width="16" />
+			<CheckIcon className={`formosa-icon--check ${iconClassName}`.trim()} height="16" width="16" {...iconAttributes} />
 		</>
 	);
 }
 
 Checkbox.propTypes = {
+	iconAttributes: PropTypes.object,
+	iconClassName: PropTypes.string,
 	id: PropTypes.string,
 	name: PropTypes.string.isRequired,
 };
 
 Checkbox.defaultProps = {
+	iconAttributes: null,
+	iconClassName: '',
 	id: null,
 };

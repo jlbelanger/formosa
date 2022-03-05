@@ -7,6 +7,8 @@ export default function Radio({
 	afterChange,
 	className,
 	label,
+	labelAttributes,
+	labelClassName,
 	name,
 	value,
 	...otherProps
@@ -18,7 +20,7 @@ export default function Radio({
 	const checked = get(formState.row, name) === value;
 
 	return (
-		<label className={`formosa-radio__label ${checked ? ' formosa-radio__label--checked' : ''}`.trim()}>
+		<label className={`formosa-radio__label${checked ? ' formosa-radio__label--checked' : ''} ${labelClassName}`.trim()} {...labelAttributes}>
 			<input
 				checked={checked}
 				className={`formosa-field__input formosa-radio__input ${className}`.trim()}
@@ -37,6 +39,8 @@ Radio.propTypes = {
 	afterChange: PropTypes.func,
 	className: PropTypes.string,
 	label: PropTypes.string,
+	labelAttributes: PropTypes.object,
+	labelClassName: PropTypes.string,
 	name: PropTypes.string,
 	value: PropTypes.string,
 };
@@ -45,6 +49,8 @@ Radio.defaultProps = {
 	afterChange: null,
 	className: '',
 	label: '',
+	labelAttributes: null,
+	labelClassName: '',
 	name: '',
 	value: '',
 };

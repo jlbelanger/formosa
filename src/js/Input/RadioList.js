@@ -8,6 +8,10 @@ import Radio from './Radio';
 
 export default function RadioList({
 	labelKey,
+	listAttributes,
+	listClassName,
+	listItemAttributes,
+	listItemClassName,
 	name,
 	options,
 	required,
@@ -34,9 +38,9 @@ export default function RadioList({
 	}, [options]);
 
 	return (
-		<ul className="formosa-radio">
+		<ul className={`formosa-radio ${listClassName}`.trim()} {...listAttributes}>
 			{optionValues && optionValues.map(({ label, value }) => (
-				<li className="formosa-radio__item" key={value}>
+				<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={value} {...listItemAttributes}>
 					<Radio
 						checked={get(formState.row, name) === value}
 						label={label}
@@ -56,6 +60,10 @@ RadioList.propTypes = {
 		PropTypes.func,
 		PropTypes.string,
 	]),
+	listAttributes: PropTypes.object,
+	listClassName: PropTypes.string,
+	listItemAttributes: PropTypes.object,
+	listItemClassName: PropTypes.string,
 	name: PropTypes.string.isRequired,
 	options: PropTypes.oneOfType([
 		PropTypes.array,
@@ -71,6 +79,10 @@ RadioList.propTypes = {
 
 RadioList.defaultProps = {
 	labelKey: 'name',
+	listAttributes: null,
+	listClassName: '',
+	listItemAttributes: null,
+	listItemClassName: '',
 	options: null,
 	required: false,
 	url: null,

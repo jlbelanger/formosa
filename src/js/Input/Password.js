@@ -3,7 +3,12 @@ import Input from '../Input';
 import PropTypes from 'prop-types';
 
 export default function Password({
+	buttonAttributes,
+	buttonClassName,
 	className,
+	hideText,
+	showText,
+	wrapperAttributes,
 	wrapperClassName,
 	...otherProps
 }) {
@@ -17,25 +22,40 @@ export default function Password({
 	};
 
 	return (
-		<div className={`formosa-password-wrapper ${wrapperClassName}`.trim()}>
+		<div className={`formosa-password-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 			<Input
-				className={`${className} formosa-field__input--password formosa-prefix`.trim()}
+				className={`formosa-field__input--password formosa-prefix ${className}`.trim()}
 				{...otherProps}
 				type={tempType}
 			/>
-			<button className="formosa-button formosa-postfix formosa-button--toggle-password" onClick={togglePassword} type="button">
-				{tempType === 'password' ? 'Show' : 'Hide'}
+			<button
+				className={`formosa-button formosa-postfix formosa-button--toggle-password ${buttonClassName}`.trim()}
+				onClick={togglePassword}
+				type="button"
+				{...buttonAttributes}
+			>
+				{tempType === 'password' ? showText : hideText}
 			</button>
 		</div>
 	);
 }
 
 Password.propTypes = {
+	buttonAttributes: PropTypes.object,
+	buttonClassName: PropTypes.string,
 	className: PropTypes.string,
+	hideText: PropTypes.string,
+	showText: PropTypes.string,
+	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
 };
 
 Password.defaultProps = {
+	buttonAttributes: null,
+	buttonClassName: '',
 	className: '',
+	hideText: 'Hide',
+	showText: 'Show',
+	wrapperAttributes: null,
 	wrapperClassName: '',
 };

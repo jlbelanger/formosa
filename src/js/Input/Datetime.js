@@ -8,8 +8,17 @@ import Select from './Select';
 
 export default function Datetime({
 	afterChange,
+	ampmAttributes,
 	convertToTimezone,
+	dayAttributes,
+	hourAttributes,
+	minuteAttributes,
+	monthAttributes,
 	name,
+	secondAttributes,
+	wrapperAttributes,
+	wrapperClassName,
+	yearAttributes,
 }) {
 	const { formState } = useContext(FormContext);
 	const [values, setValues] = useState(stringToObject(get(formState.row, name) || '', convertToTimezone));
@@ -25,7 +34,7 @@ export default function Datetime({
 	};
 
 	return (
-		<div className="formosa-datetime-wrapper">
+		<div className={`formosa-datetime-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 			<Select
 				data-datetime="month"
 				id={`${name}-month`}
@@ -47,6 +56,7 @@ export default function Datetime({
 				type="select"
 				value={values.month}
 				wrapperClassName="formosa-field__input--date formosa-field__input--month"
+				{...monthAttributes}
 			/>
 			<Input
 				className="formosa-field__input--date formosa-field__input--day"
@@ -58,6 +68,7 @@ export default function Datetime({
 				placeholder="DD"
 				size={4}
 				value={values.day}
+				{...dayAttributes}
 			/>
 			<Input
 				className="formosa-field__input--date formosa-field__input--year"
@@ -70,6 +81,7 @@ export default function Datetime({
 				size={6}
 				suffix=","
 				value={values.year}
+				{...yearAttributes}
 			/>
 
 			<Input
@@ -83,6 +95,7 @@ export default function Datetime({
 				size={4}
 				suffix=":"
 				value={values.hour}
+				{...hourAttributes}
 			/>
 			<Input
 				className="formosa-field__input--date formosa-field__input--minute"
@@ -95,6 +108,7 @@ export default function Datetime({
 				size={4}
 				suffix=":"
 				value={values.minute}
+				{...minuteAttributes}
 			/>
 			<Input
 				className="formosa-field__input--date formosa-field__input--second"
@@ -106,6 +120,7 @@ export default function Datetime({
 				placeholder="ss"
 				size={4}
 				value={values.second}
+				{...secondAttributes}
 			/>
 			<Select
 				data-datetime="ampm"
@@ -119,6 +134,7 @@ export default function Datetime({
 				type="select"
 				value={values.ampm}
 				wrapperClassName="formosa-field__input--date formosa-field__input--ampm"
+				{...ampmAttributes}
 			/>
 		</div>
 	);
@@ -126,11 +142,29 @@ export default function Datetime({
 
 Datetime.propTypes = {
 	afterChange: PropTypes.func,
+	ampmAttributes: PropTypes.object,
 	convertToTimezone: PropTypes.string,
+	dayAttributes: PropTypes.object,
+	hourAttributes: PropTypes.object,
+	minuteAttributes: PropTypes.object,
+	monthAttributes: PropTypes.object,
 	name: PropTypes.string.isRequired,
+	secondAttributes: PropTypes.object,
+	wrapperAttributes: PropTypes.object,
+	wrapperClassName: PropTypes.string,
+	yearAttributes: PropTypes.object,
 };
 
 Datetime.defaultProps = {
 	afterChange: null,
+	ampmAttributes: null,
 	convertToTimezone: 'UTC',
+	dayAttributes: null,
+	hourAttributes: null,
+	minuteAttributes: null,
+	monthAttributes: null,
+	secondAttributes: null,
+	wrapperAttributes: null,
+	wrapperClassName: '',
+	yearAttributes: null,
 };

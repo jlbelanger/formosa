@@ -5,23 +5,35 @@ import { ReactComponent as SearchIcon } from '../../svg/search.svg';
 
 export default function Search({
 	className,
+	iconAttributes,
+	iconClassName,
+	wrapperAttributes,
+	wrapperClassName,
 	...otherProps
 }) {
 	return (
-		<div className="formosa-search-wrapper">
+		<div className={`formosa-search-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 			<Input
-				className={`${className} formosa-field__input--search`.trim()}
+				className={`formosa-field__input--search ${className}`.trim()}
 				{...otherProps}
 			/>
-			<SearchIcon className="formosa-icon--search" height="16" width="16" />
+			<SearchIcon className={`formosa-icon--search ${iconClassName}`.trim()} height="16" width="16" {...iconAttributes} />
 		</div>
 	);
 }
 
 Search.propTypes = {
 	className: PropTypes.string,
+	iconAttributes: PropTypes.object,
+	iconClassName: PropTypes.string,
+	wrapperAttributes: PropTypes.object,
+	wrapperClassName: PropTypes.string,
 };
 
 Search.defaultProps = {
 	className: '',
+	iconAttributes: null,
+	iconClassName: '',
+	wrapperAttributes: null,
+	wrapperClassName: '',
 };
