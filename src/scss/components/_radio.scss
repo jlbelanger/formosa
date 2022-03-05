@@ -4,8 +4,22 @@
 	padding: 0;
 }
 
+.formosa-radio--inline {
+	display: flex;
+	flex-wrap: wrap;
+
+	.formosa-radio__item {
+		margin-bottom: $formosa-radio-margin;
+		margin-right: $formosa-radio-margin-inline;
+	}
+}
+
 .formosa-radio__item + .formosa-radio__item {
 	margin-top: $formosa-radio-margin;
+
+	.formosa-radio--inline & {
+		margin-top: 0;
+	}
 }
 
 input[type='radio'] {
