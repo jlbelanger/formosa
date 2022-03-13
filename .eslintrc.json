@@ -40,5 +40,13 @@
 		"sort-imports": ["error", {
 			"ignoreCase": true
 		}]
-	}
+	},
+	"overrides": [
+		{
+			"files": ["example/src/**/*.js"],
+			"rules": {
+				"import/no-unresolved": "off"
+			}
+		}
+	]
 }
