@@ -1,3 +1,4 @@
+import './style.scss';
 import api from './js/Helpers/Api';
 import field from './js/Field';
 import form from './js/Form';

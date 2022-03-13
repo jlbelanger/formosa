@@ -10,12 +10,24 @@ export default function HorizontalForm() {
 		'Pear',
 	];
 
+	const onSubmit = (e) => {
+		e.preventDefault();
+		alert('Form has been submitted.');
+	};
+
 	return (
 		<>
-			<Form className="formosa-horizontal" row={row} setRow={setRow}>
+			<Form className="formosa-horizontal" onSubmit={onSubmit} row={row} setRow={setRow}>
 				<Field
 					label="Text"
 					name="text"
+					type="text"
+				/>
+
+				<Field
+					label="Text with size"
+					name="text_size"
+					size={16}
 					type="text"
 				/>
 

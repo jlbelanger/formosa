@@ -41,6 +41,7 @@
 		"jest": "^27.4.5",
 		"microbundle-crl": "^0.13.11",
 		"node-sass": "^7.0.0",
+		"postcss": "^8.4.8",
 		"sass-lint": "^1.13.1",
 		"stylelint": "^14.2.0",
 		"stylelint-config-standard-scss": "^3.0.0",

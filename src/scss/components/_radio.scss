@@ -22,7 +22,7 @@
 	}
 }
 
-input[type='radio'] {
+input.formosa-radio__input {
 	appearance: none;
 	border-color: $formosa-input-background-color;
 	border-radius: $formosa-radio-border-radius;
@@ -34,7 +34,10 @@ input[type='radio'] {
 	margin: 0 $formosa-radio-margin-side 0 0;
 	padding: 0;
 	vertical-align: middle;
-	width: $formosa-radio-size;
+
+	&.formosa-field__input {
+		width: $formosa-radio-size;
+	}
 
 	&:checked {
 		background: $formosa-input-color;

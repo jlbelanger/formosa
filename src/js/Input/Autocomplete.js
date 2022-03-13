@@ -10,16 +10,37 @@ export default function Autocomplete({
 	afterAdd,
 	afterChange,
 	clearable,
+	clearButtonAttributes,
+	clearButtonClassName,
+	clearIconAttributes,
+	clearIconHeight,
+	clearIconWidth,
+	clearText,
 	disabled,
 	id,
+	inputClassName,
 	labelFn,
 	labelKey,
 	max,
-	placeholder,
 	name,
+	optionButtonAttributes,
+	optionButtonClassName,
+	optionListAttributes,
+	optionListClassName,
+	optionListItemAttributes,
+	optionListItemClassName,
 	options,
+	placeholder,
+	removeButtonAttributes,
+	removeButtonClassName,
+	removeIconAttributes,
+	removeIconHeight,
+	removeIconWidth,
+	removeText,
 	url,
 	valueKey,
+	wrapperAttributes,
+	wrapperClassName,
 	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
@@ -97,10 +118,19 @@ export default function Autocomplete({
 		setIsOpen(false);
 		setFilter('');
 		if (max === 1) {
-			const elem = document.getElementById(`${id || name}-wrapper`);
-			if (elem) {
-				elem.focus();
-			}
+			setTimeout(() => {
+				const elem = document.querySelector(`#${id || name}-wrapper .formosa-autocomplete__value__remove`);
+				if (elem) {
+					elem.focus();
+				}
+			});
+		} else if (max === selectedValues.length) {
+			setTimeout(() => {
+				const elem = document.querySelector(`#${id || name}-wrapper .formosa-autocomplete__clear`);
+				if (elem) {
+					elem.focus();
+				}
+			});
 		} else {
 			focus();
 		}
@@ -147,17 +177,17 @@ export default function Autocomplete({
 
 	const onKeyDown = (e) => {
 		const filterValue = e.target.value;
+		const numValues = selectedValues ? selectedValues.length : 0;
 		if (e.key === 'Enter' && filterValue && filteredOptions.length > 0) {
 			e.preventDefault();
+		} else if (e.key === 'Backspace' && !filter && numValues > 0) {
+			removeValue(selectedValues[numValues - 1]);
 		}
 	};
 
 	const onKeyUp = (e) => {
 		const filterValue = e.target.value;
-		const numValues = selectedValues ? selectedValues.length : 0;
-		if (e.key === 'Backspace' && !filterValue && selectedValues.length > 0) {
-			removeValue(selectedValues[numValues - 1]);
-		} else if (e.key === 'Enter' && filterValue && filteredOptions.length > 0) {
+		if (e.key === 'Enter' && filterValue && filteredOptions.length > 0) {
 			e.preventDefault();
 			addValue(filteredOptions[highlightedIndex]);
 		} else if (e.key === 'ArrowDown') {
@@ -203,13 +233,14 @@ export default function Autocomplete({
 
 	const showClear = clearable && max !== 1 && selectedValues.length > 0;
 
-	const className = ['formosa-autocomplete'];
+	let className = ['formosa-autocomplete'];
 	if (showClear) {
 		className.push('formosa-autocomplete--clearable');
 	}
 	if (disabled) {
 		className.push('formosa-autocomplete--disabled');
 	}
+	className = className.join(' ');
 
 	const canAddValues = !disabled && (max === null || selectedValues.length < max);
 
@@ -217,10 +248,10 @@ export default function Autocomplete({
 
 	return (
 		<div
-			className={className.join(' ')}
+			className={`${className} ${wrapperClassName}`.trim()}
 			data-value={dataValue === undefined ? '' : dataValue}
 			id={`${id || name}-wrapper`}
-			tabIndex={-1}
+			{...wrapperAttributes}
 		>
 			<div style={{ display: 'flex' }}>
 				<ul className="formosa-autocomplete__values">
@@ -238,13 +269,14 @@ export default function Autocomplete({
 								{label}
 								{!disabled && (
 									<button
-										className="formosa-autocomplete__value__remove"
+										className={`formosa-autocomplete__value__remove ${removeButtonClassName}`.trim()}
 										data-index={i}
 										onClick={onClickRemoveOption}
 										type="button"
+										{...removeButtonAttributes}
 									>
-										<CloseIcon height="12" width="12" />
-										Remove
+										<CloseIcon height={removeIconHeight} width={removeIconWidth} {...removeIconAttributes} />
+										{removeText}
 									</button>
 								)}
 							</li>
@@ -255,7 +287,7 @@ export default function Autocomplete({
 							<input
 								{...otherProps}
 								autoComplete="off"
-								className="formosa-autocomplete__input"
+								className={`formosa-field__input formosa-autocomplete__input ${inputClassName}`.trim()}
 								id={id || name}
 								onChange={onChange}
 								onFocus={onFocus}
@@ -270,20 +302,26 @@ export default function Autocomplete({
 				</ul>
 
 				{isOpen && filteredOptions.length > 0 && (
-					<ul className="formosa-autocomplete__options">
+					<ul className={`formosa-autocomplete__options ${optionListClassName}`.trim()} {...optionListAttributes}>
 						{filteredOptions.map((option, index) => {
-							const optionClassName = ['formosa-autocomplete__option'];
+							let optionClassName = ['formosa-autocomplete__option'];
 							if (highlightedIndex === index) {
 								optionClassName.push('formosa-autocomplete__option--highlighted');
 							}
+							optionClassName = optionClassName.join(' ');
 
 							return (
-								<li className={optionClassName.join(' ')} key={option.value}>
+								<li
+									className={`${optionClassName} ${optionListItemClassName}`.trim()}
+									key={option.value}
+									{...optionListItemAttributes}
+								>
 									<button
-										className="formosa-autocomplete__option__button"
+										className={`formosa-autocomplete__option__button ${optionButtonClassName}`.trim()}
 										data-value={JSON.stringify(option)}
 										onClick={onClickOption}
 										type="button"
+										{...optionButtonAttributes}
 									>
 										{option.label}
 									</button>
@@ -295,9 +333,14 @@ export default function Autocomplete({
 
 				{showClear && (
 					<div>
-						<button className="formosa-autocomplete__clear" onClick={clear} type="button">
-							<CloseIcon height="12" width="12" />
-							Clear
+						<button
+							className={`formosa-autocomplete__clear ${clearButtonClassName}`.trim()}
+							onClick={clear}
+							type="button"
+							{...clearButtonAttributes}
+						>
+							<CloseIcon height={clearIconHeight} width={clearIconWidth} {...clearIconAttributes} />
+							{clearText}
 						</button>
 					</div>
 				)}
@@ -310,38 +353,80 @@ Autocomplete.propTypes = {
 	afterAdd: PropTypes.func,
 	afterChange: PropTypes.func,
 	clearable: PropTypes.bool,
+	clearButtonAttributes: PropTypes.object,
+	clearButtonClassName: PropTypes.string,
+	clearIconAttributes: PropTypes.object,
+	clearIconHeight: PropTypes.number,
+	clearIconWidth: PropTypes.number,
+	clearText: PropTypes.string,
 	disabled: PropTypes.bool,
 	id: PropTypes.string,
+	inputClassName: PropTypes.string,
+	labelFn: PropTypes.func,
 	labelKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
 	]),
-	labelFn: PropTypes.func,
 	max: PropTypes.number,
 	name: PropTypes.string.isRequired,
+	optionButtonAttributes: PropTypes.object,
+	optionButtonClassName: PropTypes.string,
+	optionListAttributes: PropTypes.object,
+	optionListClassName: PropTypes.string,
+	optionListItemAttributes: PropTypes.object,
+	optionListItemClassName: PropTypes.string,
 	options: PropTypes.oneOfType([
 		PropTypes.array,
 		PropTypes.object,
 	]),
 	placeholder: PropTypes.string,
+	removeButtonAttributes: PropTypes.object,
+	removeButtonClassName: PropTypes.string,
+	removeIconAttributes: PropTypes.object,
+	removeIconHeight: PropTypes.number,
+	removeIconWidth: PropTypes.number,
+	removeText: PropTypes.string,
 	url: PropTypes.string,
 	valueKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
 	]),
+	wrapperAttributes: PropTypes.object,
+	wrapperClassName: PropTypes.string,
 };
 
 Autocomplete.defaultProps = {
 	afterAdd: null,
 	afterChange: null,
 	clearable: true,
+	clearButtonAttributes: null,
+	clearButtonClassName: '',
+	clearIconAttributes: null,
+	clearIconHeight: 12,
+	clearIconWidth: 12,
+	clearText: 'Clear',
 	disabled: false,
 	id: '',
+	inputClassName: '',
 	labelFn: null,
 	labelKey: 'name',
 	max: null,
+	optionButtonAttributes: null,
+	optionButtonClassName: '',
+	optionListAttributes: null,
+	optionListClassName: '',
+	optionListItemAttributes: null,
+	optionListItemClassName: '',
 	options: null,
 	placeholder: 'Search',
+	removeButtonAttributes: null,
+	removeButtonClassName: '',
+	removeIconAttributes: null,
+	removeIconHeight: 12,
+	removeIconWidth: 12,
+	removeText: 'Remove',
 	url: null,
 	valueKey: null,
+	wrapperAttributes: null,
+	wrapperClassName: '',
 };

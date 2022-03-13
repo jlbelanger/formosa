@@ -12,6 +12,8 @@ export default function Select({
 	hideBlank,
 	iconAttributes,
 	iconClassName,
+	iconHeight,
+	iconWidth,
 	id,
 	name,
 	labelKey,
@@ -46,7 +48,7 @@ export default function Select({
 	return (
 		<div className={`formosa-select-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 			<select
-				className={`formosa-field__input ${className}`.trim()}
+				className={`formosa-field__input formosa-field__input-select ${className}`.trim()}
 				id={id || name}
 				name={name}
 				onChange={onChange}
@@ -58,7 +60,7 @@ export default function Select({
 					<option key={value} value={value}>{label}</option>
 				))}
 			</select>
-			<CaretIcon className={`formosa-icon--caret ${iconClassName}`.trim()} height="16" width="16" {...iconAttributes} />
+			<CaretIcon className={`formosa-icon--caret ${iconClassName}`.trim()} height={iconHeight} width={iconWidth} {...iconAttributes} />
 		</div>
 	);
 }
@@ -69,6 +71,8 @@ Select.propTypes = {
 	hideBlank: PropTypes.bool,
 	iconAttributes: PropTypes.object,
 	iconClassName: PropTypes.string,
+	iconHeight: PropTypes.number,
+	iconWidth: PropTypes.number,
 	id: PropTypes.string,
 	name: PropTypes.string,
 	labelKey: PropTypes.oneOfType([
@@ -94,6 +98,8 @@ Select.defaultProps = {
 	hideBlank: false,
 	iconAttributes: null,
 	iconClassName: '',
+	iconHeight: 16,
+	iconWidth: 16,
 	id: null,
 	name: '',
 	labelKey: 'name',

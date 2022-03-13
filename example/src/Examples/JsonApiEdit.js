@@ -40,7 +40,7 @@ export default function JsonApiEdit() {
 				<h2 style={{ margin: 0 }}>{`Edit ${row.name}`}</h2>
 
 				<Form method="DELETE" path="food" id={row.id}>
-					<button className="formosa-button--danger" type="submit">Delete</button>
+					<button className="formosa-button formosa-button--danger" type="submit">Delete</button>
 				</Form>
 			</div>
 

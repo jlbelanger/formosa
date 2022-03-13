@@ -4,7 +4,8 @@
 	width: 100%;
 }
 
-.formosa-field__input--search {
+input.formosa-field__input--search {
+	appearance: none;
 	padding-right: #{$formosa-search-icon-size + ($formosa-input-padding * 2)};
 }
 
@@ -20,8 +21,4 @@
 	path {
 		fill: $formosa-input-color;
 	}
-}
-
-input[type='search'] {
-	appearance: none;
 }

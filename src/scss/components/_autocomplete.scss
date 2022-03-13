@@ -52,7 +52,11 @@ input.formosa-autocomplete__input {
 .formosa-autocomplete__option__button {
 	background-color: transparent;
 	border: 0;
+	border-radius: 0;
 	color: $formosa-input-color;
+	cursor: pointer;
+	font-family: $formosa-input-font-family;
+	font-size: $formosa-input-font-size;
 	min-height: 44px;
 	overflow: hidden;
 	padding: $formosa-input-padding;
@@ -121,6 +125,7 @@ input.formosa-autocomplete__input {
 	&:active,
 	&:focus {
 		background-color: transparent;
+		border-color: transparent;
 
 		path {
 			fill: $formosa-autocomplete-clear-color-hover;

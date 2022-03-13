@@ -54,9 +54,11 @@ export default function Field({
 		return input;
 	}
 
+	const htmlFor = id || name;
+
 	const labelComponent = (
 		<Label
-			htmlFor={id || name}
+			htmlFor={type === 'datetime' ? `${htmlFor}-month` : htmlFor}
 			label={label}
 			note={labelNote}
 			required={required}

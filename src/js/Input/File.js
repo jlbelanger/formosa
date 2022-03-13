@@ -10,6 +10,7 @@ export default function File({
 	buttonClassName,
 	className,
 	emptyText,
+	id,
 	imageHeight,
 	imagePrefix,
 	imagePreview,
@@ -25,7 +26,7 @@ export default function File({
 	const { formState } = useContext(FormContext);
 	const value = get(formState.row, name);
 	const hasValue = !!value;
-	const [text, setText] = useState(value ? value : emptyText);
+	const [text, setText] = useState(value || emptyText);
 	const [srcs, setSrcs] = useState(value ? [`${imagePrefix}${value}`] : []);
 
 	const onChange = (e) => {
@@ -40,13 +41,14 @@ export default function File({
 	const onRemove = (e) => {
 		setText(emptyText);
 		formState.setValues(formState, e, name, '', afterChange, false);
+		document.getElementById(id || name).focus();
 	};
 
 	return (
 		<>
 			{(hasValue && imagePreview) && (
 				srcs.map((src) => (
-					<img height={imageHeight} key={src} src={src} />
+					<img alt="" height={imageHeight} key={src} src={src} />
 				))
 			)}
 			<div className={`formosa-file-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
@@ -56,6 +58,7 @@ export default function File({
 					</div>
 					<Input
 						className={`formosa-field__input--file ${className}`.trim()}
+						id={id || name}
 						multiple={multiple}
 						name={name}
 						onChange={onChange}
@@ -83,6 +86,7 @@ File.propTypes = {
 	buttonClassName: PropTypes.string,
 	className: PropTypes.string,
 	emptyText: PropTypes.string,
+	id: PropTypes.string,
 	imageHeight: PropTypes.number,
 	imagePrefix: PropTypes.string,
 	imagePreview: PropTypes.bool,
@@ -101,6 +105,7 @@ File.defaultProps = {
 	buttonClassName: '',
 	className: '',
 	emptyText: 'No file selected.',
+	id: '',
 	imageHeight: 100,
 	imagePrefix: '',
 	imagePreview: false,

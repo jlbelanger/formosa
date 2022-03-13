@@ -29,7 +29,7 @@ export default function Password({
 				type={tempType}
 			/>
 			<button
-				className={`formosa-button formosa-postfix formosa-button--toggle-password ${buttonClassName}`.trim()}
+				className={`formosa-button formosa-button--toggle-password formosa-postfix ${buttonClassName}`.trim()}
 				onClick={togglePassword}
 				type="button"
 				{...buttonAttributes}

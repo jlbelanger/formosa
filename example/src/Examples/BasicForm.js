@@ -25,6 +25,13 @@ export default function BasicForm() {
 				/>
 
 				<Field
+					label="Text with size"
+					name="text_size"
+					size={16}
+					type="text"
+				/>
+
+				<Field
 					label="Email"
 					name="email"
 					type="email"

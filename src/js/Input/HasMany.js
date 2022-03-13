@@ -150,7 +150,7 @@ export default function HasMany({
 									);
 								})}
 								<button
-									className={`formosa-button formosa-button--danger formosa-has-many__button ${buttonClassName}`.trim()}
+									className={`formosa-button formosa-button--remove-has-many formosa-has-many__button ${buttonClassName}`.trim()}
 									data-index={i}
 									disabled={!isRemovable}
 									onClick={onRemove}
@@ -190,7 +190,7 @@ export default function HasMany({
 							);
 						})}
 						<button
-							className={`formosa-button formosa-button--add formosa-has-many__button ${buttonClassName}`.trim()}
+							className={`formosa-button formosa-button--add-has-many formosa-has-many__button ${buttonClassName}`.trim()}
 							onClick={onAdd}
 							type="button"
 						>

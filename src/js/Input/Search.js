@@ -7,6 +7,8 @@ export default function Search({
 	className,
 	iconAttributes,
 	iconClassName,
+	iconHeight,
+	iconWidth,
 	wrapperAttributes,
 	wrapperClassName,
 	...otherProps
@@ -17,7 +19,7 @@ export default function Search({
 				className={`formosa-field__input--search ${className}`.trim()}
 				{...otherProps}
 			/>
-			<SearchIcon className={`formosa-icon--search ${iconClassName}`.trim()} height="16" width="16" {...iconAttributes} />
+			<SearchIcon className={`formosa-icon--search ${iconClassName}`.trim()} height={iconHeight} width={iconWidth} {...iconAttributes} />
 		</div>
 	);
 }
@@ -26,6 +28,8 @@ Search.propTypes = {
 	className: PropTypes.string,
 	iconAttributes: PropTypes.object,
 	iconClassName: PropTypes.string,
+	iconHeight: PropTypes.number,
+	iconWidth: PropTypes.number,
 	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
 };
@@ -34,6 +38,8 @@ Search.defaultProps = {
 	className: '',
 	iconAttributes: null,
 	iconClassName: '',
+	iconHeight: 16,
+	iconWidth: 16,
 	wrapperAttributes: null,
 	wrapperClassName: '',
 };
