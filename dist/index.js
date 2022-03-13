@@ -1489,9 +1489,13 @@ function File(_ref) {
     var filenames = files.map(function (file) {
       return file.name;
     }).join(', ');
-    setSrcs(files.map(function (file) {
-      return URL.createObjectURL(file);
-    }));
+
+    if (imagePreview) {
+      setSrcs(files.map(function (file) {
+        return URL.createObjectURL(file);
+      }));
+    }
+
     setText(filenames);
     formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? files : files[0]);
   };

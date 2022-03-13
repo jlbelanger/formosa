@@ -33,7 +33,10 @@ export default function File({
 		const files = [...e.target.files];
 		const filenames = files.map((file) => file.name).join(', ');
 
-		setSrcs(files.map((file) => (URL.createObjectURL(file))));
+		if (imagePreview) {
+			setSrcs(files.map((file) => (URL.createObjectURL(file))));
+		}
+
 		setText(filenames);
 		formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? files : files[0]);
 	};
