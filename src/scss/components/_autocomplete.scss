@@ -36,7 +36,10 @@ input.formosa-autocomplete__input {
 	padding: $formosa-autocomplete-value-padding-top $formosa-input-padding;
 	position: relative;
 	top: #{($formosa-input-border-width + $input-margin) * -1};
-	width: calc(100% + #{($formosa-input-border-width + $input-margin) * 2});
+
+	&.formosa-field__input {
+		width: calc(100% + #{($formosa-input-border-width + $input-margin) * 2});
+	}
 }
 
 .formosa-autocomplete__option + .formosa-autocomplete__option {
