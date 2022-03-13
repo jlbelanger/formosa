@@ -7,13 +7,14 @@
 		"@jlbelanger/formosa": "link:..",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
-		"react-router-dom": "^5.3.0"
+		"react-router-dom": "^5.3.0",
+		"react-scripts": "5.0.0"
 	},
 	"scripts": {
-		"start": "node ../node_modules/react-scripts/bin/react-scripts.js start",
-		"build": "node ../node_modules/react-scripts/bin/react-scripts.js build",
-		"test": "node ../node_modules/react-scripts/bin/react-scripts.js test",
-		"eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject"
+		"start": "DISABLE_ESLINT_PLUGIN=true node ./node_modules/react-scripts/bin/react-scripts.js start",
+		"build": "DISABLE_ESLINT_PLUGIN=true node ./node_modules/react-scripts/bin/react-scripts.js build",
+		"test": "DISABLE_ESLINT_PLUGIN=true node ./node_modules/react-scripts/bin/react-scripts.js test",
+		"eject": "DISABLE_ESLINT_PLUGIN=true node ./node_modules/react-scripts/bin/react-scripts.js eject"
 	},
 	"browserslist": [
 		">0.2%",
