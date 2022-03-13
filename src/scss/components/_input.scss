@@ -5,8 +5,8 @@
 }
 
 .formosa-field__input,
-.formosa-field__input-select,
-.formosa-field__input-textarea,
+.formosa-field__input--select,
+.formosa-field__input--textarea,
 .formosa-file-input-wrapper {
 	background: $formosa-input-background-color;
 	border: $formosa-input-border-width solid $formosa-input-border-color;
@@ -27,20 +27,20 @@
 
 .formosa-button,
 .formosa-field__input,
-.formosa-field__input-select,
+.formosa-field__input--select,
 .formosa-file-input-wrapper {
 	line-height: $formosa-input-line-height;
 }
 
 .formosa-button,
 .formosa-field__input,
-.formosa-field__input-select,
-.formosa-field__input-textarea {
+.formosa-field__input--select,
+.formosa-field__input--textarea {
 	margin: 0;
 }
 
 .formosa-field__input,
-.formosa-field__input-textarea {
+.formosa-field__input--textarea {
 	appearance: none; // So focus style works on iOS.
 }
 

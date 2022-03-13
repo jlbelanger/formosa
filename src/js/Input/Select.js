@@ -48,7 +48,7 @@ export default function Select({
 	return (
 		<div className={`formosa-select-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 			<select
-				className={`formosa-field__input formosa-field__input-select ${className}`.trim()}
+				className={`formosa-field__input formosa-field__input--select ${className}`.trim()}
 				id={id || name}
 				name={name}
 				onChange={onChange}

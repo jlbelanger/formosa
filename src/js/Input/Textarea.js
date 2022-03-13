@@ -17,7 +17,7 @@ export default function Textarea({
 
 	return (
 		<textarea
-			className={`formosa-field__input formosa-field__input-textarea ${className}`.trim()}
+			className={`formosa-field__input formosa-field__input--textarea ${className}`.trim()}
 			id={id || name}
 			name={name}
 			onChange={onChange}

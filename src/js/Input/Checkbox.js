@@ -19,7 +19,7 @@ export default function Checkbox({
 	return (
 		<>
 			<Input
-				className={`formosa-field__input-checkbox ${className}`.trim()}
+				className={`formosa-field__input--checkbox ${className}`.trim()}
 				checked={!!get(formState.row, name)}
 				id={id || name}
 				name={name}
