@@ -15,10 +15,11 @@ export default function Form({
 		dirty: [],
 		dirtyIncluded: [],
 		errors: {},
+		files: {},
 		message: '',
 		row,
 		setRow,
-		setValues: (fs, e, name, value, afterChange = null) => {
+		setValues: (fs, e, name, value, afterChange = null, files = null) => {
 			let newDirty = getNewDirty(fs.dirty, name);
 			const newRow = { ...fs.row };
 			set(newRow, name, value);
@@ -31,11 +32,16 @@ export default function Form({
 				});
 			}
 
-			setFormState({
+			const newFormState = {
 				...fs,
 				dirty: newDirty,
 				row: newRow,
-			});
+			};
+			if (files !== null) {
+				set(newFormState, `files.${name}`, files);
+			}
+
+			setFormState(newFormState);
 			if (fs.setRow) {
 				fs.setRow(newRow);
 			}

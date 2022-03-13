@@ -5,6 +5,7 @@ export default React.createContext(
 		dirty: [],
 		dirtyIncluded: [],
 		errors: {},
+		files: {},
 		message: '',
 		row: {},
 		setRow: null,

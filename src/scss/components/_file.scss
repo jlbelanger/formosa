@@ -1,0 +1,31 @@
+.formosa-file-wrapper {
+	display: flex;
+}
+
+.formosa-file-input-wrapper {
+	flex: 1 1 auto;
+	position: relative;
+
+	&:focus-within {
+		border-color: $formosa-focus-border-color;
+		box-shadow: 0 0 0 $formosa-focus-border-width $formosa-focus-box-shadow-color;
+	}
+}
+
+.formosa-field__input--file {
+	background: transparent;
+	border: 0;
+	bottom: 0;
+	cursor: pointer;
+	font-size: 0;
+	left: 0;
+	opacity: 0;
+	padding: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.formosa-file-name--empty {
+	opacity: .5;
+}

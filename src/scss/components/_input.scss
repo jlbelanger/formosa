@@ -1,6 +1,7 @@
 input,
 select,
-textarea {
+textarea,
+.formosa-file-input-wrapper {
 	background: $formosa-input-background-color;
 	border: $formosa-input-border-width solid $formosa-input-border-color;
 	border-radius: $formosa-input-border-radius;
@@ -25,7 +26,8 @@ textarea {
 
 button,
 input,
-select {
+select,
+.formosa-file-input-wrapper {
 	line-height: $formosa-input-line-height;
 }
 

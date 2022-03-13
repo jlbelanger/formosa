@@ -14,6 +14,7 @@ export default function JsonApiAdd() {
 				<Field label="Category" name="category" type="radio" options={['fruit', 'vegetable']} />
 				<Field label="Public?" name="is_public" type="checkbox" />
 				<Field label="Date" name="date" type="datetime" />
+				<Field label="File" name="file" type="file" />
 				<Submit />
 			</Form>
 

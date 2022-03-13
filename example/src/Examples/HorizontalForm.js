@@ -106,6 +106,27 @@ export default function HorizontalForm() {
 				/>
 
 				<Field
+					label="File"
+					name="file"
+					type="file"
+				/>
+
+				<Field
+					label="Multiple files"
+					name="multiple_files"
+					multiple
+					type="file"
+				/>
+
+				<Field
+					label="Image"
+					name="image"
+					accept="image/*"
+					imagePreview
+					type="file"
+				/>
+
+				<Field
 					label="Has many"
 					name="has_many"
 					recordType="attributes"

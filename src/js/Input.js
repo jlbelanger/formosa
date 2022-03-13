@@ -19,7 +19,7 @@ export default function Input({
 		formState.setValues(formState, e, e.target.name, newValue, afterChange);
 	};
 
-	const value = get(formState.row, name) || '';
+	const value = type === 'file' ? '' : (get(formState.row, name) || '');
 	const checked = type === 'checkbox' && value;
 
 	const props = {};

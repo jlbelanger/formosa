@@ -233,6 +233,21 @@ export const getBody = (
 		if (Object.keys(data.relationships).length <= 0) {
 			delete data.relationships;
 		}
+
+		const filenames = Object.keys(formState.files).filter((filename) => (formState.files[filename] !== false));
+		if (filenames.length > 0) {
+			const formData = new FormData();
+			formData.append('json', JSON.stringify(body));
+			formData.append('files', JSON.stringify(filenames));
+
+			filenames.forEach((filename) => {
+				formData.append(filename, formState.files[filename]);
+			});
+
+			body = formData;
+		} else {
+			body = JSON.stringify(body);
+		}
 	}
 
 	return body;

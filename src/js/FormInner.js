@@ -68,7 +68,7 @@ export default function FormInner({
 			message: '',
 		});
 
-		Api.request(method, url, body === null ? null : JSON.stringify(body))
+		Api.request(method, url, body)
 			.then((response) => {
 				if (!response) {
 					return;

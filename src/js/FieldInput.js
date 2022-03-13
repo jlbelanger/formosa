@@ -1,6 +1,7 @@
 import Autocomplete from './Input/Autocomplete';
 import Checkbox from './Input/Checkbox';
 import Datetime from './Input/Datetime';
+import File from './Input/File';
 import Input from './Input';
 import Password from './Input/Password';
 import RadioList from './Input/RadioList';
@@ -35,6 +36,9 @@ export default (type, component) => {
 	}
 	if (type === 'autocomplete') {
 		return Autocomplete;
+	}
+	if (type === 'file') {
+		return File;
 	}
 	return Input;
 };

@@ -22,10 +22,12 @@ export default class Api {
 		const options = {
 			method,
 			headers: {
-				'Content-Type': 'application/json',
 				'X-Requested-With': 'XMLHttpRequest',
 			},
 		};
+		if (typeof body === 'string') {
+			options.headers['Content-Type'] = 'application/json';
+		}
 		if (Api.getToken()) {
 			options.headers.Authorization = `Bearer ${Api.getToken()}`;
 		}
