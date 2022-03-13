@@ -1,6 +1,6 @@
 .formosa-field__note {
-	font-size: 85%;
-	line-height: 1.4;
-	margin-top: 4px;
-	opacity: .75;
+	font-size: $formosa-note-font-size;
+	line-height: $formosa-note-line-height;
+	margin: $formosa-note-margin;
+	opacity: $formosa-note-opacity;
 }
