@@ -4,7 +4,6 @@
 .gitcommit
 .rpt2_cache
 build
-dist
 node_modules
 npm-debug.log*
 TODO.md
