@@ -1,6 +1,9 @@
+.formosa-field--disabled .formosa-input-wrapper {
+  opacity: 0.5; }
+
 .formosa-field__input,
-.formosa-field__input-select,
-.formosa-field__input-textarea,
+.formosa-field__input--select,
+.formosa-field__input--textarea,
 .formosa-file-input-wrapper {
   background: #fff;
   border: 1px solid #ccc;
@@ -10,38 +13,30 @@
   font-size: 18px;
   padding: 8px; }
   .formosa-field__input:invalid,
-  .formosa-field__input-select:invalid,
-  .formosa-field__input-textarea:invalid,
+  .formosa-field__input--select:invalid,
+  .formosa-field__input--textarea:invalid,
   .formosa-file-input-wrapper:invalid {
     box-shadow: none; }
     .formosa-field__input:invalid:focus,
-    .formosa-field__input-select:invalid:focus,
-    .formosa-field__input-textarea:invalid:focus,
+    .formosa-field__input--select:invalid:focus,
+    .formosa-field__input--textarea:invalid:focus,
     .formosa-file-input-wrapper:invalid:focus {
       box-shadow: 0 0 0 3px #6cf; }
-  .formosa-field__input[disabled], .formosa-field__input[readonly],
-  .formosa-field__input-select[disabled],
-  .formosa-field__input-select[readonly],
-  .formosa-field__input-textarea[disabled],
-  .formosa-field__input-textarea[readonly],
-  .formosa-file-input-wrapper[disabled],
-  .formosa-file-input-wrapper[readonly] {
-    opacity: 0.3; }
 
 .formosa-button,
 .formosa-field__input,
-.formosa-field__input-select,
+.formosa-field__input--select,
 .formosa-file-input-wrapper {
   line-height: 1.5; }
 
 .formosa-button,
 .formosa-field__input,
-.formosa-field__input-select,
-.formosa-field__input-textarea {
+.formosa-field__input--select,
+.formosa-field__input--textarea {
   margin: 0; }
 
 .formosa-field__input,
-.formosa-field__input-textarea {
+.formosa-field__input--textarea {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none; }
@@ -187,6 +182,8 @@ input.formosa-autocomplete__input {
   padding: 8px 12px; }
   .formosa-button path {
     fill: #000; }
+  .formosa-button[disabled] {
+    cursor: default; }
 
 .formosa-button--danger {
   background: #c66;
@@ -195,7 +192,7 @@ input.formosa-autocomplete__input {
   .formosa-button--danger:hover, .formosa-button--danger:active, .formosa-button--danger:focus {
     background-color: #c14444; }
 
-input.formosa-field__input-checkbox {
+input.formosa-field__input--checkbox {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -204,8 +201,10 @@ input.formosa-field__input-checkbox {
   height: 32px;
   margin: 0 8px 0 0;
   vertical-align: middle; }
-  input.formosa-field__input-checkbox.formosa-field__input {
+  input.formosa-field__input--checkbox.formosa-field__input {
     width: 32px; }
+  .formosa-field--disabled input.formosa-field__input--checkbox {
+    cursor: default; }
 
 .formosa-input-wrapper--checkbox {
   position: relative; }
@@ -223,6 +222,8 @@ input.formosa-field__input-checkbox {
     top: 14px; }
   .formosa-icon--check path {
     fill: transparent; }
+  .formosa-field--disabled .formosa-icon--check {
+    opacity: 0.5; }
   :checked + .formosa-icon--check path {
     fill: #000; }
   .formosa-icon--check + .formosa-label-wrapper .formosa-label {
@@ -267,6 +268,9 @@ input.formosa-field__input-checkbox {
   position: absolute;
   right: 0;
   top: 0; }
+  .formosa-field--disabled .formosa-field__input--file {
+    cursor: default;
+    opacity: 0; }
 
 .formosa-file-name--empty {
   opacity: .5; }
@@ -357,8 +361,8 @@ input.formosa-field__input-checkbox {
 .formosa-field__note {
   font-size: 85%;
   line-height: 1.4;
-  margin-top: 4px;
-  opacity: .75; }
+  margin: 4px 0 0;
+  opacity: 0.75; }
 
 input.formosa-field__input--password.formosa-field__input {
   width: calc(100% - 70px); }
@@ -413,6 +417,8 @@ input.formosa-radio__input {
   margin: 0 8px 0 0;
   padding: 0;
   vertical-align: middle; }
+  .formosa-field--disabled input.formosa-radio__input {
+    cursor: default; }
   input.formosa-radio__input.formosa-field__input {
     width: 32px; }
   input.formosa-radio__input:checked {
@@ -446,12 +452,14 @@ input.formosa-field__input--search {
   display: table;
   position: relative; }
 
-.formosa-field__input-select {
+.formosa-field__input--select {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
   cursor: pointer;
   padding-right: 28px; }
+  .formosa-field--disabled .formosa-field__input--select {
+    cursor: default; }
 
 .formosa-icon--caret {
   height: 12px;
@@ -520,7 +528,7 @@ input.formosa-field__input--search {
   top: 0;
   z-index: 1; }
 
-.formosa-field__input-textarea {
+.formosa-field__input--textarea {
   box-sizing: border-box;
   line-height: 1.5;
   width: 100%; }

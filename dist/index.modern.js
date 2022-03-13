@@ -698,7 +698,7 @@ function Autocomplete({
     focus();
   };
 
-  const showClear = clearable && max !== 1 && selectedValues.length > 0;
+  const showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled;
   let className = ['formosa-autocomplete'];
 
   if (showClear) {
@@ -983,7 +983,7 @@ function Checkbox({
     formState
   } = useContext(formContext);
   return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Input, Object.assign({
-    className: `formosa-field__input-checkbox ${className}`.trim(),
+    className: `formosa-field__input--checkbox ${className}`.trim(),
     checked: !!get(formState.row, name),
     id: id || name,
     name: name,
@@ -1151,7 +1151,7 @@ function Select({
   return /*#__PURE__*/React__default.createElement("div", Object.assign({
     className: `formosa-select-wrapper ${wrapperClassName}`.trim()
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement("select", Object.assign({
-    className: `formosa-field__input formosa-field__input-select ${className}`.trim(),
+    className: `formosa-field__input formosa-field__input--select ${className}`.trim(),
     id: id || name,
     name: name,
     onChange: onChange,
@@ -1208,6 +1208,7 @@ function Datetime({
   ampmAttributes,
   convertToTimezone,
   dayAttributes,
+  disabled,
   hourAttributes,
   minuteAttributes,
   monthAttributes,
@@ -1235,6 +1236,7 @@ function Datetime({
     className: `formosa-datetime-wrapper ${wrapperClassName}`.trim()
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement(Select, Object.assign({
     "data-datetime": "month",
+    disabled: disabled,
     id: `${name}-month`,
     onChange: onChange,
     options: {
@@ -1257,6 +1259,7 @@ function Datetime({
   }, monthAttributes)), /*#__PURE__*/React__default.createElement(Input, Object.assign({
     className: "formosa-field__input--date formosa-field__input--day",
     "data-datetime": "day",
+    disabled: disabled,
     id: `${name}-day`,
     inputMode: "numeric",
     maxLength: 2,
@@ -1267,6 +1270,7 @@ function Datetime({
   }, dayAttributes)), /*#__PURE__*/React__default.createElement(Input, Object.assign({
     className: "formosa-field__input--date formosa-field__input--year",
     "data-datetime": "year",
+    disabled: disabled,
     id: `${name}-year`,
     inputMode: "numeric",
     maxLength: 4,
@@ -1278,6 +1282,7 @@ function Datetime({
   }, yearAttributes)), /*#__PURE__*/React__default.createElement(Input, Object.assign({
     className: "formosa-field__input--date formosa-field__input--hour",
     "data-datetime": "hour",
+    disabled: disabled,
     id: `${name}-hour`,
     inputMode: "numeric",
     maxLength: 2,
@@ -1289,6 +1294,7 @@ function Datetime({
   }, hourAttributes)), /*#__PURE__*/React__default.createElement(Input, Object.assign({
     className: "formosa-field__input--date formosa-field__input--minute",
     "data-datetime": "minute",
+    disabled: disabled,
     id: `${name}-minute`,
     inputMode: "numeric",
     maxLength: 2,
@@ -1300,6 +1306,7 @@ function Datetime({
   }, minuteAttributes)), /*#__PURE__*/React__default.createElement(Input, Object.assign({
     className: "formosa-field__input--date formosa-field__input--second",
     "data-datetime": "second",
+    disabled: disabled,
     id: `${name}-second`,
     inputMode: "numeric",
     maxLength: 2,
@@ -1309,6 +1316,7 @@ function Datetime({
     value: values.second
   }, secondAttributes)), /*#__PURE__*/React__default.createElement(Select, Object.assign({
     "data-datetime": "ampm",
+    disabled: disabled,
     hideBlank: true,
     id: `${name}-ampm`,
     onChange: onChange,
@@ -1326,6 +1334,7 @@ Datetime.propTypes = {
   ampmAttributes: PropTypes.object,
   convertToTimezone: PropTypes.string,
   dayAttributes: PropTypes.object,
+  disabled: PropTypes.bool,
   hourAttributes: PropTypes.object,
   minuteAttributes: PropTypes.object,
   monthAttributes: PropTypes.object,
@@ -1340,6 +1349,7 @@ Datetime.defaultProps = {
   ampmAttributes: null,
   convertToTimezone: 'UTC',
   dayAttributes: null,
+  disabled: false,
   hourAttributes: null,
   minuteAttributes: null,
   monthAttributes: null,
@@ -1354,6 +1364,7 @@ function File({
   buttonAttributes,
   buttonClassName,
   className,
+  disabled,
   emptyText,
   id,
   imageHeight,
@@ -1407,11 +1418,12 @@ function File({
     className: `formosa-file-name${text === emptyText ? ' formosa-file-name--empty' : ''}`
   }, text), /*#__PURE__*/React__default.createElement(Input, Object.assign({
     className: `formosa-field__input--file ${className}`.trim(),
+    disabled: disabled,
     id: id || name,
     multiple: multiple,
     name: name,
     onChange: onChange
-  }, otherProps))), hasValue && /*#__PURE__*/React__default.createElement("button", Object.assign({
+  }, otherProps))), hasValue && !disabled && /*#__PURE__*/React__default.createElement("button", Object.assign({
     className: `formosa-button formosa-button--remove-file formosa-postfix ${buttonClassName}`.trim(),
     onClick: onRemove,
     type: "button"
@@ -1422,6 +1434,7 @@ File.propTypes = {
   buttonAttributes: PropTypes.object,
   buttonClassName: PropTypes.string,
   className: PropTypes.string,
+  disabled: PropTypes.bool,
   emptyText: PropTypes.string,
   id: PropTypes.string,
   imageHeight: PropTypes.number,
@@ -1440,6 +1453,7 @@ File.defaultProps = {
   buttonAttributes: null,
   buttonClassName: '',
   className: '',
+  disabled: false,
   emptyText: 'No file selected.',
   id: '',
   imageHeight: 100,
@@ -1708,7 +1722,7 @@ function Textarea({
   };
 
   return /*#__PURE__*/React__default.createElement("textarea", Object.assign({
-    className: `formosa-field__input formosa-field__input-textarea ${className}`.trim(),
+    className: `formosa-field__input formosa-field__input--textarea ${className}`.trim(),
     id: id || name,
     name: name,
     onChange: onChange,
@@ -2020,6 +2034,7 @@ Label.defaultProps = {
 
 function Field({
   component,
+  disabled,
   id,
   inputWrapperAttributes,
   label,
@@ -2048,6 +2063,10 @@ function Field({
 
   if (name) {
     inputProps.name = name;
+  }
+
+  if (disabled) {
+    inputProps.disabled = disabled;
   }
 
   if (required) {
@@ -2093,6 +2112,10 @@ function Field({
     wrapperClassNameList.push('formosa-field--has-error');
   }
 
+  if (disabled) {
+    wrapperClassNameList.push('formosa-field--disabled');
+  }
+
   if (prefix) {
     wrapperClassNameList.push('formosa-field--has-prefix');
   }
@@ -2128,6 +2151,7 @@ function Field({
 }
 Field.propTypes = {
   component: PropTypes.func,
+  disabled: PropTypes.bool,
   id: PropTypes.string,
   inputWrapperAttributes: PropTypes.object,
   label: PropTypes.string,
@@ -2145,6 +2169,7 @@ Field.propTypes = {
 };
 Field.defaultProps = {
   component: null,
+  disabled: false,
   id: null,
   inputWrapperAttributes: {},
   label: '',
