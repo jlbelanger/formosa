@@ -11,6 +11,10 @@
 	path {
 		fill: $formosa-button-color;
 	}
+
+	&[disabled] {
+		cursor: default;
+	}
 }
 
 .formosa-button--danger {

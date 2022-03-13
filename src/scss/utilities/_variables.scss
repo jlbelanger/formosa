@@ -11,7 +11,7 @@ $formosa-success-color: #000 !default;
 
 $formosa-dark-mode: false !default;
 
-$formosa-disabled-opacity: .3 !default;
+$formosa-disabled-opacity: .5 !default;
 
 $formosa-input-background-color: if($formosa-dark-mode, #222, #fff) !default;
 $formosa-input-border-color: if($formosa-dark-mode, #555, #ccc) !default;

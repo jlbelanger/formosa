@@ -7,6 +7,10 @@
 	appearance: none;
 	cursor: pointer;
 	padding-right: $formosa-select-padding-right;
+
+	.formosa-field--disabled & {
+		cursor: default;
+	}
 }
 
 .formosa-icon--caret {

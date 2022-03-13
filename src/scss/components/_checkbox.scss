@@ -9,6 +9,10 @@ input.formosa-field__input-checkbox {
 	&.formosa-field__input {
 		width: $formosa-checkbox-size;
 	}
+
+	.formosa-field--disabled & {
+		cursor: default;
+	}
 }
 
 .formosa-input-wrapper--checkbox {
@@ -31,6 +35,10 @@ input.formosa-field__input-checkbox {
 
 	path {
 		fill: transparent;
+	}
+
+	.formosa-field--disabled & {
+		opacity: $formosa-disabled-opacity;
 	}
 
 	:checked + & path {

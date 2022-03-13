@@ -11,6 +11,7 @@ export default function Datetime({
 	ampmAttributes,
 	convertToTimezone,
 	dayAttributes,
+	disabled,
 	hourAttributes,
 	minuteAttributes,
 	monthAttributes,
@@ -37,6 +38,7 @@ export default function Datetime({
 		<div className={`formosa-datetime-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 			<Select
 				data-datetime="month"
+				disabled={disabled}
 				id={`${name}-month`}
 				onChange={onChange}
 				options={{
@@ -61,6 +63,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--day"
 				data-datetime="day"
+				disabled={disabled}
 				id={`${name}-day`}
 				inputMode="numeric"
 				maxLength={2}
@@ -73,6 +76,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--year"
 				data-datetime="year"
+				disabled={disabled}
 				id={`${name}-year`}
 				inputMode="numeric"
 				maxLength={4}
@@ -87,6 +91,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--hour"
 				data-datetime="hour"
+				disabled={disabled}
 				id={`${name}-hour`}
 				inputMode="numeric"
 				maxLength={2}
@@ -100,6 +105,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--minute"
 				data-datetime="minute"
+				disabled={disabled}
 				id={`${name}-minute`}
 				inputMode="numeric"
 				maxLength={2}
@@ -113,6 +119,7 @@ export default function Datetime({
 			<Input
 				className="formosa-field__input--date formosa-field__input--second"
 				data-datetime="second"
+				disabled={disabled}
 				id={`${name}-second`}
 				inputMode="numeric"
 				maxLength={2}
@@ -124,6 +131,7 @@ export default function Datetime({
 			/>
 			<Select
 				data-datetime="ampm"
+				disabled={disabled}
 				hideBlank
 				id={`${name}-ampm`}
 				onChange={onChange}
@@ -145,6 +153,7 @@ Datetime.propTypes = {
 	ampmAttributes: PropTypes.object,
 	convertToTimezone: PropTypes.string,
 	dayAttributes: PropTypes.object,
+	disabled: PropTypes.bool,
 	hourAttributes: PropTypes.object,
 	minuteAttributes: PropTypes.object,
 	monthAttributes: PropTypes.object,
@@ -160,6 +169,7 @@ Datetime.defaultProps = {
 	ampmAttributes: null,
 	convertToTimezone: 'UTC',
 	dayAttributes: null,
+	disabled: false,
 	hourAttributes: null,
 	minuteAttributes: null,
 	monthAttributes: null,

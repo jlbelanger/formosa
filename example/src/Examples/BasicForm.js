@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 export default function BasicForm() {
 	const [row, setRow] = useState({});
+	const [disabled, setDisabled] = useState(false);
 	const options = [
 		'Apple',
 		'Peach',
@@ -15,13 +16,22 @@ export default function BasicForm() {
 		alert('Form has been submitted.');
 	};
 
+	const toggleDisabled = () => {
+		setDisabled(!disabled);
+	};
+
 	return (
 		<>
 			<Form onSubmit={onSubmit} row={row} setRow={setRow}>
+				<button className="formosa-button" onClick={toggleDisabled} type="button">
+					{disabled ? 'Enable Fields' : 'Disable Fields'}
+				</button>
+
 				<Field
 					label="Text"
 					name="text"
 					type="text"
+					disabled={disabled}
 				/>
 
 				<Field
@@ -29,12 +39,14 @@ export default function BasicForm() {
 					name="text_size"
 					size={16}
 					type="text"
+					disabled={disabled}
 				/>
 
 				<Field
 					label="Email"
 					name="email"
 					type="email"
+					disabled={disabled}
 				/>
 
 				<Field
@@ -42,6 +54,7 @@ export default function BasicForm() {
 					name="number"
 					size={6}
 					type="number"
+					disabled={disabled}
 				/>
 
 				<Field
@@ -49,24 +62,28 @@ export default function BasicForm() {
 					name="password"
 					type="password"
 					autoComplete="off"
+					disabled={disabled}
 				/>
 
 				<Field
 					label="Search"
 					name="search"
 					type="search"
+					disabled={disabled}
 				/>
 
 				<Field
 					label="Telephone"
 					name="telephone"
 					type="tel"
+					disabled={disabled}
 				/>
 
 				<Field
 					label="URL"
 					name="url"
 					type="url"
+					disabled={disabled}
 				/>
 
 				<Field
@@ -74,6 +91,7 @@ export default function BasicForm() {
 					name="textarea"
 					type="textarea"
 					rows={5}
+					disabled={disabled}
 				/>
 
 				<Field
@@ -81,18 +99,21 @@ export default function BasicForm() {
 					name="select"
 					type="select"
 					options={options}
+					disabled={disabled}
 				/>
 
 				<Field
 					label="Checkbox"
 					name="checkbox"
 					type="checkbox"
+					disabled={disabled}
 				/>
 
 				<Field
 					label="Datetime"
 					name="datetime"
 					type="datetime"
+					disabled={disabled}
 				/>
 
 				<Field
@@ -100,6 +121,7 @@ export default function BasicForm() {
 					name="radio"
 					type="radio"
 					options={options}
+					disabled={disabled}
 				/>
 
 				<Field
@@ -108,6 +130,7 @@ export default function BasicForm() {
 					max={1}
 					type="autocomplete"
 					options={options}
+					disabled={disabled}
 				/>
 
 				<Field
@@ -115,12 +138,14 @@ export default function BasicForm() {
 					name="multiple_autocomplete"
 					type="autocomplete"
 					options={options}
+					disabled={disabled}
 				/>
 
 				<Field
 					label="File"
 					name="file"
 					type="file"
+					disabled={disabled}
 				/>
 
 				<Field
@@ -128,6 +153,7 @@ export default function BasicForm() {
 					name="multiple_files"
 					multiple
 					type="file"
+					disabled={disabled}
 				/>
 
 				<Field
@@ -136,6 +162,7 @@ export default function BasicForm() {
 					accept="image/*"
 					imagePreview
 					type="file"
+					disabled={disabled}
 				/>
 
 				<Field
@@ -153,6 +180,7 @@ export default function BasicForm() {
 							name: 'value',
 						},
 					]}
+					disabled={disabled}
 				/>
 
 				<Submit />

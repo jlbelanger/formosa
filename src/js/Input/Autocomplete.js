@@ -231,7 +231,7 @@ export default function Autocomplete({
 		focus();
 	};
 
-	const showClear = clearable && max !== 1 && selectedValues.length > 0;
+	const showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled;
 
 	let className = ['formosa-autocomplete'];
 	if (showClear) {

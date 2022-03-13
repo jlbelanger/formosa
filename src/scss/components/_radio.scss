@@ -35,6 +35,10 @@ input.formosa-radio__input {
 	padding: 0;
 	vertical-align: middle;
 
+	.formosa-field--disabled & {
+		cursor: default;
+	}
+
 	&.formosa-field__input {
 		width: $formosa-radio-size;
 	}

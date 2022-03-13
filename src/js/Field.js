@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 
 export default function Field({
 	component,
+	disabled,
 	id,
 	inputWrapperAttributes,
 	label,
@@ -31,6 +32,9 @@ export default function Field({
 	}
 	if (name) {
 		inputProps.name = name;
+	}
+	if (disabled) {
+		inputProps.disabled = disabled;
 	}
 	if (required) {
 		inputProps.required = required;
@@ -75,6 +79,9 @@ export default function Field({
 	if (hasError) {
 		wrapperClassNameList.push('formosa-field--has-error');
 	}
+	if (disabled) {
+		wrapperClassNameList.push('formosa-field--disabled');
+	}
 	if (prefix) {
 		wrapperClassNameList.push('formosa-field--has-prefix');
 	}
@@ -116,6 +123,7 @@ export default function Field({
 
 Field.propTypes = {
 	component: PropTypes.func,
+	disabled: PropTypes.bool,
 	id: PropTypes.string,
 	inputWrapperAttributes: PropTypes.object,
 	label: PropTypes.string,
@@ -138,6 +146,7 @@ Field.propTypes = {
 
 Field.defaultProps = {
 	component: null,
+	disabled: false,
 	id: null,
 	inputWrapperAttributes: {},
 	label: '',

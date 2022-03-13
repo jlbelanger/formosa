@@ -9,6 +9,7 @@ export default function File({
 	buttonAttributes,
 	buttonClassName,
 	className,
+	disabled,
 	emptyText,
 	id,
 	imageHeight,
@@ -61,6 +62,7 @@ export default function File({
 					</div>
 					<Input
 						className={`formosa-field__input--file ${className}`.trim()}
+						disabled={disabled}
 						id={id || name}
 						multiple={multiple}
 						name={name}
@@ -68,7 +70,7 @@ export default function File({
 						{...otherProps}
 					/>
 				</div>
-				{hasValue && (
+				{hasValue && !disabled && (
 					<button
 						className={`formosa-button formosa-button--remove-file formosa-postfix ${buttonClassName}`.trim()}
 						onClick={onRemove}
@@ -88,6 +90,7 @@ File.propTypes = {
 	buttonAttributes: PropTypes.object,
 	buttonClassName: PropTypes.string,
 	className: PropTypes.string,
+	disabled: PropTypes.bool,
 	emptyText: PropTypes.string,
 	id: PropTypes.string,
 	imageHeight: PropTypes.number,
@@ -107,6 +110,7 @@ File.defaultProps = {
 	buttonAttributes: null,
 	buttonClassName: '',
 	className: '',
+	disabled: false,
 	emptyText: 'No file selected.',
 	id: '',
 	imageHeight: 100,

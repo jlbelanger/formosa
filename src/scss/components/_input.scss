@@ -1,3 +1,9 @@
+.formosa-field--disabled {
+	.formosa-input-wrapper {
+		opacity: $formosa-disabled-opacity;
+	}
+}
+
 .formosa-field__input,
 .formosa-field__input-select,
 .formosa-field__input-textarea,
@@ -16,11 +22,6 @@
 		&:focus {
 			box-shadow: 0 0 0 $formosa-focus-border-width $formosa-focus-box-shadow-color;
 		}
-	}
-
-	&[disabled],
-	&[readonly] {
-		opacity: $formosa-disabled-opacity;
 	}
 }
 
