@@ -522,7 +522,7 @@ function SvgX(props) {
   })));
 }
 
-var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "url", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "url", "valueKey", "wrapperAttributes", "wrapperClassName"];
 function Autocomplete(_ref) {
   var afterAdd = _ref.afterAdd,
       afterChange = _ref.afterChange,
@@ -548,6 +548,7 @@ function Autocomplete(_ref) {
       optionListItemClassName = _ref.optionListItemClassName,
       options = _ref.options,
       placeholder = _ref.placeholder,
+      readOnly = _ref.readOnly,
       removeButtonAttributes = _ref.removeButtonAttributes,
       removeButtonClassName = _ref.removeButtonClassName,
       removeIconAttributes = _ref.removeIconAttributes,
@@ -786,19 +787,15 @@ function Autocomplete(_ref) {
     focus();
   };
 
-  var showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled;
+  var showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled && !readOnly;
   var className = ['formosa-autocomplete'];
 
   if (showClear) {
     className.push('formosa-autocomplete--clearable');
   }
 
-  if (disabled) {
-    className.push('formosa-autocomplete--disabled');
-  }
-
   className = className.join(' ');
-  var canAddValues = !disabled && (max === null || selectedValues.length < max);
+  var canAddValues = !disabled && !readOnly && (max === null || selectedValues.length < max);
   var dataValue = JSON.stringify(get(formState.row, name));
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: (className + " " + wrapperClassName).trim(),
@@ -824,7 +821,7 @@ function Autocomplete(_ref) {
     return /*#__PURE__*/React__default.createElement("li", {
       className: "formosa-autocomplete__value formosa-autocomplete__value--item",
       key: JSON.stringify(value)
-    }, label, !disabled && /*#__PURE__*/React__default.createElement("button", _extends({
+    }, label, !disabled && !readOnly && /*#__PURE__*/React__default.createElement("button", _extends({
       className: ("formosa-autocomplete__value__remove " + removeButtonClassName).trim(),
       "data-index": i,
       onClick: onClickRemoveOption,
@@ -899,6 +896,7 @@ Autocomplete.propTypes = {
   optionListItemClassName: PropTypes.string,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   placeholder: PropTypes.string,
+  readOnly: PropTypes.bool,
   removeButtonAttributes: PropTypes.object,
   removeButtonClassName: PropTypes.string,
   removeIconAttributes: PropTypes.object,
@@ -934,6 +932,7 @@ Autocomplete.defaultProps = {
   optionListItemClassName: '',
   options: null,
   placeholder: 'Search',
+  readOnly: false,
   removeButtonAttributes: null,
   removeButtonClassName: '',
   removeIconAttributes: null,
@@ -1318,9 +1317,7 @@ function Datetime(_ref) {
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState;
 
-  var _useState = React.useState(stringToObject(get(formState.row, name) || '', convertToTimezone)),
-      values = _useState[0],
-      setValues = _useState[1];
+  var values = stringToObject(get(formState.row, name) || '', convertToTimezone);
 
   var onChange = function onChange(e) {
     var _extends2;
@@ -1329,7 +1326,6 @@ function Datetime(_ref) {
 
     var newValues = _extends({}, values, (_extends2 = {}, _extends2[key] = e.target.value, _extends2));
 
-    setValues(newValues);
     formState.setValues(formState, e, name, objectToString(newValues), afterChange);
   };
 
@@ -2168,7 +2164,7 @@ Label.defaultProps = {
   type: ''
 };
 
-var _excluded$b = ["component", "disabled", "id", "inputWrapperAttributes", "label", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
+var _excluded$b = ["component", "disabled", "id", "inputWrapperAttributes", "label", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
 function Field(_ref) {
   var component = _ref.component,
       disabled = _ref.disabled,
@@ -2181,6 +2177,7 @@ function Field(_ref) {
       note = _ref.note,
       prefix = _ref.prefix,
       postfix = _ref.postfix,
+      readOnly = _ref.readOnly,
       required = _ref.required,
       suffix = _ref.suffix,
       type = _ref.type,
@@ -2203,6 +2200,10 @@ function Field(_ref) {
 
   if (disabled) {
     inputProps.disabled = disabled;
+  }
+
+  if (readOnly) {
+    inputProps.readOnly = readOnly;
   }
 
   if (required) {
@@ -2252,6 +2253,10 @@ function Field(_ref) {
     wrapperClassNameList.push('formosa-field--disabled');
   }
 
+  if (readOnly) {
+    wrapperClassNameList.push('formosa-field--read-only');
+  }
+
   if (prefix) {
     wrapperClassNameList.push('formosa-field--has-prefix');
   }
@@ -2299,6 +2304,7 @@ Field.propTypes = {
   note: PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string]),
   prefix: PropTypes.node,
   postfix: PropTypes.node,
+  readOnly: PropTypes.bool,
   required: PropTypes.bool,
   suffix: PropTypes.string,
   type: PropTypes.string,
@@ -2316,6 +2322,7 @@ Field.defaultProps = {
   note: '',
   prefix: null,
   postfix: null,
+  readOnly: false,
   required: false,
   suffix: '',
   type: 'text',
@@ -2371,10 +2378,6 @@ function FormInner(_ref) {
 
   var submitApiRequest = function submitApiRequest(e) {
     e.preventDefault();
-
-    if (method === 'DELETE' && !window.confirm('Are you sure you want to delete this?')) {
-      return;
-    }
 
     if (preventEmptyRequest && formState.dirty.length <= 0) {
       formosaState.addToast('No changes to save.');

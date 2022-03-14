@@ -476,6 +476,7 @@ function Autocomplete({
   optionListItemClassName,
   options,
   placeholder,
+  readOnly,
   removeButtonAttributes,
   removeButtonClassName,
   removeIconAttributes,
@@ -698,19 +699,15 @@ function Autocomplete({
     focus();
   };
 
-  const showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled;
+  const showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled && !readOnly;
   let className = ['formosa-autocomplete'];
 
   if (showClear) {
     className.push('formosa-autocomplete--clearable');
   }
 
-  if (disabled) {
-    className.push('formosa-autocomplete--disabled');
-  }
-
   className = className.join(' ');
-  const canAddValues = !disabled && (max === null || selectedValues.length < max);
+  const canAddValues = !disabled && !readOnly && (max === null || selectedValues.length < max);
   const dataValue = JSON.stringify(get(formState.row, name));
   return /*#__PURE__*/React__default.createElement("div", Object.assign({
     className: `${className} ${wrapperClassName}`.trim(),
@@ -736,7 +733,7 @@ function Autocomplete({
     return /*#__PURE__*/React__default.createElement("li", {
       className: "formosa-autocomplete__value formosa-autocomplete__value--item",
       key: JSON.stringify(value)
-    }, label, !disabled && /*#__PURE__*/React__default.createElement("button", Object.assign({
+    }, label, !disabled && !readOnly && /*#__PURE__*/React__default.createElement("button", Object.assign({
       className: `formosa-autocomplete__value__remove ${removeButtonClassName}`.trim(),
       "data-index": i,
       onClick: onClickRemoveOption,
@@ -811,6 +808,7 @@ Autocomplete.propTypes = {
   optionListItemClassName: PropTypes.string,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   placeholder: PropTypes.string,
+  readOnly: PropTypes.bool,
   removeButtonAttributes: PropTypes.object,
   removeButtonClassName: PropTypes.string,
   removeIconAttributes: PropTypes.object,
@@ -846,6 +844,7 @@ Autocomplete.defaultProps = {
   optionListItemClassName: '',
   options: null,
   placeholder: 'Search',
+  readOnly: false,
   removeButtonAttributes: null,
   removeButtonClassName: '',
   removeIconAttributes: null,
@@ -1221,14 +1220,13 @@ function Datetime({
   const {
     formState
   } = useContext(formContext);
-  const [values, setValues] = useState(stringToObject(get(formState.row, name) || '', convertToTimezone));
+  const values = stringToObject(get(formState.row, name) || '', convertToTimezone);
 
   const onChange = e => {
     const key = e.target.getAttribute('data-datetime');
     const newValues = { ...values,
       [key]: e.target.value
     };
-    setValues(newValues);
     formState.setValues(formState, e, name, objectToString(newValues), afterChange);
   };
 
@@ -2044,6 +2042,7 @@ function Field({
   note,
   prefix,
   postfix,
+  readOnly,
   required,
   suffix,
   type,
@@ -2067,6 +2066,10 @@ function Field({
 
   if (disabled) {
     inputProps.disabled = disabled;
+  }
+
+  if (readOnly) {
+    inputProps.readOnly = readOnly;
   }
 
   if (required) {
@@ -2116,6 +2119,10 @@ function Field({
     wrapperClassNameList.push('formosa-field--disabled');
   }
 
+  if (readOnly) {
+    wrapperClassNameList.push('formosa-field--read-only');
+  }
+
   if (prefix) {
     wrapperClassNameList.push('formosa-field--has-prefix');
   }
@@ -2161,6 +2168,7 @@ Field.propTypes = {
   note: PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string]),
   prefix: PropTypes.node,
   postfix: PropTypes.node,
+  readOnly: PropTypes.bool,
   required: PropTypes.bool,
   suffix: PropTypes.string,
   type: PropTypes.string,
@@ -2178,6 +2186,7 @@ Field.defaultProps = {
   note: '',
   prefix: null,
   postfix: null,
+  readOnly: false,
   required: false,
   suffix: '',
   type: 'text',
@@ -2233,10 +2242,6 @@ function FormInner({
 
   const submitApiRequest = e => {
     e.preventDefault();
-
-    if (method === 'DELETE' && !window.confirm('Are you sure you want to delete this?')) {
-      return;
-    }
 
     if (preventEmptyRequest && formState.dirty.length <= 0) {
       formosaState.addToast('No changes to save.');
