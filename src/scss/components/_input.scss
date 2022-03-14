@@ -23,6 +23,14 @@
 			box-shadow: 0 0 0 $formosa-focus-border-width $formosa-focus-box-shadow-color;
 		}
 	}
+
+	.formosa-field--has-error & {
+		border-color: $formosa-focus-error-border-color;
+
+		&:focus {
+			border-color: $formosa-focus-border-color;
+		}
+	}
 }
 
 .formosa-button,

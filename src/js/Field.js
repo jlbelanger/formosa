@@ -18,6 +18,7 @@ export default function Field({
 	note,
 	prefix,
 	postfix,
+	readOnly,
 	required,
 	suffix,
 	type,
@@ -35,6 +36,9 @@ export default function Field({
 	}
 	if (disabled) {
 		inputProps.disabled = disabled;
+	}
+	if (readOnly) {
+		inputProps.readOnly = readOnly;
 	}
 	if (required) {
 		inputProps.required = required;
@@ -81,6 +85,9 @@ export default function Field({
 	}
 	if (disabled) {
 		wrapperClassNameList.push('formosa-field--disabled');
+	}
+	if (readOnly) {
+		wrapperClassNameList.push('formosa-field--read-only');
 	}
 	if (prefix) {
 		wrapperClassNameList.push('formosa-field--has-prefix');
@@ -137,6 +144,7 @@ Field.propTypes = {
 	]),
 	prefix: PropTypes.node,
 	postfix: PropTypes.node,
+	readOnly: PropTypes.bool,
 	required: PropTypes.bool,
 	suffix: PropTypes.string,
 	type: PropTypes.string,
@@ -155,6 +163,7 @@ Field.defaultProps = {
 	note: '',
 	prefix: null,
 	postfix: null,
+	readOnly: false,
 	required: false,
 	suffix: '',
 	type: 'text',

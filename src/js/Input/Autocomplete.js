@@ -31,6 +31,7 @@ export default function Autocomplete({
 	optionListItemClassName,
 	options,
 	placeholder,
+	readOnly,
 	removeButtonAttributes,
 	removeButtonClassName,
 	removeIconAttributes,
@@ -231,18 +232,15 @@ export default function Autocomplete({
 		focus();
 	};
 
-	const showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled;
+	const showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled && !readOnly;
 
 	let className = ['formosa-autocomplete'];
 	if (showClear) {
 		className.push('formosa-autocomplete--clearable');
 	}
-	if (disabled) {
-		className.push('formosa-autocomplete--disabled');
-	}
 	className = className.join(' ');
 
-	const canAddValues = !disabled && (max === null || selectedValues.length < max);
+	const canAddValues = !disabled && !readOnly && (max === null || selectedValues.length < max);
 
 	const dataValue = JSON.stringify(get(formState.row, name));
 
@@ -267,7 +265,7 @@ export default function Autocomplete({
 						return (
 							<li className="formosa-autocomplete__value formosa-autocomplete__value--item" key={JSON.stringify(value)}>
 								{label}
-								{!disabled && (
+								{!disabled && !readOnly && (
 									<button
 										className={`formosa-autocomplete__value__remove ${removeButtonClassName}`.trim()}
 										data-index={i}
@@ -380,6 +378,7 @@ Autocomplete.propTypes = {
 		PropTypes.object,
 	]),
 	placeholder: PropTypes.string,
+	readOnly: PropTypes.bool,
 	removeButtonAttributes: PropTypes.object,
 	removeButtonClassName: PropTypes.string,
 	removeIconAttributes: PropTypes.object,
@@ -419,6 +418,7 @@ Autocomplete.defaultProps = {
 	optionListItemClassName: '',
 	options: null,
 	placeholder: 'Search',
+	readOnly: false,
 	removeButtonAttributes: null,
 	removeButtonClassName: '',
 	removeIconAttributes: null,

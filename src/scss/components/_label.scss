@@ -12,11 +12,23 @@
 
 	&[for] {
 		cursor: pointer;
+
+		.formosa-field--disabled & {
+			cursor: default;
+		}
+	}
+
+	.formosa-field--has-error & {
+		color: $formosa-label-error-color;
 	}
 }
 
 .formosa-radio__label {
 	cursor: pointer;
+
+	.formosa-field--disabled & {
+		cursor: default;
+	}
 }
 
 .formosa-label--required {

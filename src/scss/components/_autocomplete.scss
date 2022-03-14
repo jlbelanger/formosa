@@ -98,7 +98,8 @@ input.formosa-autocomplete__input {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 
-	.formosa-autocomplete--disabled & {
+	.formosa-field--disabled &,
+	.formosa-field--read-only & {
 		padding-right: $formosa-autocomplete-value-padding-top;
 	}
 
@@ -117,6 +118,7 @@ input.formosa-autocomplete__input {
 .formosa-autocomplete__value__remove,
 .formosa-autocomplete__clear {
 	border-color: transparent;
+	cursor: pointer;
 	font-size: 0;
 	padding: 0;
 
@@ -133,6 +135,10 @@ input.formosa-autocomplete__input {
 		path {
 			fill: $formosa-autocomplete-clear-color-hover;
 		}
+	}
+
+	.formosa-field--disabled & {
+		cursor: default;
 	}
 }
 

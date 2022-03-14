@@ -65,7 +65,9 @@ $formosa-horizontal-fields-padding: 8px !default;
 $formosa-focus-border-color: #4ad !default;
 $formosa-focus-border-width: 3px !default;
 $formosa-focus-box-shadow-color: #6cf !default;
+$formosa-focus-error-border-color: $formosa-color-danger !default;
 
+$formosa-label-error-color: $formosa-color-danger !default;
 $formosa-label-font-weight: bold !default;
 $formosa-label-margin: 4px !default;
 

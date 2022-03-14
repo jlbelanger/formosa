@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 export default function BasicForm() {
 	const [row, setRow] = useState({});
 	const [disabled, setDisabled] = useState(false);
+	const [readOnly, setReadOnly] = useState(false);
 	const options = [
 		'Apple',
 		'Peach',
@@ -20,6 +21,10 @@ export default function BasicForm() {
 		setDisabled(!disabled);
 	};
 
+	const toggleReadOnly = () => {
+		setReadOnly(!readOnly);
+	};
+
 	return (
 		<>
 			<Form onSubmit={onSubmit} row={row} setRow={setRow}>
@@ -27,11 +32,16 @@ export default function BasicForm() {
 					{disabled ? 'Enable Fields' : 'Disable Fields'}
 				</button>
 
+				<button className="formosa-button" onClick={toggleReadOnly} type="button">
+					{readOnly ? 'Disable Read Only' : 'Enable Read Only'}
+				</button>
+
 				<Field
 					label="Text"
 					name="text"
 					type="text"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -40,6 +50,7 @@ export default function BasicForm() {
 					size={16}
 					type="text"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -47,6 +58,7 @@ export default function BasicForm() {
 					name="email"
 					type="email"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -55,6 +67,7 @@ export default function BasicForm() {
 					size={6}
 					type="number"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -63,6 +76,7 @@ export default function BasicForm() {
 					type="password"
 					autoComplete="off"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -70,6 +84,7 @@ export default function BasicForm() {
 					name="search"
 					type="search"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -77,6 +92,7 @@ export default function BasicForm() {
 					name="telephone"
 					type="tel"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -84,6 +100,7 @@ export default function BasicForm() {
 					name="url"
 					type="url"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -92,6 +109,7 @@ export default function BasicForm() {
 					type="textarea"
 					rows={5}
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -100,6 +118,7 @@ export default function BasicForm() {
 					type="select"
 					options={options}
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -107,6 +126,7 @@ export default function BasicForm() {
 					name="checkbox"
 					type="checkbox"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -114,6 +134,7 @@ export default function BasicForm() {
 					name="datetime"
 					type="datetime"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -122,6 +143,7 @@ export default function BasicForm() {
 					type="radio"
 					options={options}
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -131,6 +153,7 @@ export default function BasicForm() {
 					type="autocomplete"
 					options={options}
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -139,6 +162,7 @@ export default function BasicForm() {
 					type="autocomplete"
 					options={options}
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -146,6 +170,7 @@ export default function BasicForm() {
 					name="file"
 					type="file"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -154,6 +179,7 @@ export default function BasicForm() {
 					multiple
 					type="file"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -163,6 +189,7 @@ export default function BasicForm() {
 					imagePreview
 					type="file"
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Field
@@ -181,6 +208,7 @@ export default function BasicForm() {
 						},
 					]}
 					disabled={disabled}
+					readOnly={readOnly}
 				/>
 
 				<Submit />
