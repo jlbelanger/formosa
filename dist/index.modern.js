@@ -2494,8 +2494,8 @@ function Toast({
     type: "button"
   }, /*#__PURE__*/React__default.createElement(SvgX, {
     className: "formosa-toast__close-icon",
-    height: "12",
-    width: "12"
+    height: 12,
+    width: 12
   }), "Close"));
 }
 Toast.propTypes = {

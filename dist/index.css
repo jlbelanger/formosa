@@ -172,21 +172,24 @@ input.formosa-autocomplete__input {
   width: 42px; }
 
 .formosa-button {
-  background: #9bc;
+  background-color: #9bc;
   border: 1px solid #9bc;
   border-radius: 0;
   color: #000;
   cursor: pointer;
   font-family: sans-serif;
   font-size: 18px;
+  line-height: 1.5;
   padding: 8px 12px; }
-  .formosa-button path {
-    fill: #000; }
   .formosa-button[disabled] {
     cursor: default; }
+  .formosa-button:hover, .formosa-button:active, .formosa-button:focus {
+    background-color: #75a3ba; }
+  .formosa-button path {
+    fill: #000; }
 
 .formosa-button--danger {
-  background: #c66;
+  background-color: #c66;
   border-color: transparent;
   color: #000; }
   .formosa-button--danger:hover, .formosa-button--danger:active, .formosa-button--danger:focus {

@@ -1,30 +1,37 @@
 .formosa-button {
-	background: $formosa-button-background-color;
+	background-color: $formosa-button-background-color;
 	border: $formosa-input-border-width solid $formosa-button-border-color;
 	border-radius: $formosa-input-border-radius;
 	color: $formosa-button-color;
 	cursor: pointer;
 	font-family: $formosa-input-font-family;
 	font-size: $formosa-input-font-size;
+	line-height: $formosa-input-line-height;
 	padding: $formosa-button-padding $formosa-button-padding-side;
-
-	path {
-		fill: $formosa-button-color;
-	}
 
 	&[disabled] {
 		cursor: default;
 	}
-}
-
-.formosa-button--danger {
-	background: $formosa-error-background-color;
-	border-color: transparent;
-	color: $formosa-error-color;
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: scale-color($formosa-error-background-color, $lightness: -15%);
+		background-color: $formosa-button-background-color-hover;
+	}
+
+	path {
+		fill: $formosa-button-color;
+	}
+}
+
+.formosa-button--danger {
+	background-color: $formosa-button-danger-background-color;
+	border-color: $formosa-button-danger-border-color;
+	color: $formosa-button-danger-color;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: $formosa-button-danger-background-color-hover;
 	}
 }
