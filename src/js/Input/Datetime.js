@@ -1,5 +1,5 @@
 import { objectToString, stringToObject } from '../Helpers/Datetime';
-import React, { useContext, useState } from 'react'; // eslint-disable-line import/no-unresolved
+import React, { useContext } from 'react'; // eslint-disable-line import/no-unresolved
 import FormContext from '../FormContext';
 import get from 'get-value';
 import Input from '../Input';
@@ -22,14 +22,13 @@ export default function Datetime({
 	yearAttributes,
 }) {
 	const { formState } = useContext(FormContext);
-	const [values, setValues] = useState(stringToObject(get(formState.row, name) || '', convertToTimezone));
+	const values = stringToObject(get(formState.row, name) || '', convertToTimezone);
 	const onChange = (e) => {
 		const key = e.target.getAttribute('data-datetime');
 		const newValues = {
 			...values,
 			[key]: e.target.value,
 		};
-		setValues(newValues);
 
 		formState.setValues(formState, e, name, objectToString(newValues), afterChange);
 	};
