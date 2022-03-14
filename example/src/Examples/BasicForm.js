@@ -14,7 +14,7 @@ export default function BasicForm() {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		alert('Form has been submitted.');
+		alert('Form has been submitted.'); // eslint-disable-line no-alert
 	};
 
 	const toggleDisabled = () => {

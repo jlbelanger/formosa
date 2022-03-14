@@ -12,7 +12,7 @@ export default function HorizontalForm() {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		alert('Form has been submitted.');
+		alert('Form has been submitted.'); // eslint-disable-line no-alert
 	};
 
 	return (

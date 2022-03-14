@@ -32,10 +32,6 @@ export default function FormInner({
 	const submitApiRequest = (e) => {
 		e.preventDefault();
 
-		if (method === 'DELETE' && !window.confirm('Are you sure you want to delete this?')) {
-			return;
-		}
-
 		if (preventEmptyRequest && formState.dirty.length <= 0) {
 			formosaState.addToast('No changes to save.');
 			if (afterNoSubmit) {
