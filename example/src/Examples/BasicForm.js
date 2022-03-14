@@ -25,9 +25,45 @@ export default function BasicForm() {
 		setReadOnly(!readOnly);
 	};
 
+	const populateFields = () => {
+		setRow({
+			text: 'Lorem ipsum',
+			text_size: 'Lorem ipsum',
+			email: 'foo@example.com',
+			number: 47,
+			password: 'foobar',
+			search: 'Lorem ipsum',
+			telephone: '555-867-5309',
+			url: 'https://example.com',
+			textarea: 'Lorem ipsum',
+			select: 'Apple',
+			checkbox: true,
+			datetime: '2001-02-03 04:05:06',
+			radio: 'Apple',
+			autocomplete: {
+				label: 'Apple',
+				value: 'Apple',
+			},
+			multiple_autocomplete: [
+				{
+					label: 'Apple',
+					value: 'Apple',
+				},
+				{
+					label: 'Banana',
+					value: 'Banana',
+				},
+			],
+		});
+	};
+
 	return (
 		<>
 			<Form onSubmit={onSubmit} row={row} setRow={setRow}>
+				<button className="formosa-button" onClick={populateFields} type="button">
+					Populate Fields
+				</button>
+
 				<button className="formosa-button" onClick={toggleDisabled} type="button">
 					{disabled ? 'Enable Fields' : 'Disable Fields'}
 				</button>
