@@ -1528,7 +1528,8 @@ function File(_ref) {
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement("div", _extends({
     className: ("formosa-file-input-wrapper " + inputWrapperClassName).trim()
   }, inputWrapperAttributes), /*#__PURE__*/React__default.createElement("div", {
-    className: "formosa-file-name" + (text === emptyText ? ' formosa-file-name--empty' : '')
+    className: "formosa-file-name" + (text === emptyText ? ' formosa-file-name--empty' : ''),
+    id: (id || name) + "-name"
   }, text), /*#__PURE__*/React__default.createElement(Input, _extends({
     className: ("formosa-field__input--file " + className).trim(),
     disabled: disabled,
@@ -1538,6 +1539,7 @@ function File(_ref) {
     onChange: onChange
   }, otherProps))), hasValue && !disabled && /*#__PURE__*/React__default.createElement("button", _extends({
     className: ("formosa-button formosa-button--remove-file formosa-postfix " + buttonClassName).trim(),
+    id: (id || name) + "-remove",
     onClick: onRemove,
     type: "button"
   }, buttonAttributes), removeText)));

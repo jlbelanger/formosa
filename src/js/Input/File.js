@@ -66,7 +66,10 @@ export default function File({
 			)}
 			<div className={`formosa-file-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 				<div className={`formosa-file-input-wrapper ${inputWrapperClassName}`.trim()} {...inputWrapperAttributes}>
-					<div className={`formosa-file-name${text === emptyText ? ' formosa-file-name--empty' : ''}`}>
+					<div
+						className={`formosa-file-name${text === emptyText ? ' formosa-file-name--empty' : ''}`}
+						id={`${id || name}-name`}
+					>
 						{text}
 					</div>
 					<Input
@@ -82,6 +85,7 @@ export default function File({
 				{hasValue && !disabled && (
 					<button
 						className={`formosa-button formosa-button--remove-file formosa-postfix ${buttonClassName}`.trim()}
+						id={`${id || name}-remove`}
 						onClick={onRemove}
 						type="button"
 						{...buttonAttributes}
