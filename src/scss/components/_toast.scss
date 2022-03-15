@@ -12,7 +12,7 @@
 	align-items: center;
 	animation-fill-mode: forwards;
 	animation-name: formosa-slide-in-out;
-	background: $formosa-primary-background-color;
+	background-color: $formosa-primary-background-color;
 	color: $formosa-primary-color;
 	display: flex;
 	margin: $formosa-toast-margin;
@@ -24,7 +24,7 @@
 }
 
 .formosa-toast__close {
-	background: transparent;
+	background-color: transparent;
 	border: 0;
 	font-size: 0;
 	height: 32px;
@@ -38,12 +38,12 @@
 	&:hover,
 	&:active,
 	&:focus {
-		background: transparent;
+		background-color: transparent;
 	}
 }
 
 .formosa-toast--error {
-	background: $formosa-error-background-color;
+	background-color: $formosa-error-background-color;
 	color: $formosa-error-color;
 
 	.formosa-toast__close {
@@ -54,7 +54,7 @@
 }
 
 .formosa-toast--success {
-	background: $formosa-success-background-color;
+	background-color: $formosa-success-background-color;
 	color: $formosa-success-color;
 
 	.formosa-toast__close {

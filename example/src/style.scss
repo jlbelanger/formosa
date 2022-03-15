@@ -10,7 +10,7 @@ $sidebar-width: 400px;
 $breakpoint: $content-width + $sidebar-width + 20px;
 
 body {
-	background: $background-color;
+	background-color: $background-color;
 	color: $color;
 	font-family: $formosa-input-font-family;
 	font-size: $formosa-input-font-size;
@@ -62,7 +62,7 @@ a {
 
 .nav__link {
 	align-items: center;
-	background: $formosa-primary-background-color;
+	background-color: $formosa-primary-background-color;
 	color: $formosa-primary-color;
 	display: flex;
 	justify-content: center;
@@ -73,18 +73,18 @@ a {
 	&:hover,
 	&:active,
 	&:focus {
-		background: scale-color($formosa-primary-background-color, $lightness: -10%);
+		background-color: scale-color($formosa-primary-background-color, $lightness: -10%);
 	}
 }
 
 .nav__link--active {
-	background: $background-color;
+	background-color: $background-color;
 	color: $color;
 
 	&:hover,
 	&:active,
 	&:focus {
-		background: $background-color;
+		background-color: $background-color;
 	}
 }
 
@@ -94,7 +94,7 @@ a {
 
 .code {
 	pre {
-		background: #333;
+		background-color: #333;
 		box-sizing: border-box;
 		font-size: 16px;
 		line-height: 1.5;
