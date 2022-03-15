@@ -10,12 +10,12 @@ import React from 'react';
 export default function Routes() {
 	return (
 		<Switch>
-			<Route exact path="/" component={BasicForm} />
-			<Route exact path="/horizontal-form" component={HorizontalForm} />
-			<Route exact path="/json-api-add" component={JsonApiAdd} />
-			<Route exact path="/json-api-edit/:id" component={JsonApiEdit} />
-			<Route exact path="/options" component={Options} />
-			<Route component={Error404} />
+			<Route exact path="/"><BasicForm /></Route>
+			<Route exact path="/horizontal-form"><HorizontalForm /></Route>
+			<Route exact path="/json-api-add"><JsonApiAdd /></Route>
+			<Route exact path="/json-api-edit/:id"><JsonApiEdit /></Route>
+			<Route exact path="/options"><Options /></Route>
+			<Route><Error404 /></Route>
 		</Switch>
 	);
 }
