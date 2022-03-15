@@ -1365,6 +1365,8 @@ function File({
   disabled,
   emptyText,
   id,
+  imageAttributes,
+  imageClassName,
   imageHeight,
   imagePrefix,
   imagePreview,
@@ -1403,12 +1405,13 @@ function File({
     document.getElementById(id || name).focus();
   };
 
-  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, hasValue && imagePreview && srcs.map(src => /*#__PURE__*/React__default.createElement("img", {
+  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, hasValue && imagePreview && srcs.map(src => /*#__PURE__*/React__default.createElement("img", Object.assign({
     alt: "",
+    className: `formosa-file-image ${imageClassName}`.trim(),
     height: imageHeight,
     key: src,
     src: src
-  })), /*#__PURE__*/React__default.createElement("div", Object.assign({
+  }, imageAttributes))), /*#__PURE__*/React__default.createElement("div", Object.assign({
     className: `formosa-file-wrapper ${wrapperClassName}`.trim()
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement("div", Object.assign({
     className: `formosa-file-input-wrapper ${inputWrapperClassName}`.trim()
@@ -1435,6 +1438,8 @@ File.propTypes = {
   disabled: PropTypes.bool,
   emptyText: PropTypes.string,
   id: PropTypes.string,
+  imageAttributes: PropTypes.object,
+  imageClassName: PropTypes.string,
   imageHeight: PropTypes.number,
   imagePrefix: PropTypes.string,
   imagePreview: PropTypes.bool,
@@ -1454,6 +1459,8 @@ File.defaultProps = {
   disabled: false,
   emptyText: 'No file selected.',
   id: '',
+  imageAttributes: null,
+  imageClassName: '',
   imageHeight: 100,
   imagePrefix: '',
   imagePreview: false,

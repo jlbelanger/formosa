@@ -294,6 +294,9 @@ input.formosa-field__input--checkbox {
 .formosa-file-name--empty {
   opacity: .5; }
 
+.formosa-file-image {
+  max-width: 100%; }
+
 :focus {
   border-color: #4ad;
   box-shadow: 0 0 0 3px #6cf;

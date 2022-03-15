@@ -12,6 +12,8 @@ export default function File({
 	disabled,
 	emptyText,
 	id,
+	imageAttributes,
+	imageClassName,
 	imageHeight,
 	imagePrefix,
 	imagePreview,
@@ -52,7 +54,14 @@ export default function File({
 		<>
 			{(hasValue && imagePreview) && (
 				srcs.map((src) => (
-					<img alt="" height={imageHeight} key={src} src={src} />
+					<img
+						alt=""
+						className={`formosa-file-image ${imageClassName}`.trim()}
+						height={imageHeight}
+						key={src}
+						src={src}
+						{...imageAttributes}
+					/>
 				))
 			)}
 			<div className={`formosa-file-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
@@ -93,6 +102,8 @@ File.propTypes = {
 	disabled: PropTypes.bool,
 	emptyText: PropTypes.string,
 	id: PropTypes.string,
+	imageAttributes: PropTypes.object,
+	imageClassName: PropTypes.string,
 	imageHeight: PropTypes.number,
 	imagePrefix: PropTypes.string,
 	imagePreview: PropTypes.bool,
@@ -113,6 +124,8 @@ File.defaultProps = {
 	disabled: false,
 	emptyText: 'No file selected.',
 	id: '',
+	imageAttributes: null,
+	imageClassName: '',
 	imageHeight: 100,
 	imagePrefix: '',
 	imagePreview: false,

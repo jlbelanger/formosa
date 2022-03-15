@@ -1456,7 +1456,7 @@ Datetime.defaultProps = {
   yearAttributes: null
 };
 
-var _excluded$4 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "multiple", "name", "removeText", "wrapperAttributes", "wrapperClassName"];
+var _excluded$4 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageAttributes", "imageClassName", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "multiple", "name", "removeText", "wrapperAttributes", "wrapperClassName"];
 function File(_ref) {
   var afterChange = _ref.afterChange,
       buttonAttributes = _ref.buttonAttributes,
@@ -1465,6 +1465,8 @@ function File(_ref) {
       disabled = _ref.disabled,
       emptyText = _ref.emptyText,
       id = _ref.id,
+      imageAttributes = _ref.imageAttributes,
+      imageClassName = _ref.imageClassName,
       imageHeight = _ref.imageHeight,
       imagePrefix = _ref.imagePrefix,
       imagePreview = _ref.imagePreview,
@@ -1514,12 +1516,13 @@ function File(_ref) {
   };
 
   return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, hasValue && imagePreview && srcs.map(function (src) {
-    return /*#__PURE__*/React__default.createElement("img", {
+    return /*#__PURE__*/React__default.createElement("img", _extends({
       alt: "",
+      className: ("formosa-file-image " + imageClassName).trim(),
       height: imageHeight,
       key: src,
       src: src
-    });
+    }, imageAttributes));
   }), /*#__PURE__*/React__default.createElement("div", _extends({
     className: ("formosa-file-wrapper " + wrapperClassName).trim()
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement("div", _extends({
@@ -1547,6 +1550,8 @@ File.propTypes = {
   disabled: PropTypes.bool,
   emptyText: PropTypes.string,
   id: PropTypes.string,
+  imageAttributes: PropTypes.object,
+  imageClassName: PropTypes.string,
   imageHeight: PropTypes.number,
   imagePrefix: PropTypes.string,
   imagePreview: PropTypes.bool,
@@ -1566,6 +1571,8 @@ File.defaultProps = {
   disabled: false,
   emptyText: 'No file selected.',
   id: '',
+  imageAttributes: null,
+  imageClassName: '',
   imageHeight: 100,
   imagePrefix: '',
   imagePreview: false,
