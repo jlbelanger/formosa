@@ -1,11 +1,10 @@
 .DS_Store
 .env
 .env.production
+.eslintcache
 .gitcommit
-.rpt2_cache
-build
+*.log
+/example/build
+build.zip
 node_modules
-npm-debug.log*
 TODO.md
-yarn-debug.log*
-yarn-error.log*

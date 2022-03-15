@@ -1,6 +1,6 @@
 # Formosa
 
-A [React](https://www.npmjs.com/package/react) form component library. It works well with [JSON:API](https://jsonapi.org/), but it is not required.
+Formosa is a [React](https://www.npmjs.com/package/react) form component library. It works well with [JSON:API](https://jsonapi.org/), but it is not required.
 
 ## Demo
 
@@ -17,15 +17,19 @@ https://formosa.jennybelanger.com/
 - Includes optional basic SCSS, if you don't want to spend time styling form elements *yet again*; uses SCSS variables that can be overridden
 - Supports nested field names (eg. `name="foo.bar"`)
 
-## Setup
+## Install
 
 This package isn't actually published, but if it was, you would run:
 
 ```bash
+# With npm:
 npm install --save @jlbelanger/formosa
-# or
+
+# Or with yarn:
 yarn add @jlbelanger/formosa
 ```
+
+## Setup
 
 Your app must include the `<FormContainer>` component once (eg. in the main `App` component). All `<Form>`s must be inside this container. The `<FormContainer>` does not take any props; it is used to display a spinner during API requests and to display toast messages when forms are submitted.
 
@@ -54,7 +58,7 @@ export default function App() {
 }
 ```
 
-## Styles
+### Styles
 
 By default, no styles are included. To include all styles (eg. in `src/index.scss`):
 
@@ -71,9 +75,9 @@ To selectively include specific styles listed in the [components](https://github
 
 A list of Sass variables is available in [_variables.scss](https://github.com/jlbelanger/formosa/blob/master/src/scss/utilities/_variables.scss).
 
-## Components
+### Components
 
-### [Form](https://github.com/jlbelanger/formosa/blob/master/src/js/Form.js)
+#### [Form](https://github.com/jlbelanger/formosa/blob/master/src/js/Form.js)
 
 Each `<Form>` must have `row` and `setRow` props. Typically, these values will come from `const [row, setRow] = useState({});` in your own component. The `<Field>`s will update the `row` using `setRow`. That means that the original `row` and the values in the form are always in sync, so you can display or update the `row` yourself, and the `<Form>` will still contain the correct values.
 
@@ -141,7 +145,7 @@ The following attributes are for JSON:API forms only.
 |successMessageText |`''`    |Text to be shown in the `<Message>` component after a successful form submission. (eg. `Profile updated successfully.`)|
 |successToastText   |`''`    |Text to be shown in a toast after a successful form submission. (eg. `Profile updated successfully.`)|
 
-### [Field](https://github.com/jlbelanger/formosa/blob/master/src/js/Field.js)
+#### [Field](https://github.com/jlbelanger/formosa/blob/master/src/js/Field.js)
 
 The `<Field>` component offers a simple way to display any kind of input along with the label, and it works well in horizontal forms.
 
@@ -210,7 +214,7 @@ import { Field } from '@jlbelanger/formosa';
 |type            |`'text'`  |Accepts any standard HTML type (eg. text, email, file, select, textarea) as well as 'has-many' and 'autocomplete'.|
 |wrapperClassName|`''`      |     |
 
-### [Submit](https://github.com/jlbelanger/formosa/blob/master/src/js/Submit.js)
+#### [Submit](https://github.com/jlbelanger/formosa/blob/master/src/js/Submit.js)
 
 The `<Submit>` component offers a simple way to display the submit button in a horizontal form.
 
@@ -269,7 +273,7 @@ import { Submit } from '@jlbelanger/formosa';
 |prefix    |`null`    |Text/HTML displayed before the button.|
 |postfix   |`null`    |Text/HTML displayed after the button.|
 
-### [Label](https://github.com/jlbelanger/formosa/blob/master/src/js/Label.js)
+#### [Label](https://github.com/jlbelanger/formosa/blob/master/src/js/Label.js)
 
 The `<Label>` component offers a simple way to display field labels by adding a few extra classes to help with styling (eg. `formosa-label--required` for required fields). This component is included in the `<Field>` component, so if you are using `<Field>`, you don't need this component.
 
@@ -352,4 +356,56 @@ import { Field, Form, Message, Submit } from '@jlbelanger/formosa';
 	<Field label="Username" name="username" />
 	<Submit />
 </Form>
+```
+
+## Development
+
+### Requirements
+
+- [Git](https://git-scm.com/)
+- [Yarn](https://classic.yarnpkg.com/en/docs/install)
+
+### Setup
+
+``` bash
+# Clone the repo
+git clone https://github.com/jlbelanger/formosa.git
+cd formosa
+
+# Install dependencies
+yarn install
+cd example
+yarn install
+```
+
+### Run
+
+``` bash
+yarn start
+
+# In a new window:
+cd example
+yarn start
+```
+
+Your browser should automatically open http://localhost:3000/
+
+### Lint
+
+``` bash
+yarn lint
+```
+
+### Test
+
+``` bash
+yarn test
+```
+
+## Deployment
+
+Note: The deploy script included in this repo depends on other scripts that only exist in my private repos. If you want to deploy this repo, you'll have to create your own script.
+
+``` bash
+./deploy.sh
 ```
