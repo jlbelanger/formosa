@@ -588,6 +588,7 @@ input.formosa-field__input--search {
 .formosa-toast__close {
   background-color: transparent;
   border: 0;
+  cursor: pointer;
   font-size: 0;
   height: 32px;
   margin: 0 8px 0 0;

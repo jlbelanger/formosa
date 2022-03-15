@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 export default function FormInner({
 	afterNoSubmit,
 	afterSubmit,
+	beforeSubmit,
 	children,
 	clearOnSubmit,
 	defaultRow,
@@ -37,6 +38,10 @@ export default function FormInner({
 			if (afterNoSubmit) {
 				afterNoSubmit();
 			}
+			return;
+		}
+
+		if (beforeSubmit && !beforeSubmit(e)) {
 			return;
 		}
 
@@ -148,6 +153,7 @@ export default function FormInner({
 FormInner.propTypes = {
 	afterNoSubmit: PropTypes.func,
 	afterSubmit: PropTypes.func,
+	beforeSubmit: PropTypes.func,
 	children: PropTypes.node.isRequired,
 	clearOnSubmit: PropTypes.bool,
 	defaultRow: PropTypes.object,
@@ -168,6 +174,7 @@ FormInner.propTypes = {
 FormInner.defaultProps = {
 	afterNoSubmit: null,
 	afterSubmit: null,
+	beforeSubmit: null,
 	clearOnSubmit: false,
 	defaultRow: {},
 	filterBody: null,

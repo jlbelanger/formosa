@@ -2357,10 +2357,11 @@ function Message() {
   }, formState.message));
 }
 
-var _excluded$c = ["afterNoSubmit", "afterSubmit", "children", "clearOnSubmit", "defaultRow", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
+var _excluded$c = ["afterNoSubmit", "afterSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
 function FormInner(_ref) {
   var afterNoSubmit = _ref.afterNoSubmit,
       afterSubmit = _ref.afterSubmit,
+      beforeSubmit = _ref.beforeSubmit,
       children = _ref.children,
       clearOnSubmit = _ref.clearOnSubmit,
       defaultRow = _ref.defaultRow,
@@ -2395,6 +2396,10 @@ function FormInner(_ref) {
         afterNoSubmit();
       }
 
+      return;
+    }
+
+    if (beforeSubmit && !beforeSubmit(e)) {
       return;
     }
 
@@ -2496,6 +2501,7 @@ function FormInner(_ref) {
 FormInner.propTypes = {
   afterNoSubmit: PropTypes.func,
   afterSubmit: PropTypes.func,
+  beforeSubmit: PropTypes.func,
   children: PropTypes.node.isRequired,
   clearOnSubmit: PropTypes.bool,
   defaultRow: PropTypes.object,
@@ -2515,6 +2521,7 @@ FormInner.propTypes = {
 FormInner.defaultProps = {
   afterNoSubmit: null,
   afterSubmit: null,
+  beforeSubmit: null,
   clearOnSubmit: false,
   defaultRow: {},
   filterBody: null,
