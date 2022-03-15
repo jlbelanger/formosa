@@ -4,9 +4,42 @@ import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 import React__default, { createElement, useContext, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-const findIncluded = (included, id, type, mainRecord) => {
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+
+  return target;
+}
+
+var findIncluded = function findIncluded(included, id, type, mainRecord) {
   if (mainRecord && id === mainRecord.id && type === mainRecord.type) {
-    const output = {
+    var output = {
       id: mainRecord.id,
       type: mainRecord.type
     };
@@ -22,27 +55,40 @@ const findIncluded = (included, id, type, mainRecord) => {
     return output;
   }
 
-  return included.find(data => data.id === id && data.type === type);
+  return included.find(function (data) {
+    return data.id === id && data.type === type;
+  });
 };
 
-const deserializeSingle = (data, otherRows = [], included = [], mainRecord = null) => {
+var deserializeSingle = function deserializeSingle(data, otherRows, included, mainRecord) {
+  if (otherRows === void 0) {
+    otherRows = [];
+  }
+
+  if (included === void 0) {
+    included = [];
+  }
+
+  if (mainRecord === void 0) {
+    mainRecord = null;
+  }
+
   if (!data) {
     return data;
   }
 
-  const output = {
+  var output = _extends({
     id: data.id,
-    type: data.type,
-    ...data.attributes
-  };
+    type: data.type
+  }, data.attributes);
 
   if (Object.prototype.hasOwnProperty.call(data, 'relationships')) {
-    let includedRecord;
-    Object.keys(data.relationships).forEach(relationshipName => {
+    var includedRecord;
+    Object.keys(data.relationships).forEach(function (relationshipName) {
       output[relationshipName] = data.relationships[relationshipName].data;
 
       if (Array.isArray(output[relationshipName])) {
-        output[relationshipName].forEach((rel, i) => {
+        output[relationshipName].forEach(function (rel, i) {
           includedRecord = findIncluded(included, rel.id, rel.type, mainRecord);
 
           if (includedRecord) {
@@ -78,10 +124,10 @@ const deserializeSingle = (data, otherRows = [], included = [], mainRecord = nul
   return output;
 };
 
-const deserialize = body => {
+var deserialize = function deserialize(body) {
   if (Array.isArray(body.data)) {
-    const output = [];
-    body.data.forEach(data => {
+    var output = [];
+    body.data.forEach(function (data) {
       output.push(deserializeSingle(data, body.data, body.included, null));
     });
     return output;
@@ -90,26 +136,30 @@ const deserialize = body => {
   return deserializeSingle(body.data, [], body.included, body.data);
 };
 
-const cleanSingleRelationship = values => ({
-  id: values.id,
-  type: values.type
-});
+var cleanSingleRelationship = function cleanSingleRelationship(values) {
+  return {
+    id: values.id,
+    type: values.type
+  };
+};
 
-const cleanRelationship = values => {
+var cleanRelationship = function cleanRelationship(values) {
   if (Array.isArray(values)) {
-    return values.map(value => cleanSingleRelationship(value));
+    return values.map(function (value) {
+      return cleanSingleRelationship(value);
+    });
   }
 
   return cleanSingleRelationship(values);
 };
 
-const getIncluded = (data, dirtyIncluded, relationshipNames) => {
-  const included = [];
-  const dirtyKeys = {};
-  dirtyIncluded.forEach(key => {
+var getIncluded = function getIncluded(data, dirtyIncluded, relationshipNames) {
+  var included = [];
+  var dirtyKeys = {};
+  dirtyIncluded.forEach(function (key) {
     if (!key.startsWith('_new.')) {
-      const currentKeys = [];
-      key.split('.').forEach(k => {
+      var currentKeys = [];
+      key.split('.').forEach(function (k) {
         currentKeys.push(k);
 
         if (typeof get(dirtyKeys, currentKeys.join('.')) === 'undefined') {
@@ -118,7 +168,7 @@ const getIncluded = (data, dirtyIncluded, relationshipNames) => {
       });
     }
   });
-  relationshipNames.forEach(relationshipName => {
+  relationshipNames.forEach(function (relationshipName) {
     if (!Object.prototype.hasOwnProperty.call(data.relationships, relationshipName)) {
       return;
     }
@@ -131,26 +181,26 @@ const getIncluded = (data, dirtyIncluded, relationshipNames) => {
       return;
     }
 
-    data.relationships[relationshipName].data.forEach(rel => {
+    data.relationships[relationshipName].data.forEach(function (rel) {
       if (Object.keys(rel).length <= 2) {
         return;
       }
 
       if (Object.prototype.hasOwnProperty.call(dirtyKeys[relationshipName], rel.id)) {
-        const relData = {
+        var relData = {
           id: rel.id,
           type: rel.type,
           attributes: {}
         };
 
         if (Object.keys(dirtyKeys[relationshipName][rel.id]).length === 0) {
-          Object.keys(rel).forEach(key => {
+          Object.keys(rel).forEach(function (key) {
             if (key !== 'id' && key !== 'type') {
               set(relData.attributes, key, rel[key]);
             }
           });
         } else {
-          Object.keys(rel).forEach(key => {
+          Object.keys(rel).forEach(function (key) {
             if (Object.prototype.hasOwnProperty.call(dirtyKeys[relationshipName][rel.id], key)) {
               set(relData.attributes, key, rel[key]);
             }
@@ -164,32 +214,31 @@ const getIncluded = (data, dirtyIncluded, relationshipNames) => {
   return included;
 };
 
-const getBody = (method, type, id, formState, relationshipNames, filterBody, filterValues) => {
-  let body = null;
+var getBody = function getBody(method, type, id, formState, relationshipNames, filterBody, filterValues) {
+  var body = null;
 
   if (method === 'PUT' || method === 'POST') {
     body = {};
-    const data = {
-      type,
+    var data = {
+      type: type,
       attributes: {},
       meta: {},
       relationships: {}
     };
-    const keys = method === 'PUT' ? formState.dirty : Object.keys(formState.row);
+    var keys = method === 'PUT' ? formState.dirty : Object.keys(formState.row);
 
     if (method === 'PUT' && id) {
       data.id = id;
     }
 
-    let values = { ...formState.row
-    };
+    var values = _extends({}, formState.row);
 
     if (filterValues) {
       values = filterValues(values);
     }
 
-    keys.forEach(key => {
-      const cleanKey = key.replace(/\..+$/, '');
+    keys.forEach(function (key) {
+      var cleanKey = key.replace(/\..+$/, '');
 
       if (relationshipNames.includes(cleanKey)) {
         data.relationships[cleanKey] = {
@@ -208,19 +257,21 @@ const getBody = (method, type, id, formState, relationshipNames, filterBody, fil
       }
     });
     body.data = data;
-    const included = getIncluded(data, formState.dirtyIncluded, relationshipNames);
+    var included = getIncluded(data, formState.dirtyIncluded, relationshipNames);
 
     if (included.length > 0) {
       body.included = included;
     }
 
-    Object.keys(data.relationships).forEach(relationshipName => {
+    Object.keys(data.relationships).forEach(function (relationshipName) {
       if (typeof data.relationships[relationshipName].data === 'string') {
         data.relationships[relationshipName].data = JSON.parse(data.relationships[relationshipName].data);
       }
 
       if (Array.isArray(data.relationships[relationshipName].data)) {
-        data.relationships[relationshipName].data = data.relationships[relationshipName].data.map(rel => cleanRelationship(rel));
+        data.relationships[relationshipName].data = data.relationships[relationshipName].data.map(function (rel) {
+          return cleanRelationship(rel);
+        });
       }
     });
 
@@ -240,13 +291,15 @@ const getBody = (method, type, id, formState, relationshipNames, filterBody, fil
       delete data.relationships;
     }
 
-    const filenames = Object.keys(formState.files).filter(filename => formState.files[filename] !== false);
+    var filenames = Object.keys(formState.files).filter(function (filename) {
+      return formState.files[filename] !== false;
+    });
 
     if (filenames.length > 0) {
-      const formData = new FormData();
+      var formData = new FormData();
       formData.append('json', JSON.stringify(body));
       formData.append('files', JSON.stringify(filenames));
-      filenames.forEach(filename => {
+      filenames.forEach(function (filename) {
         formData.append(filename, formState.files[filename]);
       });
       body = formData;
@@ -258,26 +311,32 @@ const getBody = (method, type, id, formState, relationshipNames, filterBody, fil
   return body;
 };
 
-class Api {
-  static get(url) {
+var Api = /*#__PURE__*/function () {
+  function Api() {}
+
+  Api.get = function get(url) {
     return Api.request('GET', url);
-  }
+  };
 
-  static delete(url) {
+  Api["delete"] = function _delete(url) {
     return Api.request('DELETE', url);
-  }
+  };
 
-  static post(url, body) {
+  Api.post = function post(url, body) {
     return Api.request('POST', url, body);
-  }
+  };
 
-  static put(url, body) {
+  Api.put = function put(url, body) {
     return Api.request('PUT', url, body);
-  }
+  };
 
-  static request(method, url, body = null) {
-    const options = {
-      method,
+  Api.request = function request(method, url, body) {
+    if (body === void 0) {
+      body = null;
+    }
+
+    var options = {
+      method: method,
       headers: {
         'X-Requested-With': 'XMLHttpRequest'
       }
@@ -288,19 +347,19 @@ class Api {
     }
 
     if (Api.getToken()) {
-      options.headers.Authorization = `Bearer ${Api.getToken()}`;
+      options.headers.Authorization = "Bearer " + Api.getToken();
     }
 
     if (body) {
       options.body = body;
     }
 
-    return trackPromise(fetch(`${process.env.REACT_APP_API_URL}/${url}`, options).then(response => {
+    return trackPromise(fetch(process.env.REACT_APP_API_URL + "/" + url, options).then(function (response) {
       if (!response.ok) {
-        return response.json().then(json => {
+        return response.json().then(function (json) {
           json.status = response.status;
           throw json;
-        }).catch(error => {
+        })["catch"](function (error) {
           if (error instanceof SyntaxError) {
             throw {
               errors: [{
@@ -320,24 +379,25 @@ class Api {
       }
 
       return response.json();
-    }).then(json => {
+    }).then(function (json) {
       if (Object.prototype.hasOwnProperty.call(json, 'data')) {
         return deserialize(json);
       }
 
       return json;
     }));
-  }
+  };
 
-  static getToken() {
+  Api.getToken = function getToken() {
     return window.FORMOSA_TOKEN;
-  }
+  };
 
-  static setToken(token) {
+  Api.setToken = function setToken(token) {
     window.FORMOSA_TOKEN = token;
-  }
+  };
 
-}
+  return Api;
+}();
 
 var formContext = /*#__PURE__*/React__default.createContext({
   dirty: [],
@@ -350,64 +410,72 @@ var formContext = /*#__PURE__*/React__default.createContext({
   setValues: null
 });
 
-const normalizeOptions = (options, labelKey, valueKey = null) => {
+var normalizeOptions = function normalizeOptions(options, labelKey, valueKey) {
+  if (valueKey === void 0) {
+    valueKey = null;
+  }
+
   if (!options) {
     return [];
   }
 
-  const output = [];
+  var output = [];
 
   if (Array.isArray(options)) {
-    options.forEach(option => {
+    options.forEach(function (option) {
       if (typeof option === 'string') {
         output.push({
           label: option,
           value: option
         });
       } else {
-        output.push({ ...option,
+        output.push(_extends({}, option, {
           label: typeof labelKey === 'function' ? labelKey(option) : get(option, labelKey),
           value: typeof valueKey === 'function' ? valueKey(option) : get(option, valueKey)
-        });
+        }));
       }
     });
   } else {
-    Object.keys(options).forEach(value => {
-      const option = options[value];
+    Object.keys(options).forEach(function (value) {
+      var option = options[value];
 
       if (typeof value === 'string') {
         output.push({
           label: option,
-          value
+          value: value
         });
       } else {
-        output.push({ ...option,
+        output.push(_extends({}, option, {
           label: typeof labelKey === 'function' ? labelKey(option) : get(option, labelKey),
           value: typeof valueKey === 'function' ? valueKey(option) : get(option, valueKey)
-        });
+        }));
       }
     });
   }
 
   return output;
 };
-const escapeRegExp = string => string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+var escapeRegExp = function escapeRegExp(string) {
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+};
 
-const slugify = s => s.toLowerCase().replace(/[^0-9a-z-]/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+var slugify = function slugify(s) {
+  return s.toLowerCase().replace(/[^0-9a-z-]/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+};
 
-const filterByKey = (records, key, value) => {
+var filterByKey = function filterByKey(records, key, value) {
   value = value.toLowerCase();
-  const escapedValue = escapeRegExp(value);
-  records = records.filter(record => {
-    const recordValue = get(record, key).toString().toLowerCase() || '';
-    return recordValue.match(new RegExp(`(^|[^a-z])${escapedValue}`));
+  var escapedValue = escapeRegExp(value);
+  records = records.filter(function (record) {
+    var recordValue = get(record, key).toString().toLowerCase() || '';
+    return recordValue.match(new RegExp("(^|[^a-z])" + escapedValue));
   });
   value = slugify(value);
-  records = records.sort((a, b) => {
-    const aValue = slugify(get(a, key).toString());
-    const bValue = slugify(get(b, key).toString());
-    const aPos = aValue.indexOf(value) === 0;
-    const bPos = bValue.indexOf(value) === 0;
+  records = records.sort(function (a, b) {
+    var aValue = slugify(get(a, key).toString());
+    var bValue = slugify(get(b, key).toString());
+    var aPos = aValue.indexOf(value) === 0;
+    var bPos = bValue.indexOf(value) === 0;
 
     if (aPos && bPos || !aPos && !bPos) {
       return aValue.localeCompare(bValue);
@@ -424,8 +492,8 @@ const filterByKey = (records, key, value) => {
 
 var _path;
 
-function _extends() {
-  _extends = Object.assign || function (target) {
+function _extends$1() {
+  _extends$1 = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -439,11 +507,11 @@ function _extends() {
     return target;
   };
 
-  return _extends.apply(this, arguments);
+  return _extends$1.apply(this, arguments);
 }
 
 function SvgX(props) {
-  return /*#__PURE__*/createElement("svg", _extends({
+  return /*#__PURE__*/createElement("svg", _extends$1({
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 8 8"
   }, props), _path || (_path = /*#__PURE__*/createElement("path", {
@@ -451,52 +519,65 @@ function SvgX(props) {
   })));
 }
 
-function Autocomplete({
-  afterAdd,
-  afterChange,
-  clearable,
-  clearButtonAttributes,
-  clearButtonClassName,
-  clearIconAttributes,
-  clearIconHeight,
-  clearIconWidth,
-  clearText,
-  disabled,
-  id,
-  inputClassName,
-  labelFn,
-  labelKey,
-  max,
-  name,
-  optionButtonAttributes,
-  optionButtonClassName,
-  optionListAttributes,
-  optionListClassName,
-  optionListItemAttributes,
-  optionListItemClassName,
-  options,
-  placeholder,
-  readOnly,
-  removeButtonAttributes,
-  removeButtonClassName,
-  removeIconAttributes,
-  removeIconHeight,
-  removeIconWidth,
-  removeText,
-  url,
-  valueKey,
-  wrapperAttributes,
-  wrapperClassName,
-  ...otherProps
-}) {
-  const {
-    formState
-  } = useContext(formContext);
-  const [filter, setFilter] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
-  const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
-  let selectedValues = get(formState.row, name) || null;
+var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "url", "valueKey", "wrapperAttributes", "wrapperClassName"];
+function Autocomplete(_ref) {
+  var afterAdd = _ref.afterAdd,
+      afterChange = _ref.afterChange,
+      clearable = _ref.clearable,
+      clearButtonAttributes = _ref.clearButtonAttributes,
+      clearButtonClassName = _ref.clearButtonClassName,
+      clearIconAttributes = _ref.clearIconAttributes,
+      clearIconHeight = _ref.clearIconHeight,
+      clearIconWidth = _ref.clearIconWidth,
+      clearText = _ref.clearText,
+      disabled = _ref.disabled,
+      id = _ref.id,
+      inputClassName = _ref.inputClassName,
+      labelFn = _ref.labelFn,
+      labelKey = _ref.labelKey,
+      max = _ref.max,
+      name = _ref.name,
+      optionButtonAttributes = _ref.optionButtonAttributes,
+      optionButtonClassName = _ref.optionButtonClassName,
+      optionListAttributes = _ref.optionListAttributes,
+      optionListClassName = _ref.optionListClassName,
+      optionListItemAttributes = _ref.optionListItemAttributes,
+      optionListItemClassName = _ref.optionListItemClassName,
+      options = _ref.options,
+      placeholder = _ref.placeholder,
+      readOnly = _ref.readOnly,
+      removeButtonAttributes = _ref.removeButtonAttributes,
+      removeButtonClassName = _ref.removeButtonClassName,
+      removeIconAttributes = _ref.removeIconAttributes,
+      removeIconHeight = _ref.removeIconHeight,
+      removeIconWidth = _ref.removeIconWidth,
+      removeText = _ref.removeText,
+      url = _ref.url,
+      valueKey = _ref.valueKey,
+      wrapperAttributes = _ref.wrapperAttributes,
+      wrapperClassName = _ref.wrapperClassName,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded);
+
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  var _useState = useState(''),
+      filter = _useState[0],
+      setFilter = _useState[1];
+
+  var _useState2 = useState(false),
+      isOpen = _useState2[0],
+      setIsOpen = _useState2[1];
+
+  var _useState3 = useState(0),
+      highlightedIndex = _useState3[0],
+      setHighlightedIndex = _useState3[1];
+
+  var _useState4 = useState(options ? normalizeOptions(options, labelKey, valueKey) : null),
+      optionValues = _useState4[0],
+      setOptionValues = _useState4[1];
+
+  var selectedValues = get(formState.row, name) || null;
 
   if (max === 1) {
     if (!selectedValues) {
@@ -508,35 +589,39 @@ function Autocomplete({
     selectedValues = [];
   }
 
-  useEffect(() => {
+  useEffect(function () {
     if (optionValues === null && url) {
-      Api.get(url).then(response => {
+      Api.get(url).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
       });
     }
 
-    return () => {};
+    return function () {};
   }, [url]);
-  useEffect(() => {
+  useEffect(function () {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
-    return () => {};
+    return function () {};
   }, [options]);
 
-  const isSelected = option => {
-    const values = get(formState.row, name) || [];
-    return values.findIndex(value => value.value === option.value) > -1;
+  var isSelected = function isSelected(option) {
+    var values = get(formState.row, name) || [];
+    return values.findIndex(function (value) {
+      return value.value === option.value;
+    }) > -1;
   };
 
-  let filteredOptions = [];
+  var filteredOptions = [];
 
   if (optionValues !== null && filter) {
     filteredOptions = filterByKey(optionValues, 'label', filter);
-    filteredOptions = filteredOptions.filter(option => !isSelected(option));
+    filteredOptions = filteredOptions.filter(function (option) {
+      return !isSelected(option);
+    });
   }
 
-  const focus = () => {
-    setTimeout(() => {
-      const elem = document.getElementById(id || name);
+  var focus = function focus() {
+    setTimeout(function () {
+      var elem = document.getElementById(id || name);
 
       if (elem) {
         elem.focus();
@@ -544,8 +629,8 @@ function Autocomplete({
     });
   };
 
-  const addValue = value => {
-    let newValue;
+  var addValue = function addValue(value) {
+    var newValue;
 
     if (max === 1) {
       newValue = value;
@@ -554,17 +639,17 @@ function Autocomplete({
       newValue = get(formState.row, name);
 
       if (newValue) {
-        newValue = [...newValue, value];
+        newValue = [].concat(newValue, [value]);
       } else {
         newValue = [value];
       }
 
-      selectedValues = [...selectedValues, value];
+      selectedValues = [].concat(selectedValues, [value]);
     }
 
-    const e = {
+    var e = {
       target: {
-        name
+        name: name
       }
     };
     formState.setValues(formState, e, name, newValue, afterChange);
@@ -572,16 +657,16 @@ function Autocomplete({
     setFilter('');
 
     if (max === 1) {
-      setTimeout(() => {
-        const elem = document.querySelector(`#${id || name}-wrapper .formosa-autocomplete__value__remove`);
+      setTimeout(function () {
+        var elem = document.querySelector("#" + (id || name) + "-wrapper .formosa-autocomplete__value__remove");
 
         if (elem) {
           elem.focus();
         }
       });
     } else if (max === selectedValues.length) {
-      setTimeout(() => {
-        const elem = document.querySelector(`#${id || name}-wrapper .formosa-autocomplete__clear`);
+      setTimeout(function () {
+        var elem = document.querySelector("#" + (id || name) + "-wrapper .formosa-autocomplete__clear");
 
         if (elem) {
           elem.focus();
@@ -596,17 +681,17 @@ function Autocomplete({
     }
   };
 
-  const removeValue = value => {
-    let newValue = get(formState.row, name);
+  var removeValue = function removeValue(value) {
+    var newValue = get(formState.row, name);
 
     if (max !== 1) {
-      let index = newValue.indexOf(value);
+      var index = newValue.indexOf(value);
 
       if (index > -1) {
         newValue.splice(index, 1);
       }
 
-      const newSelectedValues = [...selectedValues];
+      var newSelectedValues = [].concat(selectedValues);
       index = newSelectedValues.indexOf(value);
 
       if (index > -1) {
@@ -618,27 +703,27 @@ function Autocomplete({
       selectedValues = [];
     }
 
-    const e = {
+    var e = {
       target: {
-        name
+        name: name
       }
     };
     formState.setValues(formState, e, name, newValue, afterChange);
     focus();
   };
 
-  const onChange = e => {
+  var onChange = function onChange(e) {
     setFilter(e.target.value);
   };
 
-  const onFocus = () => {
+  var onFocus = function onFocus() {
     setHighlightedIndex(0);
     setIsOpen(filter.length > 0);
   };
 
-  const onKeyDown = e => {
-    const filterValue = e.target.value;
-    const numValues = selectedValues ? selectedValues.length : 0;
+  var onKeyDown = function onKeyDown(e) {
+    var filterValue = e.target.value;
+    var numValues = selectedValues ? selectedValues.length : 0;
 
     if (e.key === 'Enter' && filterValue && filteredOptions.length > 0) {
       e.preventDefault();
@@ -647,8 +732,8 @@ function Autocomplete({
     }
   };
 
-  const onKeyUp = e => {
-    const filterValue = e.target.value;
+  var onKeyUp = function onKeyUp(e) {
+    var filterValue = e.target.value;
 
     if (e.key === 'Enter' && filterValue && filteredOptions.length > 0) {
       e.preventDefault();
@@ -673,12 +758,12 @@ function Autocomplete({
     }
   };
 
-  const onClickOption = e => {
+  var onClickOption = function onClickOption(e) {
     addValue(JSON.parse(e.target.getAttribute('data-value')));
   };
 
-  const onClickRemoveOption = e => {
-    let button = e.target;
+  var onClickRemoveOption = function onClickRemoveOption(e) {
+    var button = e.target;
 
     while (button && button.tagName.toUpperCase() !== 'BUTTON') {
       button = button.parentNode;
@@ -687,10 +772,10 @@ function Autocomplete({
     removeValue(selectedValues[button.getAttribute('data-index')]);
   };
 
-  const clear = () => {
-    const e = {
+  var clear = function clear() {
+    var e = {
       target: {
-        name
+        name: name
       }
     };
     formState.setValues(formState, e, name, [], afterChange);
@@ -699,28 +784,28 @@ function Autocomplete({
     focus();
   };
 
-  const showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled && !readOnly;
-  let className = ['formosa-autocomplete'];
+  var showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled && !readOnly;
+  var className = ['formosa-autocomplete'];
 
   if (showClear) {
     className.push('formosa-autocomplete--clearable');
   }
 
   className = className.join(' ');
-  const canAddValues = !disabled && !readOnly && (max === null || selectedValues.length < max);
-  const dataValue = JSON.stringify(get(formState.row, name));
-  return /*#__PURE__*/React__default.createElement("div", Object.assign({
-    className: `${className} ${wrapperClassName}`.trim(),
+  var canAddValues = !disabled && !readOnly && (max === null || selectedValues.length < max);
+  var dataValue = JSON.stringify(get(formState.row, name));
+  return /*#__PURE__*/React__default.createElement("div", _extends({
+    className: (className + " " + wrapperClassName).trim(),
     "data-value": dataValue === undefined ? '' : dataValue,
-    id: `${id || name}-wrapper`
+    id: (id || name) + "-wrapper"
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement("div", {
     style: {
       display: 'flex'
     }
   }, /*#__PURE__*/React__default.createElement("ul", {
     className: "formosa-autocomplete__values"
-  }, selectedValues && selectedValues.map((value, i) => {
-    let label;
+  }, selectedValues && selectedValues.map(function (value, i) {
+    var label;
 
     if (labelFn) {
       label = labelFn(value);
@@ -733,20 +818,20 @@ function Autocomplete({
     return /*#__PURE__*/React__default.createElement("li", {
       className: "formosa-autocomplete__value formosa-autocomplete__value--item",
       key: JSON.stringify(value)
-    }, label, !disabled && !readOnly && /*#__PURE__*/React__default.createElement("button", Object.assign({
-      className: `formosa-autocomplete__value__remove ${removeButtonClassName}`.trim(),
+    }, label, !disabled && !readOnly && /*#__PURE__*/React__default.createElement("button", _extends({
+      className: ("formosa-autocomplete__value__remove " + removeButtonClassName).trim(),
       "data-index": i,
       onClick: onClickRemoveOption,
       type: "button"
-    }, removeButtonAttributes), /*#__PURE__*/React__default.createElement(SvgX, Object.assign({
+    }, removeButtonAttributes), /*#__PURE__*/React__default.createElement(SvgX, _extends({
       height: removeIconHeight,
       width: removeIconWidth
     }, removeIconAttributes)), removeText));
   }), canAddValues && /*#__PURE__*/React__default.createElement("li", {
     className: "formosa-autocomplete__value formosa-autocomplete__value--input"
-  }, /*#__PURE__*/React__default.createElement("input", Object.assign({}, otherProps, {
+  }, /*#__PURE__*/React__default.createElement("input", _extends({}, otherProps, {
     autoComplete: "off",
-    className: `formosa-field__input formosa-autocomplete__input ${inputClassName}`.trim(),
+    className: ("formosa-field__input formosa-autocomplete__input " + inputClassName).trim(),
     id: id || name,
     onChange: onChange,
     onFocus: onFocus,
@@ -755,30 +840,30 @@ function Autocomplete({
     placeholder: placeholder,
     type: "text",
     value: filter
-  })))), isOpen && filteredOptions.length > 0 && /*#__PURE__*/React__default.createElement("ul", Object.assign({
-    className: `formosa-autocomplete__options ${optionListClassName}`.trim()
-  }, optionListAttributes), filteredOptions.map((option, index) => {
-    let optionClassName = ['formosa-autocomplete__option'];
+  })))), isOpen && filteredOptions.length > 0 && /*#__PURE__*/React__default.createElement("ul", _extends({
+    className: ("formosa-autocomplete__options " + optionListClassName).trim()
+  }, optionListAttributes), filteredOptions.map(function (option, index) {
+    var optionClassName = ['formosa-autocomplete__option'];
 
     if (highlightedIndex === index) {
       optionClassName.push('formosa-autocomplete__option--highlighted');
     }
 
     optionClassName = optionClassName.join(' ');
-    return /*#__PURE__*/React__default.createElement("li", Object.assign({
-      className: `${optionClassName} ${optionListItemClassName}`.trim(),
+    return /*#__PURE__*/React__default.createElement("li", _extends({
+      className: (optionClassName + " " + optionListItemClassName).trim(),
       key: option.value
-    }, optionListItemAttributes), /*#__PURE__*/React__default.createElement("button", Object.assign({
-      className: `formosa-autocomplete__option__button ${optionButtonClassName}`.trim(),
+    }, optionListItemAttributes), /*#__PURE__*/React__default.createElement("button", _extends({
+      className: ("formosa-autocomplete__option__button " + optionButtonClassName).trim(),
       "data-value": JSON.stringify(option),
       onClick: onClickOption,
       type: "button"
     }, optionButtonAttributes), option.label));
-  })), showClear && /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement("button", Object.assign({
-    className: `formosa-autocomplete__clear ${clearButtonClassName}`.trim(),
+  })), showClear && /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement("button", _extends({
+    className: ("formosa-autocomplete__clear " + clearButtonClassName).trim(),
     onClick: clear,
     type: "button"
-  }, clearButtonAttributes), /*#__PURE__*/React__default.createElement(SvgX, Object.assign({
+  }, clearButtonAttributes), /*#__PURE__*/React__default.createElement(SvgX, _extends({
     height: clearIconHeight,
     width: clearIconWidth
   }, clearIconAttributes)), clearText))));
@@ -859,8 +944,8 @@ Autocomplete.defaultProps = {
 
 var _path$1;
 
-function _extends$1() {
-  _extends$1 = Object.assign || function (target) {
+function _extends$2() {
+  _extends$2 = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -874,11 +959,11 @@ function _extends$1() {
     return target;
   };
 
-  return _extends$1.apply(this, arguments);
+  return _extends$2.apply(this, arguments);
 }
 
 function SvgCheck(props) {
-  return /*#__PURE__*/createElement("svg", _extends$1({
+  return /*#__PURE__*/createElement("svg", _extends$2({
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 8 8"
   }, props), _path$1 || (_path$1 = /*#__PURE__*/createElement("path", {
@@ -886,11 +971,11 @@ function SvgCheck(props) {
   })));
 }
 
-function ConditionalWrapper({
-  children,
-  className,
-  condition
-}) {
+function ConditionalWrapper(_ref) {
+  var children = _ref.children,
+      className = _ref.className,
+      condition = _ref.condition;
+
   if (!condition) {
     return children;
   }
@@ -909,27 +994,27 @@ ConditionalWrapper.defaultProps = {
   condition: false
 };
 
-function Input({
-  afterChange,
-  className,
-  id,
-  name,
-  suffix,
-  type,
-  ...otherProps
-}) {
-  const {
-    formState
-  } = useContext(formContext);
+var _excluded$1 = ["afterChange", "className", "id", "name", "suffix", "type"];
+function Input(_ref) {
+  var afterChange = _ref.afterChange,
+      className = _ref.className,
+      id = _ref.id,
+      name = _ref.name,
+      suffix = _ref.suffix,
+      type = _ref.type,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$1);
 
-  const onChange = e => {
-    const newValue = type === 'checkbox' ? e.target.checked : e.target.value;
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  var onChange = function onChange(e) {
+    var newValue = type === 'checkbox' ? e.target.checked : e.target.value;
     formState.setValues(formState, e, e.target.name, newValue, afterChange);
   };
 
-  const value = type === 'file' ? '' : get(formState.row, name) || '';
-  const checked = type === 'checkbox' && value;
-  const props = {};
+  var value = type === 'file' ? '' : get(formState.row, name) || '';
+  var checked = type === 'checkbox' && value;
+  var props = {};
 
   if (checked) {
     props.checked = checked;
@@ -940,8 +1025,8 @@ function Input({
   return /*#__PURE__*/React__default.createElement(ConditionalWrapper, {
     className: "formosa-suffix-container",
     condition: suffix
-  }, /*#__PURE__*/React__default.createElement("input", Object.assign({
-    className: `formosa-field__input ${className}`.trim(),
+  }, /*#__PURE__*/React__default.createElement("input", _extends({
+    className: ("formosa-field__input " + className).trim(),
     id: id || name,
     name: name,
     onChange: onChange,
@@ -968,27 +1053,28 @@ Input.defaultProps = {
   type: 'text'
 };
 
-function Checkbox({
-  className,
-  iconAttributes,
-  iconClassName,
-  iconHeight,
-  iconWidth,
-  id,
-  name,
-  ...otherProps
-}) {
-  const {
-    formState
-  } = useContext(formContext);
-  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Input, Object.assign({
-    className: `formosa-field__input--checkbox ${className}`.trim(),
+var _excluded$2 = ["className", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "name"];
+function Checkbox(_ref) {
+  var className = _ref.className,
+      iconAttributes = _ref.iconAttributes,
+      iconClassName = _ref.iconClassName,
+      iconHeight = _ref.iconHeight,
+      iconWidth = _ref.iconWidth,
+      id = _ref.id,
+      name = _ref.name,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$2);
+
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Input, _extends({
+    className: ("formosa-field__input--checkbox " + className).trim(),
     checked: !!get(formState.row, name),
     id: id || name,
     name: name,
     type: "checkbox"
-  }, otherProps)), /*#__PURE__*/React__default.createElement(SvgCheck, Object.assign({
-    className: `formosa-icon--check ${iconClassName}`.trim(),
+  }, otherProps)), /*#__PURE__*/React__default.createElement(SvgCheck, _extends({
+    className: ("formosa-icon--check " + iconClassName).trim(),
     height: iconHeight,
     width: iconWidth
   }, iconAttributes)));
@@ -1011,13 +1097,17 @@ Checkbox.defaultProps = {
   id: null
 };
 
-const pad = (n, width, z = '0') => {
+var pad = function pad(n, width, z) {
+  if (z === void 0) {
+    z = '0';
+  }
+
   n = n.toString();
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 };
 
-const stringToObject = (datetimeString, timeZone) => {
-  const output = {
+var stringToObject = function stringToObject(datetimeString, timeZone) {
+  var output = {
     year: '',
     month: '',
     day: '',
@@ -1031,17 +1121,17 @@ const stringToObject = (datetimeString, timeZone) => {
     return output;
   }
 
-  let value = new Date(`${datetimeString.replace(' ', 'T')}.000Z`);
+  var value = new Date(datetimeString.replace(' ', 'T') + ".000Z");
   value = value.toLocaleString('en-CA', {
     hourCycle: 'h23',
-    timeZone
+    timeZone: timeZone
   });
-  const date = value.substring(0, 10).split('-');
+  var date = value.substring(0, 10).split('-');
   output.year = date[0];
   output.month = parseInt(date[1], 10);
   output.day = parseInt(date[2], 10);
-  const time = value.substring(12).split(':');
-  const hour = parseInt(time[0], 10);
+  var time = value.substring(12).split(':');
+  var hour = parseInt(time[0], 10);
 
   if (hour > 12) {
     output.hour = hour - 12;
@@ -1056,11 +1146,11 @@ const stringToObject = (datetimeString, timeZone) => {
   output.ampm = hour >= 12 ? 'pm' : 'am';
   return output;
 };
-const objectToString = datetimeObject => {
-  const year = pad(datetimeObject.year, 4);
-  const month = pad(datetimeObject.month, 2);
-  const day = pad(datetimeObject.day, 2);
-  let hour = parseInt(datetimeObject.hour, 10);
+var objectToString = function objectToString(datetimeObject) {
+  var year = pad(datetimeObject.year, 4);
+  var month = pad(datetimeObject.month, 2);
+  var day = pad(datetimeObject.day, 2);
+  var hour = parseInt(datetimeObject.hour, 10);
 
   if (datetimeObject.ampm === 'pm' && hour < 12) {
     hour += 12;
@@ -1068,20 +1158,20 @@ const objectToString = datetimeObject => {
     hour = 0;
   }
 
-  const minute = pad(datetimeObject.minute, 2);
-  const second = pad(datetimeObject.second, 2);
+  var minute = pad(datetimeObject.minute, 2);
+  var second = pad(datetimeObject.second, 2);
 
   try {
     return new Date(year, month - 1, day, pad(hour, 2), minute, second).toISOString().replace('T', ' ').substring(0, 19);
-  } catch {
+  } catch (_unused) {
     return '';
   }
 };
 
 var _path$2;
 
-function _extends$2() {
-  _extends$2 = Object.assign || function (target) {
+function _extends$3() {
+  _extends$3 = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -1095,11 +1185,11 @@ function _extends$2() {
     return target;
   };
 
-  return _extends$2.apply(this, arguments);
+  return _extends$3.apply(this, arguments);
 }
 
 function SvgCaret(props) {
-  return /*#__PURE__*/createElement("svg", _extends$2({
+  return /*#__PURE__*/createElement("svg", _extends$3({
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 8 8"
   }, props), _path$2 || (_path$2 = /*#__PURE__*/createElement("path", {
@@ -1107,62 +1197,66 @@ function SvgCaret(props) {
   })));
 }
 
-function Select({
-  afterChange,
-  className,
-  hideBlank,
-  iconAttributes,
-  iconClassName,
-  iconHeight,
-  iconWidth,
-  id,
-  name,
-  labelKey,
-  options,
-  url,
-  valueKey,
-  wrapperAttributes,
-  wrapperClassName,
-  ...otherProps
-}) {
-  const {
-    formState
-  } = useContext(formContext);
-  const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
+var _excluded$3 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "name", "labelKey", "options", "url", "valueKey", "wrapperAttributes", "wrapperClassName"];
+function Select(_ref) {
+  var afterChange = _ref.afterChange,
+      className = _ref.className,
+      hideBlank = _ref.hideBlank,
+      iconAttributes = _ref.iconAttributes,
+      iconClassName = _ref.iconClassName,
+      iconHeight = _ref.iconHeight,
+      iconWidth = _ref.iconWidth,
+      id = _ref.id,
+      name = _ref.name,
+      labelKey = _ref.labelKey,
+      options = _ref.options,
+      url = _ref.url,
+      valueKey = _ref.valueKey,
+      wrapperAttributes = _ref.wrapperAttributes,
+      wrapperClassName = _ref.wrapperClassName,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$3);
 
-  const onChange = e => {
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  var _useState = useState(options ? normalizeOptions(options, labelKey, valueKey) : null),
+      optionValues = _useState[0],
+      setOptionValues = _useState[1];
+
+  var onChange = function onChange(e) {
     formState.setValues(formState, e, e.target.name, e.target.value, afterChange);
   };
 
-  useEffect(() => {
+  useEffect(function () {
     if (optionValues === null && url) {
-      Api.get(url).then(response => {
+      Api.get(url).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
       });
     }
 
-    return () => {};
+    return function () {};
   }, [url]);
-  useEffect(() => {
+  useEffect(function () {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
-    return () => {};
+    return function () {};
   }, [options]);
-  return /*#__PURE__*/React__default.createElement("div", Object.assign({
-    className: `formosa-select-wrapper ${wrapperClassName}`.trim()
-  }, wrapperAttributes), /*#__PURE__*/React__default.createElement("select", Object.assign({
-    className: `formosa-field__input formosa-field__input--select ${className}`.trim(),
+  return /*#__PURE__*/React__default.createElement("div", _extends({
+    className: ("formosa-select-wrapper " + wrapperClassName).trim()
+  }, wrapperAttributes), /*#__PURE__*/React__default.createElement("select", _extends({
+    className: ("formosa-field__input formosa-field__input--select " + className).trim(),
     id: id || name,
     name: name,
     onChange: onChange,
     value: get(formState.row, name) || ''
-  }, otherProps), !hideBlank && /*#__PURE__*/React__default.createElement("option", null), optionValues && optionValues.map(({
-    label,
-    value
-  }) => /*#__PURE__*/React__default.createElement("option", {
-    key: value,
-    value: value
-  }, label))), /*#__PURE__*/React__default.createElement(SvgCaret, Object.assign({
-    className: `formosa-icon--caret ${iconClassName}`.trim(),
+  }, otherProps), !hideBlank && /*#__PURE__*/React__default.createElement("option", null), optionValues && optionValues.map(function (_ref2) {
+    var label = _ref2.label,
+        value = _ref2.value;
+    return /*#__PURE__*/React__default.createElement("option", {
+      key: value,
+      value: value
+    }, label);
+  })), /*#__PURE__*/React__default.createElement(SvgCaret, _extends({
+    className: ("formosa-icon--caret " + iconClassName).trim(),
     height: iconHeight,
     width: iconWidth
   }, iconAttributes)));
@@ -1202,40 +1296,42 @@ Select.defaultProps = {
   wrapperClassName: ''
 };
 
-function Datetime({
-  afterChange,
-  ampmAttributes,
-  convertToTimezone,
-  dayAttributes,
-  disabled,
-  hourAttributes,
-  minuteAttributes,
-  monthAttributes,
-  name,
-  secondAttributes,
-  wrapperAttributes,
-  wrapperClassName,
-  yearAttributes
-}) {
-  const {
-    formState
-  } = useContext(formContext);
-  const values = stringToObject(get(formState.row, name) || '', convertToTimezone);
+function Datetime(_ref) {
+  var afterChange = _ref.afterChange,
+      ampmAttributes = _ref.ampmAttributes,
+      convertToTimezone = _ref.convertToTimezone,
+      dayAttributes = _ref.dayAttributes,
+      disabled = _ref.disabled,
+      hourAttributes = _ref.hourAttributes,
+      minuteAttributes = _ref.minuteAttributes,
+      monthAttributes = _ref.monthAttributes,
+      name = _ref.name,
+      secondAttributes = _ref.secondAttributes,
+      wrapperAttributes = _ref.wrapperAttributes,
+      wrapperClassName = _ref.wrapperClassName,
+      yearAttributes = _ref.yearAttributes;
 
-  const onChange = e => {
-    const key = e.target.getAttribute('data-datetime');
-    const newValues = { ...values,
-      [key]: e.target.value
-    };
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  var values = stringToObject(get(formState.row, name) || '', convertToTimezone);
+
+  var onChange = function onChange(e) {
+    var _extends2;
+
+    var key = e.target.getAttribute('data-datetime');
+
+    var newValues = _extends({}, values, (_extends2 = {}, _extends2[key] = e.target.value, _extends2));
+
     formState.setValues(formState, e, name, objectToString(newValues), afterChange);
   };
 
-  return /*#__PURE__*/React__default.createElement("div", Object.assign({
-    className: `formosa-datetime-wrapper ${wrapperClassName}`.trim()
-  }, wrapperAttributes), /*#__PURE__*/React__default.createElement(Select, Object.assign({
+  return /*#__PURE__*/React__default.createElement("div", _extends({
+    className: ("formosa-datetime-wrapper " + wrapperClassName).trim()
+  }, wrapperAttributes), /*#__PURE__*/React__default.createElement(Select, _extends({
     "data-datetime": "month",
     disabled: disabled,
-    id: `${name}-month`,
+    id: name + "-month",
     onChange: onChange,
     options: {
       1: 'January',
@@ -1254,22 +1350,22 @@ function Datetime({
     type: "select",
     value: values.month,
     wrapperClassName: "formosa-field__input--date formosa-field__input--month"
-  }, monthAttributes)), /*#__PURE__*/React__default.createElement(Input, Object.assign({
+  }, monthAttributes)), /*#__PURE__*/React__default.createElement(Input, _extends({
     className: "formosa-field__input--date formosa-field__input--day",
     "data-datetime": "day",
     disabled: disabled,
-    id: `${name}-day`,
+    id: name + "-day",
     inputMode: "numeric",
     maxLength: 2,
     onChange: onChange,
     placeholder: "DD",
     size: 4,
     value: values.day
-  }, dayAttributes)), /*#__PURE__*/React__default.createElement(Input, Object.assign({
+  }, dayAttributes)), /*#__PURE__*/React__default.createElement(Input, _extends({
     className: "formosa-field__input--date formosa-field__input--year",
     "data-datetime": "year",
     disabled: disabled,
-    id: `${name}-year`,
+    id: name + "-year",
     inputMode: "numeric",
     maxLength: 4,
     onChange: onChange,
@@ -1277,11 +1373,11 @@ function Datetime({
     size: 6,
     suffix: ",",
     value: values.year
-  }, yearAttributes)), /*#__PURE__*/React__default.createElement(Input, Object.assign({
+  }, yearAttributes)), /*#__PURE__*/React__default.createElement(Input, _extends({
     className: "formosa-field__input--date formosa-field__input--hour",
     "data-datetime": "hour",
     disabled: disabled,
-    id: `${name}-hour`,
+    id: name + "-hour",
     inputMode: "numeric",
     maxLength: 2,
     onChange: onChange,
@@ -1289,11 +1385,11 @@ function Datetime({
     size: 4,
     suffix: ":",
     value: values.hour
-  }, hourAttributes)), /*#__PURE__*/React__default.createElement(Input, Object.assign({
+  }, hourAttributes)), /*#__PURE__*/React__default.createElement(Input, _extends({
     className: "formosa-field__input--date formosa-field__input--minute",
     "data-datetime": "minute",
     disabled: disabled,
-    id: `${name}-minute`,
+    id: name + "-minute",
     inputMode: "numeric",
     maxLength: 2,
     onChange: onChange,
@@ -1301,22 +1397,22 @@ function Datetime({
     size: 4,
     suffix: ":",
     value: values.minute
-  }, minuteAttributes)), /*#__PURE__*/React__default.createElement(Input, Object.assign({
+  }, minuteAttributes)), /*#__PURE__*/React__default.createElement(Input, _extends({
     className: "formosa-field__input--date formosa-field__input--second",
     "data-datetime": "second",
     disabled: disabled,
-    id: `${name}-second`,
+    id: name + "-second",
     inputMode: "numeric",
     maxLength: 2,
     onChange: onChange,
     placeholder: "ss",
     size: 4,
     value: values.second
-  }, secondAttributes)), /*#__PURE__*/React__default.createElement(Select, Object.assign({
+  }, secondAttributes)), /*#__PURE__*/React__default.createElement(Select, _extends({
     "data-datetime": "ampm",
     disabled: disabled,
     hideBlank: true,
-    id: `${name}-ampm`,
+    id: name + "-ampm",
     onChange: onChange,
     options: {
       am: 'am',
@@ -1357,77 +1453,90 @@ Datetime.defaultProps = {
   yearAttributes: null
 };
 
-function File({
-  afterChange,
-  buttonAttributes,
-  buttonClassName,
-  className,
-  disabled,
-  emptyText,
-  id,
-  imageAttributes,
-  imageClassName,
-  imageHeight,
-  imagePrefix,
-  imagePreview,
-  inputWrapperAttributes,
-  inputWrapperClassName,
-  multiple,
-  name,
-  removeText,
-  wrapperAttributes,
-  wrapperClassName,
-  ...otherProps
-}) {
-  const {
-    formState
-  } = useContext(formContext);
-  const value = get(formState.row, name);
-  const hasValue = !!value;
-  const [text, setText] = useState(value || emptyText);
-  const [srcs, setSrcs] = useState(value ? [`${imagePrefix}${value}`] : []);
+var _excluded$4 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageAttributes", "imageClassName", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "multiple", "name", "removeText", "wrapperAttributes", "wrapperClassName"];
+function File(_ref) {
+  var afterChange = _ref.afterChange,
+      buttonAttributes = _ref.buttonAttributes,
+      buttonClassName = _ref.buttonClassName,
+      className = _ref.className,
+      disabled = _ref.disabled,
+      emptyText = _ref.emptyText,
+      id = _ref.id,
+      imageAttributes = _ref.imageAttributes,
+      imageClassName = _ref.imageClassName,
+      imageHeight = _ref.imageHeight,
+      imagePrefix = _ref.imagePrefix,
+      imagePreview = _ref.imagePreview,
+      inputWrapperAttributes = _ref.inputWrapperAttributes,
+      inputWrapperClassName = _ref.inputWrapperClassName,
+      multiple = _ref.multiple,
+      name = _ref.name,
+      removeText = _ref.removeText,
+      wrapperAttributes = _ref.wrapperAttributes,
+      wrapperClassName = _ref.wrapperClassName,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$4);
 
-  const onChange = e => {
-    const files = [...e.target.files];
-    const filenames = files.map(file => file.name).join(', ');
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  var value = get(formState.row, name);
+  var hasValue = !!value;
+
+  var _useState = useState(value || emptyText),
+      text = _useState[0],
+      setText = _useState[1];
+
+  var _useState2 = useState(value ? ["" + imagePrefix + value] : []),
+      srcs = _useState2[0],
+      setSrcs = _useState2[1];
+
+  var onChange = function onChange(e) {
+    var files = [].concat(e.target.files);
+    var filenames = files.map(function (file) {
+      return file.name;
+    }).join(', ');
 
     if (imagePreview) {
-      setSrcs(files.map(file => URL.createObjectURL(file)));
+      setSrcs(files.map(function (file) {
+        return URL.createObjectURL(file);
+      }));
     }
 
     setText(filenames);
     formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? files : files[0]);
   };
 
-  const onRemove = e => {
+  var onRemove = function onRemove(e) {
     setText(emptyText);
     formState.setValues(formState, e, name, '', afterChange, false);
     document.getElementById(id || name).focus();
   };
 
-  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, hasValue && imagePreview && srcs.map(src => /*#__PURE__*/React__default.createElement("img", Object.assign({
-    alt: "",
-    className: `formosa-file-image ${imageClassName}`.trim(),
-    height: imageHeight,
-    key: src,
-    src: src
-  }, imageAttributes))), /*#__PURE__*/React__default.createElement("div", Object.assign({
-    className: `formosa-file-wrapper ${wrapperClassName}`.trim()
-  }, wrapperAttributes), /*#__PURE__*/React__default.createElement("div", Object.assign({
-    className: `formosa-file-input-wrapper ${inputWrapperClassName}`.trim()
+  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, hasValue && imagePreview && srcs.map(function (src) {
+    return /*#__PURE__*/React__default.createElement("img", _extends({
+      alt: "",
+      className: ("formosa-file-image " + imageClassName).trim(),
+      height: imageHeight,
+      key: src,
+      src: src
+    }, imageAttributes));
+  }), /*#__PURE__*/React__default.createElement("div", _extends({
+    className: ("formosa-file-wrapper " + wrapperClassName).trim()
+  }, wrapperAttributes), /*#__PURE__*/React__default.createElement("div", _extends({
+    className: ("formosa-file-input-wrapper " + inputWrapperClassName).trim()
   }, inputWrapperAttributes), /*#__PURE__*/React__default.createElement("div", {
-    className: `formosa-file-name${text === emptyText ? ' formosa-file-name--empty' : ''}`,
-    id: `${id || name}-name`
-  }, text), /*#__PURE__*/React__default.createElement(Input, Object.assign({
-    className: `formosa-field__input--file ${className}`.trim(),
+    className: "formosa-file-name" + (text === emptyText ? ' formosa-file-name--empty' : ''),
+    id: (id || name) + "-name"
+  }, text), /*#__PURE__*/React__default.createElement(Input, _extends({
+    className: ("formosa-field__input--file " + className).trim(),
     disabled: disabled,
     id: id || name,
     multiple: multiple,
     name: name,
     onChange: onChange
-  }, otherProps))), hasValue && !disabled && /*#__PURE__*/React__default.createElement("button", Object.assign({
-    className: `formosa-button formosa-button--remove-file formosa-postfix ${buttonClassName}`.trim(),
-    id: `${id || name}-remove`,
+  }, otherProps))), hasValue && !disabled && /*#__PURE__*/React__default.createElement("button", _extends({
+    className: ("formosa-button formosa-button--remove-file formosa-postfix " + buttonClassName).trim(),
+    id: (id || name) + "-remove",
     onClick: onRemove,
     type: "button"
   }, buttonAttributes), removeText)));
@@ -1475,19 +1584,22 @@ File.defaultProps = {
   wrapperClassName: ''
 };
 
-function Password({
-  buttonAttributes,
-  buttonClassName,
-  className,
-  hideText,
-  showText,
-  wrapperAttributes,
-  wrapperClassName,
-  ...otherProps
-}) {
-  const [tempType, setTempType] = useState('password');
+var _excluded$5 = ["buttonAttributes", "buttonClassName", "className", "hideText", "showText", "wrapperAttributes", "wrapperClassName"];
+function Password(_ref) {
+  var buttonAttributes = _ref.buttonAttributes,
+      buttonClassName = _ref.buttonClassName,
+      className = _ref.className,
+      hideText = _ref.hideText,
+      showText = _ref.showText,
+      wrapperAttributes = _ref.wrapperAttributes,
+      wrapperClassName = _ref.wrapperClassName,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$5);
 
-  const togglePassword = () => {
+  var _useState = useState('password'),
+      tempType = _useState[0],
+      setTempType = _useState[1];
+
+  var togglePassword = function togglePassword() {
     if (tempType === 'password') {
       setTempType('text');
     } else {
@@ -1495,14 +1607,14 @@ function Password({
     }
   };
 
-  return /*#__PURE__*/React__default.createElement("div", Object.assign({
-    className: `formosa-password-wrapper ${wrapperClassName}`.trim()
-  }, wrapperAttributes), /*#__PURE__*/React__default.createElement(Input, Object.assign({
-    className: `formosa-field__input--password formosa-prefix ${className}`.trim()
+  return /*#__PURE__*/React__default.createElement("div", _extends({
+    className: ("formosa-password-wrapper " + wrapperClassName).trim()
+  }, wrapperAttributes), /*#__PURE__*/React__default.createElement(Input, _extends({
+    className: ("formosa-field__input--password formosa-prefix " + className).trim()
   }, otherProps, {
     type: tempType
-  })), /*#__PURE__*/React__default.createElement("button", Object.assign({
-    className: `formosa-button formosa-button--toggle-password formosa-postfix ${buttonClassName}`.trim(),
+  })), /*#__PURE__*/React__default.createElement("button", _extends({
+    className: ("formosa-button formosa-button--toggle-password formosa-postfix " + buttonClassName).trim(),
     onClick: togglePassword,
     type: "button"
   }, buttonAttributes), tempType === 'password' ? showText : hideText));
@@ -1526,30 +1638,30 @@ Password.defaultProps = {
   wrapperClassName: ''
 };
 
-function Radio({
-  afterChange,
-  className,
-  label,
-  labelAttributes,
-  labelClassName,
-  name,
-  value,
-  ...otherProps
-}) {
-  const {
-    formState
-  } = useContext(formContext);
+var _excluded$6 = ["afterChange", "className", "label", "labelAttributes", "labelClassName", "name", "value"];
+function Radio(_ref) {
+  var afterChange = _ref.afterChange,
+      className = _ref.className,
+      label = _ref.label,
+      labelAttributes = _ref.labelAttributes,
+      labelClassName = _ref.labelClassName,
+      name = _ref.name,
+      value = _ref.value,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$6);
 
-  const onChange = e => {
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  var onChange = function onChange(e) {
     formState.setValues(formState, e, e.target.name, e.target.value, afterChange);
   };
 
-  const checked = get(formState.row, name) === value;
-  return /*#__PURE__*/React__default.createElement("label", Object.assign({
-    className: `formosa-radio__label${checked ? ' formosa-radio__label--checked' : ''} ${labelClassName}`.trim()
-  }, labelAttributes), /*#__PURE__*/React__default.createElement("input", Object.assign({
+  var checked = get(formState.row, name) === value;
+  return /*#__PURE__*/React__default.createElement("label", _extends({
+    className: ("formosa-radio__label" + (checked ? ' formosa-radio__label--checked' : '') + " " + labelClassName).trim()
+  }, labelAttributes), /*#__PURE__*/React__default.createElement("input", _extends({
     checked: checked,
-    className: `formosa-field__input formosa-radio__input ${className}`.trim(),
+    className: ("formosa-field__input formosa-radio__input " + className).trim(),
     name: name,
     onChange: onChange,
     type: "radio",
@@ -1575,51 +1687,56 @@ Radio.defaultProps = {
   value: ''
 };
 
-function RadioList({
-  labelKey,
-  listAttributes,
-  listClassName,
-  listItemAttributes,
-  listItemClassName,
-  name,
-  options,
-  required,
-  url,
-  valueKey,
-  ...otherProps
-}) {
-  const {
-    formState
-  } = useContext(formContext);
-  const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
-  useEffect(() => {
+var _excluded$7 = ["labelKey", "listAttributes", "listClassName", "listItemAttributes", "listItemClassName", "name", "options", "required", "url", "valueKey"];
+function RadioList(_ref) {
+  var labelKey = _ref.labelKey,
+      listAttributes = _ref.listAttributes,
+      listClassName = _ref.listClassName,
+      listItemAttributes = _ref.listItemAttributes,
+      listItemClassName = _ref.listItemClassName,
+      name = _ref.name,
+      options = _ref.options,
+      required = _ref.required,
+      url = _ref.url,
+      valueKey = _ref.valueKey,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$7);
+
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  var _useState = useState(options ? normalizeOptions(options, labelKey, valueKey) : null),
+      optionValues = _useState[0],
+      setOptionValues = _useState[1];
+
+  useEffect(function () {
     if (optionValues === null && url) {
-      Api.get(url).then(response => {
+      Api.get(url).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
       });
     }
 
-    return () => {};
+    return function () {};
   }, [url]);
-  useEffect(() => {
+  useEffect(function () {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
-    return () => {};
+    return function () {};
   }, [options]);
-  return /*#__PURE__*/React__default.createElement("ul", Object.assign({
-    className: `formosa-radio ${listClassName}`.trim()
-  }, listAttributes), optionValues && optionValues.map(({
-    label,
-    value
-  }) => /*#__PURE__*/React__default.createElement("li", Object.assign({
-    className: `formosa-radio__item ${listItemClassName}`.trim(),
-    key: value
-  }, listItemAttributes), /*#__PURE__*/React__default.createElement(Radio, Object.assign({
-    checked: get(formState.row, name) === value,
-    label: label,
-    name: name,
-    required: required,
-    value: value
-  }, otherProps)))));
+  return /*#__PURE__*/React__default.createElement("ul", _extends({
+    className: ("formosa-radio " + listClassName).trim()
+  }, listAttributes), optionValues && optionValues.map(function (_ref2) {
+    var label = _ref2.label,
+        value = _ref2.value;
+    return /*#__PURE__*/React__default.createElement("li", _extends({
+      className: ("formosa-radio__item " + listItemClassName).trim(),
+      key: value
+    }, listItemAttributes), /*#__PURE__*/React__default.createElement(Radio, _extends({
+      checked: get(formState.row, name) === value,
+      label: label,
+      name: name,
+      required: required,
+      value: value
+    }, otherProps)));
+  }));
 }
 RadioList.propTypes = {
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
@@ -1647,8 +1764,8 @@ RadioList.defaultProps = {
 
 var _path$3;
 
-function _extends$3() {
-  _extends$3 = Object.assign || function (target) {
+function _extends$4() {
+  _extends$4 = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -1662,11 +1779,11 @@ function _extends$3() {
     return target;
   };
 
-  return _extends$3.apply(this, arguments);
+  return _extends$4.apply(this, arguments);
 }
 
 function SvgSearch(props) {
-  return /*#__PURE__*/createElement("svg", _extends$3({
+  return /*#__PURE__*/createElement("svg", _extends$4({
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 8 8"
   }, props), _path$3 || (_path$3 = /*#__PURE__*/createElement("path", {
@@ -1674,22 +1791,23 @@ function SvgSearch(props) {
   })));
 }
 
-function Search({
-  className,
-  iconAttributes,
-  iconClassName,
-  iconHeight,
-  iconWidth,
-  wrapperAttributes,
-  wrapperClassName,
-  ...otherProps
-}) {
-  return /*#__PURE__*/React__default.createElement("div", Object.assign({
-    className: `formosa-search-wrapper ${wrapperClassName}`.trim()
-  }, wrapperAttributes), /*#__PURE__*/React__default.createElement(Input, Object.assign({
-    className: `formosa-field__input--search ${className}`.trim()
-  }, otherProps)), /*#__PURE__*/React__default.createElement(SvgSearch, Object.assign({
-    className: `formosa-icon--search ${iconClassName}`.trim(),
+var _excluded$8 = ["className", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "wrapperAttributes", "wrapperClassName"];
+function Search(_ref) {
+  var className = _ref.className,
+      iconAttributes = _ref.iconAttributes,
+      iconClassName = _ref.iconClassName,
+      iconHeight = _ref.iconHeight,
+      iconWidth = _ref.iconWidth,
+      wrapperAttributes = _ref.wrapperAttributes,
+      wrapperClassName = _ref.wrapperClassName,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$8);
+
+  return /*#__PURE__*/React__default.createElement("div", _extends({
+    className: ("formosa-search-wrapper " + wrapperClassName).trim()
+  }, wrapperAttributes), /*#__PURE__*/React__default.createElement(Input, _extends({
+    className: ("formosa-field__input--search " + className).trim()
+  }, otherProps)), /*#__PURE__*/React__default.createElement(SvgSearch, _extends({
+    className: ("formosa-icon--search " + iconClassName).trim(),
     height: iconHeight,
     width: iconWidth
   }, iconAttributes)));
@@ -1713,23 +1831,23 @@ Search.defaultProps = {
   wrapperClassName: ''
 };
 
-function Textarea({
-  afterChange,
-  className,
-  id,
-  name,
-  ...otherProps
-}) {
-  const {
-    formState
-  } = useContext(formContext);
+var _excluded$9 = ["afterChange", "className", "id", "name"];
+function Textarea(_ref) {
+  var afterChange = _ref.afterChange,
+      className = _ref.className,
+      id = _ref.id,
+      name = _ref.name,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$9);
 
-  const onChange = e => {
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  var onChange = function onChange(e) {
     formState.setValues(formState, e, e.target.name, e.target.value, afterChange);
   };
 
-  return /*#__PURE__*/React__default.createElement("textarea", Object.assign({
-    className: `formosa-field__input formosa-field__input--textarea ${className}`.trim(),
+  return /*#__PURE__*/React__default.createElement("textarea", _extends({
+    className: ("formosa-field__input formosa-field__input--textarea " + className).trim(),
     id: id || name,
     name: name,
     onChange: onChange,
@@ -1748,7 +1866,7 @@ Textarea.defaultProps = {
   id: null
 };
 
-var getInputElement = ((type, component) => {
+var getInputElement = (function (type, component) {
   if (component) {
     return component;
   }
@@ -1792,8 +1910,8 @@ var getInputElement = ((type, component) => {
   return Input;
 });
 
-var getNewDirty = ((oldDirty, name) => {
-  const newDirty = [...oldDirty];
+var getNewDirty = (function (oldDirty, name) {
+  var newDirty = [].concat(oldDirty);
 
   if (!newDirty.includes(name)) {
     newDirty.push(name);
@@ -1802,52 +1920,56 @@ var getNewDirty = ((oldDirty, name) => {
   return newDirty;
 });
 
-function HasMany({
-  attributes,
-  buttonClassName,
-  name,
-  recordType,
-  removable
-}) {
-  const {
-    formState,
-    setFormState
-  } = useContext(formContext);
-  const [tempId, setTempId] = useState(1);
-  const values = get(formState.row, name) || [];
+function HasMany(_ref) {
+  var attributes = _ref.attributes,
+      buttonClassName = _ref.buttonClassName,
+      name = _ref.name,
+      recordType = _ref.recordType,
+      removable = _ref.removable;
 
-  const onAdd = () => {
-    const newValue = get(formState.row, `_new.${name}`);
-    const hasNewValue = newValue && Object.keys(newValue).length > 0;
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState,
+      setFormState = _useContext.setFormState;
+
+  var _useState = useState(1),
+      tempId = _useState[0],
+      setTempId = _useState[1];
+
+  var values = get(formState.row, name) || [];
+
+  var onAdd = function onAdd() {
+    var newValue = get(formState.row, "_new." + name);
+    var hasNewValue = newValue && Object.keys(newValue).length > 0;
 
     if (!hasNewValue) {
       return;
     }
 
-    newValue.id = `temp-${tempId}`;
+    newValue.id = "temp-" + tempId;
     newValue.type = recordType;
     setTempId(tempId + 1);
-    const newRow = { ...formState.row
-    };
-    const newValues = get(newRow, name) || [];
+
+    var newRow = _extends({}, formState.row);
+
+    var newValues = get(newRow, name) || [];
     newValues.push(newValue);
     set(newRow, name, newValues);
-    set(newRow, `_new.${name}`, {});
-    setFormState({ ...formState,
+    set(newRow, "_new." + name, {});
+    setFormState(_extends({}, formState, {
       dirty: getNewDirty(formState.dirty, name),
-      dirtyIncluded: getNewDirty(formState.dirtyIncluded, `${newValue.type}.${newValue.id}`),
+      dirtyIncluded: getNewDirty(formState.dirtyIncluded, newValue.type + "." + newValue.id),
       row: newRow
-    });
-    document.getElementById(`_new.${name}.${attributes[0].name}`).focus();
+    }));
+    document.getElementById("_new." + name + "." + attributes[0].name).focus();
   };
 
-  const onKeyDown = e => {
+  var onKeyDown = function onKeyDown(e) {
     if (e.key !== 'Enter') {
       return;
     }
 
-    const newValue = get(formState.row, `_new.${name}`);
-    const hasNewValue = newValue && Object.keys(newValue).length > 0;
+    var newValue = get(formState.row, "_new." + name);
+    var hasNewValue = newValue && Object.keys(newValue).length > 0;
 
     if (hasNewValue) {
       e.preventDefault();
@@ -1856,33 +1978,37 @@ function HasMany({
     }
   };
 
-  const onRemove = e => {
-    const i = e.target.getAttribute('data-index');
+  var onRemove = function onRemove(e) {
+    var i = e.target.getAttribute('data-index');
 
     if (i < 0) {
       return;
     }
 
-    const newRow = { ...formState.row
-    };
-    const newValues = get(newRow, name);
+    var newRow = _extends({}, formState.row);
+
+    var newValues = get(newRow, name);
     newValues.splice(i, 1);
     set(newRow, name, newValues);
-    setFormState({ ...formState,
+    setFormState(_extends({}, formState, {
       dirty: getNewDirty(formState.dirty, name),
       row: newRow
-    });
+    }));
   };
 
-  const afterChange = e => {
-    setFormState({ ...formState,
+  var afterChange = function afterChange(e) {
+    setFormState(_extends({}, formState, {
       dirty: getNewDirty(formState.dirty, name),
       dirtyIncluded: getNewDirty(formState.dirtyIncluded, e.target.getAttribute('data-unique-name'))
-    });
+    }));
   };
 
-  const visibleAttributes = attributes.filter(attribute => attribute.type !== 'hidden');
-  const hiddenAttributes = attributes.filter(attribute => attribute.type === 'hidden');
+  var visibleAttributes = attributes.filter(function (attribute) {
+    return attribute.type !== 'hidden';
+  });
+  var hiddenAttributes = attributes.filter(function (attribute) {
+    return attribute.type === 'hidden';
+  });
   hiddenAttributes.push({
     name: 'id',
     type: 'hidden'
@@ -1891,31 +2017,35 @@ function HasMany({
     name: 'type',
     type: 'hidden'
   });
-  const showHeader = visibleAttributes.some(attribute => attribute.label);
+  var showHeader = visibleAttributes.some(function (attribute) {
+    return attribute.label;
+  });
   return /*#__PURE__*/React__default.createElement("table", {
     className: "formosa-has-many"
   }, showHeader && /*#__PURE__*/React__default.createElement("thead", {
     className: "formosa-has-many__head"
-  }, /*#__PURE__*/React__default.createElement("tr", null, visibleAttributes.map(attribute => /*#__PURE__*/React__default.createElement("th", {
-    key: attribute.name
-  }, attribute.label)), /*#__PURE__*/React__default.createElement("th", null))), /*#__PURE__*/React__default.createElement("tbody", {
+  }, /*#__PURE__*/React__default.createElement("tr", null, visibleAttributes.map(function (attribute) {
+    return /*#__PURE__*/React__default.createElement("th", {
+      key: attribute.name
+    }, attribute.label);
+  }), /*#__PURE__*/React__default.createElement("th", null))), /*#__PURE__*/React__default.createElement("tbody", {
     className: "formosa-has-many__body"
-  }, values.map((value, i) => {
-    let isRemovable = typeof removable === 'boolean' && removable;
+  }, values.map(function (value, i) {
+    var isRemovable = typeof removable === 'boolean' && removable;
 
     if (typeof removable === 'function') {
       isRemovable = removable(value);
     }
 
-    const rowKey = `included.${value.type}.${value.id}`;
+    var rowKey = "included." + value.type + "." + value.id;
     return /*#__PURE__*/React__default.createElement("tr", {
       className: "formosa-has-many__row",
       key: rowKey
-    }, visibleAttributes.map(attribute => {
-      const Component = getInputElement(attribute.type, attribute.component);
-      const fieldKey = `${rowKey}.${attribute.name}`;
-      const hasError = Object.prototype.hasOwnProperty.call(formState.errors, fieldKey);
-      const className = ['formosa-has-many__column'];
+    }, visibleAttributes.map(function (attribute) {
+      var Component = getInputElement(attribute.type, attribute.component);
+      var fieldKey = rowKey + "." + attribute.name;
+      var hasError = Object.prototype.hasOwnProperty.call(formState.errors, fieldKey);
+      var className = ['formosa-has-many__column'];
 
       if (hasError) {
         className.push('formosa-field--has-error');
@@ -1924,23 +2054,23 @@ function HasMany({
       return /*#__PURE__*/React__default.createElement("td", {
         className: className.join(' '),
         key: attribute.name
-      }, /*#__PURE__*/React__default.createElement(Component, Object.assign({}, attribute, {
+      }, /*#__PURE__*/React__default.createElement(Component, _extends({}, attribute, {
         afterChange: afterChange,
-        "data-unique-name": `${name}.${value.id}.${attribute.name}`,
-        name: `${name}.${i}.${attribute.name}`
+        "data-unique-name": name + "." + value.id + "." + attribute.name,
+        name: name + "." + i + "." + attribute.name
       })), hasError && /*#__PURE__*/React__default.createElement("div", {
         className: "formosa-field__error"
       }, formState.errors[rowKey].join( /*#__PURE__*/React__default.createElement("br", null))));
     }), /*#__PURE__*/React__default.createElement("td", {
       className: "formosa-has-many__column formosa-has-many__column--button"
-    }, hiddenAttributes.map(attribute => {
-      const Component = getInputElement(attribute.type, attribute.component);
-      return /*#__PURE__*/React__default.createElement(Component, Object.assign({}, attribute, {
+    }, hiddenAttributes.map(function (attribute) {
+      var Component = getInputElement(attribute.type, attribute.component);
+      return /*#__PURE__*/React__default.createElement(Component, _extends({}, attribute, {
         key: attribute.name,
-        name: `${name}.${i}.${attribute.name}`
+        name: name + "." + i + "." + attribute.name
       }));
     }), /*#__PURE__*/React__default.createElement("button", {
-      className: `formosa-button formosa-button--remove-has-many formosa-has-many__button ${buttonClassName}`.trim(),
+      className: ("formosa-button formosa-button--remove-has-many formosa-has-many__button " + buttonClassName).trim(),
       "data-index": i,
       disabled: !isRemovable,
       onClick: onRemove,
@@ -1950,26 +2080,26 @@ function HasMany({
     className: "formosa-has-many__foot"
   }, /*#__PURE__*/React__default.createElement("tr", {
     className: "formosa-has-many__row formosa-has-many__row--new"
-  }, visibleAttributes.map(attribute => {
-    const Component = getInputElement(attribute.type, attribute.component);
+  }, visibleAttributes.map(function (attribute) {
+    var Component = getInputElement(attribute.type, attribute.component);
     return /*#__PURE__*/React__default.createElement("td", {
       className: "formosa-has-many__column",
       key: attribute.name
-    }, /*#__PURE__*/React__default.createElement(Component, Object.assign({}, attribute, {
-      name: `_new.${name}.${attribute.name}`,
+    }, /*#__PURE__*/React__default.createElement(Component, _extends({}, attribute, {
+      name: "_new." + name + "." + attribute.name,
       onKeyDown: onKeyDown
     })));
   }), /*#__PURE__*/React__default.createElement("td", {
     className: "formosa-has-many__column formosa-has-many__column--button"
-  }, hiddenAttributes.map(attribute => {
-    const Component = getInputElement(attribute.type, attribute.component);
-    return /*#__PURE__*/React__default.createElement(Component, Object.assign({}, attribute, {
+  }, hiddenAttributes.map(function (attribute) {
+    var Component = getInputElement(attribute.type, attribute.component);
+    return /*#__PURE__*/React__default.createElement(Component, _extends({}, attribute, {
       key: attribute.name,
-      name: `_new.${name}.${attribute.name}`,
+      name: "_new." + name + "." + attribute.name,
       onKeyDown: onKeyDown
     }));
   }), /*#__PURE__*/React__default.createElement("button", {
-    className: `formosa-button formosa-button--add-has-many formosa-has-many__button ${buttonClassName}`.trim(),
+    className: ("formosa-button formosa-button--add-has-many formosa-has-many__button " + buttonClassName).trim(),
     onClick: onAdd,
     type: "button"
   }, "Add")))));
@@ -1987,28 +2117,29 @@ HasMany.defaultProps = {
   removable: true
 };
 
-function Label({
-  className,
-  htmlFor,
-  label,
-  note,
-  required,
-  type,
-  ...otherProps
-}) {
-  let labelClassName = 'formosa-label';
+var _excluded$a = ["className", "htmlFor", "label", "note", "required", "type"];
+function Label(_ref) {
+  var className = _ref.className,
+      htmlFor = _ref.htmlFor,
+      label = _ref.label,
+      note = _ref.note,
+      required = _ref.required,
+      type = _ref.type,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$a);
+
+  var labelClassName = 'formosa-label';
 
   if (required) {
     labelClassName += ' formosa-label--required';
   }
 
-  let wrapperClassName = 'formosa-label-wrapper';
+  var wrapperClassName = 'formosa-label-wrapper';
 
   if (type === 'checkbox') {
     wrapperClassName += ' formosa-label-wrapper--checkbox';
   }
 
-  const props = {};
+  var props = {};
 
   if (htmlFor && type !== 'has-many') {
     props.htmlFor = htmlFor;
@@ -2016,8 +2147,8 @@ function Label({
 
   return /*#__PURE__*/React__default.createElement("div", {
     className: wrapperClassName
-  }, /*#__PURE__*/React__default.createElement("label", Object.assign({
-    className: `${labelClassName} ${className}`.trim()
+  }, /*#__PURE__*/React__default.createElement("label", _extends({
+    className: (labelClassName + " " + className).trim()
   }, props, otherProps), label), note && /*#__PURE__*/React__default.createElement("span", {
     className: "formosa-label__note"
   }, note));
@@ -2039,31 +2170,31 @@ Label.defaultProps = {
   type: ''
 };
 
-function Field({
-  component,
-  disabled,
-  id,
-  inputWrapperAttributes,
-  label,
-  labelNote,
-  labelPosition,
-  name,
-  note,
-  prefix,
-  postfix,
-  readOnly,
-  required,
-  suffix,
-  type,
-  wrapperAttributes,
-  wrapperClassName,
-  ...otherProps
-}) {
-  const {
-    formState
-  } = useContext(formContext);
-  const inputProps = { ...otherProps
-  };
+var _excluded$b = ["component", "disabled", "id", "inputWrapperAttributes", "label", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
+function Field(_ref) {
+  var component = _ref.component,
+      disabled = _ref.disabled,
+      id = _ref.id,
+      inputWrapperAttributes = _ref.inputWrapperAttributes,
+      label = _ref.label,
+      labelNote = _ref.labelNote,
+      labelPosition = _ref.labelPosition,
+      name = _ref.name,
+      note = _ref.note,
+      prefix = _ref.prefix,
+      postfix = _ref.postfix,
+      readOnly = _ref.readOnly,
+      required = _ref.required,
+      suffix = _ref.suffix,
+      type = _ref.type,
+      wrapperAttributes = _ref.wrapperAttributes,
+      wrapperClassName = _ref.wrapperClassName,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$b);
+
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  var inputProps = _extends({}, otherProps);
 
   if (id) {
     inputProps.id = id;
@@ -2093,28 +2224,28 @@ function Field({
     inputProps.type = type;
   }
 
-  let InputComponent = getInputElement(type, component);
+  var InputComponent = getInputElement(type, component);
 
   if (type === 'has-many') {
     InputComponent = HasMany;
   }
 
-  const input = /*#__PURE__*/React__default.createElement(InputComponent, inputProps);
+  var input = /*#__PURE__*/React__default.createElement(InputComponent, inputProps);
 
   if (type === 'hidden') {
     return input;
   }
 
-  const htmlFor = id || name;
-  const labelComponent = /*#__PURE__*/React__default.createElement(Label, {
-    htmlFor: type === 'datetime' ? `${htmlFor}-month` : htmlFor,
+  var htmlFor = id || name;
+  var labelComponent = /*#__PURE__*/React__default.createElement(Label, {
+    htmlFor: type === 'datetime' ? htmlFor + "-month" : htmlFor,
     label: label,
     note: labelNote,
     required: required,
     type: type
   });
-  const hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
-  const wrapperClassNameList = ['formosa-field', `formosa-field--${name}`];
+  var hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
+  var wrapperClassNameList = ['formosa-field', "formosa-field--" + name];
 
   if (wrapperClassName) {
     wrapperClassNameList.push(wrapperClassName);
@@ -2144,26 +2275,28 @@ function Field({
     wrapperClassNameList.push('formosa-field--label-after');
   }
 
-  const inputWrapperClassNameList = ['formosa-input-wrapper', `formosa-input-wrapper--${type}`];
+  var inputWrapperClassNameList = ['formosa-input-wrapper', "formosa-input-wrapper--" + type];
 
   if (suffix) {
     inputWrapperClassNameList.push('formosa-field--has-suffix');
   }
 
-  return /*#__PURE__*/React__default.createElement("div", Object.assign({
+  return /*#__PURE__*/React__default.createElement("div", _extends({
     className: wrapperClassNameList.join(' ')
   }, wrapperAttributes), label && labelPosition === 'before' && labelComponent, label && labelPosition === 'after' && /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-label-wrapper"
-  }), /*#__PURE__*/React__default.createElement("div", Object.assign({
+  }), /*#__PURE__*/React__default.createElement("div", _extends({
     className: inputWrapperClassNameList.join(' ')
   }, inputWrapperAttributes), prefix, input, label && labelPosition === 'after' && labelComponent, note && /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-field__note"
   }, typeof note === 'function' ? note(get(formState.row, name), formState.row) : note), postfix, hasError && /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-field__error",
-    id: `${id || name}-error`
-  }, formState.errors[name].map(e => /*#__PURE__*/React__default.createElement("div", {
-    key: e
-  }, e)))));
+    id: (id || name) + "-error"
+  }, formState.errors[name].map(function (e) {
+    return /*#__PURE__*/React__default.createElement("div", {
+      key: e
+    }, e);
+  }))));
 }
 Field.propTypes = {
   component: PropTypes.func,
@@ -2210,10 +2343,10 @@ var formosaContext = /*#__PURE__*/React__default.createContext({
 });
 
 function Message() {
-  const {
-    formState
-  } = useContext(formContext);
-  const hasErrors = Object.prototype.hasOwnProperty.call(formState.errors, '');
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState;
+
+  var hasErrors = Object.prototype.hasOwnProperty.call(formState.errors, '');
   return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, hasErrors && /*#__PURE__*/React__default.createElement("p", {
     className: "formosa-message formosa-message--error"
   }, formState.errors[''].join(' ')), formState.message && /*#__PURE__*/React__default.createElement("p", {
@@ -2221,36 +2354,36 @@ function Message() {
   }, formState.message));
 }
 
-function FormInner({
-  afterNoSubmit,
-  afterSubmit,
-  beforeSubmit,
-  children,
-  clearOnSubmit,
-  defaultRow,
-  filterBody,
-  filterValues,
-  htmlId,
-  id,
-  method,
-  params,
-  path,
-  preventEmptyRequest,
-  relationshipNames,
-  showMessage,
-  successMessageText,
-  successToastText,
-  ...otherProps
-}) {
-  const {
-    formState,
-    setFormState
-  } = useContext(formContext);
-  const {
-    formosaState
-  } = useContext(formosaContext);
+var _excluded$c = ["afterNoSubmit", "afterSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
+function FormInner(_ref) {
+  var afterNoSubmit = _ref.afterNoSubmit,
+      afterSubmit = _ref.afterSubmit,
+      beforeSubmit = _ref.beforeSubmit,
+      children = _ref.children,
+      clearOnSubmit = _ref.clearOnSubmit,
+      defaultRow = _ref.defaultRow,
+      filterBody = _ref.filterBody,
+      filterValues = _ref.filterValues,
+      htmlId = _ref.htmlId,
+      id = _ref.id,
+      method = _ref.method,
+      params = _ref.params,
+      path = _ref.path,
+      preventEmptyRequest = _ref.preventEmptyRequest,
+      relationshipNames = _ref.relationshipNames,
+      showMessage = _ref.showMessage,
+      successMessageText = _ref.successMessageText,
+      successToastText = _ref.successToastText,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$c);
 
-  const submitApiRequest = e => {
+  var _useContext = useContext(formContext),
+      formState = _useContext.formState,
+      setFormState = _useContext.setFormState;
+
+  var _useContext2 = useContext(formosaContext),
+      formosaState = _useContext2.formosaState;
+
+  var submitApiRequest = function submitApiRequest(e) {
     e.preventDefault();
 
     if (preventEmptyRequest && formState.dirty.length <= 0) {
@@ -2267,32 +2400,32 @@ function FormInner({
       return;
     }
 
-    let url = path;
+    var url = path;
 
     if (id) {
-      url = `${path}/${id}`;
+      url = path + "/" + id;
     }
 
     if (params) {
-      url += `?${params}`;
+      url += "?" + params;
     }
 
-    const body = getBody(method, path, id, formState, relationshipNames, filterBody, filterValues);
-    setFormState({ ...formState,
+    var body = getBody(method, path, id, formState, relationshipNames, filterBody, filterValues);
+    setFormState(_extends({}, formState, {
       errors: {},
       message: ''
-    });
-    Api.request(method, url, body).then(response => {
+    }));
+    Api.request(method, url, body).then(function (response) {
       if (!response) {
         return;
       }
 
-      const newState = { ...formState,
+      var newState = _extends({}, formState, {
         dirty: [],
         dirtyIncluded: [],
         errors: {},
         message: successMessageText
-      };
+      });
 
       if (clearOnSubmit) {
         newState.row = defaultRow;
@@ -2307,7 +2440,7 @@ function FormInner({
       if (afterSubmit) {
         afterSubmit(response);
       }
-    }).catch(response => {
+    })["catch"](function (response) {
       if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
         formosaState.addToast('Error.', 'error');
       } else if (Object.prototype.hasOwnProperty.call(response, 'message')) {
@@ -2318,21 +2451,21 @@ function FormInner({
         throw response;
       }
 
-      const errors = {};
-      let key;
-      response.errors.forEach(error => {
+      var errors = {};
+      var key;
+      response.errors.forEach(function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'source')) {
           key = error.source.pointer.replace('/data/attributes/', '');
           key = key.replace('/data/meta/', 'meta.');
 
           if (key.startsWith('/included/')) {
-            const i = key.replace(/^\/included\/(\d+)\/.+$/g, '$1');
-            const includedRecord = body.included[parseInt(i, 10)];
-            key = key.replace(/^\/included\/(\d+)\//g, `included.${includedRecord.type}.${includedRecord.id}.`);
+            var i = key.replace(/^\/included\/(\d+)\/.+$/g, '$1');
+            var includedRecord = body.included[parseInt(i, 10)];
+            key = key.replace(/^\/included\/(\d+)\//g, "included." + includedRecord.type + "." + includedRecord.id + ".");
             key = key.replace(/\//g, '.');
           }
 
-          if (!document.querySelector(`[name="${key}"]`)) {
+          if (!document.querySelector("[name=\"" + key + "\"]")) {
             key = '';
           }
         } else {
@@ -2345,10 +2478,10 @@ function FormInner({
 
         errors[key].push(error.title);
       });
-      setFormState({ ...formState,
-        errors,
+      setFormState(_extends({}, formState, {
+        errors: errors,
         message: ''
-      });
+      }));
     });
   };
 
@@ -2402,41 +2535,51 @@ FormInner.defaultProps = {
   successToastText: ''
 };
 
-function Form({
-  children,
-  row,
-  setRow,
-  ...otherProps
-}) {
-  const [formState, setFormState] = useState({
+var _excluded$d = ["children", "row", "setRow"];
+function Form(_ref) {
+  var children = _ref.children,
+      row = _ref.row,
+      setRow = _ref.setRow,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$d);
+
+  var _useState = useState({
     dirty: [],
     dirtyIncluded: [],
     errors: {},
     files: {},
     message: '',
-    row,
-    setRow,
-    setValues: (fs, e, name, value, afterChange = null, files = null) => {
-      let newDirty = getNewDirty(fs.dirty, name);
-      const newRow = { ...fs.row
-      };
+    row: row,
+    setRow: setRow,
+    setValues: function setValues(fs, e, name, value, afterChange, files) {
+      if (afterChange === void 0) {
+        afterChange = null;
+      }
+
+      if (files === void 0) {
+        files = null;
+      }
+
+      var newDirty = getNewDirty(fs.dirty, name);
+
+      var newRow = _extends({}, fs.row);
+
       set(newRow, name, value);
 
       if (afterChange) {
-        const additionalChanges = afterChange(e, newRow);
-        Object.keys(additionalChanges).forEach(key => {
+        var additionalChanges = afterChange(e, newRow);
+        Object.keys(additionalChanges).forEach(function (key) {
           set(newRow, key, additionalChanges[key]);
           newDirty = getNewDirty(newDirty, key);
         });
       }
 
-      const newFormState = { ...fs,
+      var newFormState = _extends({}, fs, {
         dirty: newDirty,
         row: newRow
-      };
+      });
 
       if (files !== null) {
-        set(newFormState, `files.${name}`, files);
+        set(newFormState, "files." + name, files);
       }
 
       setFormState(newFormState);
@@ -2445,16 +2588,19 @@ function Form({
         fs.setRow(newRow);
       }
     }
-  });
-  useEffect(() => {
-    setFormState({ ...formState,
-      row
-    });
+  }),
+      formState = _useState[0],
+      setFormState = _useState[1];
+
+  useEffect(function () {
+    setFormState(_extends({}, formState, {
+      row: row
+    }));
   }, [row]);
   return /*#__PURE__*/React__default.createElement(formContext.Provider, {
     value: {
-      formState,
-      setFormState
+      formState: formState,
+      setFormState: setFormState
     }
   }, /*#__PURE__*/React__default.createElement(FormInner, otherProps, children));
 }
@@ -2468,10 +2614,9 @@ Form.defaultProps = {
   setRow: null
 };
 
-const Spinner = () => {
-  const {
-    promiseInProgress
-  } = usePromiseTracker();
+var Spinner = function Spinner() {
+  var _usePromiseTracker = usePromiseTracker(),
+      promiseInProgress = _usePromiseTracker.promiseInProgress;
 
   if (!promiseInProgress) {
     return null;
@@ -2482,30 +2627,29 @@ const Spinner = () => {
   });
 };
 
-function Toast({
-  className,
-  id,
-  milliseconds,
-  text
-}) {
-  const {
-    formosaState,
-    setFormosaState
-  } = useContext(formosaContext);
+function Toast(_ref) {
+  var className = _ref.className,
+      id = _ref.id,
+      milliseconds = _ref.milliseconds,
+      text = _ref.text;
 
-  const removeToast = () => {
-    const toasts = { ...formosaState.toasts
-    };
+  var _useContext = useContext(formosaContext),
+      formosaState = _useContext.formosaState,
+      setFormosaState = _useContext.setFormosaState;
+
+  var removeToast = function removeToast() {
+    var toasts = _extends({}, formosaState.toasts);
+
     delete toasts[id];
-    setFormosaState({ ...formosaState,
-      toasts
-    });
+    setFormosaState(_extends({}, formosaState, {
+      toasts: toasts
+    }));
   };
 
   return /*#__PURE__*/React__default.createElement("div", {
-    className: `formosa-toast ${className}`.trim(),
+    className: ("formosa-toast " + className).trim(),
     style: {
-      animationDuration: `${milliseconds}ms`
+      animationDuration: milliseconds + "ms"
     }
   }, /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-toast__text"
@@ -2530,71 +2674,86 @@ Toast.defaultProps = {
 };
 
 function ToastContainer() {
-  const {
-    formosaState
-  } = useContext(formosaContext);
+  var _useContext = useContext(formosaContext),
+      formosaState = _useContext.formosaState;
+
   return /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-toast-container"
-  }, Object.keys(formosaState.toasts).map(id => /*#__PURE__*/React__default.createElement(Toast, {
-    className: formosaState.toasts[id].className,
-    key: id,
-    id: id,
-    milliseconds: formosaState.toasts[id].milliseconds,
-    text: formosaState.toasts[id].text
-  })));
+  }, Object.keys(formosaState.toasts).map(function (id) {
+    return /*#__PURE__*/React__default.createElement(Toast, {
+      className: formosaState.toasts[id].className,
+      key: id,
+      id: id,
+      milliseconds: formosaState.toasts[id].milliseconds,
+      text: formosaState.toasts[id].text
+    });
+  }));
 }
 
-function FormContainer({
-  children
-}) {
-  const [formosaState, setFormosaState] = useState({
+function FormContainer(_ref) {
+  var children = _ref.children;
+
+  var _useState = useState({
     addToast: null,
     removeToast: null,
     toasts: {}
-  });
-  const formosaStateRef = useRef(formosaState);
+  }),
+      formosaState = _useState[0],
+      setFormosaState = _useState[1];
+
+  var formosaStateRef = useRef(formosaState);
   formosaStateRef.current = formosaState;
-  useEffect(() => {
+  useEffect(function () {
     if (formosaState.removeToast === null) {
-      const removeToast = toastId => {
-        const toasts = { ...formosaStateRef.current.toasts
-        };
+      var removeToast = function removeToast(toastId) {
+        var toasts = _extends({}, formosaStateRef.current.toasts);
+
         delete toasts[toastId];
-        setFormosaState({ ...formosaStateRef.current,
-          toasts
-        });
+        setFormosaState(_extends({}, formosaStateRef.current, {
+          toasts: toasts
+        }));
       };
 
-      const addToast = (text, type = '', milliseconds = 5000) => {
-        const toastId = new Date().getTime();
-        const toast = {
-          className: type ? `formosa-toast--${type}` : '',
-          text,
-          milliseconds
+      var addToast = function addToast(text, type, milliseconds) {
+        var _extends2;
+
+        if (type === void 0) {
+          type = '';
+        }
+
+        if (milliseconds === void 0) {
+          milliseconds = 5000;
+        }
+
+        var toastId = new Date().getTime();
+        var toast = {
+          className: type ? "formosa-toast--" + type : '',
+          text: text,
+          milliseconds: milliseconds
         };
-        const toasts = { ...formosaStateRef.current.toasts,
-          [toastId]: toast
-        };
-        setFormosaState({ ...formosaStateRef.current,
-          toasts
-        });
-        setTimeout(() => {
+
+        var toasts = _extends({}, formosaStateRef.current.toasts, (_extends2 = {}, _extends2[toastId] = toast, _extends2));
+
+        setFormosaState(_extends({}, formosaStateRef.current, {
+          toasts: toasts
+        }));
+        setTimeout(function () {
           formosaStateRef.current.removeToast(toastId);
         }, milliseconds);
       };
 
-      setFormosaState({ ...formosaStateRef.current,
-        addToast,
-        removeToast
-      });
+      setFormosaState(_extends({}, formosaStateRef.current, {
+        addToast: addToast,
+        removeToast: removeToast
+      }));
     }
 
-    return () => {};
+    return function () {};
   });
   return /*#__PURE__*/React__default.createElement(formosaContext.Provider, {
     value: {
-      formosaState,
-      setFormosaState
+      formosaState: formosaState,
+      setFormosaState: setFormosaState
     }
   }, children, /*#__PURE__*/React__default.createElement(Spinner, null), /*#__PURE__*/React__default.createElement(ToastContainer, null));
 }
@@ -2602,21 +2761,22 @@ FormContainer.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-function Submit({
-  className,
-  label,
-  prefix,
-  postfix,
-  ...otherProps
-}) {
+var _excluded$e = ["className", "label", "prefix", "postfix"];
+function Submit(_ref) {
+  var className = _ref.className,
+      label = _ref.label,
+      prefix = _ref.prefix,
+      postfix = _ref.postfix,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
+
   return /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-field formosa-field--submit"
   }, /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-label-wrapper formosa-label-wrapper--submit"
   }), /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-input-wrapper formosa-input-wrapper--submit"
-  }, prefix, /*#__PURE__*/React__default.createElement("button", Object.assign({
-    className: `formosa-button formosa-button--submit ${className}`.trim(),
+  }, prefix, /*#__PURE__*/React__default.createElement("button", _extends({
+    className: ("formosa-button formosa-button--submit " + className).trim(),
     type: "submit"
   }, otherProps), label), postfix));
 }
@@ -2633,16 +2793,16 @@ Submit.defaultProps = {
   postfix: null
 };
 
-const Api$1 = Api;
-const Field$1 = Field;
-const Form$1 = Form;
-const FormContainer$1 = FormContainer;
-const FormContext = formContext;
-const FormosaContext = formosaContext;
-const Input$1 = Input;
-const Label$1 = Label;
-const Message$1 = Message;
-const Submit$1 = Submit;
+var Api$1 = Api;
+var Field$1 = Field;
+var Form$1 = Form;
+var FormContainer$1 = FormContainer;
+var FormContext = formContext;
+var FormosaContext = formosaContext;
+var Input$1 = Input;
+var Label$1 = Label;
+var Message$1 = Message;
+var Submit$1 = Submit;
 
 export { Api$1 as Api, Field$1 as Field, Form$1 as Form, FormContainer$1 as FormContainer, FormContext, FormosaContext, Input$1 as Input, Label$1 as Label, Message$1 as Message, Submit$1 as Submit };
 //# sourceMappingURL=index.modern.js.map
