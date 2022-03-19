@@ -41,7 +41,7 @@ export default function File({
 		}
 
 		setText(filenames);
-		formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? files : files[0]);
+		formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? e.target.files : e.target.files[0]);
 	};
 
 	const onRemove = (e) => {

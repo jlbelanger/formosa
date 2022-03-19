@@ -1506,7 +1506,7 @@ function File(_ref) {
     }
 
     setText(filenames);
-    formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? files : files[0]);
+    formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? e.target.files : e.target.files[0]);
   };
 
   var onRemove = function onRemove(e) {
