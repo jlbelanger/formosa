@@ -37,7 +37,7 @@ export default function File({
 		const filenames = files.map((file) => file.name).join(', ');
 
 		if (imagePreview) {
-			setSrcs(files.map((file) => (URL.createObjectURL(file))));
+			setSrcs(files.map((file, i) => (URL.createObjectURL(e.target.files[i]))));
 		}
 
 		setText(filenames);
