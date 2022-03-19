@@ -1497,8 +1497,8 @@ function File(_ref) {
     }).join(', ');
 
     if (imagePreview) {
-      setSrcs(files.map(function (file) {
-        return URL.createObjectURL(file);
+      setSrcs(files.map(function (file, i) {
+        return URL.createObjectURL(e.target.files[i]);
       }));
     }
 
