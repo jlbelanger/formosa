@@ -66,18 +66,18 @@ By default, no styles are included. To include all styles (eg. in `src/index.scs
 @import '../node_modules/@jlbelanger/formosa/src/style';
 ```
 
-To selectively include specific styles listed in the [components](https://github.com/jlbelanger/formosa/tree/master/src/scss/components) folder:
+To selectively include specific styles listed in the [components](https://github.com/jlbelanger/formosa/tree/main/src/scss/components) folder:
 
 ``` scss
 @import '../node_modules/@jlbelanger/formosa/src/scss/utilities/variables';
 @import '../node_modules/@jlbelanger/formosa/src/scss/components/checkbox';
 ```
 
-A list of Sass variables is available in [_variables.scss](https://github.com/jlbelanger/formosa/blob/master/src/scss/utilities/_variables.scss).
+A list of Sass variables is available in [_variables.scss](https://github.com/jlbelanger/formosa/blob/main/src/scss/utilities/_variables.scss).
 
 ### Components
 
-#### [Form](https://github.com/jlbelanger/formosa/blob/master/src/js/Form.js)
+#### [Form](https://github.com/jlbelanger/formosa/blob/main/src/js/Form.js)
 
 Each `<Form>` must have `row` and `setRow` props. Typically, these values will come from `const [row, setRow] = useState({});` in your own component. The `<Field>`s will update the `row` using `setRow`. That means that the original `row` and the values in the form are always in sync, so you can display or update the `row` yourself, and the `<Form>` will still contain the correct values.
 
@@ -145,7 +145,7 @@ The following attributes are for JSON:API forms only.
 |successMessageText |`''`    |Text to be shown in the `<Message>` component after a successful form submission. (eg. `Profile updated successfully.`)|
 |successToastText   |`''`    |Text to be shown in a toast after a successful form submission. (eg. `Profile updated successfully.`)|
 
-#### [Field](https://github.com/jlbelanger/formosa/blob/master/src/js/Field.js)
+#### [Field](https://github.com/jlbelanger/formosa/blob/main/src/js/Field.js)
 
 The `<Field>` component offers a simple way to display any kind of input along with the label, and it works well in horizontal forms.
 
@@ -214,7 +214,7 @@ import { Field } from '@jlbelanger/formosa';
 |type            |`'text'`  |Accepts any standard HTML type (eg. text, email, file, select, textarea) as well as 'has-many' and 'autocomplete'.|
 |wrapperClassName|`''`      |     |
 
-#### [Submit](https://github.com/jlbelanger/formosa/blob/master/src/js/Submit.js)
+#### [Submit](https://github.com/jlbelanger/formosa/blob/main/src/js/Submit.js)
 
 The `<Submit>` component offers a simple way to display the submit button in a horizontal form.
 
@@ -273,7 +273,7 @@ import { Submit } from '@jlbelanger/formosa';
 |prefix    |`null`    |Text/HTML displayed before the button.|
 |postfix   |`null`    |Text/HTML displayed after the button.|
 
-#### [Label](https://github.com/jlbelanger/formosa/blob/master/src/js/Label.js)
+#### [Label](https://github.com/jlbelanger/formosa/blob/main/src/js/Label.js)
 
 The `<Label>` component offers a simple way to display field labels by adding a few extra classes to help with styling (eg. `formosa-label--required` for required fields). This component is included in the `<Field>` component, so if you are using `<Field>`, you don't need this component.
 
@@ -321,7 +321,7 @@ import { Label } from '@jlbelanger/formosa';
 |label     |`''`    |     |
 |note      |`''`    |Text/HTML displayed after the label.|
 
-### [Message](https://github.com/jlbelanger/formosa/blob/master/src/js/Message.js)
+### [Message](https://github.com/jlbelanger/formosa/blob/main/src/js/Message.js)
 
 The `<Message>` component displays success and error messages after the form is submitted. This component is included at the top of the `<Form>` component, so if you are using `<Form>`, you don't need this component.
 
