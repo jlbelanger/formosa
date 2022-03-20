@@ -661,7 +661,7 @@ function Autocomplete(_ref) {
 
     if (max === 1) {
       setTimeout(function () {
-        var elem = document.querySelector("#" + (id || name) + "-wrapper .formosa-autocomplete__value__remove");
+        var elem = document.querySelector("[id=\"" + (id || name) + "-wrapper\"] .formosa-autocomplete__value__remove");
 
         if (elem) {
           elem.focus();
@@ -669,7 +669,7 @@ function Autocomplete(_ref) {
       });
     } else if (max === selectedValues.length) {
       setTimeout(function () {
-        var elem = document.querySelector("#" + (id || name) + "-wrapper .formosa-autocomplete__clear");
+        var elem = document.querySelector("[id=\"" + (id || name) + "-wrapper\"] .formosa-autocomplete__clear");
 
         if (elem) {
           elem.focus();

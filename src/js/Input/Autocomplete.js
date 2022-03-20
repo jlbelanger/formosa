@@ -120,14 +120,14 @@ export default function Autocomplete({
 		setFilter('');
 		if (max === 1) {
 			setTimeout(() => {
-				const elem = document.querySelector(`#${id || name}-wrapper .formosa-autocomplete__value__remove`);
+				const elem = document.querySelector(`[id="${id || name}-wrapper"] .formosa-autocomplete__value__remove`);
 				if (elem) {
 					elem.focus();
 				}
 			});
 		} else if (max === selectedValues.length) {
 			setTimeout(() => {
-				const elem = document.querySelector(`#${id || name}-wrapper .formosa-autocomplete__clear`);
+				const elem = document.querySelector(`[id="${id || name}-wrapper"] .formosa-autocomplete__clear`);
 				if (elem) {
 					elem.focus();
 				}
