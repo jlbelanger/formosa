@@ -20,7 +20,7 @@ $top: if($formosa-input-border-width > 0, calc(100% + #{$formosa-focus-border-wi
 	position: absolute;
 	right: #{$formosa-input-border-width * -1};
 	top: #{$top};
-	z-index: 9996;
+	z-index: $formosa-autocomplete-z-index;
 }
 
 .formosa-autocomplete__input {

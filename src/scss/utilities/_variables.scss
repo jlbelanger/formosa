@@ -62,6 +62,8 @@ $formosa-has-many-padding-side: $formosa-has-many-padding !default;
 
 $formosa-horizontal-fields-padding: 8px !default;
 
+$formosa-field-error-color: $formosa-error-background-color !default;
+
 $formosa-focus-border-color: #4ad !default;
 $formosa-focus-border-width: 3px !default;
 $formosa-focus-box-shadow-color: #6cf !default;
@@ -71,7 +73,11 @@ $formosa-label-error-color: $formosa-color-danger !default;
 $formosa-label-font-weight: bold !default;
 $formosa-label-margin: 4px !default;
 
+$formosa-message-error-background-color: $formosa-error-background-color !default;
+$formosa-message-error-color: $formosa-error-color !default;
 $formosa-message-padding: 16px !default;
+$formosa-message-success-background-color: $formosa-success-background-color !default;
+$formosa-message-success-color: $formosa-success-color !default;
 
 $formosa-note-font-size: 85% !default;
 $formosa-note-line-height: 1.4 !default;
@@ -100,5 +106,15 @@ $formosa-spinner-color-alternate: #fff !default;
 $formosa-spinner-border-width: 12px !default;
 $formosa-spinner-size: 50px !default;
 
+$formosa-toast-bottom: 0 !default;
+$formosa-toast-error-background-color: $formosa-error-background-color !default;
+$formosa-toast-error-color: $formosa-error-color !default;
 $formosa-toast-margin: 8px !default;
 $formosa-toast-padding: 16px !default;
+$formosa-toast-right: 0 !default;
+$formosa-toast-success-background-color: $formosa-success-background-color !default;
+$formosa-toast-success-color: $formosa-success-color !default;
+
+$formosa-spinner-z-index: 9999 !default;
+$formosa-toast-z-index: 9998 !default;
+$formosa-autocomplete-z-index: 9996 !default;

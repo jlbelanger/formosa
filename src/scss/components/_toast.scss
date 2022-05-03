@@ -1,11 +1,11 @@
 .formosa-toast-container {
 	align-items: flex-end;
-	bottom: 0;
+	bottom: $formosa-toast-bottom;
 	display: flex;
 	flex-direction: column;
 	position: fixed;
-	right: 0;
-	z-index: 9998;
+	right: $formosa-toast-right;
+	z-index: $formosa-toast-z-index;
 }
 
 .formosa-toast {
@@ -30,6 +30,7 @@
 	font-size: 0;
 	height: 32px;
 	margin: 0 8px 0 0;
+	padding: 0;
 	width: 32px;
 
 	path {
@@ -44,23 +45,23 @@
 }
 
 .formosa-toast--error {
-	background-color: $formosa-error-background-color;
-	color: $formosa-error-color;
+	background-color: $formosa-toast-error-background-color;
+	color: $formosa-toast-error-color;
 
 	.formosa-toast__close {
 		path {
-			fill: $formosa-error-color;
+			fill: $formosa-toast-error-color;
 		}
 	}
 }
 
 .formosa-toast--success {
-	background-color: $formosa-success-background-color;
-	color: $formosa-success-color;
+	background-color: $formosa-toast-success-background-color;
+	color: $formosa-toast-success-color;
 
 	.formosa-toast__close {
 		path {
-			fill: $formosa-success-color;
+			fill: $formosa-toast-success-color;
 		}
 	}
 }
