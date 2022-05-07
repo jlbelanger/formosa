@@ -19,6 +19,9 @@ export default function File({
 	imagePreview,
 	inputWrapperAttributes,
 	inputWrapperClassName,
+	linkAttributes,
+	linkClassName,
+	linkImage,
 	multiple,
 	name,
 	removeText,
@@ -53,16 +56,28 @@ export default function File({
 	return (
 		<>
 			{(hasValue && imagePreview) && (
-				srcs.map((src) => (
-					<img
-						alt=""
-						className={`formosa-file-image ${imageClassName}`.trim()}
-						height={imageHeight}
-						key={src}
-						src={src}
-						{...imageAttributes}
-					/>
-				))
+				srcs.map((src) => {
+					const img = (
+						<img
+							alt=""
+							className={`formosa-file-image ${imageClassName}`.trim()}
+							height={imageHeight}
+							key={src}
+							src={src}
+							{...imageAttributes}
+						/>
+					);
+
+					if (linkImage) {
+						return (
+							<a className={`formosa-file-link ${linkClassName}`.trim()} href={src} key={src} {...linkAttributes}>
+								{img}
+							</a>
+						);
+					}
+
+					return img;
+				})
 			)}
 			<div className={`formosa-file-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 				<div className={`formosa-file-input-wrapper ${inputWrapperClassName}`.trim()} {...inputWrapperAttributes}>
@@ -113,6 +128,9 @@ File.propTypes = {
 	imagePreview: PropTypes.bool,
 	inputWrapperAttributes: PropTypes.object,
 	inputWrapperClassName: PropTypes.string,
+	linkAttributes: PropTypes.object,
+	linkClassName: PropTypes.string,
+	linkImage: PropTypes.bool,
 	multiple: PropTypes.bool,
 	name: PropTypes.string,
 	removeText: PropTypes.string,
@@ -135,6 +153,9 @@ File.defaultProps = {
 	imagePreview: false,
 	inputWrapperAttributes: null,
 	inputWrapperClassName: '',
+	linkAttributes: null,
+	linkClassName: '',
+	linkImage: false,
 	multiple: false,
 	name: '',
 	removeText: 'Remove',
