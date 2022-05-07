@@ -5,4 +5,4 @@ rules:
       size: 'tab'
   no-ids: 0
 files:
-  include: 'scss/**/*.scss'
+  include: 'src/scss/**/*.scss'
