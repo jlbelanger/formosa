@@ -24,6 +24,7 @@ export default function File({
 	linkImage,
 	multiple,
 	name,
+	readOnly,
 	removeText,
 	wrapperAttributes,
 	wrapperClassName,
@@ -53,6 +54,11 @@ export default function File({
 		document.getElementById(id || name).focus();
 	};
 
+	let prefixClassName = inputWrapperClassName;
+	if (hasValue && !disabled && !readOnly) {
+		prefixClassName += ' formosa-prefix';
+	}
+
 	return (
 		<>
 			{(hasValue && imagePreview) && (
@@ -80,24 +86,26 @@ export default function File({
 				})
 			)}
 			<div className={`formosa-file-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
-				<div className={`formosa-file-input-wrapper ${inputWrapperClassName}`.trim()} {...inputWrapperAttributes}>
+				<div className={`formosa-file-input-wrapper ${prefixClassName}`.trim()} {...inputWrapperAttributes}>
 					<div
 						className={`formosa-file-name${text === emptyText ? ' formosa-file-name--empty' : ''}`}
 						id={`${id || name}-name`}
 					>
 						{text}
 					</div>
-					<Input
-						className={`formosa-field__input--file ${className}`.trim()}
-						disabled={disabled}
-						id={id || name}
-						multiple={multiple}
-						name={name}
-						onChange={onChange}
-						{...otherProps}
-					/>
+					{!readOnly && (
+						<Input
+							className={`formosa-field__input--file ${className}`.trim()}
+							disabled={disabled}
+							id={id || name}
+							multiple={multiple}
+							name={name}
+							onChange={onChange}
+							{...otherProps}
+						/>
+					)}
 				</div>
-				{hasValue && !disabled && (
+				{hasValue && !disabled && !readOnly && (
 					<button
 						className={`formosa-button formosa-button--remove-file formosa-postfix ${buttonClassName}`.trim()}
 						id={`${id || name}-remove`}
@@ -133,6 +141,7 @@ File.propTypes = {
 	linkImage: PropTypes.bool,
 	multiple: PropTypes.bool,
 	name: PropTypes.string,
+	readOnly: PropTypes.bool,
 	removeText: PropTypes.string,
 	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
@@ -158,6 +167,7 @@ File.defaultProps = {
 	linkImage: false,
 	multiple: false,
 	name: '',
+	readOnly: false,
 	removeText: 'Remove',
 	wrapperAttributes: null,
 	wrapperClassName: '',

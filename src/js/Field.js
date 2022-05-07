@@ -50,6 +50,9 @@ export default function Field({
 	}
 	if (type) {
 		inputProps.type = type;
+		if (readOnly && type === 'number') {
+			inputProps.type = 'text';
+		}
 	}
 	let InputComponent = getInputElement(type, component);
 	if (type === 'has-many') {
