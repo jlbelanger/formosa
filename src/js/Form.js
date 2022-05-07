@@ -65,12 +65,13 @@ export default function Form({
 }
 
 Form.propTypes = {
-	children: PropTypes.node.isRequired,
+	children: PropTypes.node,
 	row: PropTypes.object,
 	setRow: PropTypes.func,
 };
 
 Form.defaultProps = {
+	children: null,
 	row: {},
 	setRow: null,
 };
