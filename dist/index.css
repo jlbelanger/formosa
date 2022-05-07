@@ -205,7 +205,7 @@ input.formosa-autocomplete__input {
 
 .formosa-button--danger {
   background-color: #c66;
-  border-color: transparent;
+  border-color: #c66;
   color: #000; }
   .formosa-button--danger:hover, .formosa-button--danger:active, .formosa-button--danger:focus {
     background-color: #c14444; }
@@ -235,9 +235,6 @@ input.formosa-field__input--checkbox {
   position: absolute;
   top: 6px;
   width: 20px; }
-  .formosa-horizontal .formosa-icon--check {
-    left: 14px;
-    top: 14px; }
   .formosa-icon--check path {
     fill: transparent; }
   .formosa-field--disabled .formosa-icon--check {
@@ -294,6 +291,10 @@ input.formosa-field__input--checkbox {
 .formosa-file-name--empty {
   opacity: .5; }
 
+.formosa-file-link {
+  display: inline-block;
+  font-size: 0; }
+
 .formosa-file-image {
   max-width: 100%; }
 
@@ -341,6 +342,44 @@ input.formosa-field__input--checkbox {
     padding-top: 9px; }
   .formosa-horizontal .formosa-radio--inline {
     padding-top: 9px; }
+  .formosa-horizontal .formosa-icon--check {
+    left: 14px;
+    top: 14px; }
+  .formosa-horizontal .formosa-field--label-after .formosa-label-wrapper:empty {
+    display: inline-block; }
+
+@media (min-width: 1024px) {
+  .formosa-responsive {
+    display: table;
+    width: 100%; }
+    .formosa-responsive .formosa-field {
+      display: table-row; }
+    .formosa-responsive .formosa-field > .formosa-label-wrapper,
+    .formosa-responsive .formosa-field > .formosa-input-wrapper {
+      display: table-cell;
+      padding: 8px 0; }
+    .formosa-responsive .formosa-field > .formosa-label-wrapper {
+      padding-right: 8px;
+      text-align: right;
+      vertical-align: top;
+      white-space: nowrap;
+      width: 0; }
+    .formosa-responsive .formosa-field > .formosa-input-wrapper {
+      padding-left: 8px;
+      width: 100%; }
+    .formosa-responsive .formosa-label {
+      display: inline-block;
+      line-height: 1.5;
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 9px; }
+    .formosa-responsive .formosa-radio--inline {
+      padding-top: 9px; }
+    .formosa-responsive .formosa-icon--check {
+      left: 14px;
+      top: 14px; }
+    .formosa-responsive .formosa-field--label-after .formosa-label-wrapper:empty {
+      display: inline-block; } }
 
 .formosa-label-wrapper {
   display: block;
@@ -370,8 +409,6 @@ input.formosa-field__input--checkbox {
   margin: 0; }
   .formosa-field--label-after .formosa-label-wrapper:empty {
     display: none; }
-  .formosa-horizontal .formosa-field--label-after .formosa-label-wrapper:empty {
-    display: inline-block; }
 
 .formosa-message {
   padding: 16px; }
@@ -592,6 +629,7 @@ input.formosa-field__input--search {
   font-size: 0;
   height: 32px;
   margin: 0 8px 0 0;
+  padding: 0;
   width: 32px; }
   .formosa-toast__close path {
     fill: #000; }

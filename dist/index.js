@@ -402,6 +402,35 @@ var Api = /*#__PURE__*/function () {
   return Api;
 }();
 
+var _path;
+
+function _extends$1() {
+  _extends$1 = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends$1.apply(this, arguments);
+}
+
+function SvgCheck(props) {
+  return /*#__PURE__*/React.createElement("svg", _extends$1({
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 8 8"
+  }, props), _path || (_path = /*#__PURE__*/React.createElement("path", {
+    d: "M6.41 1l-.69.72L2.94 4.5l-.81-.78L1.41 3 0 4.41l.72.72 1.5 1.5.69.72.72-.72 3.5-3.5.72-.72L6.41 1z"
+  })));
+}
+
 var formContext = /*#__PURE__*/React__default.createContext({
   dirty: [],
   dirtyIncluded: [],
@@ -493,10 +522,10 @@ var filterByKey = function filterByKey(records, key, value) {
   return records;
 };
 
-var _path;
+var _path$1;
 
-function _extends$1() {
-  _extends$1 = Object.assign || function (target) {
+function _extends$2() {
+  _extends$2 = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
       var source = arguments[i];
 
@@ -510,14 +539,14 @@ function _extends$1() {
     return target;
   };
 
-  return _extends$1.apply(this, arguments);
+  return _extends$2.apply(this, arguments);
 }
 
 function SvgX(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$1({
+  return /*#__PURE__*/React.createElement("svg", _extends$2({
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 8 8"
-  }, props), _path || (_path = /*#__PURE__*/React.createElement("path", {
+  }, props), _path$1 || (_path$1 = /*#__PURE__*/React.createElement("path", {
     d: "M1.41 0L0 1.41l.72.72L2.5 3.94.72 5.72 0 6.41l1.41 1.44.72-.72 1.81-1.81 1.78 1.81.69.72 1.44-1.44-.72-.69-1.81-1.78 1.81-1.81.72-.72L6.41 0l-.69.72L3.94 2.5 2.13.72 1.41 0z"
   })));
 }
@@ -945,35 +974,6 @@ Autocomplete.defaultProps = {
   wrapperClassName: ''
 };
 
-var _path$1;
-
-function _extends$2() {
-  _extends$2 = Object.assign || function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-
-    return target;
-  };
-
-  return _extends$2.apply(this, arguments);
-}
-
-function SvgCheck(props) {
-  return /*#__PURE__*/React.createElement("svg", _extends$2({
-    xmlns: "http://www.w3.org/2000/svg",
-    viewBox: "0 0 8 8"
-  }, props), _path$1 || (_path$1 = /*#__PURE__*/React.createElement("path", {
-    d: "M6.41 1l-.69.72L2.94 4.5l-.81-.78L1.41 3 0 4.41l.72.72 1.5 1.5.69.72.72-.72 3.5-3.5.72-.72L6.41 1z"
-  })));
-}
-
 function ConditionalWrapper(_ref) {
   var children = _ref.children,
       className = _ref.className,
@@ -1015,7 +1015,18 @@ function Input(_ref) {
     formState.setValues(formState, e, e.target.name, newValue, afterChange);
   };
 
-  var value = type === 'file' ? '' : get(formState.row, name) || '';
+  var value;
+
+  if (type === 'file') {
+    value = '';
+  } else {
+    value = get(formState.row, name);
+
+    if (value === null) {
+      value = '';
+    }
+  }
+
   var checked = type === 'checkbox' && value;
   var props = {};
 
@@ -1456,7 +1467,7 @@ Datetime.defaultProps = {
   yearAttributes: null
 };
 
-var _excluded$4 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageAttributes", "imageClassName", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "multiple", "name", "removeText", "wrapperAttributes", "wrapperClassName"];
+var _excluded$4 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageAttributes", "imageClassName", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "linkAttributes", "linkClassName", "linkImage", "multiple", "name", "readOnly", "removeText", "wrapperAttributes", "wrapperClassName"];
 function File(_ref) {
   var afterChange = _ref.afterChange,
       buttonAttributes = _ref.buttonAttributes,
@@ -1472,8 +1483,12 @@ function File(_ref) {
       imagePreview = _ref.imagePreview,
       inputWrapperAttributes = _ref.inputWrapperAttributes,
       inputWrapperClassName = _ref.inputWrapperClassName,
+      linkAttributes = _ref.linkAttributes,
+      linkClassName = _ref.linkClassName,
+      linkImage = _ref.linkImage,
       multiple = _ref.multiple,
       name = _ref.name,
+      readOnly = _ref.readOnly,
       removeText = _ref.removeText,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
@@ -1515,29 +1530,45 @@ function File(_ref) {
     document.getElementById(id || name).focus();
   };
 
+  var prefixClassName = inputWrapperClassName;
+
+  if (hasValue && !disabled && !readOnly) {
+    prefixClassName += ' formosa-prefix';
+  }
+
   return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, hasValue && imagePreview && srcs.map(function (src) {
-    return /*#__PURE__*/React__default.createElement("img", _extends({
+    var img = /*#__PURE__*/React__default.createElement("img", _extends({
       alt: "",
       className: ("formosa-file-image " + imageClassName).trim(),
       height: imageHeight,
       key: src,
       src: src
     }, imageAttributes));
+
+    if (linkImage) {
+      return /*#__PURE__*/React__default.createElement("a", _extends({
+        className: ("formosa-file-link " + linkClassName).trim(),
+        href: src,
+        key: src
+      }, linkAttributes), img);
+    }
+
+    return img;
   }), /*#__PURE__*/React__default.createElement("div", _extends({
     className: ("formosa-file-wrapper " + wrapperClassName).trim()
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement("div", _extends({
-    className: ("formosa-file-input-wrapper " + inputWrapperClassName).trim()
+    className: ("formosa-file-input-wrapper " + prefixClassName).trim()
   }, inputWrapperAttributes), /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-file-name" + (text === emptyText ? ' formosa-file-name--empty' : ''),
     id: (id || name) + "-name"
-  }, text), /*#__PURE__*/React__default.createElement(Input, _extends({
+  }, text), !readOnly && /*#__PURE__*/React__default.createElement(Input, _extends({
     className: ("formosa-field__input--file " + className).trim(),
     disabled: disabled,
     id: id || name,
     multiple: multiple,
     name: name,
     onChange: onChange
-  }, otherProps))), hasValue && !disabled && /*#__PURE__*/React__default.createElement("button", _extends({
+  }, otherProps))), hasValue && !disabled && !readOnly && /*#__PURE__*/React__default.createElement("button", _extends({
     className: ("formosa-button formosa-button--remove-file formosa-postfix " + buttonClassName).trim(),
     id: (id || name) + "-remove",
     onClick: onRemove,
@@ -1559,8 +1590,12 @@ File.propTypes = {
   imagePreview: PropTypes.bool,
   inputWrapperAttributes: PropTypes.object,
   inputWrapperClassName: PropTypes.string,
+  linkAttributes: PropTypes.object,
+  linkClassName: PropTypes.string,
+  linkImage: PropTypes.bool,
   multiple: PropTypes.bool,
   name: PropTypes.string,
+  readOnly: PropTypes.bool,
   removeText: PropTypes.string,
   wrapperAttributes: PropTypes.object,
   wrapperClassName: PropTypes.string
@@ -1580,8 +1615,12 @@ File.defaultProps = {
   imagePreview: false,
   inputWrapperAttributes: null,
   inputWrapperClassName: '',
+  linkAttributes: null,
+  linkClassName: '',
+  linkImage: false,
   multiple: false,
   name: '',
+  readOnly: false,
   removeText: 'Remove',
   wrapperAttributes: null,
   wrapperClassName: ''
@@ -2173,13 +2212,15 @@ Label.defaultProps = {
   type: ''
 };
 
-var _excluded$b = ["component", "disabled", "id", "inputWrapperAttributes", "label", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
+var _excluded$b = ["component", "disabled", "id", "inputWrapperAttributes", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
 function Field(_ref) {
   var component = _ref.component,
       disabled = _ref.disabled,
       id = _ref.id,
       inputWrapperAttributes = _ref.inputWrapperAttributes,
       label = _ref.label,
+      labelAttributes = _ref.labelAttributes,
+      labelClassName = _ref.labelClassName,
       labelNote = _ref.labelNote,
       labelPosition = _ref.labelPosition,
       name = _ref.name,
@@ -2225,6 +2266,10 @@ function Field(_ref) {
 
   if (type) {
     inputProps.type = type;
+
+    if (readOnly && type === 'number') {
+      inputProps.type = 'text';
+    }
   }
 
   var InputComponent = getInputElement(type, component);
@@ -2240,13 +2285,14 @@ function Field(_ref) {
   }
 
   var htmlFor = id || name;
-  var labelComponent = /*#__PURE__*/React__default.createElement(Label, {
+  var labelComponent = /*#__PURE__*/React__default.createElement(Label, _extends({
+    className: labelClassName,
     htmlFor: type === 'datetime' ? htmlFor + "-month" : htmlFor,
     label: label,
     note: labelNote,
     required: required,
     type: type
-  });
+  }, labelAttributes));
   var hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
   var wrapperClassNameList = ['formosa-field', "formosa-field--" + name];
 
@@ -2307,6 +2353,8 @@ Field.propTypes = {
   id: PropTypes.string,
   inputWrapperAttributes: PropTypes.object,
   label: PropTypes.string,
+  labelAttributes: PropTypes.object,
+  labelClassName: PropTypes.string,
   labelNote: PropTypes.string,
   labelPosition: PropTypes.string,
   name: PropTypes.string.isRequired,
@@ -2326,6 +2374,8 @@ Field.defaultProps = {
   id: null,
   inputWrapperAttributes: {},
   label: '',
+  labelAttributes: {},
+  labelClassName: '',
   labelNote: '',
   labelPosition: 'before',
   note: '',
@@ -2502,7 +2552,7 @@ FormInner.propTypes = {
   afterNoSubmit: PropTypes.func,
   afterSubmit: PropTypes.func,
   beforeSubmit: PropTypes.func,
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   clearOnSubmit: PropTypes.bool,
   defaultRow: PropTypes.object,
   filterBody: PropTypes.func,
@@ -2522,6 +2572,7 @@ FormInner.defaultProps = {
   afterNoSubmit: null,
   afterSubmit: null,
   beforeSubmit: null,
+  children: null,
   clearOnSubmit: false,
   defaultRow: {},
   filterBody: null,
@@ -2608,11 +2659,12 @@ function Form(_ref) {
   }, /*#__PURE__*/React__default.createElement(FormInner, otherProps, children));
 }
 Form.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   row: PropTypes.object,
   setRow: PropTypes.func
 };
 Form.defaultProps = {
+  children: null,
   row: {},
   setRow: null
 };
@@ -2797,6 +2849,7 @@ Submit.defaultProps = {
 };
 
 var Api$1 = Api;
+var CheckIcon = SvgCheck;
 var Field$1 = Field;
 var Form$1 = Form;
 var FormContainer$1 = FormContainer;
@@ -2808,6 +2861,7 @@ var Message$1 = Message;
 var Submit$1 = Submit;
 
 exports.Api = Api$1;
+exports.CheckIcon = CheckIcon;
 exports.Field = Field$1;
 exports.Form = Form$1;
 exports.FormContainer = FormContainer$1;
