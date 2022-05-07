@@ -19,12 +19,10 @@ export default function Input({
 		formState.setValues(formState, e, e.target.name, newValue, afterChange);
 	};
 
-	let value;
-	if (type === 'file') {
-		value = '';
-	} else {
+	let value = '';
+	if (type !== 'file') {
 		value = get(formState.row, name);
-		if (value === null) {
+		if (value === null || value === undefined) {
 			value = '';
 		}
 	}
