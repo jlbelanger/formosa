@@ -12,6 +12,8 @@ export default function Field({
 	id,
 	inputWrapperAttributes,
 	label,
+	labelAttributes,
+	labelClassName,
 	labelNote,
 	labelPosition,
 	name,
@@ -66,11 +68,13 @@ export default function Field({
 
 	const labelComponent = (
 		<Label
+			className={labelClassName}
 			htmlFor={type === 'datetime' ? `${htmlFor}-month` : htmlFor}
 			label={label}
 			note={labelNote}
 			required={required}
 			type={type}
+			{...labelAttributes}
 		/>
 	);
 
@@ -134,6 +138,8 @@ Field.propTypes = {
 	id: PropTypes.string,
 	inputWrapperAttributes: PropTypes.object,
 	label: PropTypes.string,
+	labelAttributes: PropTypes.object,
+	labelClassName: PropTypes.string,
 	labelNote: PropTypes.string,
 	labelPosition: PropTypes.string,
 	name: PropTypes.string.isRequired,
@@ -158,6 +164,8 @@ Field.defaultProps = {
 	id: null,
 	inputWrapperAttributes: {},
 	label: '',
+	labelAttributes: {},
+	labelClassName: '',
 	labelNote: '',
 	labelPosition: 'before',
 	note: '',
