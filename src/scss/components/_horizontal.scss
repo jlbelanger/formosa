@@ -1,4 +1,4 @@
-@mixin formosaHorizontal() {
+@mixin formosa-horizontal() {
 	display: table;
 	width: 100%;
 
@@ -52,11 +52,11 @@
 }
 
 .formosa-horizontal {
-	@include formosaHorizontal;
+	@include formosa-horizontal;
 }
 
 .formosa-responsive {
 	@media (min-width: #{$formosa-responsive-breakpoint}) {
-		@include formosaHorizontal;
+		@include formosa-horizontal;
 	}
 }
