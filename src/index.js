@@ -1,6 +1,7 @@
 import './style.scss';
 import api from './js/Helpers/Api';
 import { ReactComponent as checkIcon } from './svg/check.svg';
+import error from './js/Error';
 import field from './js/Field';
 import form from './js/Form';
 import formContainer from './js/FormContainer';
@@ -13,6 +14,7 @@ import submit from './js/Submit';
 
 export const Api = api;
 export const CheckIcon = checkIcon;
+export const Error = error;
 export const Field = field;
 export const Form = form;
 export const FormContainer = formContainer;

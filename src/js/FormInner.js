@@ -117,7 +117,7 @@ export default function FormInner({
 							key = key.replace(/^\/included\/(\d+)\//g, `included.${includedRecord.type}.${includedRecord.id}.`);
 							key = key.replace(/\//g, '.');
 						}
-						if (!document.querySelector(`[name="${key}"]`)) {
+						if (!document.querySelector(`[data-name="${key}"].formosa-field__error`)) {
 							key = '';
 						}
 					} else {

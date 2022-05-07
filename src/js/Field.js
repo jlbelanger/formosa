@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'; // eslint-disable-line import/no-unresolved
+import Error from './Error';
 import FormContext from './FormContext';
 import get from 'get-value';
 import getInputElement from './FieldInput';
@@ -125,11 +126,7 @@ export default function Field({
 					</div>
 				)}
 				{postfix}
-				{hasError && (
-					<div className="formosa-field__error" id={`${id || name}-error`}>
-						{formState.errors[name].map((e) => (<div key={e}>{e}</div>))}
-					</div>
-				)}
+				<Error id={id} name={name} />
 			</div>
 		</div>
 	);
