@@ -28,11 +28,6 @@ input.formosa-field__input--checkbox {
 	top: #{$formosa-checkbox-padding / 2};
 	width: #{$formosa-checkbox-size - $formosa-checkbox-padding};
 
-	.formosa-horizontal & {
-		left: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
-		top: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
-	}
-
 	path {
 		fill: transparent;
 	}

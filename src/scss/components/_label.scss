@@ -45,11 +45,5 @@
 		&:empty {
 			display: none;
 		}
-
-		.formosa-horizontal & {
-			&:empty {
-				display: inline-block;
-			}
-		}
 	}
 }

@@ -1,4 +1,4 @@
-.formosa-horizontal {
+@mixin formosaHorizontal() {
 	display: table;
 	width: 100%;
 
@@ -35,5 +35,28 @@
 
 	.formosa-radio--inline {
 		padding-top: #{$formosa-input-padding + $formosa-input-border-width};
+	}
+
+	.formosa-icon--check {
+		left: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
+		top: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
+	}
+
+	.formosa-field--label-after {
+		.formosa-label-wrapper {
+			&:empty {
+				display: inline-block;
+			}
+		}
+	}
+}
+
+.formosa-horizontal {
+	@include formosaHorizontal;
+}
+
+.formosa-responsive {
+	@media (min-width: #{$formosa-responsive-breakpoint}) {
+		@include formosaHorizontal;
 	}
 }
