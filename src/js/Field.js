@@ -84,7 +84,8 @@ export default function Field({
 
 	const hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
 
-	const wrapperClassNameList = ['formosa-field', `formosa-field--${name}`];
+	const cleanName = name.replace(/[^a-z0-9_-]/gi, '');
+	const wrapperClassNameList = ['formosa-field', `formosa-field--${cleanName}`];
 	if (wrapperClassName) {
 		wrapperClassNameList.push(wrapperClassName);
 	}
