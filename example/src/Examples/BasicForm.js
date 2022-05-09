@@ -166,6 +166,15 @@ export default function BasicForm() {
 				/>
 
 				<Field
+					label="Checkbox list"
+					name="checkbox_list"
+					type="checkbox-list"
+					options={options}
+					disabled={disabled}
+					readOnly={readOnly}
+				/>
+
+				<Field
 					label="Datetime"
 					name="datetime"
 					type="datetime"

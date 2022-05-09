@@ -37,7 +37,7 @@
 		padding-top: #{$formosa-input-padding + $formosa-input-border-width};
 	}
 
-	.formosa-icon--check {
+	.formosa-field > .formosa-input-wrapper > .formosa-icon--check {
 		left: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
 		top: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
 	}

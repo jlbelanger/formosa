@@ -1,5 +1,6 @@
 import Autocomplete from './Input/Autocomplete';
 import Checkbox from './Input/Checkbox';
+import CheckboxList from './Input/CheckboxList';
 import Datetime from './Input/Datetime';
 import File from './Input/File';
 import Input from './Input';
@@ -39,6 +40,9 @@ export default (type, component) => {
 	}
 	if (type === 'file') {
 		return File;
+	}
+	if (type === 'checkbox-list') {
+		return CheckboxList;
 	}
 	return Input;
 };
