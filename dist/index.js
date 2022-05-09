@@ -442,6 +442,32 @@ var formContext = /*#__PURE__*/React__default.createContext({
   setValues: null
 });
 
+function Error(_ref) {
+  var id = _ref.id,
+      name = _ref.name;
+
+  var _useContext = React.useContext(formContext),
+      formState = _useContext.formState;
+
+  var hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
+  return /*#__PURE__*/React__default.createElement("div", {
+    className: "formosa-field__error",
+    "data-name": name,
+    id: (id || name) + "-error"
+  }, hasError && formState.errors[name].map(function (e) {
+    return /*#__PURE__*/React__default.createElement("div", {
+      key: e
+    }, e);
+  }));
+}
+Error.propTypes = {
+  id: PropTypes.string,
+  name: PropTypes.string.isRequired
+};
+Error.defaultProps = {
+  id: null
+};
+
 var normalizeOptions = function normalizeOptions(options, labelKey, valueKey) {
   if (valueKey === void 0) {
     valueKey = null;
@@ -491,8 +517,8 @@ var escapeRegExp = function escapeRegExp(string) {
   return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
 };
 
-var slugify = function slugify(s) {
-  return s.toLowerCase().replace(/[^0-9a-z-]/g, '-').replace(/-+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+var toSlug = function toSlug(s) {
+  return s.toLowerCase().replace(/ & /g, '-and-').replace(/<[^>]+>/g, '').replace(/['’.]/g, '').replace(/[^a-z0-9-]+/g, '-').replace(/^-+/, '').replace(/-+$/, '').replace(/--+/g, '-');
 };
 
 var filterByKey = function filterByKey(records, key, value) {
@@ -502,10 +528,10 @@ var filterByKey = function filterByKey(records, key, value) {
     var recordValue = get(record, key).toString().toLowerCase() || '';
     return recordValue.match(new RegExp("(^|[^a-z])" + escapedValue));
   });
-  value = slugify(value);
+  value = toSlug(value);
   records = records.sort(function (a, b) {
-    var aValue = slugify(get(a, key).toString());
-    var bValue = slugify(get(b, key).toString());
+    var aValue = toSlug(get(a, key).toString());
+    var bValue = toSlug(get(b, key).toString());
     var aPos = aValue.indexOf(value) === 0;
     var bPos = bValue.indexOf(value) === 0;
 
@@ -1015,14 +1041,12 @@ function Input(_ref) {
     formState.setValues(formState, e, e.target.name, newValue, afterChange);
   };
 
-  var value;
+  var value = '';
 
-  if (type === 'file') {
-    value = '';
-  } else {
+  if (type !== 'file') {
     value = get(formState.row, name);
 
-    if (value === null) {
+    if (value === null || value === undefined) {
       value = '';
     }
   }
@@ -1109,6 +1133,137 @@ Checkbox.defaultProps = {
   iconHeight: 16,
   iconWidth: 16,
   id: null
+};
+
+function CheckboxList(_ref) {
+  var afterChange = _ref.afterChange,
+      className = _ref.className,
+      iconAttributes = _ref.iconAttributes,
+      iconClassName = _ref.iconClassName,
+      iconHeight = _ref.iconHeight,
+      iconWidth = _ref.iconWidth,
+      labelKey = _ref.labelKey,
+      listAttributes = _ref.listAttributes,
+      listClassName = _ref.listClassName,
+      listItemAttributes = _ref.listItemAttributes,
+      listItemClassName = _ref.listItemClassName,
+      name = _ref.name,
+      options = _ref.options,
+      url = _ref.url,
+      valueKey = _ref.valueKey;
+
+  var _useContext = React.useContext(formContext),
+      formState = _useContext.formState;
+
+  var _useState = React.useState(options ? normalizeOptions(options, labelKey, valueKey) : null),
+      optionValues = _useState[0],
+      setOptionValues = _useState[1];
+
+  React.useEffect(function () {
+    if (optionValues === null && url) {
+      Api.get(url).then(function (response) {
+        setOptionValues(normalizeOptions(response, labelKey, valueKey));
+      });
+    }
+
+    return function () {};
+  }, [url]);
+  var values = get(formState.row, name) || [];
+  values = values.map(function (value) {
+    return typeof value === 'object' ? JSON.stringify(value) : value;
+  });
+
+  var onChange = function onChange(e) {
+    var newValue = get(formState.row, name) || [];
+    newValue = [].concat(newValue);
+    var val = e.target.value;
+
+    if (e.target.checked) {
+      if (e.target.getAttribute('data-json') === 'true') {
+        val = JSON.parse(val);
+      }
+
+      newValue.push(val);
+    } else {
+      var index = values.indexOf(val);
+
+      if (index > -1) {
+        newValue.splice(index, 1);
+      }
+    }
+
+    formState.setValues(formState, e, name, newValue, afterChange);
+  };
+
+  return /*#__PURE__*/React__default.createElement("ul", _extends({
+    className: ("formosa-radio " + listClassName).trim()
+  }, listAttributes), optionValues && optionValues.map(function (_ref2, i) {
+    var label = _ref2.label,
+        value = _ref2.value;
+    var val = value;
+    var isJson = false;
+
+    if (typeof val === 'object') {
+      isJson = true;
+      val = JSON.stringify(value);
+    }
+
+    return /*#__PURE__*/React__default.createElement("li", _extends({
+      className: ("formosa-radio__item " + listItemClassName).trim(),
+      key: val
+    }, listItemAttributes), /*#__PURE__*/React__default.createElement("div", {
+      className: "formosa-input-wrapper formosa-input-wrapper--checkbox"
+    }, /*#__PURE__*/React__default.createElement("input", {
+      className: ("formosa-field__input formosa-field__input--checkbox " + className).trim(),
+      checked: values.includes(val),
+      "data-json": isJson,
+      id: name + "-" + i,
+      name: name + "[]",
+      onChange: onChange,
+      type: "checkbox",
+      value: val
+    }), /*#__PURE__*/React__default.createElement(SvgCheck, _extends({
+      className: ("formosa-icon--check " + iconClassName).trim(),
+      height: iconHeight,
+      width: iconWidth
+    }, iconAttributes)), /*#__PURE__*/React__default.createElement("label", {
+      className: "formosa-radio__label",
+      htmlFor: name + "-" + i
+    }, label)));
+  }));
+}
+CheckboxList.propTypes = {
+  afterChange: PropTypes.func,
+  className: PropTypes.string,
+  iconAttributes: PropTypes.object,
+  iconClassName: PropTypes.string,
+  iconHeight: PropTypes.number,
+  iconWidth: PropTypes.number,
+  labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  listAttributes: PropTypes.object,
+  listClassName: PropTypes.string,
+  listItemAttributes: PropTypes.object,
+  listItemClassName: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  url: PropTypes.string,
+  valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
+};
+CheckboxList.defaultProps = {
+  afterChange: null,
+  className: '',
+  iconAttributes: null,
+  iconClassName: '',
+  iconHeight: 16,
+  iconWidth: 16,
+  labelKey: 'name',
+  listAttributes: null,
+  listClassName: '',
+  listItemAttributes: null,
+  listItemClassName: '',
+  options: null,
+  url: null,
+  valueKey: null
 };
 
 var pad = function pad(n, width, z) {
@@ -1949,6 +2104,10 @@ var getInputElement = (function (type, component) {
     return File;
   }
 
+  if (type === 'checkbox-list') {
+    return CheckboxList;
+  }
+
   return Input;
 });
 
@@ -2294,7 +2453,8 @@ function Field(_ref) {
     type: type
   }, labelAttributes));
   var hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
-  var wrapperClassNameList = ['formosa-field', "formosa-field--" + name];
+  var cleanName = name.replace(/[^a-z0-9_-]/gi, '');
+  var wrapperClassNameList = ['formosa-field', "formosa-field--" + cleanName];
 
   if (wrapperClassName) {
     wrapperClassNameList.push(wrapperClassName);
@@ -2338,14 +2498,10 @@ function Field(_ref) {
     className: inputWrapperClassNameList.join(' ')
   }, inputWrapperAttributes), prefix, input, label && labelPosition === 'after' && labelComponent, note && /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-field__note"
-  }, typeof note === 'function' ? note(get(formState.row, name), formState.row) : note), postfix, hasError && /*#__PURE__*/React__default.createElement("div", {
-    className: "formosa-field__error",
-    id: (id || name) + "-error"
-  }, formState.errors[name].map(function (e) {
-    return /*#__PURE__*/React__default.createElement("div", {
-      key: e
-    }, e);
-  }))));
+  }, typeof note === 'function' ? note(get(formState.row, name), formState.row) : note), postfix, /*#__PURE__*/React__default.createElement(Error, {
+    id: id,
+    name: name
+  })));
 }
 Field.propTypes = {
   component: PropTypes.func,
@@ -2518,7 +2674,7 @@ function FormInner(_ref) {
             key = key.replace(/\//g, '.');
           }
 
-          if (!document.querySelector("[name=\"" + key + "\"]")) {
+          if (!document.querySelector("[data-name=\"" + key + "\"].formosa-field__error")) {
             key = '';
           }
         } else {
@@ -2850,6 +3006,7 @@ Submit.defaultProps = {
 
 var Api$1 = Api;
 var CheckIcon = SvgCheck;
+var Error$1 = Error;
 var Field$1 = Field;
 var Form$1 = Form;
 var FormContainer$1 = FormContainer;
@@ -2862,6 +3019,7 @@ var Submit$1 = Submit;
 
 exports.Api = Api$1;
 exports.CheckIcon = CheckIcon;
+exports.Error = Error$1;
 exports.Field = Field$1;
 exports.Form = Form$1;
 exports.FormContainer = FormContainer$1;

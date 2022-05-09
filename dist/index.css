@@ -257,6 +257,8 @@ input.formosa-field__input--checkbox {
 .formosa-field__error {
   color: #c66;
   margin-top: 4px; }
+  .formosa-field__error:empty {
+    display: none; }
 
 .formosa-field {
   margin-top: 24px; }
@@ -342,7 +344,7 @@ input.formosa-field__input--checkbox {
     padding-top: 9px; }
   .formosa-horizontal .formosa-radio--inline {
     padding-top: 9px; }
-  .formosa-horizontal .formosa-icon--check {
+  .formosa-horizontal .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
     left: 14px;
     top: 14px; }
   .formosa-horizontal .formosa-field--label-after .formosa-label-wrapper:empty {
@@ -375,7 +377,7 @@ input.formosa-field__input--checkbox {
       padding-top: 9px; }
     .formosa-responsive .formosa-radio--inline {
       padding-top: 9px; }
-    .formosa-responsive .formosa-icon--check {
+    .formosa-responsive .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
       left: 14px;
       top: 14px; }
     .formosa-responsive .formosa-field--label-after .formosa-label-wrapper:empty {
