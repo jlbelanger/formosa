@@ -38,22 +38,11 @@ export default function BasicForm() {
 			textarea: 'Lorem ipsum',
 			select: 'Apple',
 			checkbox: true,
+			checkbox_list: ['Apple', 'Banana'],
 			datetime: '2001-02-03 04:05:06',
 			radio: 'Apple',
-			autocomplete: {
-				label: 'Apple',
-				value: 'Apple',
-			},
-			multiple_autocomplete: [
-				{
-					label: 'Apple',
-					value: 'Apple',
-				},
-				{
-					label: 'Banana',
-					value: 'Banana',
-				},
-			],
+			autocomplete: 'Apple',
+			multiple_autocomplete: ['Apple', 'Banana'],
 		});
 	};
 

@@ -20,9 +20,9 @@ export default function Options() {
 
 	const optionsArrayOfObjects = [
 		{ randomValueName: '1', randomLabelName: 'Apple' },
-		{ randomValueName: '2', randomLabelName: 'Peach' },
-		{ randomValueName: '3', randomLabelName: 'Banana' },
-		{ randomValueName: '4', randomLabelName: 'Pear' },
+		{ randomValueName: '23', randomLabelName: 'Peach' },
+		{ randomValueName: '4', randomLabelName: 'Banana' },
+		{ randomValueName: '24', randomLabelName: 'Pear' },
 	];
 
 	const optionsObjectAutocomplete = {
@@ -145,8 +145,10 @@ export default function Options() {
 	return (
 		<>
 			<Form row={row} setRow={setRow}>
+				<h2>Select</h2>
+
 				<Field
-					label="Select"
+					label="Select array of strings"
 					name="select"
 					type="select"
 					note={`options={${JSON.stringify(optionsArray, null, 1)}}`}
@@ -176,11 +178,58 @@ export default function Options() {
 					name="select_api"
 					type="select"
 					url="food.json"
-					valueKey={(option) => (JSON.stringify({ id: option.id, type: option.type }))}
+					valueKey={(option) => ({ id: option.id, type: option.type })}
+				/>
+
+				<h2>Checkbox list</h2>
+
+				<Field
+					label="Checkbox list array of strings"
+					name="checkbox_list"
+					type="checkbox-list"
+					note={`options={${JSON.stringify(optionsArray, null, 1)}}`}
+					options={optionsArray}
 				/>
 
 				<Field
-					label="Radio"
+					label="Checkbox list object"
+					name="checkbox_list_object"
+					type="checkbox-list"
+					note={`options={${JSON.stringify(optionsObject, null, 1)}}`}
+					options={optionsObject}
+				/>
+
+				<Field
+					label="Checkbox list array of objects"
+					labelKey="randomLabelName"
+					name="checkbox_list_array_objects"
+					type="checkbox-list"
+					note={`options={${JSON.stringify(optionsArrayOfObjects, null, 1)}}`}
+					options={optionsArrayOfObjects}
+					valueKey="randomValueName"
+				/>
+
+				<Field
+					label="Checkbox list from API"
+					name="checkbox_list_api"
+					type="checkbox-list"
+					inputWrapperAttributes={{
+						style: {
+							border: '1px solid #333',
+							boxSizing: 'border-box',
+							maxHeight: '190px',
+							padding: '10px',
+							overflow: 'auto',
+						},
+					}}
+					url="food.json"
+					valueKey={(option) => ({ id: option.id, type: option.type })}
+				/>
+
+				<h2>Radio</h2>
+
+				<Field
+					label="Radio array of strings"
 					name="radio"
 					type="radio"
 					note={`options={${JSON.stringify(optionsArray, null, 1)}}`}
@@ -219,11 +268,13 @@ export default function Options() {
 						},
 					}}
 					url="food.json"
-					valueKey={(option) => (JSON.stringify({ id: option.id, type: option.type }))}
+					valueKey={(option) => ({ id: option.id, type: option.type })}
 				/>
 
+				<h2>Autocomplete</h2>
+
 				<Field
-					label="Autocomplete"
+					label="Autocomplete array of strings"
 					name="autocomplete"
 					max={1}
 					type="autocomplete"
@@ -254,7 +305,7 @@ export default function Options() {
 					max={1}
 					type="autocomplete"
 					url="food.json"
-					valueKey={(option) => (JSON.stringify({ id: option.id, type: option.type }))}
+					valueKey={(option) => ({ id: option.id, type: option.type })}
 				/>
 
 				<Submit />
