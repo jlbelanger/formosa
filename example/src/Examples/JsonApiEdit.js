@@ -24,15 +24,18 @@ export default function JsonApiEdit() {
 		return null;
 	}
 
-	const slugify = (s) => (
+	const toSlug = (s) => (
 		s.toLowerCase()
-			.replace(/[^0-9a-z-]/g, '-')
-			.replace(/-+/g, '-')
+			.replace(/ & /g, '-and-')
+			.replace(/<[^>]+>/g, '')
+			.replace(/['’.]/g, '')
+			.replace(/[^a-z0-9-]+/g, '-')
 			.replace(/^-+/, '')
 			.replace(/-+$/, '')
+			.replace(/--+/g, '-')
 	);
 
-	const afterChangeName = (e) => ({ slug: slugify(e.target.value) });
+	const afterChangeName = (e) => ({ slug: toSlug(e.target.value) });
 
 	return (
 		<>
