@@ -50,17 +50,6 @@ export default function Autocomplete({
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
 
-	let selectedValues = get(formState.row, name) || null;
-	if (max === 1) {
-		if (!selectedValues) {
-			selectedValues = [];
-		} else {
-			selectedValues = [selectedValues];
-		}
-	} else if (!selectedValues) {
-		selectedValues = [];
-	}
-
 	useEffect(() => {
 		if (optionValues === null && url) {
 			Api.get(url)
@@ -75,6 +64,17 @@ export default function Autocomplete({
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
 		return () => {};
 	}, [options]);
+
+	let selectedValues = get(formState.row, name) || null;
+	if (max === 1) {
+		if (!selectedValues) {
+			selectedValues = [];
+		} else {
+			selectedValues = [selectedValues];
+		}
+	} else if (!selectedValues) {
+		selectedValues = [];
+	}
 
 	const isSelected = (option) => {
 		const values = get(formState.row, name) || [];
@@ -212,7 +212,11 @@ export default function Autocomplete({
 	};
 
 	const onClickOption = (e) => {
-		addValue(JSON.parse(e.target.getAttribute('data-value')));
+		let val = e.target.getAttribute('data-value');
+		if (e.target.getAttribute('data-json') === 'true') {
+			val = JSON.parse(val);
+		}
+		addValue(val);
 	};
 
 	const onClickRemoveOption = (e) => {
@@ -253,22 +257,32 @@ export default function Autocomplete({
 		>
 			<div style={{ display: 'flex' }}>
 				<ul className="formosa-autocomplete__values">
-					{selectedValues && selectedValues.map((value, i) => {
+					{selectedValues && selectedValues.map((value, index) => {
+						let val = value;
+						let isJson = false;
+						if (typeof val === 'object') {
+							val = JSON.stringify(val);
+							isJson = true;
+						}
+
+						const option = optionValues.find((o) => (isJson ? JSON.stringify(o.value) === val : o.value === val));
+
 						let label;
 						if (labelFn) {
-							label = labelFn(value);
-						} else if (Object.prototype.hasOwnProperty.call(value, 'label')) {
-							label = value.label;
+							label = labelFn(option);
+						} else if (Object.prototype.hasOwnProperty.call(option, 'label')) {
+							label = option.label;
 						} else {
 							label = value;
 						}
+
 						return (
-							<li className="formosa-autocomplete__value formosa-autocomplete__value--item" key={JSON.stringify(value)}>
+							<li className="formosa-autocomplete__value formosa-autocomplete__value--item" key={val}>
 								{label}
 								{!disabled && !readOnly && (
 									<button
 										className={`formosa-autocomplete__value__remove ${removeButtonClassName}`.trim()}
-										data-index={i}
+										data-index={index}
 										onClick={onClickRemoveOption}
 										type="button"
 										{...removeButtonAttributes}
@@ -308,15 +322,23 @@ export default function Autocomplete({
 							}
 							optionClassName = optionClassName.join(' ');
 
+							let val = option.value;
+							let isJson = false;
+							if (typeof val === 'object') {
+								isJson = true;
+								val = JSON.stringify(val);
+							}
+
 							return (
 								<li
 									className={`${optionClassName} ${optionListItemClassName}`.trim()}
-									key={option.value}
+									key={val}
 									{...optionListItemAttributes}
 								>
 									<button
 										className={`formosa-autocomplete__option__button ${optionButtonClassName}`.trim()}
-										data-value={JSON.stringify(option)}
+										data-json={isJson}
+										data-value={val}
 										onClick={onClickOption}
 										type="button"
 										{...optionButtonAttributes}

@@ -26,9 +26,6 @@ export default function Select({
 }) {
 	const { formState } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
-	const onChange = (e) => {
-		formState.setValues(formState, e, e.target.name, e.target.value, afterChange);
-	};
 
 	useEffect(() => {
 		if (optionValues === null && url) {
@@ -45,6 +42,20 @@ export default function Select({
 		return () => {};
 	}, [options]);
 
+	let selectedValue = get(formState.row, name) || '';
+	if (typeof selectedValue === 'object') {
+		selectedValue = JSON.stringify(selectedValue);
+	}
+
+	const onChange = (e) => {
+		let val = e.target.value;
+		const option = e.target.querySelector(`[value="${val.replace(/"/g, '\\"')}"]`);
+		if (option.getAttribute('data-json') === 'true') {
+			val = JSON.parse(val);
+		}
+		formState.setValues(formState, e, name, val, afterChange);
+	};
+
 	return (
 		<div className={`formosa-select-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 			<select
@@ -52,13 +63,21 @@ export default function Select({
 				id={id || name}
 				name={name}
 				onChange={onChange}
-				value={get(formState.row, name) || ''}
+				value={selectedValue}
 				{...otherProps}
 			>
 				{!hideBlank && <option />}
-				{optionValues && optionValues.map(({ label, value }) => (
-					<option key={value} value={value}>{label}</option>
-				))}
+				{optionValues && optionValues.map(({ label, value }) => {
+					let val = value;
+					let isJson = false;
+					if (typeof val === 'object') {
+						isJson = true;
+						val = JSON.stringify(val);
+					}
+					return (
+						<option data-json={isJson} key={val} value={val}>{label}</option>
+					);
+				})}
 			</select>
 			<CaretIcon className={`formosa-icon--caret ${iconClassName}`.trim()} height={iconHeight} width={iconWidth} {...iconAttributes} />
 		</div>

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import Radio from './Radio';
 
 export default function RadioList({
+	afterChange,
 	labelKey,
 	listAttributes,
 	listClassName,
@@ -37,25 +38,49 @@ export default function RadioList({
 		return () => {};
 	}, [options]);
 
+	let selectedValue = get(formState.row, name);
+	if (typeof selectedValue === 'object') {
+		selectedValue = JSON.stringify(selectedValue);
+	}
+
+	const onChange = (e) => {
+		let val = e.target.value;
+		if (e.target.getAttribute('data-json') === 'true') {
+			val = JSON.parse(val);
+		}
+		formState.setValues(formState, e, name, val, afterChange);
+	};
+
 	return (
 		<ul className={`formosa-radio ${listClassName}`.trim()} {...listAttributes}>
-			{optionValues && optionValues.map(({ label, value }) => (
-				<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={value} {...listItemAttributes}>
-					<Radio
-						checked={get(formState.row, name) === value}
-						label={label}
-						name={name}
-						required={required}
-						value={value}
-						{...otherProps}
-					/>
-				</li>
-			))}
+			{optionValues && optionValues.map(({ label, value }) => {
+				let val = value;
+				let isJson = false;
+				if (typeof val === 'object') {
+					isJson = true;
+					val = JSON.stringify(val);
+				}
+				return (
+					<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={val} {...listItemAttributes}>
+						<Radio
+							checked={selectedValue === val}
+							data-json={isJson}
+							label={label}
+							name={name}
+							onChange={onChange}
+							required={required}
+							value={val}
+							{...otherProps}
+						/>
+					</li>
+				);
+			})}
 		</ul>
 	);
 }
 
 RadioList.propTypes = {
+	afterChange: PropTypes.func,
 	labelKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
@@ -78,6 +103,7 @@ RadioList.propTypes = {
 };
 
 RadioList.defaultProps = {
+	afterChange: null,
 	labelKey: 'name',
 	listAttributes: null,
 	listClassName: '',

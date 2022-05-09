@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 export default function CheckboxList({
 	afterChange,
 	className,
+	disabled,
 	iconAttributes,
 	iconClassName,
 	iconHeight,
@@ -20,6 +21,7 @@ export default function CheckboxList({
 	listItemClassName,
 	name,
 	options,
+	readOnly,
 	url,
 	valueKey,
 }) {
@@ -36,8 +38,13 @@ export default function CheckboxList({
 		return () => {};
 	}, [url]);
 
-	let values = get(formState.row, name) || [];
-	values = values.map((value) => (typeof value === 'object' ? JSON.stringify(value) : value));
+	useEffect(() => {
+		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+		return () => {};
+	}, [options]);
+
+	let selectedValues = get(formState.row, name) || [];
+	selectedValues = selectedValues.map((value) => (typeof value === 'object' ? JSON.stringify(value) : value));
 
 	const onChange = (e) => {
 		let newValue = get(formState.row, name) || [];
@@ -50,7 +57,7 @@ export default function CheckboxList({
 			}
 			newValue.push(val);
 		} else {
-			const index = values.indexOf(val);
+			const index = selectedValues.indexOf(val);
 			if (index > -1) {
 				newValue.splice(index, 1);
 			}
@@ -61,23 +68,25 @@ export default function CheckboxList({
 
 	return (
 		<ul className={`formosa-radio ${listClassName}`.trim()} {...listAttributes}>
-			{optionValues && optionValues.map(({ label, value }, i) => {
+			{optionValues && optionValues.map(({ label, value }, index) => {
 				let val = value;
 				let isJson = false;
 				if (typeof val === 'object') {
 					isJson = true;
-					val = JSON.stringify(value);
+					val = JSON.stringify(val);
 				}
 				return (
 					<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={val} {...listItemAttributes}>
 						<div className="formosa-input-wrapper formosa-input-wrapper--checkbox">
 							<input
 								className={`formosa-field__input formosa-field__input--checkbox ${className}`.trim()}
-								checked={values.includes(val)}
+								checked={selectedValues.includes(val)}
 								data-json={isJson}
-								id={`${name}-${i}`}
+								disabled={disabled}
+								id={`${name}-${index}`}
 								name={`${name}[]`}
 								onChange={onChange}
+								readOnly={readOnly}
 								type="checkbox"
 								value={val}
 							/>
@@ -87,7 +96,7 @@ export default function CheckboxList({
 								width={iconWidth}
 								{...iconAttributes}
 							/>
-							<label className="formosa-radio__label" htmlFor={`${name}-${i}`}>
+							<label className="formosa-radio__label" htmlFor={`${name}-${index}`}>
 								{label}
 							</label>
 						</div>
@@ -101,6 +110,7 @@ export default function CheckboxList({
 CheckboxList.propTypes = {
 	afterChange: PropTypes.func,
 	className: PropTypes.string,
+	disabled: PropTypes.bool,
 	iconAttributes: PropTypes.object,
 	iconClassName: PropTypes.string,
 	iconHeight: PropTypes.number,
@@ -118,6 +128,7 @@ CheckboxList.propTypes = {
 		PropTypes.array,
 		PropTypes.object,
 	]),
+	readOnly: PropTypes.bool,
 	url: PropTypes.string,
 	valueKey: PropTypes.oneOfType([
 		PropTypes.func,
@@ -128,6 +139,7 @@ CheckboxList.propTypes = {
 CheckboxList.defaultProps = {
 	afterChange: null,
 	className: '',
+	disabled: false,
 	iconAttributes: null,
 	iconClassName: '',
 	iconHeight: 16,
@@ -138,6 +150,7 @@ CheckboxList.defaultProps = {
 	listItemAttributes: null,
 	listItemClassName: '',
 	options: null,
+	readOnly: false,
 	url: null,
 	valueKey: null,
 };
