@@ -1,6 +1,17 @@
 .formosa-field--disabled {
-	.formosa-input-wrapper {
+	& > .formosa-input-wrapper {
 		opacity: $formosa-disabled-opacity;
+	}
+
+	// Undo iOS Safari styles.
+	input:disabled,
+	select:disabled,
+	textarea:disabled {
+		opacity: 1;
+	}
+
+	input[type='file']:disabled {
+		opacity: 0;
 	}
 }
 
