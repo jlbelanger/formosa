@@ -1,6 +1,6 @@
 {
 	"name": "@jlbelanger/formosa",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "React form components that work with JSON API.",
 	"license": "GPL-3.0-only",
 	"author": {

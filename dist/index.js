@@ -635,18 +635,6 @@ function Autocomplete(_ref) {
       optionValues = _useState4[0],
       setOptionValues = _useState4[1];
 
-  var selectedValues = get(formState.row, name) || null;
-
-  if (max === 1) {
-    if (!selectedValues) {
-      selectedValues = [];
-    } else {
-      selectedValues = [selectedValues];
-    }
-  } else if (!selectedValues) {
-    selectedValues = [];
-  }
-
   React.useEffect(function () {
     if (optionValues === null && url) {
       Api.get(url).then(function (response) {
@@ -660,6 +648,17 @@ function Autocomplete(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
     return function () {};
   }, [options]);
+  var selectedValues = get(formState.row, name) || null;
+
+  if (max === 1) {
+    if (!selectedValues) {
+      selectedValues = [];
+    } else {
+      selectedValues = [selectedValues];
+    }
+  } else if (!selectedValues) {
+    selectedValues = [];
+  }
 
   var isSelected = function isSelected(option) {
     var values = get(formState.row, name) || [];
@@ -817,7 +816,13 @@ function Autocomplete(_ref) {
   };
 
   var onClickOption = function onClickOption(e) {
-    addValue(JSON.parse(e.target.getAttribute('data-value')));
+    var val = e.target.getAttribute('data-value');
+
+    if (e.target.getAttribute('data-json') === 'true') {
+      val = JSON.parse(val);
+    }
+
+    addValue(val);
   };
 
   var onClickRemoveOption = function onClickRemoveOption(e) {
@@ -862,23 +867,34 @@ function Autocomplete(_ref) {
     }
   }, /*#__PURE__*/React__default.createElement("ul", {
     className: "formosa-autocomplete__values"
-  }, selectedValues && selectedValues.map(function (value, i) {
+  }, selectedValues && selectedValues.map(function (value, index) {
+    var val = value;
+    var isJson = false;
+
+    if (typeof val === 'object') {
+      val = JSON.stringify(val);
+      isJson = true;
+    }
+
+    var option = optionValues.find(function (o) {
+      return isJson ? JSON.stringify(o.value) === val : o.value === val;
+    });
     var label;
 
     if (labelFn) {
-      label = labelFn(value);
-    } else if (Object.prototype.hasOwnProperty.call(value, 'label')) {
-      label = value.label;
+      label = labelFn(option);
+    } else if (Object.prototype.hasOwnProperty.call(option, 'label')) {
+      label = option.label;
     } else {
       label = value;
     }
 
     return /*#__PURE__*/React__default.createElement("li", {
       className: "formosa-autocomplete__value formosa-autocomplete__value--item",
-      key: JSON.stringify(value)
+      key: val
     }, label, !disabled && !readOnly && /*#__PURE__*/React__default.createElement("button", _extends({
       className: ("formosa-autocomplete__value__remove " + removeButtonClassName).trim(),
-      "data-index": i,
+      "data-index": index,
       onClick: onClickRemoveOption,
       type: "button"
     }, removeButtonAttributes), /*#__PURE__*/React__default.createElement(SvgX, _extends({
@@ -908,12 +924,21 @@ function Autocomplete(_ref) {
     }
 
     optionClassName = optionClassName.join(' ');
+    var val = option.value;
+    var isJson = false;
+
+    if (typeof val === 'object') {
+      isJson = true;
+      val = JSON.stringify(val);
+    }
+
     return /*#__PURE__*/React__default.createElement("li", _extends({
       className: (optionClassName + " " + optionListItemClassName).trim(),
-      key: option.value
+      key: val
     }, optionListItemAttributes), /*#__PURE__*/React__default.createElement("button", _extends({
       className: ("formosa-autocomplete__option__button " + optionButtonClassName).trim(),
-      "data-value": JSON.stringify(option),
+      "data-json": isJson,
+      "data-value": val,
       onClick: onClickOption,
       type: "button"
     }, optionButtonAttributes), option.label));
@@ -1138,6 +1163,7 @@ Checkbox.defaultProps = {
 function CheckboxList(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
+      disabled = _ref.disabled,
       iconAttributes = _ref.iconAttributes,
       iconClassName = _ref.iconClassName,
       iconHeight = _ref.iconHeight,
@@ -1149,6 +1175,7 @@ function CheckboxList(_ref) {
       listItemClassName = _ref.listItemClassName,
       name = _ref.name,
       options = _ref.options,
+      readOnly = _ref.readOnly,
       url = _ref.url,
       valueKey = _ref.valueKey;
 
@@ -1168,8 +1195,12 @@ function CheckboxList(_ref) {
 
     return function () {};
   }, [url]);
-  var values = get(formState.row, name) || [];
-  values = values.map(function (value) {
+  React.useEffect(function () {
+    setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+    return function () {};
+  }, [options]);
+  var selectedValues = get(formState.row, name) || [];
+  selectedValues = selectedValues.map(function (value) {
     return typeof value === 'object' ? JSON.stringify(value) : value;
   });
 
@@ -1185,7 +1216,7 @@ function CheckboxList(_ref) {
 
       newValue.push(val);
     } else {
-      var index = values.indexOf(val);
+      var index = selectedValues.indexOf(val);
 
       if (index > -1) {
         newValue.splice(index, 1);
@@ -1197,7 +1228,7 @@ function CheckboxList(_ref) {
 
   return /*#__PURE__*/React__default.createElement("ul", _extends({
     className: ("formosa-radio " + listClassName).trim()
-  }, listAttributes), optionValues && optionValues.map(function (_ref2, i) {
+  }, listAttributes), optionValues && optionValues.map(function (_ref2, index) {
     var label = _ref2.label,
         value = _ref2.value;
     var val = value;
@@ -1205,7 +1236,7 @@ function CheckboxList(_ref) {
 
     if (typeof val === 'object') {
       isJson = true;
-      val = JSON.stringify(value);
+      val = JSON.stringify(val);
     }
 
     return /*#__PURE__*/React__default.createElement("li", _extends({
@@ -1215,11 +1246,13 @@ function CheckboxList(_ref) {
       className: "formosa-input-wrapper formosa-input-wrapper--checkbox"
     }, /*#__PURE__*/React__default.createElement("input", {
       className: ("formosa-field__input formosa-field__input--checkbox " + className).trim(),
-      checked: values.includes(val),
+      checked: selectedValues.includes(val),
       "data-json": isJson,
-      id: name + "-" + i,
+      disabled: disabled,
+      id: name + "-" + index,
       name: name + "[]",
       onChange: onChange,
+      readOnly: readOnly,
       type: "checkbox",
       value: val
     }), /*#__PURE__*/React__default.createElement(SvgCheck, _extends({
@@ -1228,13 +1261,14 @@ function CheckboxList(_ref) {
       width: iconWidth
     }, iconAttributes)), /*#__PURE__*/React__default.createElement("label", {
       className: "formosa-radio__label",
-      htmlFor: name + "-" + i
+      htmlFor: name + "-" + index
     }, label)));
   }));
 }
 CheckboxList.propTypes = {
   afterChange: PropTypes.func,
   className: PropTypes.string,
+  disabled: PropTypes.bool,
   iconAttributes: PropTypes.object,
   iconClassName: PropTypes.string,
   iconHeight: PropTypes.number,
@@ -1246,12 +1280,14 @@ CheckboxList.propTypes = {
   listItemClassName: PropTypes.string,
   name: PropTypes.string.isRequired,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  readOnly: PropTypes.bool,
   url: PropTypes.string,
   valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
 };
 CheckboxList.defaultProps = {
   afterChange: null,
   className: '',
+  disabled: false,
   iconAttributes: null,
   iconClassName: '',
   iconHeight: 16,
@@ -1262,6 +1298,7 @@ CheckboxList.defaultProps = {
   listItemAttributes: null,
   listItemClassName: '',
   options: null,
+  readOnly: false,
   url: null,
   valueKey: null
 };
@@ -1392,10 +1429,6 @@ function Select(_ref) {
       optionValues = _useState[0],
       setOptionValues = _useState[1];
 
-  var onChange = function onChange(e) {
-    formState.setValues(formState, e, e.target.name, e.target.value, afterChange);
-  };
-
   React.useEffect(function () {
     if (optionValues === null && url) {
       Api.get(url).then(function (response) {
@@ -1409,6 +1442,23 @@ function Select(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
     return function () {};
   }, [options]);
+  var selectedValue = get(formState.row, name) || '';
+
+  if (typeof selectedValue === 'object') {
+    selectedValue = JSON.stringify(selectedValue);
+  }
+
+  var onChange = function onChange(e) {
+    var val = e.target.value;
+    var option = e.target.querySelector("[value=\"" + val.replace(/"/g, '\\"') + "\"]");
+
+    if (option.getAttribute('data-json') === 'true') {
+      val = JSON.parse(val);
+    }
+
+    formState.setValues(formState, e, name, val, afterChange);
+  };
+
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: ("formosa-select-wrapper " + wrapperClassName).trim()
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement("select", _extends({
@@ -1416,13 +1466,22 @@ function Select(_ref) {
     id: id || name,
     name: name,
     onChange: onChange,
-    value: get(formState.row, name) || ''
+    value: selectedValue
   }, otherProps), !hideBlank && /*#__PURE__*/React__default.createElement("option", null), optionValues && optionValues.map(function (_ref2) {
     var label = _ref2.label,
         value = _ref2.value;
+    var val = value;
+    var isJson = false;
+
+    if (typeof val === 'object') {
+      isJson = true;
+      val = JSON.stringify(val);
+    }
+
     return /*#__PURE__*/React__default.createElement("option", {
-      key: value,
-      value: value
+      "data-json": isJson,
+      key: val,
+      value: val
     }, label);
   })), /*#__PURE__*/React__default.createElement(SvgCaret, _extends({
     className: ("formosa-icon--caret " + iconClassName).trim(),
@@ -1884,9 +1943,10 @@ Radio.defaultProps = {
   value: ''
 };
 
-var _excluded$7 = ["labelKey", "listAttributes", "listClassName", "listItemAttributes", "listItemClassName", "name", "options", "required", "url", "valueKey"];
+var _excluded$7 = ["afterChange", "labelKey", "listAttributes", "listClassName", "listItemAttributes", "listItemClassName", "name", "options", "required", "url", "valueKey"];
 function RadioList(_ref) {
-  var labelKey = _ref.labelKey,
+  var afterChange = _ref.afterChange,
+      labelKey = _ref.labelKey,
       listAttributes = _ref.listAttributes,
       listClassName = _ref.listClassName,
       listItemAttributes = _ref.listItemAttributes,
@@ -1918,24 +1978,51 @@ function RadioList(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
     return function () {};
   }, [options]);
+  var selectedValue = get(formState.row, name);
+
+  if (typeof selectedValue === 'object') {
+    selectedValue = JSON.stringify(selectedValue);
+  }
+
+  var onChange = function onChange(e) {
+    var val = e.target.value;
+
+    if (e.target.getAttribute('data-json') === 'true') {
+      val = JSON.parse(val);
+    }
+
+    formState.setValues(formState, e, name, val, afterChange);
+  };
+
   return /*#__PURE__*/React__default.createElement("ul", _extends({
     className: ("formosa-radio " + listClassName).trim()
   }, listAttributes), optionValues && optionValues.map(function (_ref2) {
     var label = _ref2.label,
         value = _ref2.value;
+    var val = value;
+    var isJson = false;
+
+    if (typeof val === 'object') {
+      isJson = true;
+      val = JSON.stringify(val);
+    }
+
     return /*#__PURE__*/React__default.createElement("li", _extends({
       className: ("formosa-radio__item " + listItemClassName).trim(),
-      key: value
+      key: val
     }, listItemAttributes), /*#__PURE__*/React__default.createElement(Radio, _extends({
-      checked: get(formState.row, name) === value,
+      checked: selectedValue === val,
+      "data-json": isJson,
       label: label,
       name: name,
+      onChange: onChange,
       required: required,
-      value: value
+      value: val
     }, otherProps)));
   }));
 }
 RadioList.propTypes = {
+  afterChange: PropTypes.func,
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   listAttributes: PropTypes.object,
   listClassName: PropTypes.string,
@@ -1948,6 +2035,7 @@ RadioList.propTypes = {
   valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
 };
 RadioList.defaultProps = {
+  afterChange: null,
   labelKey: 'name',
   listAttributes: null,
   listClassName: '',

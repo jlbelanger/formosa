@@ -1,5 +1,13 @@
-.formosa-field--disabled .formosa-input-wrapper {
+.formosa-field--disabled > .formosa-input-wrapper {
   opacity: 0.5; }
+
+.formosa-field--disabled input:disabled,
+.formosa-field--disabled select:disabled,
+.formosa-field--disabled textarea:disabled {
+  opacity: 1; }
+
+.formosa-field--disabled input[type='file']:disabled {
+  opacity: 0; }
 
 .formosa-field__input,
 .formosa-field__input--select,
