@@ -633,7 +633,7 @@ function Autocomplete(_ref) {
       setOptionValues = _useState4[1];
 
   useEffect(function () {
-    if (optionValues === null && url) {
+    if (url) {
       Api.get(url).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
       });
@@ -661,7 +661,7 @@ function Autocomplete(_ref) {
 
   var filteredOptions = [];
 
-  if (optionValues !== null && filter) {
+  if (filter) {
     filteredOptions = filterByKey(optionValues, 'label', filter);
     filteredOptions = filteredOptions.filter(function (option) {
       return !isSelected(option);
@@ -1171,12 +1171,12 @@ function CheckboxList(_ref) {
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
 
-  var _useState = useState(options ? normalizeOptions(options, labelKey, valueKey) : null),
+  var _useState = useState(options ? normalizeOptions(options, labelKey, valueKey) : []),
       optionValues = _useState[0],
       setOptionValues = _useState[1];
 
   useEffect(function () {
-    if (optionValues === null && url) {
+    if (url) {
       Api.get(url).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
       });
@@ -1185,7 +1185,7 @@ function CheckboxList(_ref) {
     return function () {};
   }, [url]);
   useEffect(function () {
-    setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+    setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
   var selectedValues = get(formState.row, name) || [];
@@ -1217,7 +1217,7 @@ function CheckboxList(_ref) {
 
   return /*#__PURE__*/React__default.createElement("ul", _extends({
     className: ("formosa-radio " + listClassName).trim()
-  }, listAttributes), optionValues && optionValues.map(function (_ref2, index) {
+  }, listAttributes), optionValues.map(function (_ref2, index) {
     var label = _ref2.label,
         value = _ref2.value;
     var val = value;
@@ -1414,12 +1414,12 @@ function Select(_ref) {
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
 
-  var _useState = useState(options ? normalizeOptions(options, labelKey, valueKey) : null),
+  var _useState = useState(options ? normalizeOptions(options, labelKey, valueKey) : []),
       optionValues = _useState[0],
       setOptionValues = _useState[1];
 
   useEffect(function () {
-    if (optionValues === null && url) {
+    if (url) {
       Api.get(url).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
       });
@@ -1428,7 +1428,7 @@ function Select(_ref) {
     return function () {};
   }, [url]);
   useEffect(function () {
-    setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+    setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
   var selectedValue = get(formState.row, name) || '';
@@ -1456,7 +1456,7 @@ function Select(_ref) {
     name: name,
     onChange: onChange,
     value: selectedValue
-  }, otherProps), !hideBlank && /*#__PURE__*/React__default.createElement("option", null), optionValues && optionValues.map(function (_ref2) {
+  }, otherProps), !hideBlank && /*#__PURE__*/React__default.createElement("option", null), optionValues.map(function (_ref2) {
     var label = _ref2.label,
         value = _ref2.value;
     var val = value;
@@ -1950,12 +1950,12 @@ function RadioList(_ref) {
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
 
-  var _useState = useState(options ? normalizeOptions(options, labelKey, valueKey) : null),
+  var _useState = useState(options ? normalizeOptions(options, labelKey, valueKey) : []),
       optionValues = _useState[0],
       setOptionValues = _useState[1];
 
   useEffect(function () {
-    if (optionValues === null && url) {
+    if (url) {
       Api.get(url).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
       });
@@ -1964,7 +1964,7 @@ function RadioList(_ref) {
     return function () {};
   }, [url]);
   useEffect(function () {
-    setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+    setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
   var selectedValue = get(formState.row, name);
@@ -1985,7 +1985,7 @@ function RadioList(_ref) {
 
   return /*#__PURE__*/React__default.createElement("ul", _extends({
     className: ("formosa-radio " + listClassName).trim()
-  }, listAttributes), optionValues && optionValues.map(function (_ref2) {
+  }, listAttributes), optionValues.map(function (_ref2) {
     var label = _ref2.label,
         value = _ref2.value;
     var val = value;
@@ -2992,52 +2992,49 @@ function FormContainer(_ref) {
   var formosaStateRef = useRef(formosaState);
   formosaStateRef.current = formosaState;
   useEffect(function () {
-    if (formosaState.removeToast === null) {
-      var removeToast = function removeToast(toastId) {
-        var toasts = _extends({}, formosaStateRef.current.toasts);
+    var removeToast = function removeToast(toastId) {
+      var toasts = _extends({}, formosaStateRef.current.toasts);
 
-        delete toasts[toastId];
-        setFormosaState(_extends({}, formosaStateRef.current, {
-          toasts: toasts
-        }));
+      delete toasts[toastId];
+      setFormosaState(_extends({}, formosaStateRef.current, {
+        toasts: toasts
+      }));
+    };
+
+    var addToast = function addToast(text, type, milliseconds) {
+      var _extends2;
+
+      if (type === void 0) {
+        type = '';
+      }
+
+      if (milliseconds === void 0) {
+        milliseconds = 5000;
+      }
+
+      var toastId = new Date().getTime();
+      var toast = {
+        className: type ? "formosa-toast--" + type : '',
+        text: text,
+        milliseconds: milliseconds
       };
 
-      var addToast = function addToast(text, type, milliseconds) {
-        var _extends2;
-
-        if (type === void 0) {
-          type = '';
-        }
-
-        if (milliseconds === void 0) {
-          milliseconds = 5000;
-        }
-
-        var toastId = new Date().getTime();
-        var toast = {
-          className: type ? "formosa-toast--" + type : '',
-          text: text,
-          milliseconds: milliseconds
-        };
-
-        var toasts = _extends({}, formosaStateRef.current.toasts, (_extends2 = {}, _extends2[toastId] = toast, _extends2));
-
-        setFormosaState(_extends({}, formosaStateRef.current, {
-          toasts: toasts
-        }));
-        setTimeout(function () {
-          formosaStateRef.current.removeToast(toastId);
-        }, milliseconds);
-      };
+      var toasts = _extends({}, formosaStateRef.current.toasts, (_extends2 = {}, _extends2[toastId] = toast, _extends2));
 
       setFormosaState(_extends({}, formosaStateRef.current, {
-        addToast: addToast,
-        removeToast: removeToast
+        toasts: toasts
       }));
-    }
+      setTimeout(function () {
+        formosaStateRef.current.removeToast(toastId);
+      }, milliseconds);
+    };
 
+    setFormosaState(_extends({}, formosaStateRef.current, {
+      addToast: addToast,
+      removeToast: removeToast
+    }));
     return function () {};
-  });
+  }, []);
   return /*#__PURE__*/React__default.createElement(formosaContext.Provider, {
     value: {
       formosaState: formosaState,
