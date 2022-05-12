@@ -388,7 +388,7 @@ cd example
 yarn start
 ```
 
-Your browser should automatically open https://localhost:3000/
+Your browser should automatically open http://localhost:3000/
 
 ### Lint
 
