@@ -26,10 +26,10 @@ export default function CheckboxList({
 	valueKey,
 }) {
 	const { formState } = useContext(FormContext);
-	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
+	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 
 	useEffect(() => {
-		if (optionValues === null && url) {
+		if (url) {
 			Api.get(url)
 				.then((response) => {
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
@@ -39,7 +39,7 @@ export default function CheckboxList({
 	}, [url]);
 
 	useEffect(() => {
-		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
 		return () => {};
 	}, [options]);
 
@@ -68,7 +68,7 @@ export default function CheckboxList({
 
 	return (
 		<ul className={`formosa-radio ${listClassName}`.trim()} {...listAttributes}>
-			{optionValues && optionValues.map(({ label, value }, index) => {
+			{optionValues.map(({ label, value }, index) => {
 				let val = value;
 				let isJson = false;
 				if (typeof val === 'object') {

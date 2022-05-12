@@ -15,36 +15,34 @@ export default function FormContainer({ children }) {
 	formosaStateRef.current = formosaState;
 
 	useEffect(() => {
-		if (formosaState.removeToast === null) {
-			const removeToast = (toastId) => {
-				const toasts = { ...formosaStateRef.current.toasts };
-				delete toasts[toastId];
-				setFormosaState({ ...formosaStateRef.current, toasts });
+		const removeToast = (toastId) => {
+			const toasts = { ...formosaStateRef.current.toasts };
+			delete toasts[toastId];
+			setFormosaState({ ...formosaStateRef.current, toasts });
+		};
+		const addToast = (text, type = '', milliseconds = 5000) => {
+			const toastId = new Date().getTime();
+			const toast = {
+				className: type ? `formosa-toast--${type}` : '',
+				text,
+				milliseconds,
 			};
-			const addToast = (text, type = '', milliseconds = 5000) => {
-				const toastId = new Date().getTime();
-				const toast = {
-					className: type ? `formosa-toast--${type}` : '',
-					text,
-					milliseconds,
-				};
-				const toasts = {
-					...formosaStateRef.current.toasts,
-					[toastId]: toast,
-				};
-				setFormosaState({ ...formosaStateRef.current, toasts });
-				setTimeout(() => {
-					formosaStateRef.current.removeToast(toastId);
-				}, milliseconds);
+			const toasts = {
+				...formosaStateRef.current.toasts,
+				[toastId]: toast,
 			};
-			setFormosaState({
-				...formosaStateRef.current,
-				addToast,
-				removeToast,
-			});
-		}
+			setFormosaState({ ...formosaStateRef.current, toasts });
+			setTimeout(() => {
+				formosaStateRef.current.removeToast(toastId);
+			}, milliseconds);
+		};
+		setFormosaState({
+			...formosaStateRef.current,
+			addToast,
+			removeToast,
+		});
 		return () => {};
-	});
+	}, []);
 
 	return (
 		<FormosaContext.Provider value={{ formosaState, setFormosaState }}>

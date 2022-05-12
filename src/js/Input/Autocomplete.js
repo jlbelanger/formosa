@@ -51,7 +51,7 @@ export default function Autocomplete({
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 
 	useEffect(() => {
-		if (optionValues === null && url) {
+		if (url) {
 			Api.get(url)
 				.then((response) => {
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
@@ -77,7 +77,7 @@ export default function Autocomplete({
 	);
 
 	let filteredOptions = [];
-	if (optionValues !== null && filter) {
+	if (filter) {
 		filteredOptions = filterByKey(optionValues, 'label', filter);
 		filteredOptions = filteredOptions.filter((option) => (!isSelected(option)));
 	}

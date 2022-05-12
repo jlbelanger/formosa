@@ -21,10 +21,10 @@ export default function RadioList({
 	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
-	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
+	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 
 	useEffect(() => {
-		if (optionValues === null && url) {
+		if (url) {
 			Api.get(url)
 				.then((response) => {
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
@@ -34,7 +34,7 @@ export default function RadioList({
 	}, [url]);
 
 	useEffect(() => {
-		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
 		return () => {};
 	}, [options]);
 
@@ -53,7 +53,7 @@ export default function RadioList({
 
 	return (
 		<ul className={`formosa-radio ${listClassName}`.trim()} {...listAttributes}>
-			{optionValues && optionValues.map(({ label, value }) => {
+			{optionValues.map(({ label, value }) => {
 				let val = value;
 				let isJson = false;
 				if (typeof val === 'object') {

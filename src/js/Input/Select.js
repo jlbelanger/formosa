@@ -25,10 +25,10 @@ export default function Select({
 	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
-	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
+	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 
 	useEffect(() => {
-		if (optionValues === null && url) {
+		if (url) {
 			Api.get(url)
 				.then((response) => {
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
@@ -38,7 +38,7 @@ export default function Select({
 	}, [url]);
 
 	useEffect(() => {
-		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
 		return () => {};
 	}, [options]);
 
@@ -67,7 +67,7 @@ export default function Select({
 				{...otherProps}
 			>
 				{!hideBlank && <option />}
-				{optionValues && optionValues.map(({ label, value }) => {
+				{optionValues.map(({ label, value }) => {
 					let val = value;
 					let isJson = false;
 					if (typeof val === 'object') {

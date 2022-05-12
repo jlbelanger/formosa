@@ -11,14 +11,12 @@ export default function JsonApiEdit() {
 	const { id } = useParams();
 	const [row, setRow] = useState(null);
 	useEffect(() => {
-		if (row === null) {
-			Api.get(`food/${id}.json`)
-				.then((response) => {
-					setRow(response);
-				});
-		}
+		Api.get(`food/${id}.json`)
+			.then((response) => {
+				setRow(response);
+			});
 		return () => {};
-	});
+	}, [id]);
 
 	if (!row) {
 		return null;
