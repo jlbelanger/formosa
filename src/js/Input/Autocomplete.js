@@ -48,7 +48,7 @@ export default function Autocomplete({
 	const [filter, setFilter] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
-	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : null);
+	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 
 	useEffect(() => {
 		if (optionValues === null && url) {
@@ -61,25 +61,20 @@ export default function Autocomplete({
 	}, [url]);
 
 	useEffect(() => {
-		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
 		return () => {};
 	}, [options]);
 
-	let selectedValues = get(formState.row, name) || null;
-	if (max === 1) {
-		if (!selectedValues) {
-			selectedValues = [];
-		} else {
-			selectedValues = [selectedValues];
-		}
-	} else if (!selectedValues) {
+	let selectedValues = get(formState.row, name);
+	if (!selectedValues) {
 		selectedValues = [];
+	} else if (max === 1) {
+		selectedValues = [selectedValues];
 	}
 
-	const isSelected = (option) => {
-		const values = get(formState.row, name) || [];
-		return values.findIndex((value) => (value.value === option.value)) > -1;
-	};
+	const isSelected = (option) => (
+		selectedValues.findIndex((value) => (value.value === option.value)) > -1
+	);
 
 	let filteredOptions = [];
 	if (optionValues !== null && filter) {
@@ -246,12 +241,10 @@ export default function Autocomplete({
 
 	const canAddValues = !disabled && !readOnly && (max === null || selectedValues.length < max);
 
-	const dataValue = JSON.stringify(get(formState.row, name));
-
 	return (
 		<div
 			className={`${className} ${wrapperClassName}`.trim()}
-			data-value={dataValue === undefined ? '' : dataValue}
+			data-value={JSON.stringify(get(formState.row, name))} /* For testing. */
 			id={`${id || name}-wrapper`}
 			{...wrapperAttributes}
 		>
@@ -265,15 +258,15 @@ export default function Autocomplete({
 							isJson = true;
 						}
 
-						const option = optionValues.find((o) => (isJson ? JSON.stringify(o.value) === val : o.value === val));
+						const option = optionValues.find((o) => (
+							isJson ? JSON.stringify(o.value) === val : o.value === val
+						));
 
-						let label;
+						let label = '';
 						if (labelFn) {
-							label = labelFn(option);
-						} else if (Object.prototype.hasOwnProperty.call(option, 'label')) {
+							label = labelFn(option || value);
+						} else if (option && Object.prototype.hasOwnProperty.call(option, 'label')) {
 							label = option.label;
-						} else {
-							label = value;
 						}
 
 						return (

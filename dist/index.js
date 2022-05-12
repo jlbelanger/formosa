@@ -631,7 +631,7 @@ function Autocomplete(_ref) {
       highlightedIndex = _useState3[0],
       setHighlightedIndex = _useState3[1];
 
-  var _useState4 = React.useState(options ? normalizeOptions(options, labelKey, valueKey) : null),
+  var _useState4 = React.useState(options ? normalizeOptions(options, labelKey, valueKey) : []),
       optionValues = _useState4[0],
       setOptionValues = _useState4[1];
 
@@ -645,24 +645,19 @@ function Autocomplete(_ref) {
     return function () {};
   }, [url]);
   React.useEffect(function () {
-    setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : null);
+    setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
-  var selectedValues = get(formState.row, name) || null;
+  var selectedValues = get(formState.row, name);
 
-  if (max === 1) {
-    if (!selectedValues) {
-      selectedValues = [];
-    } else {
-      selectedValues = [selectedValues];
-    }
-  } else if (!selectedValues) {
+  if (!selectedValues) {
     selectedValues = [];
+  } else if (max === 1) {
+    selectedValues = [selectedValues];
   }
 
   var isSelected = function isSelected(option) {
-    var values = get(formState.row, name) || [];
-    return values.findIndex(function (value) {
+    return selectedValues.findIndex(function (value) {
       return value.value === option.value;
     }) > -1;
   };
@@ -856,10 +851,9 @@ function Autocomplete(_ref) {
 
   className = className.join(' ');
   var canAddValues = !disabled && !readOnly && (max === null || selectedValues.length < max);
-  var dataValue = JSON.stringify(get(formState.row, name));
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: (className + " " + wrapperClassName).trim(),
-    "data-value": dataValue === undefined ? '' : dataValue,
+    "data-value": JSON.stringify(get(formState.row, name)),
     id: (id || name) + "-wrapper"
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement("div", {
     style: {
@@ -879,14 +873,12 @@ function Autocomplete(_ref) {
     var option = optionValues.find(function (o) {
       return isJson ? JSON.stringify(o.value) === val : o.value === val;
     });
-    var label;
+    var label = '';
 
     if (labelFn) {
-      label = labelFn(option);
-    } else if (Object.prototype.hasOwnProperty.call(option, 'label')) {
+      label = labelFn(option || value);
+    } else if (option && Object.prototype.hasOwnProperty.call(option, 'label')) {
       label = option.label;
-    } else {
-      label = value;
     }
 
     return /*#__PURE__*/React__default.createElement("li", {
