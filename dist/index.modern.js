@@ -1908,7 +1908,8 @@ function Radio(_ref) {
     formState.setValues(formState, e, e.target.name, e.target.value, afterChange);
   };
 
-  var checked = get(formState.row, name) === value;
+  var currentValue = get(formState.row, name);
+  var checked = otherProps['data-json'] ? JSON.stringify(currentValue) === value : currentValue === value;
   return /*#__PURE__*/React__default.createElement("label", _extends({
     className: ("formosa-radio__label" + (checked ? ' formosa-radio__label--checked' : '') + " " + labelClassName).trim()
   }, labelAttributes), /*#__PURE__*/React__default.createElement("input", _extends({

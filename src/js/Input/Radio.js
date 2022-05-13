@@ -17,7 +17,8 @@ export default function Radio({
 	const onChange = (e) => {
 		formState.setValues(formState, e, e.target.name, e.target.value, afterChange);
 	};
-	const checked = get(formState.row, name) === value;
+	const currentValue = get(formState.row, name);
+	const checked = otherProps['data-json'] ? JSON.stringify(currentValue) === value : currentValue === value;
 
 	return (
 		<label className={`formosa-radio__label${checked ? ' formosa-radio__label--checked' : ''} ${labelClassName}`.trim()} {...labelAttributes}>
