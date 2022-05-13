@@ -1715,19 +1715,26 @@ function File(_ref) {
       setSrcs = _useState2[1];
 
   var onChange = function onChange(e) {
-    var files = [].concat(e.target.files);
-    var filenames = files.map(function (file) {
-      return file.name;
-    }).join(', ');
+    var files = e.target.files;
+    var numFiles = files.length;
+    var filenames = [];
+    var newSrcs = [];
+    var i;
 
-    if (imagePreview) {
-      setSrcs(files.map(function (file, i) {
-        return URL.createObjectURL(e.target.files[i]);
-      }));
+    for (i = 0; i < numFiles; i += 1) {
+      filenames.push(files.item(i).name);
+
+      if (imagePreview) {
+        newSrcs.push(URL.createObjectURL(files.item(i)));
+      }
     }
 
-    setText(filenames);
-    formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? e.target.files : e.target.files[0]);
+    if (imagePreview) {
+      setSrcs(newSrcs);
+    }
+
+    setText(filenames.join(', '));
+    formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? e.target.files : e.target.files.item(0));
   };
 
   var onRemove = function onRemove(e) {

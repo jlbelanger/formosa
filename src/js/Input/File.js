@@ -37,15 +37,25 @@ export default function File({
 	const [srcs, setSrcs] = useState(value ? [`${imagePrefix}${value}`] : []);
 
 	const onChange = (e) => {
-		const files = [...e.target.files];
-		const filenames = files.map((file) => file.name).join(', ');
+		const files = e.target.files;
+		const numFiles = files.length;
+		const filenames = [];
+		const newSrcs = [];
+		let i;
 
-		if (imagePreview) {
-			setSrcs(files.map((file, i) => (URL.createObjectURL(e.target.files[i]))));
+		for (i = 0; i < numFiles; i += 1) {
+			filenames.push(files.item(i).name);
+			if (imagePreview) {
+				newSrcs.push(URL.createObjectURL(files.item(i)));
+			}
 		}
 
-		setText(filenames);
-		formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? e.target.files : e.target.files[0]);
+		if (imagePreview) {
+			setSrcs(newSrcs);
+		}
+
+		setText(filenames.join(', '));
+		formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? e.target.files : e.target.files.item(0));
 	};
 
 	const onRemove = (e) => {
