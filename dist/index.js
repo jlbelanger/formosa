@@ -1673,7 +1673,7 @@ Datetime.defaultProps = {
   yearAttributes: null
 };
 
-var _excluded$4 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageAttributes", "imageClassName", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "linkAttributes", "linkClassName", "linkImage", "multiple", "name", "readOnly", "removeText", "wrapperAttributes", "wrapperClassName"];
+var _excluded$4 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageAttributes", "imageClassName", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "linkAttributes", "linkClassName", "linkImage", "multiple", "name", "readOnly", "removeText", "required", "wrapperAttributes", "wrapperClassName"];
 function File(_ref) {
   var afterChange = _ref.afterChange,
       buttonAttributes = _ref.buttonAttributes,
@@ -1696,6 +1696,7 @@ function File(_ref) {
       name = _ref.name,
       readOnly = _ref.readOnly,
       removeText = _ref.removeText,
+      required = _ref.required,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$4);
@@ -1703,7 +1704,7 @@ function File(_ref) {
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState;
 
-  var value = get(formState.row, name);
+  var value = get(formState.row, name) || false;
   var hasValue = !!value;
 
   var _useState = React.useState(value || emptyText),
@@ -1734,7 +1735,7 @@ function File(_ref) {
     }
 
     setText(filenames.join(', '));
-    formState.setValues(formState, e, e.target.name, true, afterChange, multiple ? e.target.files : e.target.files.item(0));
+    formState.setValues(formState, e, name, true, afterChange, multiple ? files : files.item(0));
   };
 
   var onRemove = function onRemove(e) {
@@ -1774,14 +1775,19 @@ function File(_ref) {
   }, inputWrapperAttributes), /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-file-name" + (text === emptyText ? ' formosa-file-name--empty' : ''),
     id: (id || name) + "-name"
-  }, text), !readOnly && /*#__PURE__*/React__default.createElement(Input, _extends({
+  }, text), !readOnly && /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Input, _extends({
     className: ("formosa-field__input--file " + className).trim(),
     disabled: disabled,
     id: id || name,
     multiple: multiple,
-    name: name,
     onChange: onChange
-  }, otherProps))), hasValue && !disabled && !readOnly && /*#__PURE__*/React__default.createElement("button", _extends({
+  }, otherProps)), /*#__PURE__*/React__default.createElement(Input, {
+    disabled: disabled,
+    name: name,
+    required: required,
+    type: "hidden",
+    value: value
+  }))), hasValue && !disabled && !readOnly && /*#__PURE__*/React__default.createElement("button", _extends({
     className: ("formosa-button formosa-button--remove-file formosa-postfix " + buttonClassName).trim(),
     id: (id || name) + "-remove",
     onClick: onRemove,
@@ -1810,6 +1816,7 @@ File.propTypes = {
   name: PropTypes.string,
   readOnly: PropTypes.bool,
   removeText: PropTypes.string,
+  required: PropTypes.bool,
   wrapperAttributes: PropTypes.object,
   wrapperClassName: PropTypes.string
 };
@@ -1835,6 +1842,7 @@ File.defaultProps = {
   name: '',
   readOnly: false,
   removeText: 'Remove',
+  required: false,
   wrapperAttributes: null,
   wrapperClassName: ''
 };
