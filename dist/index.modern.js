@@ -1712,6 +1712,11 @@ function File(_ref) {
       srcs = _useState2[0],
       setSrcs = _useState2[1];
 
+  useEffect(function () {
+    setText(value || emptyText);
+    setSrcs(value ? ["" + imagePrefix + value] : []);
+  }, [value]);
+
   var onChange = function onChange(e) {
     var files = e.target.files;
     var numFiles = files.length;

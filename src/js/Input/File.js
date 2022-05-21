@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'; // eslint-disable-line import/no-unresolved
+import React, { useContext, useEffect, useState } from 'react'; // eslint-disable-line import/no-unresolved
 import FormContext from '../FormContext';
 import get from 'get-value';
 import Input from '../Input';
@@ -36,6 +36,11 @@ export default function File({
 	const hasValue = !!value;
 	const [text, setText] = useState(value || emptyText);
 	const [srcs, setSrcs] = useState(value ? [`${imagePrefix}${value}`] : []);
+
+	useEffect(() => {
+		setText(value || emptyText);
+		setSrcs(value ? [`${imagePrefix}${value}`] : []);
+	}, [value]);
 
 	const onChange = (e) => {
 		const files = e.target.files;
