@@ -2472,12 +2472,13 @@ Label.defaultProps = {
   type: ''
 };
 
-var _excluded$b = ["component", "disabled", "id", "inputWrapperAttributes", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
+var _excluded$b = ["component", "disabled", "id", "inputWrapperAttributes", "inputWrapperClassName", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
 function Field(_ref) {
   var component = _ref.component,
       disabled = _ref.disabled,
       id = _ref.id,
       inputWrapperAttributes = _ref.inputWrapperAttributes,
+      inputWrapperClassName = _ref.inputWrapperClassName,
       label = _ref.label,
       labelAttributes = _ref.labelAttributes,
       labelClassName = _ref.labelClassName,
@@ -2587,6 +2588,10 @@ function Field(_ref) {
 
   var inputWrapperClassNameList = ['formosa-input-wrapper', "formosa-input-wrapper--" + type];
 
+  if (inputWrapperClassName) {
+    inputWrapperClassNameList.push(inputWrapperClassName);
+  }
+
   if (suffix) {
     inputWrapperClassNameList.push('formosa-field--has-suffix');
   }
@@ -2609,6 +2614,7 @@ Field.propTypes = {
   disabled: PropTypes.bool,
   id: PropTypes.string,
   inputWrapperAttributes: PropTypes.object,
+  inputWrapperClassName: PropTypes.string,
   label: PropTypes.string,
   labelAttributes: PropTypes.object,
   labelClassName: PropTypes.string,
@@ -2630,6 +2636,7 @@ Field.defaultProps = {
   disabled: false,
   id: null,
   inputWrapperAttributes: {},
+  inputWrapperClassName: '',
   label: '',
   labelAttributes: {},
   labelClassName: '',

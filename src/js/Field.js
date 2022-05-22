@@ -12,6 +12,7 @@ export default function Field({
 	disabled,
 	id,
 	inputWrapperAttributes,
+	inputWrapperClassName,
 	label,
 	labelAttributes,
 	labelClassName,
@@ -109,6 +110,9 @@ export default function Field({
 	}
 
 	const inputWrapperClassNameList = ['formosa-input-wrapper', `formosa-input-wrapper--${type}`];
+	if (inputWrapperClassName) {
+		inputWrapperClassNameList.push(inputWrapperClassName);
+	}
 	if (suffix) {
 		inputWrapperClassNameList.push('formosa-field--has-suffix');
 	}
@@ -138,6 +142,7 @@ Field.propTypes = {
 	disabled: PropTypes.bool,
 	id: PropTypes.string,
 	inputWrapperAttributes: PropTypes.object,
+	inputWrapperClassName: PropTypes.string,
 	label: PropTypes.string,
 	labelAttributes: PropTypes.object,
 	labelClassName: PropTypes.string,
@@ -164,6 +169,7 @@ Field.defaultProps = {
 	disabled: false,
 	id: null,
 	inputWrapperAttributes: {},
+	inputWrapperClassName: '',
 	label: '',
 	labelAttributes: {},
 	labelClassName: '',
