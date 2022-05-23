@@ -25,7 +25,7 @@ export default function Form({
 			set(newRow, name, value);
 
 			if (afterChange) {
-				const additionalChanges = afterChange(e, newRow);
+				const additionalChanges = afterChange(e, newRow, value);
 				Object.keys(additionalChanges).forEach((key) => {
 					set(newRow, key, additionalChanges[key]);
 					newDirty = getNewDirty(newDirty, key);
