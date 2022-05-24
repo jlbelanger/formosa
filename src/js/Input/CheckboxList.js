@@ -14,6 +14,8 @@ export default function CheckboxList({
 	iconClassName,
 	iconHeight,
 	iconWidth,
+	labelAttributes,
+	labelClassName,
 	labelKey,
 	listAttributes,
 	listClassName,
@@ -22,7 +24,9 @@ export default function CheckboxList({
 	name,
 	options,
 	readOnly,
+	setValue,
 	url,
+	value,
 	valueKey,
 }) {
 	const { formState } = useContext(FormContext);
@@ -43,12 +47,22 @@ export default function CheckboxList({
 		return () => {};
 	}, [options]);
 
-	let selectedValues = get(formState.row, name) || [];
-	selectedValues = selectedValues.map((value) => (typeof value === 'object' ? JSON.stringify(value) : value));
+	let currentValue = [];
+	if (setValue !== null) {
+		currentValue = value;
+	} else {
+		if (formState === undefined) {
+			throw new Error('<CheckboxList> component must be inside a <Form> component.');
+		}
+		currentValue = get(formState.row, name);
+	}
+	if (currentValue === null || currentValue === undefined || currentValue === '') {
+		currentValue = [];
+	}
+	currentValue = currentValue.map((val) => (typeof val === 'object' ? JSON.stringify(val) : val));
 
 	const onChange = (e) => {
-		let newValue = get(formState.row, name) || [];
-		newValue = [...newValue];
+		const newValue = [...currentValue];
 		let val = e.target.value;
 
 		if (e.target.checked) {
@@ -57,47 +71,63 @@ export default function CheckboxList({
 			}
 			newValue.push(val);
 		} else {
-			const index = selectedValues.indexOf(val);
+			const index = currentValue.indexOf(val);
 			if (index > -1) {
 				newValue.splice(index, 1);
 			}
 		}
 
-		formState.setValues(formState, e, name, newValue, afterChange);
+		if (setValue) {
+			setValue(newValue);
+		} else {
+			formState.setValues(formState, e, name, newValue, afterChange);
+		}
 	};
 
 	return (
 		<ul className={`formosa-radio ${listClassName}`.trim()} {...listAttributes}>
-			{optionValues.map(({ label, value }, index) => {
-				let val = value;
+			{optionValues.map((optionValue, index) => {
+				let optionValueVal = optionValue.value;
 				let isJson = false;
-				if (typeof val === 'object') {
+				if (typeof optionValueVal === 'object') {
 					isJson = true;
-					val = JSON.stringify(val);
+					optionValueVal = JSON.stringify(optionValueVal);
 				}
+
+				const checked = currentValue.includes(optionValueVal);
+
+				const optionProps = {};
+				if (isJson) {
+					optionProps['data-json'] = true;
+				}
+				if (name) {
+					optionProps.name = `${name}[]`;
+				}
+
 				return (
-					<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={val} {...listItemAttributes}>
+					<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={optionValueVal} {...listItemAttributes}>
 						<div className="formosa-input-wrapper formosa-input-wrapper--checkbox">
-							<input
-								className={`formosa-field__input formosa-field__input--checkbox ${className}`.trim()}
-								checked={selectedValues.includes(val)}
-								data-json={isJson}
-								disabled={disabled}
-								id={`${name}-${index}`}
-								name={`${name}[]`}
-								onChange={onChange}
-								readOnly={readOnly}
-								type="checkbox"
-								value={val}
-							/>
-							<CheckIcon
-								className={`formosa-icon--check ${iconClassName}`.trim()}
-								height={iconHeight}
-								width={iconWidth}
-								{...iconAttributes}
-							/>
-							<label className="formosa-radio__label" htmlFor={`${name}-${index}`}>
-								{label}
+							<label
+								className={`formosa-radio__label${checked ? ' formosa-radio__label--checked' : ''} ${labelClassName}`.trim()}
+								{...labelAttributes}
+							>
+								<input
+									checked={checked}
+									className={`formosa-field__input formosa-field__input--checkbox ${className}`.trim()}
+									disabled={disabled}
+									onChange={onChange}
+									readOnly={readOnly}
+									type="checkbox"
+									value={optionValueVal}
+									{...optionProps}
+								/>
+								<CheckIcon
+									className={`formosa-icon--check ${iconClassName}`.trim()}
+									height={iconHeight}
+									width={iconWidth}
+									{...iconAttributes}
+								/>
+								{optionValue.label}
 							</label>
 						</div>
 					</li>
@@ -115,6 +145,8 @@ CheckboxList.propTypes = {
 	iconClassName: PropTypes.string,
 	iconHeight: PropTypes.number,
 	iconWidth: PropTypes.number,
+	labelAttributes: PropTypes.object,
+	labelClassName: PropTypes.string,
 	labelKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
@@ -123,13 +155,19 @@ CheckboxList.propTypes = {
 	listClassName: PropTypes.string,
 	listItemAttributes: PropTypes.object,
 	listItemClassName: PropTypes.string,
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 	options: PropTypes.oneOfType([
 		PropTypes.array,
 		PropTypes.object,
 	]),
 	readOnly: PropTypes.bool,
+	setValue: PropTypes.func,
 	url: PropTypes.string,
+	value: PropTypes.oneOfType([
+		PropTypes.arrayOf(PropTypes.number),
+		PropTypes.arrayOf(PropTypes.object),
+		PropTypes.arrayOf(PropTypes.string),
+	]),
 	valueKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
@@ -144,13 +182,18 @@ CheckboxList.defaultProps = {
 	iconClassName: '',
 	iconHeight: 16,
 	iconWidth: 16,
+	labelAttributes: null,
+	labelClassName: '',
 	labelKey: 'name',
 	listAttributes: null,
 	listClassName: '',
 	listItemAttributes: null,
 	listItemClassName: '',
+	name: '',
 	options: null,
 	readOnly: false,
+	setValue: null,
 	url: null,
+	value: null,
 	valueKey: null,
 };

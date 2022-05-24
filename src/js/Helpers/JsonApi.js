@@ -185,6 +185,8 @@ export const getBody = (
 			values = filterValues(values);
 		}
 
+		const fileKeys = Object.keys(formState.files);
+
 		keys.forEach((key) => {
 			const cleanKey = key.replace(/\..+$/, '');
 			if (relationshipNames.includes(cleanKey)) {
@@ -199,6 +201,8 @@ export const getBody = (
 				set(data, key, get(values, key));
 			} else if (key === 'meta') {
 				data.meta = values.meta;
+			} else if (fileKeys.includes(key)) {
+				set(data.attributes, key, true);
 			} else if (key !== '_new' && !key.startsWith('_new.')) {
 				set(data.attributes, key, get(values, key));
 			}
@@ -234,7 +238,7 @@ export const getBody = (
 			delete data.relationships;
 		}
 
-		const filenames = Object.keys(formState.files).filter((filename) => (formState.files[filename] !== false));
+		const filenames = fileKeys.filter((filename) => (formState.files[filename] !== false));
 		if (filenames.length > 0) {
 			const formData = new FormData();
 			formData.append('json', JSON.stringify(body));

@@ -11,7 +11,7 @@
 			"category": "fruit",
 			"directions": ["east", "west"],
 			"date": "1968-11-22 12:00:00",
-			"file": "foo.png",
+			"file": "carrot.png",
 			"metadata": {
 				"colour": "red"
 			}

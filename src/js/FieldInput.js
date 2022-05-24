@@ -5,7 +5,7 @@ import Datetime from './Input/Datetime';
 import File from './Input/File';
 import Input from './Input';
 import Password from './Input/Password';
-import RadioList from './Input/RadioList';
+import Radio from './Input/Radio';
 import Search from './Input/Search';
 import Select from './Input/Select';
 import Textarea from './Input/Textarea';
@@ -21,7 +21,7 @@ export default (type, component) => {
 		return Textarea;
 	}
 	if (type === 'radio') {
-		return RadioList;
+		return Radio;
 	}
 	if (type === 'checkbox') {
 		return Checkbox;

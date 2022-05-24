@@ -206,7 +206,7 @@ export default function HasMany({
 HasMany.propTypes = {
 	attributes: PropTypes.array,
 	buttonClassName: PropTypes.string,
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 	recordType: PropTypes.string.isRequired,
 	removable: PropTypes.oneOfType([
 		PropTypes.bool,
@@ -217,5 +217,6 @@ HasMany.propTypes = {
 HasMany.defaultProps = {
 	attributes: [],
 	buttonClassName: '',
+	name: '',
 	removable: true,
 };

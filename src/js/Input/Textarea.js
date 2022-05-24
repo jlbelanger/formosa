@@ -8,20 +8,48 @@ export default function Textarea({
 	className,
 	id,
 	name,
+	setValue,
+	value,
 	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
+
+	let currentValue = '';
+	if (setValue !== null) {
+		currentValue = value;
+	} else {
+		if (formState === undefined) {
+			throw new Error('<Textarea> component must be inside a <Form> component.');
+		}
+		currentValue = get(formState.row, name);
+	}
+	if (currentValue === null || currentValue === undefined) {
+		currentValue = '';
+	}
+
 	const onChange = (e) => {
-		formState.setValues(formState, e, e.target.name, e.target.value, afterChange);
+		const newValue = e.target.value;
+		if (setValue) {
+			setValue(newValue);
+		} else {
+			formState.setValues(formState, e, name, newValue, afterChange);
+		}
 	};
+
+	const props = {};
+	if (id || name) {
+		props.id = id || name;
+	}
+	if (name) {
+		props.name = name;
+	}
 
 	return (
 		<textarea
 			className={`formosa-field__input formosa-field__input--textarea ${className}`.trim()}
-			id={id || name}
-			name={name}
 			onChange={onChange}
-			value={get(formState.row, name) || ''}
+			value={currentValue}
+			{...props}
 			{...otherProps}
 		/>
 	);
@@ -31,11 +59,16 @@ Textarea.propTypes = {
 	afterChange: PropTypes.func,
 	className: PropTypes.string,
 	id: PropTypes.string,
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
+	setValue: PropTypes.func,
+	value: PropTypes.string,
 };
 
 Textarea.defaultProps = {
 	afterChange: null,
 	className: '',
 	id: null,
+	name: '',
+	setValue: null,
+	value: null,
 };

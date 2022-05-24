@@ -9,42 +9,53 @@ export default function Input({
 	className,
 	id,
 	name,
+	setValue,
 	suffix,
 	type,
+	value,
 	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
-	const onChange = (e) => {
-		const newValue = type === 'checkbox' ? e.target.checked : e.target.value;
-		formState.setValues(formState, e, e.target.name, newValue, afterChange);
-	};
 
-	let value = '';
-	if (type !== 'file') {
-		value = get(formState.row, name);
-		if (value === null || value === undefined) {
-			value = '';
+	let currentValue = '';
+	if (setValue !== null) {
+		currentValue = value;
+	} else {
+		if (formState === undefined) {
+			throw new Error('<Input> component must be inside a <Form> component.');
+		}
+		if (type !== 'file') {
+			currentValue = get(formState.row, name);
+			if (currentValue === null || currentValue === undefined) {
+				currentValue = '';
+			}
 		}
 	}
 
-	const checked = type === 'checkbox' && value;
+	const onChange = (e) => {
+		const newValue = e.target.value;
+		if (setValue) {
+			setValue(newValue);
+		} else {
+			formState.setValues(formState, e, name, newValue, afterChange);
+		}
+	};
 
 	const props = {};
-	if (checked) {
-		props.checked = checked;
-	} else if (type === 'checkbox') {
-		props.checked = false;
+	if (id || name) {
+		props.id = id || name;
+	}
+	if (name) {
+		props.name = name;
 	}
 
 	return (
 		<ConditionalWrapper className="formosa-suffix-container" condition={suffix}>
 			<input
 				className={`formosa-field__input ${className}`.trim()}
-				id={id || name}
-				name={name}
 				onChange={onChange}
 				type={type}
-				value={value}
+				value={currentValue}
 				{...props}
 				{...otherProps}
 			/>
@@ -58,8 +69,10 @@ Input.propTypes = {
 	className: PropTypes.string,
 	id: PropTypes.string,
 	name: PropTypes.string,
+	setValue: PropTypes.func,
 	suffix: PropTypes.string,
 	type: PropTypes.string,
+	value: PropTypes.string,
 };
 
 Input.defaultProps = {
@@ -67,6 +80,8 @@ Input.defaultProps = {
 	className: '',
 	id: null,
 	name: '',
+	setValue: null,
 	suffix: '',
 	type: 'text',
+	value: null,
 };

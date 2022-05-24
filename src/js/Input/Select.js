@@ -15,10 +15,12 @@ export default function Select({
 	iconHeight,
 	iconWidth,
 	id,
-	name,
 	labelKey,
+	name,
 	options,
+	setValue,
 	url,
+	value,
 	valueKey,
 	wrapperAttributes,
 	wrapperClassName,
@@ -42,40 +44,67 @@ export default function Select({
 		return () => {};
 	}, [options]);
 
-	let selectedValue = get(formState.row, name) || '';
-	if (typeof selectedValue === 'object') {
-		selectedValue = JSON.stringify(selectedValue);
+	let currentValue = '';
+	if (setValue !== null) {
+		currentValue = value;
+	} else {
+		if (formState === undefined) {
+			throw new Error('<Select> component must be inside a <Form> component.');
+		}
+		currentValue = get(formState.row, name);
+	}
+	if (currentValue === null || currentValue === undefined) {
+		currentValue = '';
+	}
+	if (typeof currentValue === 'object') {
+		currentValue = JSON.stringify(currentValue);
 	}
 
 	const onChange = (e) => {
-		let val = e.target.value;
-		const option = e.target.querySelector(`[value="${val.replace(/"/g, '\\"')}"]`);
+		let newValue = e.target.value;
+		const option = e.target.querySelector(`[value="${newValue.replace(/"/g, '\\"')}"]`);
 		if (option.getAttribute('data-json') === 'true') {
-			val = JSON.parse(val);
+			newValue = JSON.parse(newValue);
 		}
-		formState.setValues(formState, e, name, val, afterChange);
+
+		if (setValue) {
+			setValue(newValue);
+		} else {
+			formState.setValues(formState, e, name, newValue, afterChange);
+		}
 	};
+
+	const props = {};
+	if (id || name) {
+		props.id = id || name;
+	}
+	if (name) {
+		props.name = name;
+	}
 
 	return (
 		<div className={`formosa-select-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 			<select
 				className={`formosa-field__input formosa-field__input--select ${className}`.trim()}
-				id={id || name}
-				name={name}
 				onChange={onChange}
-				value={selectedValue}
+				value={currentValue}
+				{...props}
 				{...otherProps}
 			>
-				{!hideBlank && <option />}
-				{optionValues.map(({ label, value }) => {
-					let val = value;
+				{!hideBlank && <option value="" />}
+				{optionValues.map((optionValue) => {
+					let optionValueVal = optionValue.value;
 					let isJson = false;
-					if (typeof val === 'object') {
+					if (typeof optionValueVal === 'object') {
 						isJson = true;
-						val = JSON.stringify(val);
+						optionValueVal = JSON.stringify(optionValueVal);
+					}
+					const optionProps = {};
+					if (isJson) {
+						optionProps['data-json'] = true;
 					}
 					return (
-						<option data-json={isJson} key={val} value={val}>{label}</option>
+						<option key={optionValueVal} value={optionValueVal} {...optionProps}>{optionValue.label}</option>
 					);
 				})}
 			</select>
@@ -93,16 +122,22 @@ Select.propTypes = {
 	iconHeight: PropTypes.number,
 	iconWidth: PropTypes.number,
 	id: PropTypes.string,
-	name: PropTypes.string,
 	labelKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
 	]),
+	name: PropTypes.string,
 	options: PropTypes.oneOfType([
 		PropTypes.array,
 		PropTypes.object,
 	]),
+	setValue: PropTypes.func,
 	url: PropTypes.string,
+	value: PropTypes.oneOfType([
+		PropTypes.number,
+		PropTypes.object,
+		PropTypes.string,
+	]),
 	valueKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
@@ -120,10 +155,12 @@ Select.defaultProps = {
 	iconHeight: 16,
 	iconWidth: 16,
 	id: null,
-	name: '',
 	labelKey: 'name',
+	name: '',
 	options: null,
+	setValue: null,
 	url: null,
+	value: null,
 	valueKey: null,
 	wrapperAttributes: null,
 	wrapperClassName: '',
