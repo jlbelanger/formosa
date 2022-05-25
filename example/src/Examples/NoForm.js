@@ -81,7 +81,7 @@ export default function Routes() {
 
 			<div style={{ display: 'flex' }}>
 				<div style={{ marginRight: '8px', width: '50%' }}>
-					{/* <Field setValue={setValue} value={value} />
+					<Field setValue={setValue} value={value} />
 					<Field setValue={setValue} value={value} type="password" />
 					<Field setValue={setValue} value={value} type="search" />
 					<Field setValue={setValue} value={value} type="textarea" />
@@ -92,7 +92,7 @@ export default function Routes() {
 					<Field setValue={setValueArray} value={valueArray} type="autocomplete" options={options} />
 					<Field setValue={setValueArray} value={valueArray} type="checkbox-list" options={options} />
 
-					<Field setValue={setValueBoolean} value={valueBoolean} type="checkbox" /> */}
+					<Field setValue={setValueBoolean} value={valueBoolean} type="checkbox" />
 
 					<Field
 						setValue={setValueDatetime}
@@ -100,7 +100,7 @@ export default function Routes() {
 						type="datetime"
 					/>
 
-					{/* <Field setValue={setValueFile} value={valueFile} type="file" imagePreview />
+					<Field setValue={setValueFile} value={valueFile} type="file" imagePreview />
 					<Field setValue={setValueFileArray} value={valueFileArray} type="file" imagePreview multiple />
 
 					<Field setValue={setValueObject} value={valueObject} type="autocomplete" options={optionsObject} max={1} />
@@ -108,7 +108,7 @@ export default function Routes() {
 					<Field setValue={setValueObject} value={valueObject} type="radio" options={optionsObject} />
 
 					<Field setValue={setValueObjectArray} value={valueObjectArray} type="autocomplete" options={optionsObject} />
-					<Field setValue={setValueObjectArray} value={valueObjectArray} type="checkbox-list" options={optionsObject} /> */}
+					<Field setValue={setValueObjectArray} value={valueObjectArray} type="checkbox-list" options={optionsObject} />
 
 					<code>
 						<pre style={{ fontSize: '12px', whiteSpace: 'break-spaces' }}>
@@ -132,7 +132,7 @@ export default function Routes() {
 				</div>
 
 				<div style={{ marginLeft: '8px', width: '50%' }}>
-					{/* <Form row={row} setRow={setRow}>
+					<Form row={row} setRow={setRow}>
 						<Field name="text" />
 						<Field name="password" type="password" />
 						<Field name="search" type="search" />
@@ -157,7 +157,7 @@ export default function Routes() {
 
 						<Field name="autocomplete-object" type="autocomplete" options={optionsObject} />
 						<Field name="checkbox-list-object" type="checkbox-list" options={optionsObject} />
-					</Form> */}
+					</Form>
 
 					<code><pre style={{ fontSize: '12px', whiteSpace: 'break-spaces' }}>{JSON.stringify(row, null, 2)}</pre></code>
 				</div>
