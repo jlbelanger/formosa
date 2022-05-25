@@ -358,6 +358,13 @@ import { Field, Form, Message, Submit } from '@jlbelanger/formosa';
 </Form>
 ```
 
+## Examples
+
+- [Glick](https://github.com/jlbelanger/glick-app)
+- [Crudnick](https://github.com/jlbelanger/crudnick)
+	- [Corrieography Admin](https://github.com/jlbelanger/corrie-admin)
+	- [Jenny's Wardrobe Admin](https://github.com/jlbelanger/wardrobe-admin)
+
 ## Development
 
 ### Requirements
