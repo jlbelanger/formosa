@@ -86,7 +86,7 @@ export default function CheckboxList({
 
 	return (
 		<ul className={`formosa-radio ${listClassName}`.trim()} {...listAttributes}>
-			{optionValues.map((optionValue, index) => {
+			{optionValues.map((optionValue) => {
 				let optionValueVal = optionValue.value;
 				let isJson = false;
 				if (typeof optionValueVal === 'object') {
