@@ -72,7 +72,10 @@ Input.propTypes = {
 	setValue: PropTypes.func,
 	suffix: PropTypes.string,
 	type: PropTypes.string,
-	value: PropTypes.string,
+	value: PropTypes.oneOfType([
+		PropTypes.number,
+		PropTypes.string,
+	]),
 };
 
 Input.defaultProps = {
