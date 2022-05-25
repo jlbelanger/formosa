@@ -70,7 +70,7 @@ export default function Autocomplete({
 		return () => {};
 	}, [options]);
 
-	let currentValue = [];
+	let currentValue = null;
 	if (setValue !== null) {
 		currentValue = value;
 	} else {
@@ -80,13 +80,14 @@ export default function Autocomplete({
 		currentValue = get(formState.row, name);
 	}
 	if (currentValue === null || currentValue === undefined || currentValue === '') {
-		currentValue = [];
+		currentValue = null;
 	} else if (max === 1 && !Array.isArray(currentValue)) {
 		currentValue = [currentValue];
 	}
+	const currentValueLength = currentValue ? currentValue.length : 0;
 
 	const isSelected = (option) => (
-		currentValue.findIndex((v) => (v.value === option.value)) > -1
+		currentValue && currentValue.findIndex((v) => (v.value === option.value)) > -1
 	);
 
 	let filteredOptions = [];
@@ -107,8 +108,10 @@ export default function Autocomplete({
 		let newValue;
 		if (max === 1) {
 			newValue = v;
-		} else {
+		} else if (currentValue) {
 			newValue = [...currentValue, v];
+		} else {
+			newValue = [v];
 		}
 
 		if (setValue) {
@@ -126,7 +129,7 @@ export default function Autocomplete({
 					removeButtonRef.current.focus();
 				}
 			});
-		} else if (max === currentValue.length) {
+		} else if (max === currentValueLength) {
 			setTimeout(() => {
 				if (clearButtonRef.current) {
 					clearButtonRef.current.focus();
@@ -142,7 +145,10 @@ export default function Autocomplete({
 	};
 
 	const removeValue = (v) => {
-		let newValue = [...currentValue];
+		let newValue = [];
+		if (currentValue) {
+			newValue = [...currentValue];
+		}
 		if (max !== 1) {
 			const index = newValue.indexOf(v);
 			if (index > -1) {
@@ -173,11 +179,10 @@ export default function Autocomplete({
 
 	const onKeyDown = (e) => {
 		const filterValue = e.target.value;
-		const numValues = currentValue ? currentValue.length : 0;
 		if (e.key === 'Enter' && filterValue && filteredOptions.length > 0) {
 			e.preventDefault();
-		} else if (e.key === 'Backspace' && !filter && numValues > 0) {
-			removeValue(currentValue[numValues - 1]);
+		} else if (e.key === 'Backspace' && !filter && currentValueLength > 0) {
+			removeValue(currentValue[currentValueLength - 1]);
 		}
 	};
 
@@ -236,7 +241,7 @@ export default function Autocomplete({
 		focus();
 	};
 
-	const showClear = clearable && max !== 1 && currentValue.length > 0 && !disabled && !readOnly;
+	const showClear = clearable && max !== 1 && currentValueLength > 0 && !disabled && !readOnly;
 
 	let className = ['formosa-autocomplete'];
 	if (showClear) {
@@ -244,7 +249,7 @@ export default function Autocomplete({
 	}
 	className = className.join(' ');
 
-	const canAddValues = !disabled && !readOnly && (max === null || currentValue.length < max);
+	const canAddValues = !disabled && !readOnly && (max === null || currentValueLength < max);
 
 	const wrapperProps = {};
 	if (id || name) {
@@ -254,7 +259,7 @@ export default function Autocomplete({
 	return (
 		<div
 			className={`${className} ${wrapperClassName}`.trim()}
-			data-value={JSON.stringify(max === 1 && currentValue.length > 0 ? currentValue[0] : currentValue)} /* For testing. */
+			data-value={JSON.stringify(max === 1 && currentValueLength > 0 ? currentValue[0] : currentValue)} /* For testing. */
 			{...wrapperProps}
 			{...wrapperAttributes}
 		>
