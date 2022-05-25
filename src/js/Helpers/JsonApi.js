@@ -217,10 +217,14 @@ export const getBody = (
 
 		Object.keys(data.relationships).forEach((relationshipName) => {
 			if (typeof data.relationships[relationshipName].data === 'string') {
-				data.relationships[relationshipName].data = JSON.parse(data.relationships[relationshipName].data);
+				if (data.relationships[relationshipName].data === '') {
+					data.relationships[relationshipName].data = null;
+				} else {
+					data.relationships[relationshipName].data = JSON.parse(data.relationships[relationshipName].data);
+				}
 			}
-			if (Array.isArray(data.relationships[relationshipName].data)) {
-				data.relationships[relationshipName].data = data.relationships[relationshipName].data.map((rel) => (cleanRelationship(rel)));
+			if (data.relationships[relationshipName].data) {
+				data.relationships[relationshipName].data = cleanRelationship(data.relationships[relationshipName].data);
 			}
 		});
 
