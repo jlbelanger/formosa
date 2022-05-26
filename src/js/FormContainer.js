@@ -9,6 +9,10 @@ export default function FormContainer({ children }) {
 		addToast: null,
 		removeToast: null,
 		toasts: {},
+
+		disableWarningPrompt: null,
+		enableWarningPrompt: null,
+		showWarningPrompt: true,
 	});
 
 	const formosaStateRef = useRef(formosaState);
@@ -36,10 +40,18 @@ export default function FormContainer({ children }) {
 				formosaStateRef.current.removeToast(toastId);
 			}, milliseconds);
 		};
+		const disableWarningPrompt = () => {
+			setFormosaState({ ...formosaStateRef.current, showWarningPrompt: false });
+		};
+		const enableWarningPrompt = () => {
+			setFormosaState({ ...formosaStateRef.current, showWarningPrompt: true });
+		};
 		setFormosaState({
 			...formosaStateRef.current,
 			addToast,
 			removeToast,
+			disableWarningPrompt,
+			enableWarningPrompt,
 		});
 		return () => {};
 	}, []);
