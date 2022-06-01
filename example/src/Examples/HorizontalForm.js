@@ -97,12 +97,6 @@ export default function HorizontalForm() {
 				/>
 
 				<Field
-					label="Datetime"
-					name="datetime"
-					type="datetime"
-				/>
-
-				<Field
 					label="Radio"
 					name="radio"
 					type="radio"

@@ -76,7 +76,7 @@ export default function Field({
 	const labelComponent = (
 		<Label
 			className={labelClassName}
-			htmlFor={type === 'datetime' ? `${htmlFor}-month` : htmlFor}
+			htmlFor={htmlFor}
 			label={label}
 			note={labelNote}
 			required={required}

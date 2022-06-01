@@ -1,7 +1,6 @@
 import Autocomplete from './Input/Autocomplete';
 import Checkbox from './Input/Checkbox';
 import CheckboxList from './Input/CheckboxList';
-import Datetime from './Input/Datetime';
 import File from './Input/File';
 import Input from './Input';
 import Password from './Input/Password';
@@ -28,9 +27,6 @@ export default (type, component) => {
 	}
 	if (type === 'password') {
 		return Password;
-	}
-	if (type === 'datetime') {
-		return Datetime;
 	}
 	if (type === 'search') {
 		return Search;

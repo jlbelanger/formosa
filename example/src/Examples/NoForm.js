@@ -47,8 +47,6 @@ export default function Routes() {
 
 			checkbox: true,
 
-			datetime: '2001-02-03 16:05:06',
-
 			file: 'https://placekitten.com/200/200',
 			'file-array': ['https://placekitten.com/200/200', 'https://placekitten.com/201/201'],
 
@@ -93,12 +91,6 @@ export default function Routes() {
 					<Field setValue={setValueArray} value={valueArray} type="checkbox-list" options={options} />
 
 					<Field setValue={setValueBoolean} value={valueBoolean} type="checkbox" />
-
-					<Field
-						setValue={setValueDatetime}
-						value={valueDatetime}
-						type="datetime"
-					/>
 
 					<Field setValue={setValueFile} value={valueFile} type="file" imagePreview />
 					<Field setValue={setValueFileArray} value={valueFileArray} type="file" imagePreview multiple />
@@ -145,8 +137,6 @@ export default function Routes() {
 						<Field name="checkbox-list" type="checkbox-list" options={options} />
 
 						<Field name="checkbox" type="checkbox" />
-
-						<Field name="datetime" type="datetime" />
 
 						<Field name="file" type="file" imagePreview />
 						<Field name="file-array" type="file" imagePreview multiple />

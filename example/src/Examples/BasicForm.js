@@ -39,7 +39,6 @@ export default function BasicForm() {
 			select: 'Apple',
 			checkbox: true,
 			checkbox_list: ['Apple', 'Banana'],
-			datetime: '2001-02-03 16:05:06',
 			radio: 'Apple',
 			autocomplete: 'Apple',
 			multiple_autocomplete: ['Apple', 'Banana'],
@@ -163,14 +162,6 @@ export default function BasicForm() {
 					name="checkbox_list"
 					type="checkbox-list"
 					options={options}
-					disabled={disabled}
-					readOnly={readOnly}
-				/>
-
-				<Field
-					label="Datetime"
-					name="datetime"
-					type="datetime"
 					disabled={disabled}
 					readOnly={readOnly}
 				/>
