@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Spinner from './Spinner';
 import ToastContainer from './ToastContainer';
 
-export default function FormContainer({ children }) {
+export default function FormContainer({ children, loadingText }) {
 	const [formosaState, setFormosaState] = useState({
 		addToast: null,
 		removeToast: null,
@@ -59,7 +59,7 @@ export default function FormContainer({ children }) {
 	return (
 		<FormosaContext.Provider value={{ formosaState, setFormosaState }}>
 			{children}
-			<Spinner />
+			<Spinner loadingText={loadingText} />
 			<ToastContainer />
 		</FormosaContext.Provider>
 	);
@@ -67,4 +67,9 @@ export default function FormContainer({ children }) {
 
 FormContainer.propTypes = {
 	children: PropTypes.node.isRequired,
+	loadingText: PropTypes.string,
+};
+
+FormContainer.defaultProps = {
+	loadingText: 'Loading...',
 };

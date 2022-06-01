@@ -16,6 +16,7 @@ export default function Select({
 	iconWidth,
 	id,
 	labelKey,
+	loadingText,
 	name,
 	options,
 	setValue,
@@ -28,12 +29,14 @@ export default function Select({
 }) {
 	const { formState } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
+	const [isLoading, setIsLoading] = useState(!!url);
 
 	useEffect(() => {
 		if (url) {
-			Api.get(url)
+			Api.get(url, false)
 				.then((response) => {
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
+					setIsLoading(false);
 				});
 		}
 		return () => {};
@@ -43,6 +46,10 @@ export default function Select({
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
 		return () => {};
 	}, [options]);
+
+	if (isLoading) {
+		return (<div className="formosa-spinner">{loadingText}</div>);
+	}
 
 	let currentValue = '';
 	if (setValue !== null) {
@@ -132,6 +139,7 @@ Select.propTypes = {
 		PropTypes.func,
 		PropTypes.string,
 	]),
+	loadingText: PropTypes.string,
 	name: PropTypes.string,
 	options: PropTypes.oneOfType([
 		PropTypes.array,
@@ -162,6 +170,7 @@ Select.defaultProps = {
 	iconWidth: 16,
 	id: null,
 	labelKey: 'name',
+	loadingText: 'Loading...',
 	name: '',
 	options: null,
 	setValue: null,

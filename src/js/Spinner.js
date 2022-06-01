@@ -1,14 +1,21 @@
+import PropTypes from 'prop-types';
 import React from 'react'; // eslint-disable-line import/no-unresolved
 import { usePromiseTracker } from 'react-promise-tracker';
 
-const Spinner = () => {
+export default function Spinner({ loadingText }) {
 	const { promiseInProgress } = usePromiseTracker();
 	if (!promiseInProgress) {
 		return null;
 	}
 	return (
-		<div className="formosa-spinner" />
+		<div className="formosa-spinner formosa-spinner--fullscreen">{loadingText}</div>
 	);
+}
+
+Spinner.propTypes = {
+	loadingText: PropTypes.string,
 };
 
-export default Spinner;
+Spinner.defaultProps = {
+	loadingText: 'Loading...',
+};

@@ -103,10 +103,12 @@ $formosa-search-icon-size: 24px !default;
 $formosa-select-arrow-size: 12px !default;
 $formosa-select-padding-right: $formosa-select-arrow-size + ($formosa-input-padding * 2) !default;
 
+$formosa-spinner-border-width: 6px !default;
 $formosa-spinner-color: $formosa-primary-background-color !default;
 $formosa-spinner-color-alternate: #fff !default;
-$formosa-spinner-border-width: 12px !default;
-$formosa-spinner-size: 50px !default;
+$formosa-spinner-fullscreen-border-width: 12px !default;
+$formosa-spinner-fullscreen-size: 50px !default;
+$formosa-spinner-size: $formosa-input-height - ($formosa-spinner-border-width * 2) !default;
 
 $formosa-toast-bottom: 0 !default;
 $formosa-toast-error-background-color: $formosa-error-background-color !default;

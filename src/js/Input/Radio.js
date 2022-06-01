@@ -16,6 +16,7 @@ export default function Radio({
 	listClassName,
 	listItemAttributes,
 	listItemClassName,
+	loadingText,
 	name,
 	options,
 	required,
@@ -27,12 +28,14 @@ export default function Radio({
 }) {
 	const { formState } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
+	const [isLoading, setIsLoading] = useState(!!url);
 
 	useEffect(() => {
 		if (url) {
-			Api.get(url)
+			Api.get(url, false)
 				.then((response) => {
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
+					setIsLoading(false);
 				});
 		}
 		return () => {};
@@ -42,6 +45,10 @@ export default function Radio({
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
 		return () => {};
 	}, [options]);
+
+	if (isLoading) {
+		return (<div className="formosa-spinner">{loadingText}</div>);
+	}
 
 	let currentValue = '';
 	if (setValue !== null) {
@@ -131,6 +138,7 @@ Radio.propTypes = {
 	listClassName: PropTypes.string,
 	listItemAttributes: PropTypes.object,
 	listItemClassName: PropTypes.string,
+	loadingText: PropTypes.string,
 	name: PropTypes.string,
 	options: PropTypes.oneOfType([
 		PropTypes.array,
@@ -161,6 +169,7 @@ Radio.defaultProps = {
 	listClassName: '',
 	listItemAttributes: null,
 	listItemClassName: '',
+	loadingText: 'Loading...',
 	name: '',
 	options: null,
 	required: false,

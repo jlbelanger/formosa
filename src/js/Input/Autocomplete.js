@@ -21,6 +21,7 @@ export default function Autocomplete({
 	inputClassName,
 	labelFn,
 	labelKey,
+	loadingText,
 	max,
 	name,
 	optionButtonAttributes,
@@ -54,12 +55,14 @@ export default function Autocomplete({
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
+	const [isLoading, setIsLoading] = useState(!!url);
 
 	useEffect(() => {
 		if (url) {
-			Api.get(url)
+			Api.get(url, false)
 				.then((response) => {
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
+					setIsLoading(false);
 				});
 		}
 		return () => {};
@@ -69,6 +72,10 @@ export default function Autocomplete({
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
 		return () => {};
 	}, [options]);
+
+	if (isLoading) {
+		return (<div className="formosa-spinner">{loadingText}</div>);
+	}
 
 	let currentValue = null;
 	if (setValue !== null) {
@@ -404,6 +411,7 @@ Autocomplete.propTypes = {
 		PropTypes.func,
 		PropTypes.string,
 	]),
+	loadingText: PropTypes.string,
 	max: PropTypes.number,
 	name: PropTypes.string,
 	optionButtonAttributes: PropTypes.object,
@@ -457,6 +465,7 @@ Autocomplete.defaultProps = {
 	inputClassName: '',
 	labelFn: null,
 	labelKey: 'name',
+	loadingText: 'Loading...',
 	max: null,
 	name: '',
 	optionButtonAttributes: null,
