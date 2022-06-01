@@ -86,9 +86,17 @@ export default function Autocomplete({
 	}
 	const currentValueLength = currentValue ? currentValue.length : 0;
 
-	const isSelected = (option) => (
-		currentValue && currentValue.findIndex((v) => (v.value === option.value)) > -1
-	);
+	const isSelected = (option) => {
+		if (!currentValue) {
+			return false;
+		}
+		return currentValue.findIndex((v) => {
+			if (typeof v === 'object') {
+				return JSON.stringify(v) === JSON.stringify(option.value);
+			}
+			return v === option.value;
+		}) > -1;
+	};
 
 	let filteredOptions = [];
 	if (filter) {
