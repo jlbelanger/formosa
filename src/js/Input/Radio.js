@@ -29,6 +29,7 @@ export default function Radio({
 	const { formState } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 	const [isLoading, setIsLoading] = useState(!!url);
+	const [message, setMessage] = useState('');
 
 	useEffect(() => {
 		if (url) {
@@ -36,6 +37,14 @@ export default function Radio({
 				.then((response) => {
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
 					setIsLoading(false);
+				})
+				.catch((error) => {
+					if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
+						setMessage(error.errors.map((e) => (e.title)).join(' '));
+						setIsLoading(false);
+					} else {
+						throw error;
+					}
 				});
 		}
 		return () => {};
@@ -48,6 +57,10 @@ export default function Radio({
 
 	if (isLoading) {
 		return (<div className="formosa-spinner">{loadingText}</div>);
+	}
+
+	if (message) {
+		return (<div className="formosa-field__error">{message}</div>);
 	}
 
 	let currentValue = '';
