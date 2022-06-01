@@ -319,25 +319,45 @@ var getBody = function getBody(method, type, id, formState, relationshipNames, f
 var Api = /*#__PURE__*/function () {
   function Api() {}
 
-  Api.get = function get(url) {
-    return Api.request('GET', url);
+  Api.get = function get(url, showSpinner) {
+    if (showSpinner === void 0) {
+      showSpinner = true;
+    }
+
+    return Api.request('GET', url, null, showSpinner);
   };
 
-  Api["delete"] = function _delete(url) {
-    return Api.request('DELETE', url);
+  Api["delete"] = function _delete(url, showSpinner) {
+    if (showSpinner === void 0) {
+      showSpinner = true;
+    }
+
+    return Api.request('DELETE', url, null, showSpinner);
   };
 
-  Api.post = function post(url, body) {
-    return Api.request('POST', url, body);
+  Api.post = function post(url, body, showSpinner) {
+    if (showSpinner === void 0) {
+      showSpinner = true;
+    }
+
+    return Api.request('POST', url, body, showSpinner);
   };
 
-  Api.put = function put(url, body) {
-    return Api.request('PUT', url, body);
+  Api.put = function put(url, body, showSpinner) {
+    if (showSpinner === void 0) {
+      showSpinner = true;
+    }
+
+    return Api.request('PUT', url, body, showSpinner);
   };
 
-  Api.request = function request(method, url, body) {
+  Api.request = function request(method, url, body, showSpinner) {
     if (body === void 0) {
       body = null;
+    }
+
+    if (showSpinner === void 0) {
+      showSpinner = true;
     }
 
     var options = {
@@ -359,7 +379,8 @@ var Api = /*#__PURE__*/function () {
       options.body = body;
     }
 
-    return trackPromise(fetch(process.env.REACT_APP_API_URL + "/" + url, options).then(function (response) {
+    var fullUrl = url.startsWith('http') ? url : process.env.REACT_APP_API_URL + "/" + url;
+    var promise = fetch(fullUrl, options).then(function (response) {
       if (!response.ok) {
         return response.json().then(function (json) {
           json.status = response.status;
@@ -390,7 +411,8 @@ var Api = /*#__PURE__*/function () {
       }
 
       return json;
-    }));
+    });
+    return showSpinner ? trackPromise(promise) : promise;
   };
 
   Api.getToken = function getToken() {
@@ -588,7 +610,7 @@ function SvgX(props) {
   })));
 }
 
-var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "setValue", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "loadingText", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "setValue", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
 function Autocomplete(_ref) {
   var afterAdd = _ref.afterAdd,
       afterChange = _ref.afterChange,
@@ -604,6 +626,7 @@ function Autocomplete(_ref) {
       inputClassName = _ref.inputClassName,
       labelFn = _ref.labelFn,
       labelKey = _ref.labelKey,
+      loadingText = _ref.loadingText,
       max = _ref.max,
       name = _ref.name,
       optionButtonAttributes = _ref.optionButtonAttributes,
@@ -652,10 +675,28 @@ function Autocomplete(_ref) {
       optionValues = _useState4[0],
       setOptionValues = _useState4[1];
 
+  var _useState5 = useState(!!url),
+      isLoading = _useState5[0],
+      setIsLoading = _useState5[1];
+
+  var _useState6 = useState(''),
+      message = _useState6[0],
+      setMessage = _useState6[1];
+
   useEffect(function () {
     if (url) {
-      Api.get(url).then(function (response) {
+      Api.get(url, false).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
+        setIsLoading(false);
+      })["catch"](function (error) {
+        if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
+          setMessage(error.errors.map(function (e) {
+            return e.title;
+          }).join(' '));
+          setIsLoading(false);
+        } else {
+          throw error;
+        }
       });
     }
 
@@ -665,6 +706,19 @@ function Autocomplete(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
+
+  if (isLoading) {
+    return /*#__PURE__*/React__default.createElement("div", {
+      className: "formosa-spinner"
+    }, loadingText);
+  }
+
+  if (message) {
+    return /*#__PURE__*/React__default.createElement("div", {
+      className: "formosa-field__error"
+    }, message);
+  }
+
   var currentValue = null;
 
   if (setValue !== null) {
@@ -686,8 +740,16 @@ function Autocomplete(_ref) {
   var currentValueLength = currentValue ? currentValue.length : 0;
 
   var isSelected = function isSelected(option) {
-    return currentValue && currentValue.findIndex(function (v) {
-      return v.value === option.value;
+    if (!currentValue) {
+      return false;
+    }
+
+    return currentValue.findIndex(function (v) {
+      if (typeof v === 'object') {
+        return JSON.stringify(v) === JSON.stringify(option.value);
+      }
+
+      return v === option.value;
     }) > -1;
   };
 
@@ -886,11 +948,7 @@ function Autocomplete(_ref) {
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: (className + " " + wrapperClassName).trim(),
     "data-value": JSON.stringify(max === 1 && currentValueLength > 0 ? currentValue[0] : currentValue)
-  }, wrapperProps, wrapperAttributes), /*#__PURE__*/React__default.createElement("div", {
-    style: {
-      display: 'flex'
-    }
-  }, /*#__PURE__*/React__default.createElement("ul", {
+  }, wrapperProps, wrapperAttributes), /*#__PURE__*/React__default.createElement("ul", {
     className: "formosa-autocomplete__values"
   }, currentValue && currentValue.map(function (v, index) {
     var val = v;
@@ -977,7 +1035,7 @@ function Autocomplete(_ref) {
     "aria-hidden": "true",
     height: clearIconHeight,
     width: clearIconWidth
-  }, clearIconAttributes)), clearText))));
+  }, clearIconAttributes)), clearText)));
 }
 Autocomplete.propTypes = {
   afterAdd: PropTypes.func,
@@ -994,6 +1052,7 @@ Autocomplete.propTypes = {
   inputClassName: PropTypes.string,
   labelFn: PropTypes.func,
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  loadingText: PropTypes.string,
   max: PropTypes.number,
   name: PropTypes.string,
   optionButtonAttributes: PropTypes.object,
@@ -1033,6 +1092,7 @@ Autocomplete.defaultProps = {
   inputClassName: '',
   labelFn: null,
   labelKey: 'name',
+  loadingText: 'Loading...',
   max: null,
   name: '',
   optionButtonAttributes: null,
@@ -1159,6 +1219,7 @@ function CheckboxList(_ref) {
       listClassName = _ref.listClassName,
       listItemAttributes = _ref.listItemAttributes,
       listItemClassName = _ref.listItemClassName,
+      loadingText = _ref.loadingText,
       name = _ref.name,
       options = _ref.options,
       readOnly = _ref.readOnly,
@@ -1174,10 +1235,28 @@ function CheckboxList(_ref) {
       optionValues = _useState[0],
       setOptionValues = _useState[1];
 
+  var _useState2 = useState(!!url),
+      isLoading = _useState2[0],
+      setIsLoading = _useState2[1];
+
+  var _useState3 = useState(''),
+      message = _useState3[0],
+      setMessage = _useState3[1];
+
   useEffect(function () {
     if (url) {
-      Api.get(url).then(function (response) {
+      Api.get(url, false).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
+        setIsLoading(false);
+      })["catch"](function (error) {
+        if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
+          setMessage(error.errors.map(function (e) {
+            return e.title;
+          }).join(' '));
+          setIsLoading(false);
+        } else {
+          throw error;
+        }
       });
     }
 
@@ -1187,6 +1266,19 @@ function CheckboxList(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
+
+  if (isLoading) {
+    return /*#__PURE__*/React__default.createElement("div", {
+      className: "formosa-spinner"
+    }, loadingText);
+  }
+
+  if (message) {
+    return /*#__PURE__*/React__default.createElement("div", {
+      className: "formosa-field__error"
+    }, message);
+  }
+
   var currentValue = [];
 
   if (setValue !== null) {
@@ -1292,6 +1384,7 @@ CheckboxList.propTypes = {
   listClassName: PropTypes.string,
   listItemAttributes: PropTypes.object,
   listItemClassName: PropTypes.string,
+  loadingText: PropTypes.string,
   name: PropTypes.string,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   readOnly: PropTypes.bool,
@@ -1315,6 +1408,7 @@ CheckboxList.defaultProps = {
   listClassName: '',
   listItemAttributes: null,
   listItemClassName: '',
+  loadingText: 'Loading...',
   name: '',
   options: null,
   readOnly: false,
@@ -1723,6 +1817,7 @@ function Password(_ref) {
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: ("formosa-password-wrapper " + wrapperClassName).trim()
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement(Input, _extends({
+    autoCorrect: "off",
     className: ("formosa-field__input--password formosa-prefix " + className).trim()
   }, otherProps, {
     type: tempType
@@ -1751,7 +1846,7 @@ Password.defaultProps = {
   wrapperClassName: ''
 };
 
-var _excluded$5 = ["afterChange", "className", "label", "labelAttributes", "labelClassName", "labelKey", "listAttributes", "listClassName", "listItemAttributes", "listItemClassName", "name", "options", "required", "setValue", "url", "value", "valueKey"];
+var _excluded$5 = ["afterChange", "className", "label", "labelAttributes", "labelClassName", "labelKey", "listAttributes", "listClassName", "listItemAttributes", "listItemClassName", "loadingText", "name", "options", "required", "setValue", "url", "value", "valueKey"];
 function Radio(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -1762,6 +1857,7 @@ function Radio(_ref) {
       listClassName = _ref.listClassName,
       listItemAttributes = _ref.listItemAttributes,
       listItemClassName = _ref.listItemClassName,
+      loadingText = _ref.loadingText,
       name = _ref.name,
       options = _ref.options,
       required = _ref.required,
@@ -1778,10 +1874,28 @@ function Radio(_ref) {
       optionValues = _useState[0],
       setOptionValues = _useState[1];
 
+  var _useState2 = useState(!!url),
+      isLoading = _useState2[0],
+      setIsLoading = _useState2[1];
+
+  var _useState3 = useState(''),
+      message = _useState3[0],
+      setMessage = _useState3[1];
+
   useEffect(function () {
     if (url) {
-      Api.get(url).then(function (response) {
+      Api.get(url, false).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
+        setIsLoading(false);
+      })["catch"](function (error) {
+        if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
+          setMessage(error.errors.map(function (e) {
+            return e.title;
+          }).join(' '));
+          setIsLoading(false);
+        } else {
+          throw error;
+        }
       });
     }
 
@@ -1791,6 +1905,19 @@ function Radio(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
+
+  if (isLoading) {
+    return /*#__PURE__*/React__default.createElement("div", {
+      className: "formosa-spinner"
+    }, loadingText);
+  }
+
+  if (message) {
+    return /*#__PURE__*/React__default.createElement("div", {
+      className: "formosa-field__error"
+    }, message);
+  }
+
   var currentValue = '';
 
   if (setValue !== null) {
@@ -1873,6 +2000,7 @@ Radio.propTypes = {
   listClassName: PropTypes.string,
   listItemAttributes: PropTypes.object,
   listItemClassName: PropTypes.string,
+  loadingText: PropTypes.string,
   name: PropTypes.string,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   required: PropTypes.bool,
@@ -1892,6 +2020,7 @@ Radio.defaultProps = {
   listClassName: '',
   listItemAttributes: null,
   listItemClassName: '',
+  loadingText: 'Loading...',
   name: '',
   options: null,
   required: false,
@@ -2000,7 +2129,7 @@ function SvgCaret(props) {
   })));
 }
 
-var _excluded$7 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "name", "options", "setValue", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded$7 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "name", "options", "setValue", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
 function Select(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2011,6 +2140,7 @@ function Select(_ref) {
       iconWidth = _ref.iconWidth,
       id = _ref.id,
       labelKey = _ref.labelKey,
+      loadingText = _ref.loadingText,
       name = _ref.name,
       options = _ref.options,
       setValue = _ref.setValue,
@@ -2028,10 +2158,28 @@ function Select(_ref) {
       optionValues = _useState[0],
       setOptionValues = _useState[1];
 
+  var _useState2 = useState(!!url),
+      isLoading = _useState2[0],
+      setIsLoading = _useState2[1];
+
+  var _useState3 = useState(''),
+      message = _useState3[0],
+      setMessage = _useState3[1];
+
   useEffect(function () {
     if (url) {
-      Api.get(url).then(function (response) {
+      Api.get(url, false).then(function (response) {
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
+        setIsLoading(false);
+      })["catch"](function (error) {
+        if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
+          setMessage(error.errors.map(function (e) {
+            return e.title;
+          }).join(' '));
+          setIsLoading(false);
+        } else {
+          throw error;
+        }
       });
     }
 
@@ -2041,6 +2189,19 @@ function Select(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
+
+  if (isLoading) {
+    return /*#__PURE__*/React__default.createElement("div", {
+      className: "formosa-spinner"
+    }, loadingText);
+  }
+
+  if (message) {
+    return /*#__PURE__*/React__default.createElement("div", {
+      className: "formosa-field__error"
+    }, message);
+  }
+
   var currentValue = '';
 
   if (setValue !== null) {
@@ -2130,6 +2291,7 @@ Select.propTypes = {
   iconWidth: PropTypes.number,
   id: PropTypes.string,
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  loadingText: PropTypes.string,
   name: PropTypes.string,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   setValue: PropTypes.func,
@@ -2149,6 +2311,7 @@ Select.defaultProps = {
   iconWidth: 16,
   id: null,
   labelKey: 'name',
+  loadingText: 'Loading...',
   name: '',
   options: null,
   setValue: null,
@@ -3030,7 +3193,9 @@ Form.defaultProps = {
   setRow: null
 };
 
-var Spinner = function Spinner() {
+function Spinner(_ref) {
+  var loadingText = _ref.loadingText;
+
   var _usePromiseTracker = usePromiseTracker(),
       promiseInProgress = _usePromiseTracker.promiseInProgress;
 
@@ -3039,8 +3204,14 @@ var Spinner = function Spinner() {
   }
 
   return /*#__PURE__*/React__default.createElement("div", {
-    className: "formosa-spinner"
-  });
+    className: "formosa-spinner formosa-spinner--fullscreen"
+  }, loadingText);
+}
+Spinner.propTypes = {
+  loadingText: PropTypes.string
+};
+Spinner.defaultProps = {
+  loadingText: 'Loading...'
 };
 
 function Toast(_ref) {
@@ -3108,7 +3279,8 @@ function ToastContainer() {
 }
 
 function FormContainer(_ref) {
-  var children = _ref.children;
+  var children = _ref.children,
+      loadingText = _ref.loadingText;
 
   var _useState = useState({
     addToast: null,
@@ -3186,10 +3358,16 @@ function FormContainer(_ref) {
       formosaState: formosaState,
       setFormosaState: setFormosaState
     }
-  }, children, /*#__PURE__*/React__default.createElement(Spinner, null), /*#__PURE__*/React__default.createElement(ToastContainer, null));
+  }, children, /*#__PURE__*/React__default.createElement(Spinner, {
+    loadingText: loadingText
+  }), /*#__PURE__*/React__default.createElement(ToastContainer, null));
 }
 FormContainer.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  loadingText: PropTypes.string
+};
+FormContainer.defaultProps = {
+  loadingText: 'Loading...'
 };
 
 var _excluded$e = ["className", "label", "prefix", "postfix"];

@@ -67,6 +67,7 @@
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 0;
+  display: flex;
   min-height: 44px;
   position: relative; }
 
@@ -540,15 +541,8 @@ input.formosa-field__input--search {
   align-content: center;
   align-items: center;
   align-self: center;
-  bottom: 0;
   display: flex;
-  font-size: 0;
-  justify-content: center;
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 9999; }
+  font-size: 0; }
   .formosa-spinner::before {
     -webkit-animation-duration: 1s;
             animation-duration: 1s;
@@ -561,9 +555,22 @@ input.formosa-field__input--search {
     border-color: #9bc #fff #fff #fff;
     border-radius: 100px;
     border-style: solid;
-    border-width: 12px;
+    border-width: 6px;
     content: '';
     display: block;
+    height: 32px;
+    width: 32px; }
+
+.formosa-spinner--fullscreen {
+  bottom: 0;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 9999; }
+  .formosa-spinner--fullscreen::before {
+    border-width: 12px;
     height: 50px;
     width: 50px; }
 
