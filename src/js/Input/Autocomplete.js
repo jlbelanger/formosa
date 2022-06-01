@@ -296,7 +296,7 @@ export default function Autocomplete({
 										type="button"
 										{...removeButtonAttributes}
 									>
-										<CloseIcon height={removeIconHeight} width={removeIconWidth} {...removeIconAttributes} />
+										<CloseIcon aria-hidden="true" height={removeIconHeight} width={removeIconWidth} {...removeIconAttributes} />
 										{removeText}
 									</button>
 								)}
@@ -370,7 +370,7 @@ export default function Autocomplete({
 							type="button"
 							{...clearButtonAttributes}
 						>
-							<CloseIcon height={clearIconHeight} width={clearIconWidth} {...clearIconAttributes} />
+							<CloseIcon aria-hidden="true" height={clearIconHeight} width={clearIconWidth} {...clearIconAttributes} />
 							{clearText}
 						</button>
 					</div>

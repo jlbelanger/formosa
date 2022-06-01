@@ -19,7 +19,13 @@ export default function Search({
 				className={`formosa-field__input--search ${className}`.trim()}
 				{...otherProps}
 			/>
-			<SearchIcon className={`formosa-icon--search ${iconClassName}`.trim()} height={iconHeight} width={iconWidth} {...iconAttributes} />
+			<SearchIcon
+				aria-hidden="true"
+				className={`formosa-icon--search ${iconClassName}`.trim()}
+				height={iconHeight}
+				width={iconWidth}
+				{...iconAttributes}
+			/>
 		</div>
 	);
 }

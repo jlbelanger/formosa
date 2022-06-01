@@ -108,7 +108,13 @@ export default function Select({
 					);
 				})}
 			</select>
-			<CaretIcon className={`formosa-icon--caret ${iconClassName}`.trim()} height={iconHeight} width={iconWidth} {...iconAttributes} />
+			<CaretIcon
+				aria-hidden="true"
+				className={`formosa-icon--caret ${iconClassName}`.trim()}
+				height={iconHeight}
+				width={iconWidth}
+				{...iconAttributes}
+			/>
 		</div>
 	);
 }

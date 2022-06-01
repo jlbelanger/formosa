@@ -122,6 +122,7 @@ export default function CheckboxList({
 									{...optionProps}
 								/>
 								<CheckIcon
+									aria-hidden="true"
 									className={`formosa-icon--check ${iconClassName}`.trim()}
 									height={iconHeight}
 									width={iconWidth}

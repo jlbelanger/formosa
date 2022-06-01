@@ -56,7 +56,13 @@ export default function Checkbox({
 				{...props}
 				{...otherProps}
 			/>
-			<CheckIcon className={`formosa-icon--check ${iconClassName}`.trim()} height={iconHeight} width={iconWidth} {...iconAttributes} />
+			<CheckIcon
+				aria-hidden="true"
+				className={`formosa-icon--check ${iconClassName}`.trim()}
+				height={iconHeight}
+				width={iconWidth}
+				{...iconAttributes}
+			/>
 		</>
 	);
 }
