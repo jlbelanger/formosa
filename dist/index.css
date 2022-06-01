@@ -252,16 +252,6 @@ input.formosa-field__input--checkbox {
   .formosa-icon--check + .formosa-label-wrapper .formosa-label {
     font-weight: normal; }
 
-.formosa-datetime-wrapper {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap; }
-
-.formosa-datetime-wrapper .formosa-suffix,
-.formosa-field__input--date {
-  margin-bottom: 4px;
-  margin-right: 4px; }
-
 .formosa-field__error {
   color: #c66;
   margin-top: 4px; }
