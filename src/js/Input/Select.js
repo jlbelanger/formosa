@@ -20,6 +20,7 @@ export default function Select({
 	name,
 	options,
 	setValue,
+	showLoading,
 	url,
 	value,
 	valueKey,
@@ -29,7 +30,7 @@ export default function Select({
 }) {
 	const { formState } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
-	const [isLoading, setIsLoading] = useState(!!url);
+	const [isLoading, setIsLoading] = useState(showLoading || !!url);
 	const [message, setMessage] = useState('');
 
 	useEffect(() => {
@@ -55,6 +56,11 @@ export default function Select({
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
 		return () => {};
 	}, [options]);
+
+	useEffect(() => {
+		setIsLoading(showLoading);
+		return () => {};
+	}, [showLoading]);
 
 	if (isLoading) {
 		return (<div className="formosa-spinner">{loadingText}</div>);
@@ -159,6 +165,7 @@ Select.propTypes = {
 		PropTypes.object,
 	]),
 	setValue: PropTypes.func,
+	showLoading: PropTypes.bool,
 	url: PropTypes.string,
 	value: PropTypes.oneOfType([
 		PropTypes.number,
@@ -187,6 +194,7 @@ Select.defaultProps = {
 	name: '',
 	options: null,
 	setValue: null,
+	showLoading: false,
 	url: null,
 	value: null,
 	valueKey: null,

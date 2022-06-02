@@ -40,6 +40,7 @@ export default function Autocomplete({
 	removeIconWidth,
 	removeText,
 	setValue,
+	showLoading,
 	url,
 	value,
 	valueKey,
@@ -55,7 +56,7 @@ export default function Autocomplete({
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
-	const [isLoading, setIsLoading] = useState(!!url);
+	const [isLoading, setIsLoading] = useState(showLoading || !!url);
 	const [message, setMessage] = useState('');
 
 	useEffect(() => {
@@ -81,6 +82,11 @@ export default function Autocomplete({
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
 		return () => {};
 	}, [options]);
+
+	useEffect(() => {
+		setIsLoading(showLoading);
+		return () => {};
+	}, [showLoading]);
 
 	if (isLoading) {
 		return (<div className="formosa-spinner">{loadingText}</div>);
@@ -446,6 +452,7 @@ Autocomplete.propTypes = {
 	removeIconWidth: PropTypes.number,
 	removeText: PropTypes.string,
 	setValue: PropTypes.func,
+	showLoading: PropTypes.bool,
 	url: PropTypes.string,
 	value: PropTypes.oneOfType([
 		PropTypes.arrayOf(PropTypes.number),
@@ -497,6 +504,7 @@ Autocomplete.defaultProps = {
 	removeIconWidth: 12,
 	removeText: 'Remove',
 	setValue: null,
+	showLoading: false,
 	url: null,
 	value: null,
 	valueKey: null,

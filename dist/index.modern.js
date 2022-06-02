@@ -610,7 +610,7 @@ function SvgX(props) {
   })));
 }
 
-var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "loadingText", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "setValue", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "loadingText", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
 function Autocomplete(_ref) {
   var afterAdd = _ref.afterAdd,
       afterChange = _ref.afterChange,
@@ -645,6 +645,7 @@ function Autocomplete(_ref) {
       removeIconWidth = _ref.removeIconWidth,
       removeText = _ref.removeText,
       setValue = _ref.setValue,
+      showLoading = _ref.showLoading,
       url = _ref.url,
       value = _ref.value,
       valueKey = _ref.valueKey,
@@ -675,7 +676,7 @@ function Autocomplete(_ref) {
       optionValues = _useState4[0],
       setOptionValues = _useState4[1];
 
-  var _useState5 = useState(!!url),
+  var _useState5 = useState(showLoading || !!url),
       isLoading = _useState5[0],
       setIsLoading = _useState5[1];
 
@@ -706,6 +707,10 @@ function Autocomplete(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
+  useEffect(function () {
+    setIsLoading(showLoading);
+    return function () {};
+  }, [showLoading]);
 
   if (isLoading) {
     return /*#__PURE__*/React__default.createElement("div", {
@@ -1071,6 +1076,7 @@ Autocomplete.propTypes = {
   removeIconWidth: PropTypes.number,
   removeText: PropTypes.string,
   setValue: PropTypes.func,
+  showLoading: PropTypes.bool,
   url: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.arrayOf(PropTypes.object), PropTypes.arrayOf(PropTypes.string), PropTypes.number, PropTypes.object, PropTypes.string]),
   valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
@@ -1111,6 +1117,7 @@ Autocomplete.defaultProps = {
   removeIconWidth: 12,
   removeText: 'Remove',
   setValue: null,
+  showLoading: false,
   url: null,
   value: null,
   valueKey: null,
@@ -1224,6 +1231,7 @@ function CheckboxList(_ref) {
       options = _ref.options,
       readOnly = _ref.readOnly,
       setValue = _ref.setValue,
+      showLoading = _ref.showLoading,
       url = _ref.url,
       value = _ref.value,
       valueKey = _ref.valueKey;
@@ -1235,7 +1243,7 @@ function CheckboxList(_ref) {
       optionValues = _useState[0],
       setOptionValues = _useState[1];
 
-  var _useState2 = useState(!!url),
+  var _useState2 = useState(showLoading || !!url),
       isLoading = _useState2[0],
       setIsLoading = _useState2[1];
 
@@ -1266,6 +1274,10 @@ function CheckboxList(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
+  useEffect(function () {
+    setIsLoading(showLoading);
+    return function () {};
+  }, [showLoading]);
 
   if (isLoading) {
     return /*#__PURE__*/React__default.createElement("div", {
@@ -1389,6 +1401,7 @@ CheckboxList.propTypes = {
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   readOnly: PropTypes.bool,
   setValue: PropTypes.func,
+  showLoading: PropTypes.bool,
   url: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.arrayOf(PropTypes.object), PropTypes.arrayOf(PropTypes.string)]),
   valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
@@ -1413,6 +1426,7 @@ CheckboxList.defaultProps = {
   options: null,
   readOnly: false,
   setValue: null,
+  showLoading: false,
   url: null,
   value: null,
   valueKey: null
@@ -1846,7 +1860,7 @@ Password.defaultProps = {
   wrapperClassName: ''
 };
 
-var _excluded$5 = ["afterChange", "className", "label", "labelAttributes", "labelClassName", "labelKey", "listAttributes", "listClassName", "listItemAttributes", "listItemClassName", "loadingText", "name", "options", "required", "setValue", "url", "value", "valueKey"];
+var _excluded$5 = ["afterChange", "className", "label", "labelAttributes", "labelClassName", "labelKey", "listAttributes", "listClassName", "listItemAttributes", "listItemClassName", "loadingText", "name", "options", "required", "setValue", "showLoading", "url", "value", "valueKey"];
 function Radio(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -1862,6 +1876,7 @@ function Radio(_ref) {
       options = _ref.options,
       required = _ref.required,
       setValue = _ref.setValue,
+      showLoading = _ref.showLoading,
       url = _ref.url,
       value = _ref.value,
       valueKey = _ref.valueKey,
@@ -1874,7 +1889,7 @@ function Radio(_ref) {
       optionValues = _useState[0],
       setOptionValues = _useState[1];
 
-  var _useState2 = useState(!!url),
+  var _useState2 = useState(showLoading || !!url),
       isLoading = _useState2[0],
       setIsLoading = _useState2[1];
 
@@ -1905,6 +1920,10 @@ function Radio(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
+  useEffect(function () {
+    setIsLoading(showLoading);
+    return function () {};
+  }, [showLoading]);
 
   if (isLoading) {
     return /*#__PURE__*/React__default.createElement("div", {
@@ -2005,6 +2024,7 @@ Radio.propTypes = {
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   required: PropTypes.bool,
   setValue: PropTypes.func,
+  showLoading: PropTypes.bool,
   url: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.string]),
   valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
@@ -2025,6 +2045,7 @@ Radio.defaultProps = {
   options: null,
   required: false,
   setValue: null,
+  showLoading: false,
   url: null,
   value: null,
   valueKey: null
@@ -2129,7 +2150,7 @@ function SvgCaret(props) {
   })));
 }
 
-var _excluded$7 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "name", "options", "setValue", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded$7 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "name", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
 function Select(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2144,6 +2165,7 @@ function Select(_ref) {
       name = _ref.name,
       options = _ref.options,
       setValue = _ref.setValue,
+      showLoading = _ref.showLoading,
       url = _ref.url,
       value = _ref.value,
       valueKey = _ref.valueKey,
@@ -2158,7 +2180,7 @@ function Select(_ref) {
       optionValues = _useState[0],
       setOptionValues = _useState[1];
 
-  var _useState2 = useState(!!url),
+  var _useState2 = useState(showLoading || !!url),
       isLoading = _useState2[0],
       setIsLoading = _useState2[1];
 
@@ -2189,6 +2211,10 @@ function Select(_ref) {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
     return function () {};
   }, [options]);
+  useEffect(function () {
+    setIsLoading(showLoading);
+    return function () {};
+  }, [showLoading]);
 
   if (isLoading) {
     return /*#__PURE__*/React__default.createElement("div", {
@@ -2295,6 +2321,7 @@ Select.propTypes = {
   name: PropTypes.string,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   setValue: PropTypes.func,
+  showLoading: PropTypes.bool,
   url: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.string]),
   valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
@@ -2315,6 +2342,7 @@ Select.defaultProps = {
   name: '',
   options: null,
   setValue: null,
+  showLoading: false,
   url: null,
   value: null,
   valueKey: null,

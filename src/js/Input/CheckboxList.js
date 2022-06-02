@@ -26,13 +26,14 @@ export default function CheckboxList({
 	options,
 	readOnly,
 	setValue,
+	showLoading,
 	url,
 	value,
 	valueKey,
 }) {
 	const { formState } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
-	const [isLoading, setIsLoading] = useState(!!url);
+	const [isLoading, setIsLoading] = useState(showLoading || !!url);
 	const [message, setMessage] = useState('');
 
 	useEffect(() => {
@@ -58,6 +59,11 @@ export default function CheckboxList({
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
 		return () => {};
 	}, [options]);
+
+	useEffect(() => {
+		setIsLoading(showLoading);
+		return () => {};
+	}, [showLoading]);
 
 	if (isLoading) {
 		return (<div className="formosa-spinner">{loadingText}</div>);
@@ -184,6 +190,7 @@ CheckboxList.propTypes = {
 	]),
 	readOnly: PropTypes.bool,
 	setValue: PropTypes.func,
+	showLoading: PropTypes.bool,
 	url: PropTypes.string,
 	value: PropTypes.oneOfType([
 		PropTypes.arrayOf(PropTypes.number),
@@ -216,6 +223,7 @@ CheckboxList.defaultProps = {
 	options: null,
 	readOnly: false,
 	setValue: null,
+	showLoading: false,
 	url: null,
 	value: null,
 	valueKey: null,
