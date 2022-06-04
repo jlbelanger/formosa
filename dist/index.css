@@ -320,66 +320,66 @@ input.formosa-field__input--checkbox {
 .formosa-horizontal {
   display: table;
   width: 100%; }
-  .formosa-horizontal .formosa-field {
+  .formosa-horizontal > .formosa-field {
     display: table-row; }
-  .formosa-horizontal .formosa-field > .formosa-label-wrapper,
-  .formosa-horizontal .formosa-field > .formosa-input-wrapper {
-    display: table-cell;
-    padding: 8px 0; }
-  .formosa-horizontal .formosa-field > .formosa-label-wrapper {
-    padding-right: 8px;
-    text-align: right;
-    vertical-align: top;
-    white-space: nowrap;
-    width: 0; }
-  .formosa-horizontal .formosa-field > .formosa-input-wrapper {
-    padding-left: 8px;
-    width: 100%; }
-  .formosa-horizontal .formosa-label {
-    display: inline-block;
-    line-height: 1.5;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 9px; }
-  .formosa-horizontal .formosa-radio--inline {
-    padding-top: 9px; }
-  .formosa-horizontal .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
-    left: 14px;
-    top: 14px; }
-  .formosa-horizontal .formosa-field--label-after .formosa-label-wrapper:empty {
+    .formosa-horizontal > .formosa-field > .formosa-label-wrapper,
+    .formosa-horizontal > .formosa-field > .formosa-input-wrapper {
+      display: table-cell;
+      padding: 8px 0; }
+    .formosa-horizontal > .formosa-field > .formosa-label-wrapper {
+      padding-right: 8px;
+      text-align: right;
+      vertical-align: top;
+      white-space: nowrap;
+      width: 0; }
+    .formosa-horizontal > .formosa-field > .formosa-input-wrapper {
+      padding-left: 8px;
+      width: 100%; }
+      .formosa-horizontal > .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
+        left: 14px;
+        top: 14px; }
+    .formosa-horizontal > .formosa-field .formosa-label {
+      display: inline-block;
+      line-height: 1.5;
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 9px; }
+    .formosa-horizontal > .formosa-field .formosa-radio--inline {
+      padding-top: 9px; }
+  .formosa-horizontal > .formosa-field--label-after .formosa-label-wrapper:empty {
     display: inline-block; }
 
 @media (min-width: 1024px) {
   .formosa-responsive {
     display: table;
     width: 100%; }
-    .formosa-responsive .formosa-field {
+    .formosa-responsive > .formosa-field {
       display: table-row; }
-    .formosa-responsive .formosa-field > .formosa-label-wrapper,
-    .formosa-responsive .formosa-field > .formosa-input-wrapper {
-      display: table-cell;
-      padding: 8px 0; }
-    .formosa-responsive .formosa-field > .formosa-label-wrapper {
-      padding-right: 8px;
-      text-align: right;
-      vertical-align: top;
-      white-space: nowrap;
-      width: 0; }
-    .formosa-responsive .formosa-field > .formosa-input-wrapper {
-      padding-left: 8px;
-      width: 100%; }
-    .formosa-responsive .formosa-label {
-      display: inline-block;
-      line-height: 1.5;
-      padding-left: 0;
-      padding-right: 0;
-      padding-top: 9px; }
-    .formosa-responsive .formosa-radio--inline {
-      padding-top: 9px; }
-    .formosa-responsive .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
-      left: 14px;
-      top: 14px; }
-    .formosa-responsive .formosa-field--label-after .formosa-label-wrapper:empty {
+      .formosa-responsive > .formosa-field > .formosa-label-wrapper,
+      .formosa-responsive > .formosa-field > .formosa-input-wrapper {
+        display: table-cell;
+        padding: 8px 0; }
+      .formosa-responsive > .formosa-field > .formosa-label-wrapper {
+        padding-right: 8px;
+        text-align: right;
+        vertical-align: top;
+        white-space: nowrap;
+        width: 0; }
+      .formosa-responsive > .formosa-field > .formosa-input-wrapper {
+        padding-left: 8px;
+        width: 100%; }
+        .formosa-responsive > .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
+          left: 14px;
+          top: 14px; }
+      .formosa-responsive > .formosa-field .formosa-label {
+        display: inline-block;
+        line-height: 1.5;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 9px; }
+      .formosa-responsive > .formosa-field .formosa-radio--inline {
+        padding-top: 9px; }
+    .formosa-responsive > .formosa-field--label-after .formosa-label-wrapper:empty {
       display: inline-block; } }
 
 .formosa-label-wrapper {
