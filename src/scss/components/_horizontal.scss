@@ -2,47 +2,47 @@
 	display: table;
 	width: 100%;
 
-	.formosa-field {
+	& > .formosa-field {
 		display: table-row;
+
+		& > .formosa-label-wrapper,
+		& > .formosa-input-wrapper {
+			display: table-cell;
+			padding: $formosa-horizontal-fields-padding 0;
+		}
+
+		& > .formosa-label-wrapper {
+			padding-right: $formosa-horizontal-fields-padding;
+			text-align: right;
+			vertical-align: top;
+			white-space: nowrap;
+			width: 0;
+		}
+
+		& > .formosa-input-wrapper {
+			padding-left: $formosa-horizontal-fields-padding;
+			width: 100%;
+
+			& > .formosa-icon--check {
+				left: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
+				top: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
+			}
+		}
+
+		.formosa-label {
+			display: inline-block;
+			line-height: $formosa-input-line-height;
+			padding-left: 0;
+			padding-right: 0;
+			padding-top: #{$formosa-input-padding + $formosa-input-border-width};
+		}
+
+		.formosa-radio--inline {
+			padding-top: #{$formosa-input-padding + $formosa-input-border-width};
+		}
 	}
 
-	.formosa-field > .formosa-label-wrapper,
-	.formosa-field > .formosa-input-wrapper {
-		display: table-cell;
-		padding: $formosa-horizontal-fields-padding 0;
-	}
-
-	.formosa-field > .formosa-label-wrapper {
-		padding-right: $formosa-horizontal-fields-padding;
-		text-align: right;
-		vertical-align: top;
-		white-space: nowrap;
-		width: 0;
-	}
-
-	.formosa-field > .formosa-input-wrapper {
-		padding-left: $formosa-horizontal-fields-padding;
-		width: 100%;
-	}
-
-	.formosa-label {
-		display: inline-block;
-		line-height: $formosa-input-line-height;
-		padding-left: 0;
-		padding-right: 0;
-		padding-top: #{$formosa-input-padding + $formosa-input-border-width};
-	}
-
-	.formosa-radio--inline {
-		padding-top: #{$formosa-input-padding + $formosa-input-border-width};
-	}
-
-	.formosa-field > .formosa-input-wrapper > .formosa-icon--check {
-		left: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
-		top: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
-	}
-
-	.formosa-field--label-after {
+	& > .formosa-field--label-after {
 		.formosa-label-wrapper {
 			&:empty {
 				display: inline-block;

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'; // eslint-disable-line import/no-unresolved
 import Error from './Error';
 import FormContext from './FormContext';
-import get from 'get-value';
 import getInputElement from './FieldInput';
 import HasMany from './Input/HasMany';
 import Label from './Label';
@@ -31,6 +30,7 @@ export default function Field({
 	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
+
 	const inputProps = { ...otherProps };
 	if (id) {
 		inputProps.id = id;
@@ -56,11 +56,13 @@ export default function Field({
 			inputProps.type = 'text';
 		}
 	}
+
 	let InputComponent = getInputElement(type, component);
 	if (type === 'has-many') {
 		// This prevents a dependency cycle.
 		InputComponent = HasMany;
 	}
+
 	const input = (
 		<InputComponent {...inputProps} />
 	);
@@ -74,7 +76,7 @@ export default function Field({
 	const labelComponent = (
 		<Label
 			className={labelClassName}
-			htmlFor={type === 'datetime' ? `${htmlFor}-month` : htmlFor}
+			htmlFor={htmlFor}
 			label={label}
 			note={labelNote}
 			required={required}
@@ -83,10 +85,13 @@ export default function Field({
 		/>
 	);
 
-	const hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
+	const hasError = formState && Object.prototype.hasOwnProperty.call(formState.errors, name);
 
-	const cleanName = name.replace(/[^a-z0-9_-]/gi, '');
-	const wrapperClassNameList = ['formosa-field', `formosa-field--${cleanName}`];
+	const cleanName = htmlFor.replace(/[^a-z0-9_-]/gi, '');
+	const wrapperClassNameList = ['formosa-field'];
+	if (cleanName) {
+		wrapperClassNameList.push(`formosa-field--${cleanName}`);
+	}
 	if (wrapperClassName) {
 		wrapperClassNameList.push(wrapperClassName);
 	}
@@ -126,9 +131,7 @@ export default function Field({
 				{input}
 				{label && labelPosition === 'after' && labelComponent}
 				{note && (
-					<div className="formosa-field__note">
-						{typeof note === 'function' ? note(get(formState.row, name), formState.row) : note}
-					</div>
+					<div className="formosa-field__note">{note}</div>
 				)}
 				{postfix}
 				<Error id={id} name={name} />
@@ -148,7 +151,7 @@ Field.propTypes = {
 	labelClassName: PropTypes.string,
 	labelNote: PropTypes.string,
 	labelPosition: PropTypes.string,
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 	note: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.object,
@@ -175,6 +178,7 @@ Field.defaultProps = {
 	labelClassName: '',
 	labelNote: '',
 	labelPosition: 'before',
+	name: '',
 	note: '',
 	prefix: null,
 	postfix: null,

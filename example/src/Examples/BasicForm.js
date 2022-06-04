@@ -39,10 +39,13 @@ export default function BasicForm() {
 			select: 'Apple',
 			checkbox: true,
 			checkbox_list: ['Apple', 'Banana'],
-			datetime: '2001-02-03 04:05:06',
 			radio: 'Apple',
 			autocomplete: 'Apple',
 			multiple_autocomplete: ['Apple', 'Banana'],
+			file: 'foo.pdf',
+			multiple_files: ['foo.pdf', 'bar.pdf'],
+			image: 'carrot.png',
+			multiple_images: ['carrot.png', 'pie.png'],
 		});
 	};
 
@@ -164,14 +167,6 @@ export default function BasicForm() {
 				/>
 
 				<Field
-					label="Datetime"
-					name="datetime"
-					type="datetime"
-					disabled={disabled}
-					readOnly={readOnly}
-				/>
-
-				<Field
 					label="Radio"
 					name="radio"
 					type="radio"
@@ -220,6 +215,7 @@ export default function BasicForm() {
 					label="Image"
 					name="image"
 					accept="image/*"
+					imagePrefix="/images/"
 					imagePreview
 					type="file"
 					disabled={disabled}
@@ -227,20 +223,13 @@ export default function BasicForm() {
 				/>
 
 				<Field
-					label="Has many"
-					name="has_many"
-					recordType="attributes"
-					type="has-many"
-					attributes={[
-						{
-							label: 'Key',
-							name: 'key',
-						},
-						{
-							label: 'Value',
-							name: 'value',
-						},
-					]}
+					label="Multiple images"
+					name="multiple_images"
+					accept="image/*"
+					imagePrefix="/images/"
+					imagePreview
+					multiple
+					type="file"
 					disabled={disabled}
 					readOnly={readOnly}
 				/>

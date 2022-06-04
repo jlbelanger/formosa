@@ -24,6 +24,7 @@ export default function Password({
 	return (
 		<div className={`formosa-password-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 			<Input
+				autoCorrect="off"
 				className={`formosa-field__input--password formosa-prefix ${className}`.trim()}
 				{...otherProps}
 				type={tempType}

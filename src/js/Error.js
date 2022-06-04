@@ -7,10 +7,19 @@ export default function Error({
 	name,
 }) {
 	const { formState } = useContext(FormContext);
-	const hasError = Object.prototype.hasOwnProperty.call(formState.errors, name);
+	const hasError = formState && Object.prototype.hasOwnProperty.call(formState.errors, name);
+
+	const props = {};
+	if (name) {
+		// Used for matching the attribute name from the API to this error element.
+		props['data-name'] = name;
+	}
+	if (id || name) {
+		props.id = `${id || name}-error`;
+	}
 
 	return (
-		<div className="formosa-field__error" data-name={name} id={`${id || name}-error`}>
+		<div className="formosa-field__error" {...props}>
 			{hasError && formState.errors[name].map((e) => (<div key={e}>{e}</div>))}
 		</div>
 	);
@@ -18,9 +27,10 @@ export default function Error({
 
 Error.propTypes = {
 	id: PropTypes.string,
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 };
 
 Error.defaultProps = {
 	id: null,
+	name: '',
 };

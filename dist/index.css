@@ -67,6 +67,7 @@
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 0;
+  display: flex;
   min-height: 44px;
   position: relative; }
 
@@ -252,16 +253,6 @@ input.formosa-field__input--checkbox {
   .formosa-icon--check + .formosa-label-wrapper .formosa-label {
     font-weight: normal; }
 
-.formosa-datetime-wrapper {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap; }
-
-.formosa-datetime-wrapper .formosa-suffix,
-.formosa-field__input--date {
-  margin-bottom: 4px;
-  margin-right: 4px; }
-
 .formosa-field__error {
   color: #c66;
   margin-top: 4px; }
@@ -329,66 +320,66 @@ input.formosa-field__input--checkbox {
 .formosa-horizontal {
   display: table;
   width: 100%; }
-  .formosa-horizontal .formosa-field {
+  .formosa-horizontal > .formosa-field {
     display: table-row; }
-  .formosa-horizontal .formosa-field > .formosa-label-wrapper,
-  .formosa-horizontal .formosa-field > .formosa-input-wrapper {
-    display: table-cell;
-    padding: 8px 0; }
-  .formosa-horizontal .formosa-field > .formosa-label-wrapper {
-    padding-right: 8px;
-    text-align: right;
-    vertical-align: top;
-    white-space: nowrap;
-    width: 0; }
-  .formosa-horizontal .formosa-field > .formosa-input-wrapper {
-    padding-left: 8px;
-    width: 100%; }
-  .formosa-horizontal .formosa-label {
-    display: inline-block;
-    line-height: 1.5;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 9px; }
-  .formosa-horizontal .formosa-radio--inline {
-    padding-top: 9px; }
-  .formosa-horizontal .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
-    left: 14px;
-    top: 14px; }
-  .formosa-horizontal .formosa-field--label-after .formosa-label-wrapper:empty {
+    .formosa-horizontal > .formosa-field > .formosa-label-wrapper,
+    .formosa-horizontal > .formosa-field > .formosa-input-wrapper {
+      display: table-cell;
+      padding: 8px 0; }
+    .formosa-horizontal > .formosa-field > .formosa-label-wrapper {
+      padding-right: 8px;
+      text-align: right;
+      vertical-align: top;
+      white-space: nowrap;
+      width: 0; }
+    .formosa-horizontal > .formosa-field > .formosa-input-wrapper {
+      padding-left: 8px;
+      width: 100%; }
+      .formosa-horizontal > .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
+        left: 14px;
+        top: 14px; }
+    .formosa-horizontal > .formosa-field .formosa-label {
+      display: inline-block;
+      line-height: 1.5;
+      padding-left: 0;
+      padding-right: 0;
+      padding-top: 9px; }
+    .formosa-horizontal > .formosa-field .formosa-radio--inline {
+      padding-top: 9px; }
+  .formosa-horizontal > .formosa-field--label-after .formosa-label-wrapper:empty {
     display: inline-block; }
 
 @media (min-width: 1024px) {
   .formosa-responsive {
     display: table;
     width: 100%; }
-    .formosa-responsive .formosa-field {
+    .formosa-responsive > .formosa-field {
       display: table-row; }
-    .formosa-responsive .formosa-field > .formosa-label-wrapper,
-    .formosa-responsive .formosa-field > .formosa-input-wrapper {
-      display: table-cell;
-      padding: 8px 0; }
-    .formosa-responsive .formosa-field > .formosa-label-wrapper {
-      padding-right: 8px;
-      text-align: right;
-      vertical-align: top;
-      white-space: nowrap;
-      width: 0; }
-    .formosa-responsive .formosa-field > .formosa-input-wrapper {
-      padding-left: 8px;
-      width: 100%; }
-    .formosa-responsive .formosa-label {
-      display: inline-block;
-      line-height: 1.5;
-      padding-left: 0;
-      padding-right: 0;
-      padding-top: 9px; }
-    .formosa-responsive .formosa-radio--inline {
-      padding-top: 9px; }
-    .formosa-responsive .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
-      left: 14px;
-      top: 14px; }
-    .formosa-responsive .formosa-field--label-after .formosa-label-wrapper:empty {
+      .formosa-responsive > .formosa-field > .formosa-label-wrapper,
+      .formosa-responsive > .formosa-field > .formosa-input-wrapper {
+        display: table-cell;
+        padding: 8px 0; }
+      .formosa-responsive > .formosa-field > .formosa-label-wrapper {
+        padding-right: 8px;
+        text-align: right;
+        vertical-align: top;
+        white-space: nowrap;
+        width: 0; }
+      .formosa-responsive > .formosa-field > .formosa-input-wrapper {
+        padding-left: 8px;
+        width: 100%; }
+        .formosa-responsive > .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
+          left: 14px;
+          top: 14px; }
+      .formosa-responsive > .formosa-field .formosa-label {
+        display: inline-block;
+        line-height: 1.5;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 9px; }
+      .formosa-responsive > .formosa-field .formosa-radio--inline {
+        padding-top: 9px; }
+    .formosa-responsive > .formosa-field--label-after .formosa-label-wrapper:empty {
       display: inline-block; } }
 
 .formosa-label-wrapper {
@@ -550,15 +541,8 @@ input.formosa-field__input--search {
   align-content: center;
   align-items: center;
   align-self: center;
-  bottom: 0;
   display: flex;
-  font-size: 0;
-  justify-content: center;
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 9999; }
+  font-size: 0; }
   .formosa-spinner::before {
     -webkit-animation-duration: 1s;
             animation-duration: 1s;
@@ -571,9 +555,22 @@ input.formosa-field__input--search {
     border-color: #9bc #fff #fff #fff;
     border-radius: 100px;
     border-style: solid;
-    border-width: 12px;
+    border-width: 6px;
     content: '';
     display: block;
+    height: 32px;
+    width: 32px; }
+
+.formosa-spinner--fullscreen {
+  bottom: 0;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 9999; }
+  .formosa-spinner--fullscreen::before {
+    border-width: 12px;
     height: 50px;
     width: 50px; }
 

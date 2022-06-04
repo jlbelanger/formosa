@@ -2,15 +2,8 @@
 	align-content: center;
 	align-items: center;
 	align-self: center;
-	bottom: 0;
 	display: flex;
 	font-size: 0;
-	justify-content: center;
-	left: 0;
-	position: fixed;
-	right: 0;
-	top: 0;
-	z-index: $formosa-spinner-z-index;
 
 	&::before {
 		animation-duration: 1s;
@@ -25,6 +18,22 @@
 		display: block;
 		height: $formosa-spinner-size;
 		width: $formosa-spinner-size;
+	}
+}
+
+.formosa-spinner--fullscreen {
+	bottom: 0;
+	justify-content: center;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: $formosa-spinner-z-index;
+
+	&::before {
+		border-width: $formosa-spinner-fullscreen-border-width;
+		height: $formosa-spinner-fullscreen-size;
+		width: $formosa-spinner-fullscreen-size;
 	}
 }
 

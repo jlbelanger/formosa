@@ -4,11 +4,15 @@ import PropTypes from 'prop-types';
 import Spinner from './Spinner';
 import ToastContainer from './ToastContainer';
 
-export default function FormContainer({ children }) {
+export default function FormContainer({ children, loadingText }) {
 	const [formosaState, setFormosaState] = useState({
 		addToast: null,
 		removeToast: null,
 		toasts: {},
+
+		disableWarningPrompt: null,
+		enableWarningPrompt: null,
+		showWarningPrompt: true,
 	});
 
 	const formosaStateRef = useRef(formosaState);
@@ -36,10 +40,18 @@ export default function FormContainer({ children }) {
 				formosaStateRef.current.removeToast(toastId);
 			}, milliseconds);
 		};
+		const disableWarningPrompt = () => {
+			setFormosaState({ ...formosaStateRef.current, showWarningPrompt: false });
+		};
+		const enableWarningPrompt = () => {
+			setFormosaState({ ...formosaStateRef.current, showWarningPrompt: true });
+		};
 		setFormosaState({
 			...formosaStateRef.current,
 			addToast,
 			removeToast,
+			disableWarningPrompt,
+			enableWarningPrompt,
 		});
 		return () => {};
 	}, []);
@@ -47,7 +59,7 @@ export default function FormContainer({ children }) {
 	return (
 		<FormosaContext.Provider value={{ formosaState, setFormosaState }}>
 			{children}
-			<Spinner />
+			<Spinner loadingText={loadingText} />
 			<ToastContainer />
 		</FormosaContext.Provider>
 	);
@@ -55,4 +67,9 @@ export default function FormContainer({ children }) {
 
 FormContainer.propTypes = {
 	children: PropTypes.node.isRequired,
+	loadingText: PropTypes.string,
+};
+
+FormContainer.defaultProps = {
+	loadingText: 'Loading...',
 };

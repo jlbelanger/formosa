@@ -54,8 +54,7 @@ export default function JsonApiEdit() {
 				<Field label="Category" name="category" max={1} type="autocomplete" options={['fruit', 'vegetable']} />
 				<Field label="Directions" name="directions" options={['north', 'south', 'east', 'west']} type="checkbox-list" />
 				<Field label="Public?" name="is_public" type="checkbox" />
-				<Field label="Date" name="date" type="datetime" />
-				<Field label="File" name="file" type="file" />
+				<Field label="File" name="file" type="file" accept="image/*" imagePrefix="/images/" imagePreview />
 				<Submit />
 			</Form>
 

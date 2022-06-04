@@ -19,7 +19,7 @@ export default function Toast({
 		<div className={`formosa-toast ${className}`.trim()} style={{ animationDuration: `${milliseconds}ms` }}>
 			<div className="formosa-toast__text">{text}</div>
 			<button className="formosa-toast__close" onClick={removeToast} type="button">
-				<CloseIcon className="formosa-toast__close-icon" height={12} width={12} />
+				<CloseIcon aria-hidden="true" className="formosa-toast__close-icon" height={12} width={12} />
 				Close
 			</button>
 		</div>

@@ -2,23 +2,23 @@ import { deserialize } from './JsonApi';
 import { trackPromise } from 'react-promise-tracker';
 
 export default class Api {
-	static get(url) {
-		return Api.request('GET', url);
+	static get(url, showSpinner = true) {
+		return Api.request('GET', url, null, showSpinner);
 	}
 
-	static delete(url) {
-		return Api.request('DELETE', url);
+	static delete(url, showSpinner = true) {
+		return Api.request('DELETE', url, null, showSpinner);
 	}
 
-	static post(url, body) {
-		return Api.request('POST', url, body);
+	static post(url, body, showSpinner = true) {
+		return Api.request('POST', url, body, showSpinner);
 	}
 
-	static put(url, body) {
-		return Api.request('PUT', url, body);
+	static put(url, body, showSpinner = true) {
+		return Api.request('PUT', url, body, showSpinner);
 	}
 
-	static request(method, url, body = null) {
+	static request(method, url, body = null, showSpinner = true) {
 		const options = {
 			method,
 			headers: {
@@ -35,43 +35,45 @@ export default class Api {
 			options.body = body;
 		}
 
-		return trackPromise(
-			fetch(`${process.env.REACT_APP_API_URL}/${url}`, options)
-				.then((response) => {
-					if (!response.ok) {
-						return response.json()
-							.then((json) => {
-								json.status = response.status;
-								throw json;
-							})
-							.catch((error) => {
-								if (error instanceof SyntaxError) {
-									throw { // eslint-disable-line no-throw-literal
-										errors: [
-											{
-												title: 'The server returned invalid JSON.',
-												status: '500',
-											},
-										],
-										status: 500,
-									};
-								} else {
-									throw error;
-								}
-							});
-					}
-					if (response.status === 204) {
-						return {};
-					}
-					return response.json();
-				})
-				.then((json) => {
-					if (Object.prototype.hasOwnProperty.call(json, 'data')) {
-						return deserialize(json);
-					}
-					return json;
-				})
-		);
+		const fullUrl = url.startsWith('http') ? url : `${process.env.REACT_APP_API_URL}/${url}`;
+
+		const promise = fetch(fullUrl, options)
+			.then((response) => {
+				if (!response.ok) {
+					return response.json()
+						.then((json) => {
+							json.status = response.status;
+							throw json;
+						})
+						.catch((error) => {
+							if (error instanceof SyntaxError) {
+								throw { // eslint-disable-line no-throw-literal
+									errors: [
+										{
+											title: 'The server returned invalid JSON.',
+											status: '500',
+										},
+									],
+									status: 500,
+								};
+							} else {
+								throw error;
+							}
+						});
+				}
+				if (response.status === 204) {
+					return {};
+				}
+				return response.json();
+			})
+			.then((json) => {
+				if (Object.prototype.hasOwnProperty.call(json, 'data')) {
+					return deserialize(json);
+				}
+				return json;
+			});
+
+		return showSpinner ? trackPromise(promise) : promise;
 	}
 
 	static getToken() {

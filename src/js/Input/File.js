@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'; // eslint-disable-line import/no-unresolved
+import React, { useContext, useEffect, useRef, useState } from 'react'; // eslint-disable-line import/no-unresolved
 import FormContext from '../FormContext';
 import get from 'get-value';
-import Input from '../Input';
 import PropTypes from 'prop-types';
 
 export default function File({
@@ -27,52 +26,120 @@ export default function File({
 	readOnly,
 	removeText,
 	required,
+	setValue,
+	value,
 	wrapperAttributes,
 	wrapperClassName,
 	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
-	const value = get(formState.row, name) || false;
-	const hasValue = !!value;
-	const [text, setText] = useState(value || emptyText);
-	const [srcs, setSrcs] = useState(value ? [`${imagePrefix}${value}`] : []);
+	const inputRef = useRef(null);
+
+	let currentValue = '';
+	if (setValue !== null) {
+		currentValue = value;
+	} else {
+		if (formState === undefined) {
+			throw new Error('<File> component must be inside a <Form> component.');
+		}
+		currentValue = get(formState.row, name);
+	}
+	if (currentValue === null || currentValue === undefined) {
+		currentValue = '';
+	}
+	const hasValue = multiple ? currentValue.length > 0 : !!currentValue;
+
+	const getFilenames = (v) => {
+		if (v instanceof FileList) {
+			const numFiles = v.length;
+			const output = [];
+			let i;
+			for (i = 0; i < numFiles; i += 1) {
+				output.push(v.item(i).name);
+			}
+			return output.join(', ');
+		}
+		if (Array.isArray(v)) {
+			return v.join(', ');
+		}
+		if (typeof v === 'object') {
+			return v.name;
+		}
+		return v;
+	};
+
+	const getSrcs = (v) => {
+		const output = [];
+		if (v instanceof FileList) {
+			const numFiles = v.length;
+			let i;
+			for (i = 0; i < numFiles; i += 1) {
+				output.push(URL.createObjectURL(v.item(i)));
+			}
+		} else if (Array.isArray(v)) {
+			return v.map((v2) => (`${imagePrefix}${v2}`));
+		} else if (typeof v === 'object') {
+			output.push(URL.createObjectURL(v));
+		} else if (typeof v === 'string') {
+			output.push(`${imagePrefix}${v}`);
+		}
+		return output;
+	};
+
+	const [filenames, setFilenames] = useState(getFilenames(currentValue));
+	const [srcs, setSrcs] = useState(getSrcs(currentValue));
 
 	useEffect(() => {
-		setText(value || emptyText);
-		setSrcs(value ? [`${imagePrefix}${value}`] : []);
-	}, [value]);
+		setFilenames(getFilenames(currentValue));
+		setSrcs(getSrcs(currentValue));
+	}, [currentValue]);
 
 	const onChange = (e) => {
-		const files = e.target.files;
-		const numFiles = files.length;
-		const filenames = [];
-		const newSrcs = [];
-		let i;
+		const newFiles = multiple ? e.target.files : e.target.files.item(0);
 
-		for (i = 0; i < numFiles; i += 1) {
-			filenames.push(files.item(i).name);
-			if (imagePreview) {
-				newSrcs.push(URL.createObjectURL(files.item(i)));
-			}
-		}
-
+		setFilenames(getFilenames(newFiles));
 		if (imagePreview) {
-			setSrcs(newSrcs);
+			setSrcs(getSrcs(newFiles));
 		}
 
-		setText(filenames.join(', '));
-		formState.setValues(formState, e, name, true, afterChange, multiple ? files : files.item(0));
+		if (setValue) {
+			setValue(newFiles);
+		} else {
+			formState.setValues(formState, e, name, newFiles, afterChange, newFiles);
+		}
 	};
 
 	const onRemove = (e) => {
-		setText(emptyText);
-		formState.setValues(formState, e, name, '', afterChange, false);
-		document.getElementById(id || name).focus();
+		setFilenames('');
+
+		const newValue = '';
+		if (setValue) {
+			setValue(newValue);
+		} else {
+			formState.setValues(formState, e, name, newValue, afterChange, newValue);
+		}
+
+		inputRef.current.focus();
 	};
 
 	let prefixClassName = inputWrapperClassName;
 	if (hasValue && !disabled && !readOnly) {
 		prefixClassName += ' formosa-prefix';
+	}
+
+	const props = {};
+	if (id || name) {
+		props.id = id || name;
+	}
+
+	const hiddenProps = {};
+	if (name) {
+		hiddenProps.name = name;
+	}
+
+	const buttonProps = {};
+	if (id || name) {
+		buttonProps.id = `${id || name}-remove`;
 	}
 
 	return (
@@ -104,27 +171,29 @@ export default function File({
 			<div className={`formosa-file-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 				<div className={`formosa-file-input-wrapper ${prefixClassName}`.trim()} {...inputWrapperAttributes}>
 					<div
-						className={`formosa-file-name${text === emptyText ? ' formosa-file-name--empty' : ''}`}
+						className={`formosa-file-name${!filenames ? ' formosa-file-name--empty' : ''}`}
 						id={`${id || name}-name`}
 					>
-						{text}
+						{filenames || emptyText}
 					</div>
 					{!readOnly && (
 						<>
-							<Input
-								className={`formosa-field__input--file ${className}`.trim()}
+							<input
+								className={`formosa-field__input formosa-field__input--file ${className}`.trim()}
 								disabled={disabled}
-								id={id || name}
 								multiple={multiple}
 								onChange={onChange}
+								ref={inputRef}
+								type="file"
+								{...props}
 								{...otherProps}
 							/>
-							<Input
+							<input
 								disabled={disabled}
-								name={name}
 								required={required}
 								type="hidden"
-								value={value}
+								value={currentValue}
+								{...hiddenProps}
 							/>
 						</>
 					)}
@@ -132,9 +201,9 @@ export default function File({
 				{hasValue && !disabled && !readOnly && (
 					<button
 						className={`formosa-button formosa-button--remove-file formosa-postfix ${buttonClassName}`.trim()}
-						id={`${id || name}-remove`}
 						onClick={onRemove}
 						type="button"
+						{...buttonProps}
 						{...buttonAttributes}
 					>
 						{removeText}
@@ -168,6 +237,12 @@ File.propTypes = {
 	readOnly: PropTypes.bool,
 	removeText: PropTypes.string,
 	required: PropTypes.bool,
+	setValue: PropTypes.func,
+	value: PropTypes.oneOfType([
+		PropTypes.array,
+		PropTypes.object,
+		PropTypes.string,
+	]),
 	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
 };
@@ -195,6 +270,8 @@ File.defaultProps = {
 	readOnly: false,
 	removeText: 'Remove',
 	required: false,
+	setValue: null,
+	value: null,
 	wrapperAttributes: null,
 	wrapperClassName: '',
 };

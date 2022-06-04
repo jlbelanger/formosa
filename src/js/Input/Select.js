@@ -15,10 +15,14 @@ export default function Select({
 	iconHeight,
 	iconWidth,
 	id,
-	name,
 	labelKey,
+	loadingText,
+	name,
 	options,
+	setValue,
+	showLoading,
 	url,
+	value,
 	valueKey,
 	wrapperAttributes,
 	wrapperClassName,
@@ -26,12 +30,23 @@ export default function Select({
 }) {
 	const { formState } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
+	const [isLoading, setIsLoading] = useState(showLoading || !!url);
+	const [message, setMessage] = useState('');
 
 	useEffect(() => {
 		if (url) {
-			Api.get(url)
+			Api.get(url, false)
 				.then((response) => {
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
+					setIsLoading(false);
+				})
+				.catch((error) => {
+					if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
+						setMessage(error.errors.map((e) => (e.title)).join(' '));
+						setIsLoading(false);
+					} else {
+						throw error;
+					}
 				});
 		}
 		return () => {};
@@ -42,44 +57,90 @@ export default function Select({
 		return () => {};
 	}, [options]);
 
-	let selectedValue = get(formState.row, name) || '';
-	if (typeof selectedValue === 'object') {
-		selectedValue = JSON.stringify(selectedValue);
+	useEffect(() => {
+		setIsLoading(showLoading);
+		return () => {};
+	}, [showLoading]);
+
+	if (isLoading) {
+		return (<div className="formosa-spinner">{loadingText}</div>);
+	}
+
+	if (message) {
+		return (<div className="formosa-field__error">{message}</div>);
+	}
+
+	let currentValue = '';
+	if (setValue !== null) {
+		currentValue = value;
+	} else {
+		if (formState === undefined) {
+			throw new Error('<Select> component must be inside a <Form> component.');
+		}
+		currentValue = get(formState.row, name);
+	}
+	if (currentValue === null || currentValue === undefined) {
+		currentValue = '';
+	}
+	if (typeof currentValue === 'object') {
+		currentValue = JSON.stringify(currentValue);
 	}
 
 	const onChange = (e) => {
-		let val = e.target.value;
-		const option = e.target.querySelector(`[value="${val.replace(/"/g, '\\"')}"]`);
+		let newValue = e.target.value;
+		const option = e.target.querySelector(`[value="${newValue.replace(/"/g, '\\"')}"]`);
 		if (option.getAttribute('data-json') === 'true') {
-			val = JSON.parse(val);
+			newValue = JSON.parse(newValue);
 		}
-		formState.setValues(formState, e, name, val, afterChange);
+
+		if (setValue) {
+			setValue(newValue);
+		} else {
+			formState.setValues(formState, e, name, newValue, afterChange);
+		}
 	};
+
+	const props = {};
+	if (id || name) {
+		props.id = id || name;
+	}
+	if (name) {
+		props.name = name;
+	}
 
 	return (
 		<div className={`formosa-select-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 			<select
 				className={`formosa-field__input formosa-field__input--select ${className}`.trim()}
-				id={id || name}
-				name={name}
 				onChange={onChange}
-				value={selectedValue}
+				value={currentValue}
+				{...props}
 				{...otherProps}
 			>
-				{!hideBlank && <option />}
-				{optionValues.map(({ label, value }) => {
-					let val = value;
+				{!hideBlank && <option value="" />}
+				{optionValues.map((optionValue) => {
+					let optionValueVal = optionValue.value;
 					let isJson = false;
-					if (typeof val === 'object') {
+					if (typeof optionValueVal === 'object') {
 						isJson = true;
-						val = JSON.stringify(val);
+						optionValueVal = JSON.stringify(optionValueVal);
+					}
+					const optionProps = {};
+					if (isJson) {
+						optionProps['data-json'] = true;
 					}
 					return (
-						<option data-json={isJson} key={val} value={val}>{label}</option>
+						<option key={optionValueVal} value={optionValueVal} {...optionProps}>{optionValue.label}</option>
 					);
 				})}
 			</select>
-			<CaretIcon className={`formosa-icon--caret ${iconClassName}`.trim()} height={iconHeight} width={iconWidth} {...iconAttributes} />
+			<CaretIcon
+				aria-hidden="true"
+				className={`formosa-icon--caret ${iconClassName}`.trim()}
+				height={iconHeight}
+				width={iconWidth}
+				{...iconAttributes}
+			/>
 		</div>
 	);
 }
@@ -93,16 +154,24 @@ Select.propTypes = {
 	iconHeight: PropTypes.number,
 	iconWidth: PropTypes.number,
 	id: PropTypes.string,
-	name: PropTypes.string,
 	labelKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
 	]),
+	loadingText: PropTypes.string,
+	name: PropTypes.string,
 	options: PropTypes.oneOfType([
 		PropTypes.array,
 		PropTypes.object,
 	]),
+	setValue: PropTypes.func,
+	showLoading: PropTypes.bool,
 	url: PropTypes.string,
+	value: PropTypes.oneOfType([
+		PropTypes.number,
+		PropTypes.object,
+		PropTypes.string,
+	]),
 	valueKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
@@ -120,10 +189,14 @@ Select.defaultProps = {
 	iconHeight: 16,
 	iconWidth: 16,
 	id: null,
-	name: '',
 	labelKey: 'name',
+	loadingText: 'Loading...',
+	name: '',
 	options: null,
+	setValue: null,
+	showLoading: false,
 	url: null,
+	value: null,
 	valueKey: null,
 	wrapperAttributes: null,
 	wrapperClassName: '',

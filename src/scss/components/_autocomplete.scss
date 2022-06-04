@@ -5,6 +5,7 @@ $top: if($formosa-input-border-width > 0, calc(100% + #{$formosa-focus-border-wi
 	background-color: $formosa-input-background-color;
 	border: $formosa-input-border-width solid $formosa-input-border-color;
 	border-radius: $formosa-input-border-radius;
+	display: flex;
 	min-height: $formosa-input-height;
 	position: relative;
 }

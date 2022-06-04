@@ -97,12 +97,6 @@ export default function HorizontalForm() {
 				/>
 
 				<Field
-					label="Datetime"
-					name="datetime"
-					type="datetime"
-				/>
-
-				<Field
 					label="Radio"
 					name="radio"
 					type="radio"
@@ -141,25 +135,19 @@ export default function HorizontalForm() {
 					label="Image"
 					name="image"
 					accept="image/*"
+					imagePrefix="/images/"
 					imagePreview
 					type="file"
 				/>
 
 				<Field
-					label="Has many"
-					name="has_many"
-					recordType="attributes"
-					type="has-many"
-					attributes={[
-						{
-							label: 'Key',
-							name: 'key',
-						},
-						{
-							label: 'Value',
-							name: 'value',
-						},
-					]}
+					label="Multiple images"
+					name="multiple_images"
+					accept="image/*"
+					imagePrefix="/images/"
+					imagePreview
+					multiple
+					type="file"
 				/>
 
 				<Submit />

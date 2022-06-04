@@ -211,7 +211,7 @@ import { Field } from '@jlbelanger/formosa';
 |prefix          |`null`    |     |
 |postfix         |`null`    |     |
 |suffix          |`null`    |     |
-|type            |`'text'`  |Accepts any standard HTML type (eg. text, email, file, select, textarea) as well as 'has-many' and 'autocomplete'.|
+|type            |`'text'`  |Accepts any standard HTML type (eg. text, email, file, select, textarea) as well as 'autocomplete'.|
 |wrapperClassName|`''`      |     |
 
 #### [Submit](https://github.com/jlbelanger/formosa/blob/main/src/js/Submit.js)
@@ -357,6 +357,13 @@ import { Field, Form, Message, Submit } from '@jlbelanger/formosa';
 	<Submit />
 </Form>
 ```
+
+## Examples
+
+- [Glick](https://github.com/jlbelanger/glick-app)
+- [Crudnick](https://github.com/jlbelanger/crudnick)
+	- [Corrieography Admin](https://github.com/jlbelanger/corrie-admin)
+	- [Jenny's Wardrobe Admin](https://github.com/jlbelanger/wardrobe-admin)
 
 ## Development
 

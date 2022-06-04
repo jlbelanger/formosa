@@ -1,5 +1,5 @@
 import { filterByKey, normalizeOptions } from '../Helpers/Options';
-import React, { useContext, useEffect, useState } from 'react'; // eslint-disable-line import/no-unresolved
+import React, { useContext, useEffect, useRef, useState } from 'react'; // eslint-disable-line import/no-unresolved
 import Api from '../Helpers/Api';
 import { ReactComponent as CloseIcon } from '../../svg/x.svg';
 import FormContext from '../FormContext';
@@ -21,6 +21,7 @@ export default function Autocomplete({
 	inputClassName,
 	labelFn,
 	labelKey,
+	loadingText,
 	max,
 	name,
 	optionButtonAttributes,
@@ -38,23 +39,40 @@ export default function Autocomplete({
 	removeIconHeight,
 	removeIconWidth,
 	removeText,
+	setValue,
+	showLoading,
 	url,
+	value,
 	valueKey,
 	wrapperAttributes,
 	wrapperClassName,
 	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
+	const clearButtonRef = useRef(null);
+	const inputRef = useRef(null);
+	const removeButtonRef = useRef(null);
 	const [filter, setFilter] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
+	const [isLoading, setIsLoading] = useState(showLoading || !!url);
+	const [message, setMessage] = useState('');
 
 	useEffect(() => {
 		if (url) {
-			Api.get(url)
+			Api.get(url, false)
 				.then((response) => {
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
+					setIsLoading(false);
+				})
+				.catch((error) => {
+					if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
+						setMessage(error.errors.map((e) => (e.title)).join(' '));
+						setIsLoading(false);
+					} else {
+						throw error;
+					}
 				});
 		}
 		return () => {};
@@ -65,16 +83,46 @@ export default function Autocomplete({
 		return () => {};
 	}, [options]);
 
-	let selectedValues = get(formState.row, name);
-	if (!selectedValues) {
-		selectedValues = [];
-	} else if (max === 1) {
-		selectedValues = [selectedValues];
+	useEffect(() => {
+		setIsLoading(showLoading);
+		return () => {};
+	}, [showLoading]);
+
+	if (isLoading) {
+		return (<div className="formosa-spinner">{loadingText}</div>);
 	}
 
-	const isSelected = (option) => (
-		selectedValues.findIndex((value) => (value.value === option.value)) > -1
-	);
+	if (message) {
+		return (<div className="formosa-field__error">{message}</div>);
+	}
+
+	let currentValue = null;
+	if (setValue !== null) {
+		currentValue = value;
+	} else {
+		if (formState === undefined) {
+			throw new Error('<Autocomplete> component must be inside a <Form> component.');
+		}
+		currentValue = get(formState.row, name);
+	}
+	if (currentValue === null || currentValue === undefined || currentValue === '') {
+		currentValue = null;
+	} else if (max === 1 && !Array.isArray(currentValue)) {
+		currentValue = [currentValue];
+	}
+	const currentValueLength = currentValue ? currentValue.length : 0;
+
+	const isSelected = (option) => {
+		if (!currentValue) {
+			return false;
+		}
+		return currentValue.findIndex((v) => {
+			if (typeof v === 'object') {
+				return JSON.stringify(v) === JSON.stringify(option.value);
+			}
+			return v === option.value;
+		}) > -1;
+	};
 
 	let filteredOptions = [];
 	if (filter) {
@@ -84,47 +132,41 @@ export default function Autocomplete({
 
 	const focus = () => {
 		setTimeout(() => {
-			const elem = document.getElementById(id || name);
-			if (elem) {
-				elem.focus();
+			if (inputRef.current) {
+				inputRef.current.focus();
 			}
 		});
 	};
 
-	const addValue = (value) => {
+	const addValue = (v) => {
 		let newValue;
 		if (max === 1) {
-			newValue = value;
-
-			selectedValues = [value];
+			newValue = v;
+		} else if (currentValue) {
+			newValue = [...currentValue, v];
 		} else {
-			newValue = get(formState.row, name);
-			if (newValue) {
-				newValue = [...newValue, value];
-			} else {
-				newValue = [value];
-			}
-
-			selectedValues = [...selectedValues, value];
+			newValue = [v];
 		}
 
-		const e = { target: { name } };
-		formState.setValues(formState, e, name, newValue, afterChange);
+		if (setValue) {
+			setValue(newValue);
+		} else {
+			const e = { target: { name } };
+			formState.setValues(formState, e, name, newValue, afterChange);
+		}
 
 		setIsOpen(false);
 		setFilter('');
 		if (max === 1) {
 			setTimeout(() => {
-				const elem = document.querySelector(`[id="${id || name}-wrapper"] .formosa-autocomplete__value__remove`);
-				if (elem) {
-					elem.focus();
+				if (removeButtonRef.current) {
+					removeButtonRef.current.focus();
 				}
 			});
-		} else if (max === selectedValues.length) {
+		} else if (max === currentValueLength) {
 			setTimeout(() => {
-				const elem = document.querySelector(`[id="${id || name}-wrapper"] .formosa-autocomplete__clear`);
-				if (elem) {
-					elem.focus();
+				if (clearButtonRef.current) {
+					clearButtonRef.current.focus();
 				}
 			});
 		} else {
@@ -136,28 +178,26 @@ export default function Autocomplete({
 		}
 	};
 
-	const removeValue = (value) => {
-		let newValue = get(formState.row, name);
+	const removeValue = (v) => {
+		let newValue = [];
+		if (currentValue) {
+			newValue = [...currentValue];
+		}
 		if (max !== 1) {
-			let index = newValue.indexOf(value);
+			const index = newValue.indexOf(v);
 			if (index > -1) {
 				newValue.splice(index, 1);
 			}
-
-			const newSelectedValues = [...selectedValues];
-			index = newSelectedValues.indexOf(value);
-			if (index > -1) {
-				newSelectedValues.splice(index, 1);
-				selectedValues = newSelectedValues;
-			}
 		} else {
-			newValue = null;
-
-			selectedValues = [];
+			newValue = '';
 		}
 
-		const e = { target: { name } };
-		formState.setValues(formState, e, name, newValue, afterChange);
+		if (setValue) {
+			setValue(newValue);
+		} else {
+			const e = { target: { name } };
+			formState.setValues(formState, e, name, newValue, afterChange);
+		}
 
 		focus();
 	};
@@ -173,11 +213,10 @@ export default function Autocomplete({
 
 	const onKeyDown = (e) => {
 		const filterValue = e.target.value;
-		const numValues = selectedValues ? selectedValues.length : 0;
 		if (e.key === 'Enter' && filterValue && filteredOptions.length > 0) {
 			e.preventDefault();
-		} else if (e.key === 'Backspace' && !filter && numValues > 0) {
-			removeValue(selectedValues[numValues - 1]);
+		} else if (e.key === 'Backspace' && !filter && currentValueLength > 0) {
+			removeValue(currentValue[currentValueLength - 1]);
 		}
 	};
 
@@ -185,7 +224,7 @@ export default function Autocomplete({
 		const filterValue = e.target.value;
 		if (e.key === 'Enter' && filterValue && filteredOptions.length > 0) {
 			e.preventDefault();
-			addValue(filteredOptions[highlightedIndex]);
+			addValue(filteredOptions[highlightedIndex].value);
 		} else if (e.key === 'ArrowDown') {
 			if (highlightedIndex >= (filteredOptions.length - 1)) {
 				setHighlightedIndex(0);
@@ -219,19 +258,24 @@ export default function Autocomplete({
 		while (button && button.tagName.toUpperCase() !== 'BUTTON') {
 			button = button.parentNode;
 		}
-		removeValue(selectedValues[button.getAttribute('data-index')]);
+		removeValue(currentValue[button.getAttribute('data-index')]);
 	};
 
 	const clear = () => {
-		const e = { target: { name } };
-		formState.setValues(formState, e, name, [], afterChange);
+		const newValue = [];
+
+		if (setValue) {
+			setValue(newValue);
+		} else {
+			const e = { target: { name } };
+			formState.setValues(formState, e, name, newValue, afterChange);
+		}
 
 		setFilter('');
-		selectedValues = [];
 		focus();
 	};
 
-	const showClear = clearable && max !== 1 && selectedValues.length > 0 && !disabled && !readOnly;
+	const showClear = clearable && max !== 1 && currentValueLength > 0 && !disabled && !readOnly;
 
 	let className = ['formosa-autocomplete'];
 	if (showClear) {
@@ -239,125 +283,131 @@ export default function Autocomplete({
 	}
 	className = className.join(' ');
 
-	const canAddValues = !disabled && !readOnly && (max === null || selectedValues.length < max);
+	const canAddValues = !disabled && !readOnly && (max === null || currentValueLength < max);
+
+	const wrapperProps = {};
+	if (id || name) {
+		wrapperProps.id = `${id || name}-wrapper`;
+	}
 
 	return (
 		<div
 			className={`${className} ${wrapperClassName}`.trim()}
-			data-value={JSON.stringify(get(formState.row, name))} /* For testing. */
-			id={`${id || name}-wrapper`}
+			data-value={JSON.stringify(max === 1 && currentValueLength > 0 ? currentValue[0] : currentValue)} /* For testing. */
+			{...wrapperProps}
 			{...wrapperAttributes}
 		>
-			<div style={{ display: 'flex' }}>
-				<ul className="formosa-autocomplete__values">
-					{selectedValues && selectedValues.map((value, index) => {
-						let val = value;
+			<ul className="formosa-autocomplete__values">
+				{currentValue && currentValue.map((v, index) => {
+					let val = v;
+					let isJson = false;
+					if (typeof val === 'object') {
+						val = JSON.stringify(val);
+						isJson = true;
+					}
+
+					const option = optionValues.find((o) => (
+						isJson ? JSON.stringify(o.value) === val : o.value === val
+					));
+
+					let label = '';
+					if (labelFn) {
+						label = labelFn(option || v);
+					} else if (option && Object.prototype.hasOwnProperty.call(option, 'label')) {
+						label = option.label;
+					}
+
+					return (
+						<li className="formosa-autocomplete__value formosa-autocomplete__value--item" key={val}>
+							{label}
+							{!disabled && !readOnly && (
+								<button
+									className={`formosa-autocomplete__value__remove ${removeButtonClassName}`.trim()}
+									data-index={index}
+									onClick={onClickRemoveOption}
+									ref={removeButtonRef}
+									type="button"
+									{...removeButtonAttributes}
+								>
+									<CloseIcon aria-hidden="true" height={removeIconHeight} width={removeIconWidth} {...removeIconAttributes} />
+									{removeText}
+								</button>
+							)}
+						</li>
+					);
+				})}
+				{canAddValues && (
+					<li className="formosa-autocomplete__value formosa-autocomplete__value--input">
+						<input
+							{...otherProps}
+							autoComplete="off"
+							className={`formosa-field__input formosa-autocomplete__input ${inputClassName}`.trim()}
+							id={id || name}
+							onChange={onChange}
+							onFocus={onFocus}
+							onKeyDown={onKeyDown}
+							onKeyUp={onKeyUp}
+							placeholder={placeholder}
+							ref={inputRef}
+							type="text"
+							value={filter}
+						/>
+					</li>
+				)}
+			</ul>
+
+			{isOpen && filteredOptions.length > 0 && (
+				<ul className={`formosa-autocomplete__options ${optionListClassName}`.trim()} {...optionListAttributes}>
+					{filteredOptions.map((option, index) => {
+						let optionClassName = ['formosa-autocomplete__option'];
+						if (highlightedIndex === index) {
+							optionClassName.push('formosa-autocomplete__option--highlighted');
+						}
+						optionClassName = optionClassName.join(' ');
+
+						let val = option.value;
 						let isJson = false;
 						if (typeof val === 'object') {
-							val = JSON.stringify(val);
 							isJson = true;
-						}
-
-						const option = optionValues.find((o) => (
-							isJson ? JSON.stringify(o.value) === val : o.value === val
-						));
-
-						let label = '';
-						if (labelFn) {
-							label = labelFn(option || value);
-						} else if (option && Object.prototype.hasOwnProperty.call(option, 'label')) {
-							label = option.label;
+							val = JSON.stringify(val);
 						}
 
 						return (
-							<li className="formosa-autocomplete__value formosa-autocomplete__value--item" key={val}>
-								{label}
-								{!disabled && !readOnly && (
-									<button
-										className={`formosa-autocomplete__value__remove ${removeButtonClassName}`.trim()}
-										data-index={index}
-										onClick={onClickRemoveOption}
-										type="button"
-										{...removeButtonAttributes}
-									>
-										<CloseIcon height={removeIconHeight} width={removeIconWidth} {...removeIconAttributes} />
-										{removeText}
-									</button>
-								)}
+							<li
+								className={`${optionClassName} ${optionListItemClassName}`.trim()}
+								key={val}
+								{...optionListItemAttributes}
+							>
+								<button
+									className={`formosa-autocomplete__option__button ${optionButtonClassName}`.trim()}
+									data-json={isJson}
+									data-value={val}
+									onClick={onClickOption}
+									type="button"
+									{...optionButtonAttributes}
+								>
+									{option.label}
+								</button>
 							</li>
 						);
 					})}
-					{canAddValues && (
-						<li className="formosa-autocomplete__value formosa-autocomplete__value--input">
-							<input
-								{...otherProps}
-								autoComplete="off"
-								className={`formosa-field__input formosa-autocomplete__input ${inputClassName}`.trim()}
-								id={id || name}
-								onChange={onChange}
-								onFocus={onFocus}
-								onKeyDown={onKeyDown}
-								onKeyUp={onKeyUp}
-								placeholder={placeholder}
-								type="text"
-								value={filter}
-							/>
-						</li>
-					)}
 				</ul>
+			)}
 
-				{isOpen && filteredOptions.length > 0 && (
-					<ul className={`formosa-autocomplete__options ${optionListClassName}`.trim()} {...optionListAttributes}>
-						{filteredOptions.map((option, index) => {
-							let optionClassName = ['formosa-autocomplete__option'];
-							if (highlightedIndex === index) {
-								optionClassName.push('formosa-autocomplete__option--highlighted');
-							}
-							optionClassName = optionClassName.join(' ');
-
-							let val = option.value;
-							let isJson = false;
-							if (typeof val === 'object') {
-								isJson = true;
-								val = JSON.stringify(val);
-							}
-
-							return (
-								<li
-									className={`${optionClassName} ${optionListItemClassName}`.trim()}
-									key={val}
-									{...optionListItemAttributes}
-								>
-									<button
-										className={`formosa-autocomplete__option__button ${optionButtonClassName}`.trim()}
-										data-json={isJson}
-										data-value={val}
-										onClick={onClickOption}
-										type="button"
-										{...optionButtonAttributes}
-									>
-										{option.label}
-									</button>
-								</li>
-							);
-						})}
-					</ul>
-				)}
-
-				{showClear && (
-					<div>
-						<button
-							className={`formosa-autocomplete__clear ${clearButtonClassName}`.trim()}
-							onClick={clear}
-							type="button"
-							{...clearButtonAttributes}
-						>
-							<CloseIcon height={clearIconHeight} width={clearIconWidth} {...clearIconAttributes} />
-							{clearText}
-						</button>
-					</div>
-				)}
-			</div>
+			{showClear && (
+				<div>
+					<button
+						className={`formosa-autocomplete__clear ${clearButtonClassName}`.trim()}
+						onClick={clear}
+						ref={clearButtonRef}
+						type="button"
+						{...clearButtonAttributes}
+					>
+						<CloseIcon aria-hidden="true" height={clearIconHeight} width={clearIconWidth} {...clearIconAttributes} />
+						{clearText}
+					</button>
+				</div>
+			)}
 		</div>
 	);
 }
@@ -380,8 +430,9 @@ Autocomplete.propTypes = {
 		PropTypes.func,
 		PropTypes.string,
 	]),
+	loadingText: PropTypes.string,
 	max: PropTypes.number,
-	name: PropTypes.string.isRequired,
+	name: PropTypes.string,
 	optionButtonAttributes: PropTypes.object,
 	optionButtonClassName: PropTypes.string,
 	optionListAttributes: PropTypes.object,
@@ -400,7 +451,17 @@ Autocomplete.propTypes = {
 	removeIconHeight: PropTypes.number,
 	removeIconWidth: PropTypes.number,
 	removeText: PropTypes.string,
+	setValue: PropTypes.func,
+	showLoading: PropTypes.bool,
 	url: PropTypes.string,
+	value: PropTypes.oneOfType([
+		PropTypes.arrayOf(PropTypes.number),
+		PropTypes.arrayOf(PropTypes.object),
+		PropTypes.arrayOf(PropTypes.string),
+		PropTypes.number,
+		PropTypes.object,
+		PropTypes.string,
+	]),
 	valueKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
@@ -424,7 +485,9 @@ Autocomplete.defaultProps = {
 	inputClassName: '',
 	labelFn: null,
 	labelKey: 'name',
+	loadingText: 'Loading...',
 	max: null,
+	name: '',
 	optionButtonAttributes: null,
 	optionButtonClassName: '',
 	optionListAttributes: null,
@@ -440,7 +503,10 @@ Autocomplete.defaultProps = {
 	removeIconHeight: 12,
 	removeIconWidth: 12,
 	removeText: 'Remove',
+	setValue: null,
+	showLoading: false,
 	url: null,
+	value: null,
 	valueKey: null,
 	wrapperAttributes: null,
 	wrapperClassName: '',

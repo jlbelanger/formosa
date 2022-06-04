@@ -185,6 +185,8 @@ export const getBody = (
 			values = filterValues(values);
 		}
 
+		const fileKeys = Object.keys(formState.files);
+
 		keys.forEach((key) => {
 			const cleanKey = key.replace(/\..+$/, '');
 			if (relationshipNames.includes(cleanKey)) {
@@ -199,6 +201,8 @@ export const getBody = (
 				set(data, key, get(values, key));
 			} else if (key === 'meta') {
 				data.meta = values.meta;
+			} else if (fileKeys.includes(key)) {
+				set(data.attributes, key, true);
 			} else if (key !== '_new' && !key.startsWith('_new.')) {
 				set(data.attributes, key, get(values, key));
 			}
@@ -213,10 +217,14 @@ export const getBody = (
 
 		Object.keys(data.relationships).forEach((relationshipName) => {
 			if (typeof data.relationships[relationshipName].data === 'string') {
-				data.relationships[relationshipName].data = JSON.parse(data.relationships[relationshipName].data);
+				if (data.relationships[relationshipName].data === '') {
+					data.relationships[relationshipName].data = null;
+				} else {
+					data.relationships[relationshipName].data = JSON.parse(data.relationships[relationshipName].data);
+				}
 			}
-			if (Array.isArray(data.relationships[relationshipName].data)) {
-				data.relationships[relationshipName].data = data.relationships[relationshipName].data.map((rel) => (cleanRelationship(rel)));
+			if (data.relationships[relationshipName].data) {
+				data.relationships[relationshipName].data = cleanRelationship(data.relationships[relationshipName].data);
 			}
 		});
 
@@ -234,7 +242,7 @@ export const getBody = (
 			delete data.relationships;
 		}
 
-		const filenames = Object.keys(formState.files).filter((filename) => (formState.files[filename] !== false));
+		const filenames = fileKeys.filter((filename) => (formState.files[filename] !== false));
 		if (filenames.length > 0) {
 			const formData = new FormData();
 			formData.append('json', JSON.stringify(body));
