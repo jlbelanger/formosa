@@ -37,6 +37,11 @@ export default class Api {
 
 		const fullUrl = url.startsWith('http') ? url : `${process.env.REACT_APP_API_URL}/${url}`;
 
+		const event = new CustomEvent('formosaApiRequest', { cancelable: true, detail: { url: fullUrl, options } });
+		if (!document.dispatchEvent(event)) {
+			return Promise.resolve();
+		}
+
 		const promise = fetch(fullUrl, options)
 			.then((response) => {
 				if (!response.ok) {

@@ -380,6 +380,18 @@ var Api = /*#__PURE__*/function () {
     }
 
     var fullUrl = url.startsWith('http') ? url : process.env.REACT_APP_API_URL + "/" + url;
+    var event = new CustomEvent('formosaApiRequest', {
+      cancelable: true,
+      detail: {
+        url: fullUrl,
+        options: options
+      }
+    });
+
+    if (!document.dispatchEvent(event)) {
+      return Promise.resolve();
+    }
+
     var promise = fetch(fullUrl, options).then(function (response) {
       if (!response.ok) {
         return response.json().then(function (json) {
