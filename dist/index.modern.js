@@ -214,6 +214,20 @@ var getIncluded = function getIncluded(data, dirtyIncluded, relationshipNames) {
   return included;
 };
 
+var unset = function unset(obj, key) {
+  if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    return delete obj[key];
+  }
+
+  var keys = key.split('.');
+  var lastKey = keys.pop();
+  var o = obj;
+  keys.forEach(function (k) {
+    o = o[k];
+  });
+  return delete o[lastKey];
+};
+
 var getBody = function getBody(method, type, id, formState, relationshipNames, filterBody, filterValues) {
   var body = null;
 
@@ -254,7 +268,7 @@ var getBody = function getBody(method, type, id, formState, relationshipNames, f
       } else if (key === 'meta') {
         data.meta = values.meta;
       } else if (fileKeys.includes(key)) {
-        set(data.attributes, key, true);
+        unset(data.attributes, key);
       } else if (key !== '_new' && !key.startsWith('_new.')) {
         set(data.attributes, key, get(values, key));
       }

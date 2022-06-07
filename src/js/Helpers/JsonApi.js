@@ -155,6 +155,20 @@ const getIncluded = (data, dirtyIncluded, relationshipNames) => {
 	return included;
 };
 
+const unset = (obj, key) => {
+	if (Object.prototype.hasOwnProperty.call(obj, key)) {
+		return delete obj[key];
+	}
+
+	const keys = key.split('.');
+	const lastKey = keys.pop();
+	let o = obj;
+	keys.forEach((k) => {
+		o = o[k];
+	});
+	return delete o[lastKey];
+};
+
 export const getBody = (
 	method,
 	type,
@@ -202,7 +216,7 @@ export const getBody = (
 			} else if (key === 'meta') {
 				data.meta = values.meta;
 			} else if (fileKeys.includes(key)) {
-				set(data.attributes, key, true);
+				unset(data.attributes, key);
 			} else if (key !== '_new' && !key.startsWith('_new.')) {
 				set(data.attributes, key, get(values, key));
 			}
