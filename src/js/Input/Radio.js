@@ -8,8 +8,9 @@ import PropTypes from 'prop-types';
 export default function Radio({
 	afterChange,
 	className,
+	inputAttributes,
+	itemLabelAttributes,
 	label,
-	labelAttributes,
 	labelClassName,
 	labelKey,
 	listAttributes,
@@ -110,19 +111,38 @@ export default function Radio({
 
 				const checked = currentValue === optionValueVal;
 
-				const optionProps = {};
+				let listItemProps = {};
+				if (typeof listItemAttributes === 'function') {
+					listItemProps = listItemAttributes(optionValue);
+				} else if (listItemAttributes && typeof listItemAttributes === 'object') {
+					listItemProps = listItemAttributes;
+				}
+
+				let labelProps = {};
+				if (typeof itemLabelAttributes === 'function') {
+					labelProps = itemLabelAttributes(optionValue);
+				} else if (itemLabelAttributes && typeof itemLabelAttributes === 'object') {
+					labelProps = itemLabelAttributes;
+				}
+
+				let inputProps = {};
+				if (typeof inputAttributes === 'function') {
+					inputProps = inputAttributes(optionValue);
+				} else if (inputAttributes && typeof inputAttributes === 'object') {
+					inputProps = inputAttributes;
+				}
 				if (isJson) {
-					optionProps['data-json'] = true;
+					inputProps['data-json'] = true;
 				}
 				if (name) {
-					optionProps.name = name;
+					inputProps.name = name;
 				}
 
 				return (
-					<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={optionValueVal} {...listItemAttributes}>
+					<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={optionValueVal} {...listItemProps}>
 						<label
 							className={`formosa-radio__label${checked ? ' formosa-radio__label--checked' : ''} ${labelClassName}`.trim()}
-							{...labelAttributes}
+							{...labelProps}
 						>
 							<input
 								checked={checked}
@@ -131,7 +151,7 @@ export default function Radio({
 								required={required}
 								type="radio"
 								value={optionValueVal}
-								{...optionProps}
+								{...inputProps}
 								{...otherProps}
 							/>
 							{optionValue.label}
@@ -146,8 +166,15 @@ export default function Radio({
 Radio.propTypes = {
 	afterChange: PropTypes.func,
 	className: PropTypes.string,
+	inputAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
+	itemLabelAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
 	label: PropTypes.string,
-	labelAttributes: PropTypes.object,
 	labelClassName: PropTypes.string,
 	labelKey: PropTypes.oneOfType([
 		PropTypes.func,
@@ -155,7 +182,10 @@ Radio.propTypes = {
 	]),
 	listAttributes: PropTypes.object,
 	listClassName: PropTypes.string,
-	listItemAttributes: PropTypes.object,
+	listItemAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
 	listItemClassName: PropTypes.string,
 	loadingText: PropTypes.string,
 	name: PropTypes.string,
@@ -181,8 +211,9 @@ Radio.propTypes = {
 Radio.defaultProps = {
 	afterChange: null,
 	className: '',
+	inputAttributes: null,
+	itemLabelAttributes: null,
 	label: '',
-	labelAttributes: null,
 	labelClassName: '',
 	labelKey: 'name',
 	listAttributes: null,

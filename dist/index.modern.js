@@ -636,7 +636,7 @@ function SvgX(props) {
   })));
 }
 
-var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "loadingText", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "loadingText", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "setValue", "showLoading", "url", "value", "valueKey", "valueListItemAttributes", "wrapperAttributes", "wrapperClassName"];
 function Autocomplete(_ref) {
   var afterAdd = _ref.afterAdd,
       afterChange = _ref.afterChange,
@@ -675,6 +675,7 @@ function Autocomplete(_ref) {
       url = _ref.url,
       value = _ref.value,
       valueKey = _ref.valueKey,
+      valueListItemAttributes = _ref.valueListItemAttributes,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded);
@@ -1001,20 +1002,44 @@ function Autocomplete(_ref) {
       label = option.label;
     }
 
-    return /*#__PURE__*/React__default.createElement("li", {
+    var valueListItemProps = {};
+
+    if (typeof valueListItemAttributes === 'function') {
+      valueListItemProps = valueListItemAttributes(option);
+    } else if (valueListItemAttributes && typeof valueListItemAttributes === 'object') {
+      valueListItemProps = valueListItemAttributes;
+    }
+
+    var removeButtonProps = {};
+
+    if (typeof removeButtonAttributes === 'function') {
+      removeButtonProps = removeButtonAttributes(option);
+    } else if (removeButtonAttributes && typeof removeButtonAttributes === 'object') {
+      removeButtonProps = removeButtonAttributes;
+    }
+
+    var removeIconProps = {};
+
+    if (typeof removeIconAttributes === 'function') {
+      removeIconProps = removeIconAttributes(option);
+    } else if (removeIconAttributes && typeof removeIconAttributes === 'object') {
+      removeIconProps = removeIconAttributes;
+    }
+
+    return /*#__PURE__*/React__default.createElement("li", _extends({
       className: "formosa-autocomplete__value formosa-autocomplete__value--item",
       key: val
-    }, label, !disabled && !readOnly && /*#__PURE__*/React__default.createElement("button", _extends({
+    }, valueListItemProps), label, !disabled && !readOnly && /*#__PURE__*/React__default.createElement("button", _extends({
       className: ("formosa-autocomplete__value__remove " + removeButtonClassName).trim(),
       "data-index": index,
       onClick: onClickRemoveOption,
       ref: removeButtonRef,
       type: "button"
-    }, removeButtonAttributes), /*#__PURE__*/React__default.createElement(SvgX, _extends({
+    }, removeButtonProps), /*#__PURE__*/React__default.createElement(SvgX, _extends({
       "aria-hidden": "true",
       height: removeIconHeight,
       width: removeIconWidth
-    }, removeIconAttributes)), removeText));
+    }, removeIconProps)), removeText));
   }), canAddValues && /*#__PURE__*/React__default.createElement("li", {
     className: "formosa-autocomplete__value formosa-autocomplete__value--input"
   }, /*#__PURE__*/React__default.createElement("input", _extends({}, otherProps, {
@@ -1047,16 +1072,32 @@ function Autocomplete(_ref) {
       val = JSON.stringify(val);
     }
 
+    var optionListItemProps = {};
+
+    if (typeof optionListItemAttributes === 'function') {
+      optionListItemProps = optionListItemAttributes(option);
+    } else if (optionListItemAttributes && typeof optionListItemAttributes === 'object') {
+      optionListItemProps = optionListItemAttributes;
+    }
+
+    var optionButtonProps = {};
+
+    if (typeof optionButtonAttributes === 'function') {
+      optionButtonProps = optionButtonAttributes(option);
+    } else if (optionButtonAttributes && typeof optionButtonAttributes === 'object') {
+      optionButtonProps = optionButtonAttributes;
+    }
+
     return /*#__PURE__*/React__default.createElement("li", _extends({
       className: (optionClassName + " " + optionListItemClassName).trim(),
       key: val
-    }, optionListItemAttributes), /*#__PURE__*/React__default.createElement("button", _extends({
+    }, optionListItemProps), /*#__PURE__*/React__default.createElement("button", _extends({
       className: ("formosa-autocomplete__option__button " + optionButtonClassName).trim(),
       "data-json": isJson,
       "data-value": val,
       onClick: onClickOption,
       type: "button"
-    }, optionButtonAttributes), option.label));
+    }, optionButtonProps), option.label));
   })), showClear && /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement("button", _extends({
     className: ("formosa-autocomplete__clear " + clearButtonClassName).trim(),
     onClick: clear,
@@ -1086,11 +1127,11 @@ Autocomplete.propTypes = {
   loadingText: PropTypes.string,
   max: PropTypes.number,
   name: PropTypes.string,
-  optionButtonAttributes: PropTypes.object,
+  optionButtonAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   optionButtonClassName: PropTypes.string,
   optionListAttributes: PropTypes.object,
   optionListClassName: PropTypes.string,
-  optionListItemAttributes: PropTypes.object,
+  optionListItemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   optionListItemClassName: PropTypes.string,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   placeholder: PropTypes.string,
@@ -1106,6 +1147,7 @@ Autocomplete.propTypes = {
   url: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.arrayOf(PropTypes.object), PropTypes.arrayOf(PropTypes.string), PropTypes.number, PropTypes.object, PropTypes.string]),
   valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  valueListItemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   wrapperAttributes: PropTypes.object,
   wrapperClassName: PropTypes.string
 };
@@ -1147,6 +1189,7 @@ Autocomplete.defaultProps = {
   url: null,
   value: null,
   valueKey: null,
+  valueListItemAttributes: null,
   wrapperAttributes: null,
   wrapperClassName: ''
 };
@@ -1245,7 +1288,8 @@ function CheckboxList(_ref) {
       iconClassName = _ref.iconClassName,
       iconHeight = _ref.iconHeight,
       iconWidth = _ref.iconWidth,
-      labelAttributes = _ref.labelAttributes,
+      inputAttributes = _ref.inputAttributes,
+      itemLabelAttributes = _ref.itemLabelAttributes,
       labelClassName = _ref.labelClassName,
       labelKey = _ref.labelKey,
       listAttributes = _ref.listAttributes,
@@ -1374,24 +1418,54 @@ function CheckboxList(_ref) {
     }
 
     var checked = currentValue.includes(optionValueVal);
-    var optionProps = {};
+    var listItemProps = {};
+
+    if (typeof listItemAttributes === 'function') {
+      listItemProps = listItemAttributes(optionValue);
+    } else if (listItemAttributes && typeof listItemAttributes === 'object') {
+      listItemProps = listItemAttributes;
+    }
+
+    var labelProps = {};
+
+    if (typeof itemLabelAttributes === 'function') {
+      labelProps = itemLabelAttributes(optionValue);
+    } else if (itemLabelAttributes && typeof itemLabelAttributes === 'object') {
+      labelProps = itemLabelAttributes;
+    }
+
+    var inputProps = {};
+
+    if (typeof inputAttributes === 'function') {
+      inputProps = inputAttributes(optionValue);
+    } else if (inputAttributes && typeof inputAttributes === 'object') {
+      inputProps = inputAttributes;
+    }
 
     if (isJson) {
-      optionProps['data-json'] = true;
+      inputProps['data-json'] = true;
     }
 
     if (name) {
-      optionProps.name = name + "[]";
+      inputProps.name = name + "[]";
+    }
+
+    var iconProps = {};
+
+    if (typeof iconAttributes === 'function') {
+      iconProps = iconAttributes(optionValue);
+    } else if (iconAttributes && typeof iconAttributes === 'object') {
+      iconProps = iconAttributes;
     }
 
     return /*#__PURE__*/React__default.createElement("li", _extends({
       className: ("formosa-radio__item " + listItemClassName).trim(),
       key: optionValueVal
-    }, listItemAttributes), /*#__PURE__*/React__default.createElement("div", {
+    }, listItemProps), /*#__PURE__*/React__default.createElement("div", {
       className: "formosa-input-wrapper formosa-input-wrapper--checkbox"
     }, /*#__PURE__*/React__default.createElement("label", _extends({
       className: ("formosa-radio__label" + (checked ? ' formosa-radio__label--checked' : '') + " " + labelClassName).trim()
-    }, labelAttributes), /*#__PURE__*/React__default.createElement("input", _extends({
+    }, labelProps), /*#__PURE__*/React__default.createElement("input", _extends({
       checked: checked,
       className: ("formosa-field__input formosa-field__input--checkbox " + className).trim(),
       disabled: disabled,
@@ -1399,28 +1473,29 @@ function CheckboxList(_ref) {
       readOnly: readOnly,
       type: "checkbox",
       value: optionValueVal
-    }, optionProps)), /*#__PURE__*/React__default.createElement(SvgCheck, _extends({
+    }, inputProps)), /*#__PURE__*/React__default.createElement(SvgCheck, _extends({
       "aria-hidden": "true",
       className: ("formosa-icon--check " + iconClassName).trim(),
       height: iconHeight,
       width: iconWidth
-    }, iconAttributes)), optionValue.label)));
+    }, iconProps)), optionValue.label)));
   }));
 }
 CheckboxList.propTypes = {
   afterChange: PropTypes.func,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  iconAttributes: PropTypes.object,
+  iconAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   iconClassName: PropTypes.string,
   iconHeight: PropTypes.number,
   iconWidth: PropTypes.number,
-  labelAttributes: PropTypes.object,
+  inputAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  itemLabelAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   labelClassName: PropTypes.string,
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   listAttributes: PropTypes.object,
   listClassName: PropTypes.string,
-  listItemAttributes: PropTypes.object,
+  listItemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   listItemClassName: PropTypes.string,
   loadingText: PropTypes.string,
   name: PropTypes.string,
@@ -1440,7 +1515,8 @@ CheckboxList.defaultProps = {
   iconClassName: '',
   iconHeight: 16,
   iconWidth: 16,
-  labelAttributes: null,
+  inputAttributes: null,
+  itemLabelAttributes: null,
   labelClassName: '',
   labelKey: 'name',
   listAttributes: null,
@@ -1886,11 +1962,12 @@ Password.defaultProps = {
   wrapperClassName: ''
 };
 
-var _excluded$5 = ["afterChange", "className", "label", "labelAttributes", "labelClassName", "labelKey", "listAttributes", "listClassName", "listItemAttributes", "listItemClassName", "loadingText", "name", "options", "required", "setValue", "showLoading", "url", "value", "valueKey"];
+var _excluded$5 = ["afterChange", "className", "inputAttributes", "itemLabelAttributes", "label", "labelClassName", "labelKey", "listAttributes", "listClassName", "listItemAttributes", "listItemClassName", "loadingText", "name", "options", "required", "setValue", "showLoading", "url", "value", "valueKey"];
 function Radio(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
-      labelAttributes = _ref.labelAttributes,
+      inputAttributes = _ref.inputAttributes,
+      itemLabelAttributes = _ref.itemLabelAttributes,
       labelClassName = _ref.labelClassName,
       labelKey = _ref.labelKey,
       listAttributes = _ref.listAttributes,
@@ -2009,41 +2086,64 @@ function Radio(_ref) {
     }
 
     var checked = currentValue === optionValueVal;
-    var optionProps = {};
+    var listItemProps = {};
+
+    if (typeof listItemAttributes === 'function') {
+      listItemProps = listItemAttributes(optionValue);
+    } else if (listItemAttributes && typeof listItemAttributes === 'object') {
+      listItemProps = listItemAttributes;
+    }
+
+    var labelProps = {};
+
+    if (typeof itemLabelAttributes === 'function') {
+      labelProps = itemLabelAttributes(optionValue);
+    } else if (itemLabelAttributes && typeof itemLabelAttributes === 'object') {
+      labelProps = itemLabelAttributes;
+    }
+
+    var inputProps = {};
+
+    if (typeof inputAttributes === 'function') {
+      inputProps = inputAttributes(optionValue);
+    } else if (inputAttributes && typeof inputAttributes === 'object') {
+      inputProps = inputAttributes;
+    }
 
     if (isJson) {
-      optionProps['data-json'] = true;
+      inputProps['data-json'] = true;
     }
 
     if (name) {
-      optionProps.name = name;
+      inputProps.name = name;
     }
 
     return /*#__PURE__*/React__default.createElement("li", _extends({
       className: ("formosa-radio__item " + listItemClassName).trim(),
       key: optionValueVal
-    }, listItemAttributes), /*#__PURE__*/React__default.createElement("label", _extends({
+    }, listItemProps), /*#__PURE__*/React__default.createElement("label", _extends({
       className: ("formosa-radio__label" + (checked ? ' formosa-radio__label--checked' : '') + " " + labelClassName).trim()
-    }, labelAttributes), /*#__PURE__*/React__default.createElement("input", _extends({
+    }, labelProps), /*#__PURE__*/React__default.createElement("input", _extends({
       checked: checked,
       className: ("formosa-field__input formosa-radio__input " + className).trim(),
       onChange: onChange,
       required: required,
       type: "radio",
       value: optionValueVal
-    }, optionProps, otherProps)), optionValue.label));
+    }, inputProps, otherProps)), optionValue.label));
   }));
 }
 Radio.propTypes = {
   afterChange: PropTypes.func,
   className: PropTypes.string,
+  inputAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  itemLabelAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   label: PropTypes.string,
-  labelAttributes: PropTypes.object,
   labelClassName: PropTypes.string,
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   listAttributes: PropTypes.object,
   listClassName: PropTypes.string,
-  listItemAttributes: PropTypes.object,
+  listItemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   listItemClassName: PropTypes.string,
   loadingText: PropTypes.string,
   name: PropTypes.string,
@@ -2058,8 +2158,9 @@ Radio.propTypes = {
 Radio.defaultProps = {
   afterChange: null,
   className: '',
+  inputAttributes: null,
+  itemLabelAttributes: null,
   label: '',
-  labelAttributes: null,
   labelClassName: '',
   labelKey: 'name',
   listAttributes: null,
@@ -2176,7 +2277,7 @@ function SvgCaret(props) {
   })));
 }
 
-var _excluded$7 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "name", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded$7 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "name", "optionAttributes", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
 function Select(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2189,6 +2290,7 @@ function Select(_ref) {
       labelKey = _ref.labelKey,
       loadingText = _ref.loadingText,
       name = _ref.name,
+      optionAttributes = _ref.optionAttributes,
       options = _ref.options,
       setValue = _ref.setValue,
       showLoading = _ref.showLoading,
@@ -2318,6 +2420,12 @@ function Select(_ref) {
 
     var optionProps = {};
 
+    if (typeof optionAttributes === 'function') {
+      optionProps = optionAttributes(optionValue);
+    } else if (optionAttributes && typeof optionAttributes === 'object') {
+      optionProps = optionAttributes;
+    }
+
     if (isJson) {
       optionProps['data-json'] = true;
     }
@@ -2345,6 +2453,7 @@ Select.propTypes = {
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   loadingText: PropTypes.string,
   name: PropTypes.string,
+  optionAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   setValue: PropTypes.func,
   showLoading: PropTypes.bool,
@@ -2366,6 +2475,7 @@ Select.defaultProps = {
   labelKey: 'name',
   loadingText: 'Loading...',
   name: '',
+  optionAttributes: null,
   options: null,
   setValue: null,
   showLoading: false,

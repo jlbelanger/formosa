@@ -14,7 +14,8 @@ export default function CheckboxList({
 	iconClassName,
 	iconHeight,
 	iconWidth,
-	labelAttributes,
+	inputAttributes,
+	itemLabelAttributes,
 	labelClassName,
 	labelKey,
 	listAttributes,
@@ -122,20 +123,46 @@ export default function CheckboxList({
 
 				const checked = currentValue.includes(optionValueVal);
 
-				const optionProps = {};
+				let listItemProps = {};
+				if (typeof listItemAttributes === 'function') {
+					listItemProps = listItemAttributes(optionValue);
+				} else if (listItemAttributes && typeof listItemAttributes === 'object') {
+					listItemProps = listItemAttributes;
+				}
+
+				let labelProps = {};
+				if (typeof itemLabelAttributes === 'function') {
+					labelProps = itemLabelAttributes(optionValue);
+				} else if (itemLabelAttributes && typeof itemLabelAttributes === 'object') {
+					labelProps = itemLabelAttributes;
+				}
+
+				let inputProps = {};
+				if (typeof inputAttributes === 'function') {
+					inputProps = inputAttributes(optionValue);
+				} else if (inputAttributes && typeof inputAttributes === 'object') {
+					inputProps = inputAttributes;
+				}
 				if (isJson) {
-					optionProps['data-json'] = true;
+					inputProps['data-json'] = true;
 				}
 				if (name) {
-					optionProps.name = `${name}[]`;
+					inputProps.name = `${name}[]`;
+				}
+
+				let iconProps = {};
+				if (typeof iconAttributes === 'function') {
+					iconProps = iconAttributes(optionValue);
+				} else if (iconAttributes && typeof iconAttributes === 'object') {
+					iconProps = iconAttributes;
 				}
 
 				return (
-					<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={optionValueVal} {...listItemAttributes}>
+					<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={optionValueVal} {...listItemProps}>
 						<div className="formosa-input-wrapper formosa-input-wrapper--checkbox">
 							<label
 								className={`formosa-radio__label${checked ? ' formosa-radio__label--checked' : ''} ${labelClassName}`.trim()}
-								{...labelAttributes}
+								{...labelProps}
 							>
 								<input
 									checked={checked}
@@ -145,14 +172,14 @@ export default function CheckboxList({
 									readOnly={readOnly}
 									type="checkbox"
 									value={optionValueVal}
-									{...optionProps}
+									{...inputProps}
 								/>
 								<CheckIcon
 									aria-hidden="true"
 									className={`formosa-icon--check ${iconClassName}`.trim()}
 									height={iconHeight}
 									width={iconWidth}
-									{...iconAttributes}
+									{...iconProps}
 								/>
 								{optionValue.label}
 							</label>
@@ -168,11 +195,21 @@ CheckboxList.propTypes = {
 	afterChange: PropTypes.func,
 	className: PropTypes.string,
 	disabled: PropTypes.bool,
-	iconAttributes: PropTypes.object,
+	iconAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
 	iconClassName: PropTypes.string,
 	iconHeight: PropTypes.number,
 	iconWidth: PropTypes.number,
-	labelAttributes: PropTypes.object,
+	inputAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
+	itemLabelAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
 	labelClassName: PropTypes.string,
 	labelKey: PropTypes.oneOfType([
 		PropTypes.func,
@@ -180,7 +217,10 @@ CheckboxList.propTypes = {
 	]),
 	listAttributes: PropTypes.object,
 	listClassName: PropTypes.string,
-	listItemAttributes: PropTypes.object,
+	listItemAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
 	listItemClassName: PropTypes.string,
 	loadingText: PropTypes.string,
 	name: PropTypes.string,
@@ -211,7 +251,8 @@ CheckboxList.defaultProps = {
 	iconClassName: '',
 	iconHeight: 16,
 	iconWidth: 16,
-	labelAttributes: null,
+	inputAttributes: null,
+	itemLabelAttributes: null,
 	labelClassName: '',
 	labelKey: 'name',
 	listAttributes: null,

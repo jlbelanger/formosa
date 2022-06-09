@@ -18,6 +18,7 @@ export default function Select({
 	labelKey,
 	loadingText,
 	name,
+	optionAttributes,
 	options,
 	setValue,
 	showLoading,
@@ -125,10 +126,17 @@ export default function Select({
 						isJson = true;
 						optionValueVal = JSON.stringify(optionValueVal);
 					}
-					const optionProps = {};
+
+					let optionProps = {};
+					if (typeof optionAttributes === 'function') {
+						optionProps = optionAttributes(optionValue);
+					} else if (optionAttributes && typeof optionAttributes === 'object') {
+						optionProps = optionAttributes;
+					}
 					if (isJson) {
 						optionProps['data-json'] = true;
 					}
+
 					return (
 						<option key={optionValueVal} value={optionValueVal} {...optionProps}>{optionValue.label}</option>
 					);
@@ -160,6 +168,10 @@ Select.propTypes = {
 	]),
 	loadingText: PropTypes.string,
 	name: PropTypes.string,
+	optionAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
 	options: PropTypes.oneOfType([
 		PropTypes.array,
 		PropTypes.object,
@@ -192,6 +204,7 @@ Select.defaultProps = {
 	labelKey: 'name',
 	loadingText: 'Loading...',
 	name: '',
+	optionAttributes: null,
 	options: null,
 	setValue: null,
 	showLoading: false,

@@ -44,6 +44,7 @@ export default function Autocomplete({
 	url,
 	value,
 	valueKey,
+	valueListItemAttributes,
 	wrapperAttributes,
 	wrapperClassName,
 	...otherProps
@@ -317,8 +318,29 @@ export default function Autocomplete({
 						label = option.label;
 					}
 
+					let valueListItemProps = {};
+					if (typeof valueListItemAttributes === 'function') {
+						valueListItemProps = valueListItemAttributes(option);
+					} else if (valueListItemAttributes && typeof valueListItemAttributes === 'object') {
+						valueListItemProps = valueListItemAttributes;
+					}
+
+					let removeButtonProps = {};
+					if (typeof removeButtonAttributes === 'function') {
+						removeButtonProps = removeButtonAttributes(option);
+					} else if (removeButtonAttributes && typeof removeButtonAttributes === 'object') {
+						removeButtonProps = removeButtonAttributes;
+					}
+
+					let removeIconProps = {};
+					if (typeof removeIconAttributes === 'function') {
+						removeIconProps = removeIconAttributes(option);
+					} else if (removeIconAttributes && typeof removeIconAttributes === 'object') {
+						removeIconProps = removeIconAttributes;
+					}
+
 					return (
-						<li className="formosa-autocomplete__value formosa-autocomplete__value--item" key={val}>
+						<li className="formosa-autocomplete__value formosa-autocomplete__value--item" key={val} {...valueListItemProps}>
 							{label}
 							{!disabled && !readOnly && (
 								<button
@@ -327,9 +349,9 @@ export default function Autocomplete({
 									onClick={onClickRemoveOption}
 									ref={removeButtonRef}
 									type="button"
-									{...removeButtonAttributes}
+									{...removeButtonProps}
 								>
-									<CloseIcon aria-hidden="true" height={removeIconHeight} width={removeIconWidth} {...removeIconAttributes} />
+									<CloseIcon aria-hidden="true" height={removeIconHeight} width={removeIconWidth} {...removeIconProps} />
 									{removeText}
 								</button>
 							)}
@@ -372,11 +394,25 @@ export default function Autocomplete({
 							val = JSON.stringify(val);
 						}
 
+						let optionListItemProps = {};
+						if (typeof optionListItemAttributes === 'function') {
+							optionListItemProps = optionListItemAttributes(option);
+						} else if (optionListItemAttributes && typeof optionListItemAttributes === 'object') {
+							optionListItemProps = optionListItemAttributes;
+						}
+
+						let optionButtonProps = {};
+						if (typeof optionButtonAttributes === 'function') {
+							optionButtonProps = optionButtonAttributes(option);
+						} else if (optionButtonAttributes && typeof optionButtonAttributes === 'object') {
+							optionButtonProps = optionButtonAttributes;
+						}
+
 						return (
 							<li
 								className={`${optionClassName} ${optionListItemClassName}`.trim()}
 								key={val}
-								{...optionListItemAttributes}
+								{...optionListItemProps}
 							>
 								<button
 									className={`formosa-autocomplete__option__button ${optionButtonClassName}`.trim()}
@@ -384,7 +420,7 @@ export default function Autocomplete({
 									data-value={val}
 									onClick={onClickOption}
 									type="button"
-									{...optionButtonAttributes}
+									{...optionButtonProps}
 								>
 									{option.label}
 								</button>
@@ -433,11 +469,17 @@ Autocomplete.propTypes = {
 	loadingText: PropTypes.string,
 	max: PropTypes.number,
 	name: PropTypes.string,
-	optionButtonAttributes: PropTypes.object,
+	optionButtonAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
 	optionButtonClassName: PropTypes.string,
 	optionListAttributes: PropTypes.object,
 	optionListClassName: PropTypes.string,
-	optionListItemAttributes: PropTypes.object,
+	optionListItemAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
 	optionListItemClassName: PropTypes.string,
 	options: PropTypes.oneOfType([
 		PropTypes.array,
@@ -465,6 +507,10 @@ Autocomplete.propTypes = {
 	valueKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
+	]),
+	valueListItemAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
 	]),
 	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
@@ -508,6 +554,7 @@ Autocomplete.defaultProps = {
 	url: null,
 	value: null,
 	valueKey: null,
+	valueListItemAttributes: null,
 	wrapperAttributes: null,
 	wrapperClassName: '',
 };
