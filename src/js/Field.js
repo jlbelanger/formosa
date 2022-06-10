@@ -55,6 +55,9 @@ export default function Field({
 		if (readOnly && type === 'number') {
 			inputProps.type = 'text';
 		}
+		if (['radio', 'checkbox-list'].includes(type) && !inputProps.legend) {
+			inputProps.legend = label;
+		}
 	}
 
 	let InputComponent = getInputElement(type, component);

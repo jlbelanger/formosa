@@ -453,9 +453,21 @@ input.formosa-field__input--password.formosa-field__input {
     position: relative; }
 
 .formosa-radio {
+  border: 0;
   list-style: none;
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  position: relative; }
+
+.formosa-radio__legend {
+  bottom: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  font-size: 0;
+  margin: 0;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  top: 0; }
 
 .formosa-radio--inline {
   display: flex;
@@ -463,6 +475,9 @@ input.formosa-field__input--password.formosa-field__input {
   .formosa-radio--inline .formosa-radio__item {
     margin-bottom: 8px;
     margin-right: 16px; }
+
+.formosa-radio__item {
+  position: relative; }
 
 .formosa-radio__item + .formosa-radio__item {
   margin-top: 8px; }

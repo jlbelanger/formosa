@@ -20,9 +20,13 @@ export default function Label({
 		wrapperClassName += ' formosa-label-wrapper--checkbox';
 	}
 
+	const hasFieldset = ['radio', 'checkbox-list', 'has-many'].includes(type);
 	const props = {};
-	if (htmlFor && type !== 'has-many') {
+	if (htmlFor && !hasFieldset) {
 		props.htmlFor = htmlFor;
+	}
+	if (hasFieldset) {
+		props['aria-hidden'] = true;
 	}
 
 	return (

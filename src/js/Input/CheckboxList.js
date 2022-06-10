@@ -10,18 +10,21 @@ export default function CheckboxList({
 	afterChange,
 	className,
 	disabled,
+	fieldsetAttributes,
+	fieldsetClassName,
 	iconAttributes,
 	iconClassName,
 	iconHeight,
 	iconWidth,
 	inputAttributes,
+	itemAttributes,
+	itemClassName,
 	itemLabelAttributes,
-	labelClassName,
+	itemLabelClassName,
+	itemSpanAttributes,
+	itemSpanClassName,
 	labelKey,
-	listAttributes,
-	listClassName,
-	listItemAttributes,
-	listItemClassName,
+	legend,
 	loadingText,
 	name,
 	options,
@@ -31,6 +34,7 @@ export default function CheckboxList({
 	url,
 	value,
 	valueKey,
+	...otherProps
 }) {
 	const { formState } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
@@ -112,7 +116,8 @@ export default function CheckboxList({
 	};
 
 	return (
-		<ul className={`formosa-radio ${listClassName}`.trim()} {...listAttributes}>
+		<fieldset className={`formosa-radio ${fieldsetClassName}`.trim()} {...fieldsetAttributes}>
+			<legend className="formosa-radio__legend">{legend}</legend>
 			{optionValues.map((optionValue) => {
 				let optionValueVal = optionValue.value;
 				let isJson = false;
@@ -123,18 +128,18 @@ export default function CheckboxList({
 
 				const checked = currentValue.includes(optionValueVal);
 
-				let listItemProps = {};
-				if (typeof listItemAttributes === 'function') {
-					listItemProps = listItemAttributes(optionValue);
-				} else if (listItemAttributes && typeof listItemAttributes === 'object') {
-					listItemProps = listItemAttributes;
+				let itemProps = {};
+				if (typeof itemAttributes === 'function') {
+					itemProps = itemAttributes(optionValue);
+				} else if (itemAttributes && typeof itemAttributes === 'object') {
+					itemProps = itemAttributes;
 				}
 
-				let labelProps = {};
+				let itemLabelProps = {};
 				if (typeof itemLabelAttributes === 'function') {
-					labelProps = itemLabelAttributes(optionValue);
+					itemLabelProps = itemLabelAttributes(optionValue);
 				} else if (itemLabelAttributes && typeof itemLabelAttributes === 'object') {
-					labelProps = itemLabelAttributes;
+					itemLabelProps = itemLabelAttributes;
 				}
 
 				let inputProps = {};
@@ -157,37 +162,46 @@ export default function CheckboxList({
 					iconProps = iconAttributes;
 				}
 
+				let itemSpanProps = {};
+				if (typeof itemSpanAttributes === 'function') {
+					itemSpanProps = itemSpanAttributes(optionValue);
+				} else if (itemSpanAttributes && typeof itemSpanAttributes === 'object') {
+					itemSpanProps = itemSpanAttributes;
+				}
+
 				return (
-					<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={optionValueVal} {...listItemProps}>
-						<div className="formosa-input-wrapper formosa-input-wrapper--checkbox">
-							<label
-								className={`formosa-radio__label${checked ? ' formosa-radio__label--checked' : ''} ${labelClassName}`.trim()}
-								{...labelProps}
-							>
-								<input
-									checked={checked}
-									className={`formosa-field__input formosa-field__input--checkbox ${className}`.trim()}
-									disabled={disabled}
-									onChange={onChange}
-									readOnly={readOnly}
-									type="checkbox"
-									value={optionValueVal}
-									{...inputProps}
-								/>
-								<CheckIcon
-									aria-hidden="true"
-									className={`formosa-icon--check ${iconClassName}`.trim()}
-									height={iconHeight}
-									width={iconWidth}
-									{...iconProps}
-								/>
+					<div className={`formosa-radio__item ${itemClassName}`.trim()} key={optionValueVal} {...itemProps}>
+						<label
+							className={`formosa-radio__label${checked ? ' formosa-radio__label--checked' : ''} ${itemLabelClassName}`.trim()}
+							{...itemLabelProps}
+						>
+							<input
+								aria-label={optionValue.label}
+								checked={checked}
+								className={`formosa-field__input formosa-field__input--checkbox ${className}`.trim()}
+								disabled={disabled}
+								onChange={onChange}
+								readOnly={readOnly}
+								value={optionValueVal}
+								{...inputProps}
+								{...otherProps}
+								type="checkbox"
+							/>
+							<CheckIcon
+								aria-hidden="true"
+								className={`formosa-icon--check ${iconClassName}`.trim()}
+								height={iconHeight}
+								width={iconWidth}
+								{...iconProps}
+							/>
+							<span aria-hidden="true" className={`formosa-radio__span ${itemSpanClassName}`.trim()} {...itemSpanProps}>
 								{optionValue.label}
-							</label>
-						</div>
-					</li>
+							</span>
+						</label>
+					</div>
 				);
 			})}
-		</ul>
+		</fieldset>
 	);
 }
 
@@ -195,6 +209,8 @@ CheckboxList.propTypes = {
 	afterChange: PropTypes.func,
 	className: PropTypes.string,
 	disabled: PropTypes.bool,
+	fieldsetAttributes: PropTypes.object,
+	fieldsetClassName: PropTypes.string,
 	iconAttributes: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.object,
@@ -206,22 +222,26 @@ CheckboxList.propTypes = {
 		PropTypes.func,
 		PropTypes.object,
 	]),
+	itemAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
+	itemClassName: PropTypes.string,
 	itemLabelAttributes: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.object,
 	]),
-	labelClassName: PropTypes.string,
+	itemLabelClassName: PropTypes.string,
+	itemSpanAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
+	itemSpanClassName: PropTypes.string,
 	labelKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
 	]),
-	listAttributes: PropTypes.object,
-	listClassName: PropTypes.string,
-	listItemAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
-	listItemClassName: PropTypes.string,
+	legend: PropTypes.string,
 	loadingText: PropTypes.string,
 	name: PropTypes.string,
 	options: PropTypes.oneOfType([
@@ -247,18 +267,21 @@ CheckboxList.defaultProps = {
 	afterChange: null,
 	className: '',
 	disabled: false,
+	fieldsetAttributes: null,
+	fieldsetClassName: '',
 	iconAttributes: null,
 	iconClassName: '',
 	iconHeight: 16,
 	iconWidth: 16,
 	inputAttributes: null,
+	itemAttributes: null,
+	itemClassName: '',
 	itemLabelAttributes: null,
-	labelClassName: '',
+	itemLabelClassName: '',
+	itemSpanAttributes: null,
+	itemSpanClassName: '',
 	labelKey: 'name',
-	listAttributes: null,
-	listClassName: '',
-	listItemAttributes: null,
-	listItemClassName: '',
+	legend: '',
 	loadingText: 'Loading...',
 	name: '',
 	options: null,

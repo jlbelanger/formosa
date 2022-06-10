@@ -8,15 +8,18 @@ import PropTypes from 'prop-types';
 export default function Radio({
 	afterChange,
 	className,
+	fieldsetAttributes,
+	fieldsetClassName,
 	inputAttributes,
+	itemAttributes,
+	itemClassName,
 	itemLabelAttributes,
+	itemLabelClassName,
+	itemSpanAttributes,
+	itemSpanClassName,
 	label,
-	labelClassName,
 	labelKey,
-	listAttributes,
-	listClassName,
-	listItemAttributes,
-	listItemClassName,
+	legend,
 	loadingText,
 	name,
 	options,
@@ -100,7 +103,8 @@ export default function Radio({
 	};
 
 	return (
-		<ul className={`formosa-radio ${listClassName}`.trim()} {...listAttributes}>
+		<fieldset className={`formosa-radio ${fieldsetClassName}`.trim()} {...fieldsetAttributes}>
+			<legend className="formosa-radio__legend">{legend}</legend>
 			{optionValues.map((optionValue) => {
 				let optionValueVal = optionValue.value;
 				let isJson = false;
@@ -111,18 +115,18 @@ export default function Radio({
 
 				const checked = currentValue === optionValueVal;
 
-				let listItemProps = {};
-				if (typeof listItemAttributes === 'function') {
-					listItemProps = listItemAttributes(optionValue);
-				} else if (listItemAttributes && typeof listItemAttributes === 'object') {
-					listItemProps = listItemAttributes;
+				let itemProps = {};
+				if (typeof itemAttributes === 'function') {
+					itemProps = itemAttributes(optionValue);
+				} else if (itemAttributes && typeof itemAttributes === 'object') {
+					itemProps = itemAttributes;
 				}
 
-				let labelProps = {};
+				let itemLabelProps = {};
 				if (typeof itemLabelAttributes === 'function') {
-					labelProps = itemLabelAttributes(optionValue);
+					itemLabelProps = itemLabelAttributes(optionValue);
 				} else if (itemLabelAttributes && typeof itemLabelAttributes === 'object') {
-					labelProps = itemLabelAttributes;
+					itemLabelProps = itemLabelAttributes;
 				}
 
 				let inputProps = {};
@@ -138,13 +142,21 @@ export default function Radio({
 					inputProps.name = name;
 				}
 
+				let itemSpanProps = {};
+				if (typeof itemSpanAttributes === 'function') {
+					itemSpanProps = itemSpanAttributes(optionValue);
+				} else if (itemSpanAttributes && typeof itemSpanAttributes === 'object') {
+					itemSpanProps = itemSpanAttributes;
+				}
+
 				return (
-					<li className={`formosa-radio__item ${listItemClassName}`.trim()} key={optionValueVal} {...listItemProps}>
+					<div className={`formosa-radio__item ${itemClassName}`.trim()} key={optionValueVal} {...itemProps}>
 						<label
-							className={`formosa-radio__label${checked ? ' formosa-radio__label--checked' : ''} ${labelClassName}`.trim()}
-							{...labelProps}
+							className={`formosa-radio__label${checked ? ' formosa-radio__label--checked' : ''} ${itemLabelClassName}`.trim()}
+							{...itemLabelProps}
 						>
 							<input
+								aria-label={optionValue.label}
 								checked={checked}
 								className={`formosa-field__input formosa-radio__input ${className}`.trim()}
 								onChange={onChange}
@@ -154,39 +166,47 @@ export default function Radio({
 								{...inputProps}
 								{...otherProps}
 							/>
-							{optionValue.label}
+							<span aria-hidden="true" className={`formosa-radio__span ${itemSpanClassName}`.trim()} {...itemSpanProps}>
+								{optionValue.label}
+							</span>
 						</label>
-					</li>
+					</div>
 				);
 			})}
-		</ul>
+		</fieldset>
 	);
 }
 
 Radio.propTypes = {
 	afterChange: PropTypes.func,
 	className: PropTypes.string,
+	fieldsetAttributes: PropTypes.object,
+	fieldsetClassName: PropTypes.string,
 	inputAttributes: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.object,
 	]),
+	itemAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
+	itemClassName: PropTypes.string,
 	itemLabelAttributes: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.object,
 	]),
+	itemLabelClassName: PropTypes.string,
+	itemSpanAttributes: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.object,
+	]),
+	itemSpanClassName: PropTypes.string,
 	label: PropTypes.string,
-	labelClassName: PropTypes.string,
 	labelKey: PropTypes.oneOfType([
 		PropTypes.func,
 		PropTypes.string,
 	]),
-	listAttributes: PropTypes.object,
-	listClassName: PropTypes.string,
-	listItemAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
-	listItemClassName: PropTypes.string,
+	legend: PropTypes.string,
 	loadingText: PropTypes.string,
 	name: PropTypes.string,
 	options: PropTypes.oneOfType([
@@ -211,15 +231,18 @@ Radio.propTypes = {
 Radio.defaultProps = {
 	afterChange: null,
 	className: '',
+	fieldsetAttributes: null,
+	fieldsetClassName: '',
 	inputAttributes: null,
+	itemAttributes: null,
+	itemClassName: '',
 	itemLabelAttributes: null,
+	itemLabelClassName: '',
+	itemSpanAttributes: null,
+	itemSpanClassName: '',
 	label: '',
-	labelClassName: '',
 	labelKey: 'name',
-	listAttributes: null,
-	listClassName: '',
-	listItemAttributes: null,
-	listItemClassName: '',
+	legend: '',
 	loadingText: 'Loading...',
 	name: '',
 	options: null,

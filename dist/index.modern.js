@@ -1280,22 +1280,26 @@ Checkbox.defaultProps = {
   value: null
 };
 
+var _excluded$2 = ["afterChange", "className", "disabled", "fieldsetAttributes", "fieldsetClassName", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "inputAttributes", "itemAttributes", "itemClassName", "itemLabelAttributes", "itemLabelClassName", "itemSpanAttributes", "itemSpanClassName", "labelKey", "legend", "loadingText", "name", "options", "readOnly", "setValue", "showLoading", "url", "value", "valueKey"];
 function CheckboxList(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
       disabled = _ref.disabled,
+      fieldsetAttributes = _ref.fieldsetAttributes,
+      fieldsetClassName = _ref.fieldsetClassName,
       iconAttributes = _ref.iconAttributes,
       iconClassName = _ref.iconClassName,
       iconHeight = _ref.iconHeight,
       iconWidth = _ref.iconWidth,
       inputAttributes = _ref.inputAttributes,
+      itemAttributes = _ref.itemAttributes,
+      itemClassName = _ref.itemClassName,
       itemLabelAttributes = _ref.itemLabelAttributes,
-      labelClassName = _ref.labelClassName,
+      itemLabelClassName = _ref.itemLabelClassName,
+      itemSpanAttributes = _ref.itemSpanAttributes,
+      itemSpanClassName = _ref.itemSpanClassName,
       labelKey = _ref.labelKey,
-      listAttributes = _ref.listAttributes,
-      listClassName = _ref.listClassName,
-      listItemAttributes = _ref.listItemAttributes,
-      listItemClassName = _ref.listItemClassName,
+      legend = _ref.legend,
       loadingText = _ref.loadingText,
       name = _ref.name,
       options = _ref.options,
@@ -1304,7 +1308,8 @@ function CheckboxList(_ref) {
       showLoading = _ref.showLoading,
       url = _ref.url,
       value = _ref.value,
-      valueKey = _ref.valueKey;
+      valueKey = _ref.valueKey,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$2);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
@@ -1406,9 +1411,11 @@ function CheckboxList(_ref) {
     }
   };
 
-  return /*#__PURE__*/React__default.createElement("ul", _extends({
-    className: ("formosa-radio " + listClassName).trim()
-  }, listAttributes), optionValues.map(function (optionValue) {
+  return /*#__PURE__*/React__default.createElement("fieldset", _extends({
+    className: ("formosa-radio " + fieldsetClassName).trim()
+  }, fieldsetAttributes), /*#__PURE__*/React__default.createElement("legend", {
+    className: "formosa-radio__legend"
+  }, legend), optionValues.map(function (optionValue) {
     var optionValueVal = optionValue.value;
     var isJson = false;
 
@@ -1418,20 +1425,20 @@ function CheckboxList(_ref) {
     }
 
     var checked = currentValue.includes(optionValueVal);
-    var listItemProps = {};
+    var itemProps = {};
 
-    if (typeof listItemAttributes === 'function') {
-      listItemProps = listItemAttributes(optionValue);
-    } else if (listItemAttributes && typeof listItemAttributes === 'object') {
-      listItemProps = listItemAttributes;
+    if (typeof itemAttributes === 'function') {
+      itemProps = itemAttributes(optionValue);
+    } else if (itemAttributes && typeof itemAttributes === 'object') {
+      itemProps = itemAttributes;
     }
 
-    var labelProps = {};
+    var itemLabelProps = {};
 
     if (typeof itemLabelAttributes === 'function') {
-      labelProps = itemLabelAttributes(optionValue);
+      itemLabelProps = itemLabelAttributes(optionValue);
     } else if (itemLabelAttributes && typeof itemLabelAttributes === 'object') {
-      labelProps = itemLabelAttributes;
+      itemLabelProps = itemLabelAttributes;
     }
 
     var inputProps = {};
@@ -1458,45 +1465,59 @@ function CheckboxList(_ref) {
       iconProps = iconAttributes;
     }
 
-    return /*#__PURE__*/React__default.createElement("li", _extends({
-      className: ("formosa-radio__item " + listItemClassName).trim(),
+    var itemSpanProps = {};
+
+    if (typeof itemSpanAttributes === 'function') {
+      itemSpanProps = itemSpanAttributes(optionValue);
+    } else if (itemSpanAttributes && typeof itemSpanAttributes === 'object') {
+      itemSpanProps = itemSpanAttributes;
+    }
+
+    return /*#__PURE__*/React__default.createElement("div", _extends({
+      className: ("formosa-radio__item " + itemClassName).trim(),
       key: optionValueVal
-    }, listItemProps), /*#__PURE__*/React__default.createElement("div", {
-      className: "formosa-input-wrapper formosa-input-wrapper--checkbox"
-    }, /*#__PURE__*/React__default.createElement("label", _extends({
-      className: ("formosa-radio__label" + (checked ? ' formosa-radio__label--checked' : '') + " " + labelClassName).trim()
-    }, labelProps), /*#__PURE__*/React__default.createElement("input", _extends({
+    }, itemProps), /*#__PURE__*/React__default.createElement("label", _extends({
+      className: ("formosa-radio__label" + (checked ? ' formosa-radio__label--checked' : '') + " " + itemLabelClassName).trim()
+    }, itemLabelProps), /*#__PURE__*/React__default.createElement("input", _extends({
+      "aria-label": optionValue.label,
       checked: checked,
       className: ("formosa-field__input formosa-field__input--checkbox " + className).trim(),
       disabled: disabled,
       onChange: onChange,
       readOnly: readOnly,
-      type: "checkbox",
       value: optionValueVal
-    }, inputProps)), /*#__PURE__*/React__default.createElement(SvgCheck, _extends({
+    }, inputProps, otherProps, {
+      type: "checkbox"
+    })), /*#__PURE__*/React__default.createElement(SvgCheck, _extends({
       "aria-hidden": "true",
       className: ("formosa-icon--check " + iconClassName).trim(),
       height: iconHeight,
       width: iconWidth
-    }, iconProps)), optionValue.label)));
+    }, iconProps)), /*#__PURE__*/React__default.createElement("span", _extends({
+      "aria-hidden": "true",
+      className: ("formosa-radio__span " + itemSpanClassName).trim()
+    }, itemSpanProps), optionValue.label)));
   }));
 }
 CheckboxList.propTypes = {
   afterChange: PropTypes.func,
   className: PropTypes.string,
   disabled: PropTypes.bool,
+  fieldsetAttributes: PropTypes.object,
+  fieldsetClassName: PropTypes.string,
   iconAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   iconClassName: PropTypes.string,
   iconHeight: PropTypes.number,
   iconWidth: PropTypes.number,
   inputAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  itemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  itemClassName: PropTypes.string,
   itemLabelAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  labelClassName: PropTypes.string,
+  itemLabelClassName: PropTypes.string,
+  itemSpanAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  itemSpanClassName: PropTypes.string,
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  listAttributes: PropTypes.object,
-  listClassName: PropTypes.string,
-  listItemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  listItemClassName: PropTypes.string,
+  legend: PropTypes.string,
   loadingText: PropTypes.string,
   name: PropTypes.string,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
@@ -1511,18 +1532,21 @@ CheckboxList.defaultProps = {
   afterChange: null,
   className: '',
   disabled: false,
+  fieldsetAttributes: null,
+  fieldsetClassName: '',
   iconAttributes: null,
   iconClassName: '',
   iconHeight: 16,
   iconWidth: 16,
   inputAttributes: null,
+  itemAttributes: null,
+  itemClassName: '',
   itemLabelAttributes: null,
-  labelClassName: '',
+  itemLabelClassName: '',
+  itemSpanAttributes: null,
+  itemSpanClassName: '',
   labelKey: 'name',
-  listAttributes: null,
-  listClassName: '',
-  listItemAttributes: null,
-  listItemClassName: '',
+  legend: '',
   loadingText: 'Loading...',
   name: '',
   options: null,
@@ -1534,7 +1558,7 @@ CheckboxList.defaultProps = {
   valueKey: null
 };
 
-var _excluded$2 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageAttributes", "imageClassName", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "linkAttributes", "linkClassName", "linkImage", "multiple", "name", "readOnly", "removeText", "required", "setValue", "value", "wrapperAttributes", "wrapperClassName"];
+var _excluded$3 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageAttributes", "imageClassName", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "linkAttributes", "linkClassName", "linkImage", "multiple", "name", "readOnly", "removeText", "required", "setValue", "value", "wrapperAttributes", "wrapperClassName"];
 function File(_ref) {
   var afterChange = _ref.afterChange,
       buttonAttributes = _ref.buttonAttributes,
@@ -1562,7 +1586,7 @@ function File(_ref) {
       value = _ref.value,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$2);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$3);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
@@ -1821,7 +1845,7 @@ ConditionalWrapper.defaultProps = {
   condition: false
 };
 
-var _excluded$3 = ["afterChange", "className", "id", "name", "setValue", "suffix", "type", "value"];
+var _excluded$4 = ["afterChange", "className", "id", "name", "setValue", "suffix", "type", "value"];
 function Input(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -1831,7 +1855,7 @@ function Input(_ref) {
       suffix = _ref.suffix,
       type = _ref.type,
       value = _ref.value,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$3);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$4);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
@@ -1907,7 +1931,7 @@ Input.defaultProps = {
   value: null
 };
 
-var _excluded$4 = ["buttonAttributes", "buttonClassName", "className", "hideText", "showText", "wrapperAttributes", "wrapperClassName"];
+var _excluded$5 = ["buttonAttributes", "buttonClassName", "className", "hideText", "showText", "wrapperAttributes", "wrapperClassName"];
 function Password(_ref) {
   var buttonAttributes = _ref.buttonAttributes,
       buttonClassName = _ref.buttonClassName,
@@ -1916,7 +1940,7 @@ function Password(_ref) {
       showText = _ref.showText,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$4);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$5);
 
   var _useState = useState('password'),
       tempType = _useState[0],
@@ -1962,18 +1986,21 @@ Password.defaultProps = {
   wrapperClassName: ''
 };
 
-var _excluded$5 = ["afterChange", "className", "inputAttributes", "itemLabelAttributes", "label", "labelClassName", "labelKey", "listAttributes", "listClassName", "listItemAttributes", "listItemClassName", "loadingText", "name", "options", "required", "setValue", "showLoading", "url", "value", "valueKey"];
+var _excluded$6 = ["afterChange", "className", "fieldsetAttributes", "fieldsetClassName", "inputAttributes", "itemAttributes", "itemClassName", "itemLabelAttributes", "itemLabelClassName", "itemSpanAttributes", "itemSpanClassName", "label", "labelKey", "legend", "loadingText", "name", "options", "required", "setValue", "showLoading", "url", "value", "valueKey"];
 function Radio(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
+      fieldsetAttributes = _ref.fieldsetAttributes,
+      fieldsetClassName = _ref.fieldsetClassName,
       inputAttributes = _ref.inputAttributes,
+      itemAttributes = _ref.itemAttributes,
+      itemClassName = _ref.itemClassName,
       itemLabelAttributes = _ref.itemLabelAttributes,
-      labelClassName = _ref.labelClassName,
+      itemLabelClassName = _ref.itemLabelClassName,
+      itemSpanAttributes = _ref.itemSpanAttributes,
+      itemSpanClassName = _ref.itemSpanClassName,
       labelKey = _ref.labelKey,
-      listAttributes = _ref.listAttributes,
-      listClassName = _ref.listClassName,
-      listItemAttributes = _ref.listItemAttributes,
-      listItemClassName = _ref.listItemClassName,
+      legend = _ref.legend,
       loadingText = _ref.loadingText,
       name = _ref.name,
       options = _ref.options,
@@ -1983,7 +2010,7 @@ function Radio(_ref) {
       url = _ref.url,
       value = _ref.value,
       valueKey = _ref.valueKey,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$5);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$6);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
@@ -2074,9 +2101,11 @@ function Radio(_ref) {
     }
   };
 
-  return /*#__PURE__*/React__default.createElement("ul", _extends({
-    className: ("formosa-radio " + listClassName).trim()
-  }, listAttributes), optionValues.map(function (optionValue) {
+  return /*#__PURE__*/React__default.createElement("fieldset", _extends({
+    className: ("formosa-radio " + fieldsetClassName).trim()
+  }, fieldsetAttributes), /*#__PURE__*/React__default.createElement("legend", {
+    className: "formosa-radio__legend"
+  }, legend), optionValues.map(function (optionValue) {
     var optionValueVal = optionValue.value;
     var isJson = false;
 
@@ -2086,20 +2115,20 @@ function Radio(_ref) {
     }
 
     var checked = currentValue === optionValueVal;
-    var listItemProps = {};
+    var itemProps = {};
 
-    if (typeof listItemAttributes === 'function') {
-      listItemProps = listItemAttributes(optionValue);
-    } else if (listItemAttributes && typeof listItemAttributes === 'object') {
-      listItemProps = listItemAttributes;
+    if (typeof itemAttributes === 'function') {
+      itemProps = itemAttributes(optionValue);
+    } else if (itemAttributes && typeof itemAttributes === 'object') {
+      itemProps = itemAttributes;
     }
 
-    var labelProps = {};
+    var itemLabelProps = {};
 
     if (typeof itemLabelAttributes === 'function') {
-      labelProps = itemLabelAttributes(optionValue);
+      itemLabelProps = itemLabelAttributes(optionValue);
     } else if (itemLabelAttributes && typeof itemLabelAttributes === 'object') {
-      labelProps = itemLabelAttributes;
+      itemLabelProps = itemLabelAttributes;
     }
 
     var inputProps = {};
@@ -2118,33 +2147,48 @@ function Radio(_ref) {
       inputProps.name = name;
     }
 
-    return /*#__PURE__*/React__default.createElement("li", _extends({
-      className: ("formosa-radio__item " + listItemClassName).trim(),
+    var itemSpanProps = {};
+
+    if (typeof itemSpanAttributes === 'function') {
+      itemSpanProps = itemSpanAttributes(optionValue);
+    } else if (itemSpanAttributes && typeof itemSpanAttributes === 'object') {
+      itemSpanProps = itemSpanAttributes;
+    }
+
+    return /*#__PURE__*/React__default.createElement("div", _extends({
+      className: ("formosa-radio__item " + itemClassName).trim(),
       key: optionValueVal
-    }, listItemProps), /*#__PURE__*/React__default.createElement("label", _extends({
-      className: ("formosa-radio__label" + (checked ? ' formosa-radio__label--checked' : '') + " " + labelClassName).trim()
-    }, labelProps), /*#__PURE__*/React__default.createElement("input", _extends({
+    }, itemProps), /*#__PURE__*/React__default.createElement("label", _extends({
+      className: ("formosa-radio__label" + (checked ? ' formosa-radio__label--checked' : '') + " " + itemLabelClassName).trim()
+    }, itemLabelProps), /*#__PURE__*/React__default.createElement("input", _extends({
+      "aria-label": optionValue.label,
       checked: checked,
       className: ("formosa-field__input formosa-radio__input " + className).trim(),
       onChange: onChange,
       required: required,
       type: "radio",
       value: optionValueVal
-    }, inputProps, otherProps)), optionValue.label));
+    }, inputProps, otherProps)), /*#__PURE__*/React__default.createElement("span", _extends({
+      "aria-hidden": "true",
+      className: ("formosa-radio__span " + itemSpanClassName).trim()
+    }, itemSpanProps), optionValue.label)));
   }));
 }
 Radio.propTypes = {
   afterChange: PropTypes.func,
   className: PropTypes.string,
+  fieldsetAttributes: PropTypes.object,
+  fieldsetClassName: PropTypes.string,
   inputAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  itemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  itemClassName: PropTypes.string,
   itemLabelAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  itemLabelClassName: PropTypes.string,
+  itemSpanAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+  itemSpanClassName: PropTypes.string,
   label: PropTypes.string,
-  labelClassName: PropTypes.string,
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  listAttributes: PropTypes.object,
-  listClassName: PropTypes.string,
-  listItemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
-  listItemClassName: PropTypes.string,
+  legend: PropTypes.string,
   loadingText: PropTypes.string,
   name: PropTypes.string,
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
@@ -2158,15 +2202,18 @@ Radio.propTypes = {
 Radio.defaultProps = {
   afterChange: null,
   className: '',
+  fieldsetAttributes: null,
+  fieldsetClassName: '',
   inputAttributes: null,
+  itemAttributes: null,
+  itemClassName: '',
   itemLabelAttributes: null,
+  itemLabelClassName: '',
+  itemSpanAttributes: null,
+  itemSpanClassName: '',
   label: '',
-  labelClassName: '',
   labelKey: 'name',
-  listAttributes: null,
-  listClassName: '',
-  listItemAttributes: null,
-  listItemClassName: '',
+  legend: '',
   loadingText: 'Loading...',
   name: '',
   options: null,
@@ -2207,7 +2254,7 @@ function SvgSearch(props) {
   })));
 }
 
-var _excluded$6 = ["className", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "wrapperAttributes", "wrapperClassName"];
+var _excluded$7 = ["className", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "wrapperAttributes", "wrapperClassName"];
 function Search(_ref) {
   var className = _ref.className,
       iconAttributes = _ref.iconAttributes,
@@ -2216,7 +2263,7 @@ function Search(_ref) {
       iconWidth = _ref.iconWidth,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$6);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$7);
 
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: ("formosa-search-wrapper " + wrapperClassName).trim()
@@ -2277,7 +2324,7 @@ function SvgCaret(props) {
   })));
 }
 
-var _excluded$7 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "name", "optionAttributes", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded$8 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "name", "optionAttributes", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
 function Select(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2299,7 +2346,7 @@ function Select(_ref) {
       valueKey = _ref.valueKey,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$7);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$8);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
@@ -2486,7 +2533,7 @@ Select.defaultProps = {
   wrapperClassName: ''
 };
 
-var _excluded$8 = ["afterChange", "className", "id", "name", "setValue", "value"];
+var _excluded$9 = ["afterChange", "className", "id", "name", "setValue", "value"];
 function Textarea(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2494,7 +2541,7 @@ function Textarea(_ref) {
       name = _ref.name,
       setValue = _ref.setValue,
       value = _ref.value,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$8);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$9);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
@@ -2810,11 +2857,11 @@ HasMany.defaultProps = {
   removable: true
 };
 
-var _excluded$9 = ["component", "type"];
+var _excluded$a = ["component", "type"];
 function ExportableInput(_ref) {
   var component = _ref.component,
       type = _ref.type,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$9);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$a);
 
   var InputComponent = getInputElement(type, component);
 
@@ -2835,7 +2882,7 @@ ExportableInput.defaultProps = {
   type: 'text'
 };
 
-var _excluded$a = ["className", "htmlFor", "label", "note", "required", "type"];
+var _excluded$b = ["className", "htmlFor", "label", "note", "required", "type"];
 function Label(_ref) {
   var className = _ref.className,
       htmlFor = _ref.htmlFor,
@@ -2843,7 +2890,7 @@ function Label(_ref) {
       note = _ref.note,
       required = _ref.required,
       type = _ref.type,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$a);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$b);
 
   var labelClassName = 'formosa-label';
 
@@ -2857,10 +2904,15 @@ function Label(_ref) {
     wrapperClassName += ' formosa-label-wrapper--checkbox';
   }
 
+  var hasFieldset = ['radio', 'checkbox-list', 'has-many'].includes(type);
   var props = {};
 
-  if (htmlFor && type !== 'has-many') {
+  if (htmlFor && !hasFieldset) {
     props.htmlFor = htmlFor;
+  }
+
+  if (hasFieldset) {
+    props['aria-hidden'] = true;
   }
 
   return /*#__PURE__*/React__default.createElement("div", {
@@ -2888,7 +2940,7 @@ Label.defaultProps = {
   type: ''
 };
 
-var _excluded$b = ["component", "disabled", "id", "inputWrapperAttributes", "inputWrapperClassName", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
+var _excluded$c = ["component", "disabled", "id", "inputWrapperAttributes", "inputWrapperClassName", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
 function Field(_ref) {
   var component = _ref.component,
       disabled = _ref.disabled,
@@ -2910,7 +2962,7 @@ function Field(_ref) {
       type = _ref.type,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$b);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$c);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
@@ -2946,6 +2998,10 @@ function Field(_ref) {
 
     if (readOnly && type === 'number') {
       inputProps.type = 'text';
+    }
+
+    if (['radio', 'checkbox-list'].includes(type) && !inputProps.legend) {
+      inputProps.legend = label;
     }
   }
 
@@ -3095,7 +3151,7 @@ function Message() {
   }, formState.message));
 }
 
-var _excluded$c = ["afterNoSubmit", "afterSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
+var _excluded$d = ["afterNoSubmit", "afterSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
 function FormInner(_ref) {
   var afterNoSubmit = _ref.afterNoSubmit,
       afterSubmit = _ref.afterSubmit,
@@ -3115,7 +3171,7 @@ function FormInner(_ref) {
       showMessage = _ref.showMessage,
       successMessageText = _ref.successMessageText,
       successToastText = _ref.successToastText,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$c);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$d);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState,
@@ -3277,12 +3333,12 @@ FormInner.defaultProps = {
   successToastText: ''
 };
 
-var _excluded$d = ["children", "row", "setRow"];
+var _excluded$e = ["children", "row", "setRow"];
 function Form(_ref) {
   var children = _ref.children,
       row = _ref.row,
       setRow = _ref.setRow,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$d);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
 
   var _useState = useState({
     dirty: [],
@@ -3534,13 +3590,13 @@ FormContainer.defaultProps = {
   loadingText: 'Loading...'
 };
 
-var _excluded$e = ["className", "label", "prefix", "postfix"];
+var _excluded$f = ["className", "label", "prefix", "postfix"];
 function Submit(_ref) {
   var className = _ref.className,
       label = _ref.label,
       prefix = _ref.prefix,
       postfix = _ref.postfix,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$f);
 
   return /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-field formosa-field--submit"
