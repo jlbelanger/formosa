@@ -88,8 +88,75 @@ const cleanRelationship = (values) => {
 	return cleanSingleRelationship(values);
 };
 
-const getIncluded = (data, dirtyIncluded, relationshipNames) => {
+const getIncluded = (data, dirty, dirtyIncluded, relationshipNames) => {
 	const included = [];
+
+	const dirtyRelationships = {};
+	dirty.forEach((key) => {
+		const currentKeys = [];
+		key.split('.').forEach((k) => {
+			currentKeys.push(k);
+			if (typeof get(dirtyRelationships, currentKeys.join('.')) === 'undefined') {
+				set(dirtyRelationships, currentKeys.join('.'), {});
+			}
+		});
+	});
+
+	const childRelationshipNames = {};
+	relationshipNames.forEach((relName) => {
+		childRelationshipNames[relName] = [];
+		if (relName.includes('.')) {
+			const keys = relName.split('.');
+			childRelationshipNames[keys.shift()].push(keys.join('.'));
+		}
+	});
+
+	Object.keys(dirtyRelationships).forEach((relName) => {
+		Object.keys(dirtyRelationships[relName]).forEach((relIndex) => {
+			const rel = data.relationships[relName].data[relIndex];
+
+			if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], relIndex)) {
+				const relData = {
+					id: rel.id,
+					type: rel.type,
+					attributes: {},
+					relationships: {},
+				};
+
+				if (rel.id.startsWith('temp-')) {
+					// This is a new record; include all attributes.
+					Object.keys(rel).forEach((key) => {
+						if (key !== 'id' && key !== 'type') {
+							if (childRelationshipNames[relName].includes(key)) {
+								const childRel = {
+									data: {
+										id: rel[key].id,
+										type: rel[key].type,
+									},
+								};
+								set(relData.relationships, key, childRel);
+							} else {
+								set(relData.attributes, key, rel[key]);
+							}
+						}
+					});
+				} else {
+					// This is an existing record; include only the dirty attributes.
+					Object.keys(rel).forEach((key) => {
+						if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName][relIndex], key)) {
+							set(relData.attributes, key, rel[key]);
+						}
+					});
+				}
+
+				if (Object.keys(relData.relationships).length <= 0) {
+					delete relData.relationships;
+				}
+
+				included.push(relData);
+			}
+		});
+	});
 
 	const dirtyKeys = {};
 	dirtyIncluded.forEach((key) => {
@@ -224,7 +291,7 @@ export const getBody = (
 
 		body.data = data;
 
-		const included = getIncluded(data, formState.dirtyIncluded, relationshipNames);
+		const included = getIncluded(data, formState.dirty, formState.dirtyIncluded, relationshipNames);
 		if (included.length > 0) {
 			body.included = included;
 		}
