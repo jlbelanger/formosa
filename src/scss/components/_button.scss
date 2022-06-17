@@ -9,14 +9,20 @@
 	line-height: $formosa-input-line-height;
 	padding: $formosa-button-padding $formosa-button-padding-side;
 
-	&[disabled] {
-		cursor: default;
-	}
-
 	&:hover,
 	&:active,
 	&:focus {
 		background-color: $formosa-button-background-color-hover;
+	}
+
+	&[disabled] {
+		cursor: default;
+
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: $formosa-button-background-color;
+		}
 	}
 
 	path {
@@ -33,5 +39,13 @@
 	&:active,
 	&:focus {
 		background-color: $formosa-button-danger-background-color-hover;
+	}
+
+	&[disabled] {
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: $formosa-button-danger-background-color;
+		}
 	}
 }
