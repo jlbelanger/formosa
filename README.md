@@ -19,14 +19,14 @@ https://formosa.jennybelanger.com/
 
 ## Install
 
-This package isn't actually published, but if it was, you would run:
+**Warning: This package is still a work-in-progress. Use at your own risk.**
 
 ```bash
 # With npm:
-npm install --save @jlbelanger/formosa
+npm install --save https://github.com/jlbelanger/formosa
 
 # Or with yarn:
-yarn add @jlbelanger/formosa
+yarn add https://github.com/jlbelanger/formosa
 ```
 
 ## Setup
