@@ -33,7 +33,8 @@ export default function FormInner({
 	const submitApiRequest = (e) => {
 		e.preventDefault();
 
-		if (preventEmptyRequest && formState.dirty.length <= 0) {
+		const dirtyKeys = formState.dirtyKeys(formState);
+		if (preventEmptyRequest && dirtyKeys.length <= 0) {
 			formosaState.addToast('No changes to save.');
 			if (afterNoSubmit) {
 				afterNoSubmit();
@@ -58,6 +59,7 @@ export default function FormInner({
 			path,
 			id,
 			formState,
+			dirtyKeys,
 			relationshipNames,
 			filterBody,
 			filterValues
@@ -77,13 +79,14 @@ export default function FormInner({
 
 				const newState = {
 					...formState,
-					dirty: [],
-					dirtyIncluded: [],
 					errors: {},
 					message: successMessageText,
 				};
 				if (clearOnSubmit) {
-					newState.row = defaultRow;
+					newState.originalRow = { ...defaultRow };
+					newState.row = { ...defaultRow };
+				} else {
+					newState.originalRow = { ...formState.row };
 				}
 				setFormState(newState);
 

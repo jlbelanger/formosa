@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'; // eslint-disable-line import/no-unresolved
 import FormContext from './FormContext';
 import FormInner from './FormInner';
-import getNewDirty from './Helpers/FormState';
+import get from 'get-value';
 import PropTypes from 'prop-types';
 import set from 'set-value';
 
@@ -12,15 +12,32 @@ export default function Form({
 	...otherProps
 }) {
 	const [formState, setFormState] = useState({
-		dirty: [],
-		dirtyIncluded: [],
+		dirtyKeys: (fs) => {
+			const dirtyKeys = [];
+			Object.keys(fs.row).forEach((key) => {
+				let newValue = get(fs.row, key);
+				if (typeof newValue !== 'string') {
+					newValue = JSON.stringify(newValue);
+				}
+
+				let oldValue = get(fs.originalRow, key);
+				if (typeof oldValue !== 'string') {
+					oldValue = JSON.stringify(oldValue);
+				}
+
+				if (newValue !== oldValue) {
+					dirtyKeys.push(key);
+				}
+			});
+			return dirtyKeys;
+		},
 		errors: {},
 		files: {},
 		message: '',
+		originalRow: { ...row },
 		row,
 		setRow,
 		setValues: (fs, e, name, value, afterChange = null, files = null) => {
-			let newDirty = getNewDirty(fs.dirty, name);
 			const newRow = { ...fs.row };
 			set(newRow, name, value);
 
@@ -28,13 +45,11 @@ export default function Form({
 				const additionalChanges = afterChange(e, newRow, value);
 				Object.keys(additionalChanges).forEach((key) => {
 					set(newRow, key, additionalChanges[key]);
-					newDirty = getNewDirty(newDirty, key);
 				});
 			}
 
 			const newFormState = {
 				...fs,
-				dirty: newDirty,
 				row: newRow,
 			};
 			if (files !== null) {
