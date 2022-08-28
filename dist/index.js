@@ -3386,9 +3386,9 @@ function Form(_ref) {
       if (isArray) {
         var itemDirtyKeys;
         Object.keys(newValue).forEach(function (newIndex) {
-          var oldIndex = oldValue.findIndex(function (o) {
+          var oldIndex = oldValue ? oldValue.findIndex(function (o) {
             return o.id === newValue[newIndex].id;
-          });
+          }) : -1;
           itemDirtyKeys = getDirtyKeys(newValue[newIndex], oldIndex > -1 ? oldValue[oldIndex] : {});
           itemDirtyKeys = itemDirtyKeys.map(function (k2) {
             return key + "." + newIndex + "." + k2;

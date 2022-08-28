@@ -23,7 +23,7 @@ export default function Form({
 			if (isArray) {
 				let itemDirtyKeys;
 				Object.keys(newValue).forEach((newIndex) => {
-					const oldIndex = oldValue.findIndex((o) => (o.id === newValue[newIndex].id));
+					const oldIndex = oldValue ? oldValue.findIndex((o) => (o.id === newValue[newIndex].id)) : -1;
 					itemDirtyKeys = getDirtyKeys(newValue[newIndex], oldIndex > -1 ? oldValue[oldIndex] : {});
 					itemDirtyKeys = itemDirtyKeys.map((k2) => `${key}.${newIndex}.${k2}`);
 					dirtyKeys = dirtyKeys.concat(itemDirtyKeys);
