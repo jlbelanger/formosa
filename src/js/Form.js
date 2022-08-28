@@ -11,30 +11,46 @@ export default function Form({
 	setRow,
 	...otherProps
 }) {
+	const getDirtyKeys = (r, originalRow) => {
+		let dirtyKeys = [];
+
+		Object.keys(r).forEach((key) => {
+			// Get the old and new values.
+			let oldValue = get(originalRow, key);
+			let newValue = get(r, key);
+			const isArray = Array.isArray(oldValue) || Array.isArray(newValue);
+
+			if (isArray) {
+				let itemDirtyKeys;
+				Object.keys(newValue).forEach((newIndex) => {
+					const oldIndex = oldValue.findIndex((o) => (o.id === newValue[newIndex].id));
+					itemDirtyKeys = getDirtyKeys(newValue[newIndex], oldIndex > -1 ? oldValue[oldIndex] : {});
+					itemDirtyKeys = itemDirtyKeys.map((k2) => `${key}.${newIndex}.${k2}`);
+					dirtyKeys = dirtyKeys.concat(itemDirtyKeys);
+				});
+			}
+
+			// Stringify for easier comparison.
+			if (typeof oldValue !== 'string') {
+				oldValue = JSON.stringify(oldValue);
+			}
+			if (typeof newValue !== 'string') {
+				newValue = JSON.stringify(newValue);
+			}
+
+			if (newValue !== oldValue) {
+				dirtyKeys.push(key);
+			}
+		});
+		return dirtyKeys;
+	};
+
 	const [formState, setFormState] = useState({
-		dirtyKeys: (fs) => {
-			const dirtyKeys = [];
-			Object.keys(fs.row).forEach((key) => {
-				let newValue = get(fs.row, key);
-				if (typeof newValue !== 'string') {
-					newValue = JSON.stringify(newValue);
-				}
-
-				let oldValue = get(fs.originalRow, key);
-				if (typeof oldValue !== 'string') {
-					oldValue = JSON.stringify(oldValue);
-				}
-
-				if (newValue !== oldValue) {
-					dirtyKeys.push(key);
-				}
-			});
-			return dirtyKeys;
-		},
+		dirtyKeys: (fs) => getDirtyKeys(fs.row, fs.originalRow),
 		errors: {},
 		files: {},
 		message: '',
-		originalRow: { ...row },
+		originalRow: JSON.parse(JSON.stringify(row)), // Deep copy.
 		row,
 		setRow,
 		setValues: (fs, e, name, value, afterChange = null, files = null) => {

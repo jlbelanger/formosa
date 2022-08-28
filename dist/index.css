@@ -205,10 +205,12 @@ input.formosa-autocomplete__input {
   font-size: 18px;
   line-height: 1.5;
   padding: 8px 12px; }
-  .formosa-button[disabled] {
-    cursor: default; }
   .formosa-button:hover, .formosa-button:active, .formosa-button:focus {
     background-color: #75a3ba; }
+  .formosa-button[disabled] {
+    cursor: default; }
+    .formosa-button[disabled]:hover, .formosa-button[disabled]:active, .formosa-button[disabled]:focus {
+      background-color: #9bc; }
   .formosa-button path {
     fill: #000; }
 
@@ -218,6 +220,8 @@ input.formosa-autocomplete__input {
   color: #000; }
   .formosa-button--danger:hover, .formosa-button--danger:active, .formosa-button--danger:focus {
     background-color: #c14444; }
+  .formosa-button--danger[disabled]:hover, .formosa-button--danger[disabled]:active, .formosa-button--danger[disabled]:focus {
+    background-color: #c66; }
 
 input.formosa-field__input--checkbox {
   -webkit-appearance: none;

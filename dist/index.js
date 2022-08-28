@@ -156,63 +156,93 @@ var cleanRelationship = function cleanRelationship(values) {
   return cleanSingleRelationship(values);
 };
 
-var getIncluded = function getIncluded(data, dirtyIncluded, relationshipNames) {
-  var included = [];
-  var dirtyKeys = {};
-  dirtyIncluded.forEach(function (key) {
-    if (!key.startsWith('_new.')) {
-      var currentKeys = [];
-      key.split('.').forEach(function (k) {
-        currentKeys.push(k);
+var getIncludedItemData = function getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships, relIndex) {
+  if (relIndex === void 0) {
+    relIndex = null;
+  }
 
-        if (typeof get(dirtyKeys, currentKeys.join('.')) === 'undefined') {
-          set(dirtyKeys, currentKeys.join('.'), {});
-        }
-      });
-    }
-  });
-  relationshipNames.forEach(function (relationshipName) {
-    if (!Object.prototype.hasOwnProperty.call(data.relationships, relationshipName)) {
-      return;
-    }
+  var relData = {
+    id: rel.id,
+    type: rel.type,
+    attributes: {},
+    relationships: {}
+  };
 
-    if (!Object.prototype.hasOwnProperty.call(dirtyKeys, relationshipName)) {
-      return;
-    }
-
-    if (!Array.isArray(data.relationships[relationshipName].data)) {
-      return;
-    }
-
-    data.relationships[relationshipName].data.forEach(function (rel) {
-      if (Object.keys(rel).length <= 2) {
-        return;
-      }
-
-      if (Object.prototype.hasOwnProperty.call(dirtyKeys[relationshipName], rel.id)) {
-        var relData = {
-          id: rel.id,
-          type: rel.type,
-          attributes: {}
-        };
-
-        if (Object.keys(dirtyKeys[relationshipName][rel.id]).length === 0) {
-          Object.keys(rel).forEach(function (key) {
-            if (key !== 'id' && key !== 'type') {
-              set(relData.attributes, key, rel[key]);
+  if (rel.id.startsWith('temp-')) {
+    Object.keys(rel).forEach(function (key) {
+      if (key !== 'id' && key !== 'type') {
+        if (childRelationshipNames[relName].includes(key)) {
+          var childRel = {
+            data: {
+              id: rel[key].id,
+              type: rel[key].type
             }
-          });
+          };
+          set(relData.relationships, key, childRel);
         } else {
-          Object.keys(rel).forEach(function (key) {
-            if (Object.prototype.hasOwnProperty.call(dirtyKeys[relationshipName][rel.id], key)) {
-              set(relData.attributes, key, rel[key]);
-            }
-          });
+          set(relData.attributes, key, rel[key]);
         }
-
-        included.push(relData);
       }
     });
+  } else {
+    Object.keys(rel).forEach(function (key) {
+      if (key !== 'id' && key !== 'type') {
+        if (relIndex === null) {
+          if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], key)) {
+            set(relData.attributes, key, rel[key]);
+          }
+        } else if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], relIndex)) {
+          if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName][relIndex], key)) {
+            set(relData.attributes, key, rel[key]);
+          }
+        }
+      }
+    });
+  }
+
+  if (Object.keys(relData.relationships).length <= 0) {
+    delete relData.relationships;
+  }
+
+  return relData;
+};
+
+var getIncluded = function getIncluded(data, dirtyKeys, relationshipNames) {
+  var included = [];
+  var dirtyRelationships = {};
+  dirtyKeys.forEach(function (key) {
+    var currentKeys = [];
+    key.split('.').forEach(function (k) {
+      currentKeys.push(k);
+
+      if (typeof get(dirtyRelationships, currentKeys.join('.')) === 'undefined') {
+        set(dirtyRelationships, currentKeys.join('.'), {});
+      }
+    });
+  });
+  var childRelationshipNames = {};
+  relationshipNames.forEach(function (relName) {
+    childRelationshipNames[relName] = [];
+
+    if (relName.includes('.')) {
+      var keys = relName.split('.');
+      childRelationshipNames[keys.shift()].push(keys.join('.'));
+    }
+  });
+  Object.keys(dirtyRelationships).forEach(function (relName) {
+    if (Object.prototype.hasOwnProperty.call(data.relationships, relName)) {
+      var relData;
+
+      if (Array.isArray(data.relationships[relName].data)) {
+        Object.keys(data.relationships[relName].data).forEach(function (relIndex) {
+          var rel = data.relationships[relName].data[relIndex];
+          relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships, relIndex);
+          included.push(relData);
+        });
+      } else {
+        relData = getIncludedItemData(data.relationships[relName].data, relName, childRelationshipNames, dirtyRelationships);
+      }
+    }
   });
   return included;
 };
@@ -231,18 +261,16 @@ var unset = function unset(obj, key) {
   return delete o[lastKey];
 };
 
-var getBody = function getBody(method, type, id, formState, relationshipNames, filterBody, filterValues) {
+var getBody = function getBody(method, type, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues) {
   var body = null;
 
   if (method === 'PUT' || method === 'POST') {
-    body = {};
     var data = {
       type: type,
       attributes: {},
-      meta: {},
-      relationships: {}
+      relationships: {},
+      meta: {}
     };
-    var keys = method === 'PUT' ? formState.dirty : Object.keys(formState.row);
 
     if (method === 'PUT' && id) {
       data.id = id;
@@ -255,16 +283,17 @@ var getBody = function getBody(method, type, id, formState, relationshipNames, f
     }
 
     var fileKeys = Object.keys(formState.files);
+    var keys = method === 'PUT' ? dirtyKeys : Object.keys(formState.row);
     keys.forEach(function (key) {
-      var cleanKey = key.replace(/\..+$/, '');
+      var firstPartOfKey = key.replace(/\..+$/, '');
 
-      if (relationshipNames.includes(cleanKey)) {
-        data.relationships[cleanKey] = {
-          data: get(values, cleanKey)
+      if (relationshipNames.includes(firstPartOfKey)) {
+        data.relationships[firstPartOfKey] = {
+          data: get(values, firstPartOfKey)
         };
       } else if (relationshipNames.includes(key)) {
         data.relationships[key] = {
-          data: get(values, cleanKey)
+          data: get(values, firstPartOfKey)
         };
       } else if (key.startsWith('meta.')) {
         set(data, key, get(values, key));
@@ -276,8 +305,10 @@ var getBody = function getBody(method, type, id, formState, relationshipNames, f
         set(data.attributes, key, get(values, key));
       }
     });
-    body.data = data;
-    var included = getIncluded(data, formState.dirtyIncluded, relationshipNames);
+    body = {
+      data: data
+    };
+    var included = getIncluded(data, dirtyKeys, relationshipNames);
 
     if (included.length > 0) {
       body.included = included;
@@ -485,11 +516,11 @@ function SvgCheck(props) {
 }
 
 var formContext = /*#__PURE__*/React__default.createContext({
-  dirty: [],
-  dirtyIncluded: [],
+  dirtyKeys: null,
   errors: {},
   files: {},
   message: '',
+  originalRow: {},
   row: {},
   setRow: null,
   setValues: null
@@ -1385,7 +1416,7 @@ function CheckboxList(_ref) {
     currentValue = [];
   }
 
-  currentValue = currentValue.map(function (val) {
+  var currentValueStringified = currentValue.map(function (val) {
     return typeof val === 'object' ? JSON.stringify(val) : val;
   });
 
@@ -1400,7 +1431,7 @@ function CheckboxList(_ref) {
 
       newValue.push(val);
     } else {
-      var index = currentValue.indexOf(val);
+      var index = currentValueStringified.indexOf(val);
 
       if (index > -1) {
         newValue.splice(index, 1);
@@ -1427,7 +1458,7 @@ function CheckboxList(_ref) {
       optionValueVal = JSON.stringify(optionValueVal);
     }
 
-    var checked = currentValue.includes(optionValueVal);
+    var checked = currentValueStringified.includes(optionValueVal);
     var itemProps = {};
 
     if (typeof itemAttributes === 'function') {
@@ -3185,8 +3216,9 @@ function FormInner(_ref) {
 
   var submitApiRequest = function submitApiRequest(e) {
     e.preventDefault();
+    var dirtyKeys = formState.dirtyKeys(formState);
 
-    if (preventEmptyRequest && formState.dirty.length <= 0) {
+    if (preventEmptyRequest && dirtyKeys.length <= 0) {
       formosaState.addToast('No changes to save.');
 
       if (afterNoSubmit) {
@@ -3210,7 +3242,7 @@ function FormInner(_ref) {
       url += "?" + params;
     }
 
-    var body = getBody(method, path, id, formState, relationshipNames, filterBody, filterValues);
+    var body = getBody(method, path, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues);
     setFormState(_extends({}, formState, {
       errors: {},
       message: ''
@@ -3221,14 +3253,15 @@ function FormInner(_ref) {
       }
 
       var newState = _extends({}, formState, {
-        dirty: [],
-        dirtyIncluded: [],
         errors: {},
         message: successMessageText
       });
 
       if (clearOnSubmit) {
-        newState.row = defaultRow;
+        newState.originalRow = _extends({}, defaultRow);
+        newState.row = _extends({}, defaultRow);
+      } else {
+        newState.originalRow = _extends({}, formState.row);
       }
 
       setFormState(newState);
@@ -3343,12 +3376,50 @@ function Form(_ref) {
       setRow = _ref.setRow,
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
 
+  var getDirtyKeys = function getDirtyKeys(r, originalRow) {
+    var dirtyKeys = [];
+    Object.keys(r).forEach(function (key) {
+      var oldValue = get(originalRow, key);
+      var newValue = get(r, key);
+      var isArray = Array.isArray(oldValue) || Array.isArray(newValue);
+
+      if (isArray) {
+        var itemDirtyKeys;
+        Object.keys(newValue).forEach(function (newIndex) {
+          var oldIndex = oldValue.findIndex(function (o) {
+            return o.id === newValue[newIndex].id;
+          });
+          itemDirtyKeys = getDirtyKeys(newValue[newIndex], oldIndex > -1 ? oldValue[oldIndex] : {});
+          itemDirtyKeys = itemDirtyKeys.map(function (k2) {
+            return key + "." + newIndex + "." + k2;
+          });
+          dirtyKeys = dirtyKeys.concat(itemDirtyKeys);
+        });
+      }
+
+      if (typeof oldValue !== 'string') {
+        oldValue = JSON.stringify(oldValue);
+      }
+
+      if (typeof newValue !== 'string') {
+        newValue = JSON.stringify(newValue);
+      }
+
+      if (newValue !== oldValue) {
+        dirtyKeys.push(key);
+      }
+    });
+    return dirtyKeys;
+  };
+
   var _useState = React.useState({
-    dirty: [],
-    dirtyIncluded: [],
+    dirtyKeys: function dirtyKeys(fs) {
+      return getDirtyKeys(fs.row, fs.originalRow);
+    },
     errors: {},
     files: {},
     message: '',
+    originalRow: JSON.parse(JSON.stringify(row)),
     row: row,
     setRow: setRow,
     setValues: function setValues(fs, e, name, value, afterChange, files) {
@@ -3360,8 +3431,6 @@ function Form(_ref) {
         files = null;
       }
 
-      var newDirty = getNewDirty(fs.dirty, name);
-
       var newRow = _extends({}, fs.row);
 
       set(newRow, name, value);
@@ -3370,12 +3439,10 @@ function Form(_ref) {
         var additionalChanges = afterChange(e, newRow, value);
         Object.keys(additionalChanges).forEach(function (key) {
           set(newRow, key, additionalChanges[key]);
-          newDirty = getNewDirty(newDirty, key);
         });
       }
 
       var newFormState = _extends({}, fs, {
-        dirty: newDirty,
         row: newRow
       });
 

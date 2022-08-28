@@ -116,13 +116,15 @@ const getIncludedItemData = (rel, relName, childRelationshipNames, dirtyRelation
 	} else {
 		// This is an existing record; include only the dirty attributes.
 		Object.keys(rel).forEach((key) => {
-			if (relIndex === null) {
-				if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], key)) {
-					set(relData.attributes, key, rel[key]);
-				}
-			} else if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], relIndex)) {
-				if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName][relIndex], key)) {
-					set(relData.attributes, key, rel[key]);
+			if (key !== 'id' && key !== 'type') {
+				if (relIndex === null) {
+					if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], key)) {
+						set(relData.attributes, key, rel[key]);
+					}
+				} else if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], relIndex)) {
+					if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName][relIndex], key)) {
+						set(relData.attributes, key, rel[key]);
+					}
 				}
 			}
 		});
