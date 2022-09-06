@@ -28,14 +28,14 @@ export default function FormInner({
 	...otherProps
 }) {
 	const { formState, setFormState } = useContext(FormContext);
-	const { formosaState } = useContext(FormosaContext);
+	const { addToast } = useContext(FormosaContext);
 
 	const submitApiRequest = (e) => {
 		e.preventDefault();
 
 		const dirtyKeys = formState.dirtyKeys(formState);
 		if (preventEmptyRequest && dirtyKeys.length <= 0) {
-			formosaState.addToast('No changes to save.');
+			addToast('No changes to save.');
 			if (afterNoSubmit) {
 				afterNoSubmit();
 			}
@@ -91,7 +91,7 @@ export default function FormInner({
 				setFormState(newState);
 
 				if (successToastText) {
-					formosaState.addToast(successToastText, 'success');
+					addToast(successToastText, 'success');
 				}
 				if (afterSubmit) {
 					afterSubmit(response);
@@ -99,12 +99,12 @@ export default function FormInner({
 			})
 			.catch((response) => {
 				if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
-					formosaState.addToast('Error.', 'error');
+					addToast('Error.', 'error');
 				} else if (Object.prototype.hasOwnProperty.call(response, 'message')) {
-					formosaState.addToast(response.message, 'error', 10000);
+					addToast(response.message, 'error', 10000);
 					return;
 				} else {
-					formosaState.addToast('Server error.', 'error');
+					addToast('Server error.', 'error');
 					throw response;
 				}
 

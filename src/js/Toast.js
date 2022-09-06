@@ -9,16 +9,12 @@ export default function Toast({
 	milliseconds,
 	text,
 }) {
-	const { formosaState, setFormosaState } = useContext(FormosaContext);
-	const removeToast = () => {
-		const toasts = { ...formosaState.toasts };
-		delete toasts[id];
-		setFormosaState({ ...formosaState, toasts });
-	};
+	const { removeToast } = useContext(FormosaContext);
+
 	return (
 		<div className={`formosa-toast ${className}`.trim()} style={{ animationDuration: `${milliseconds}ms` }}>
 			<div className="formosa-toast__text">{text}</div>
-			<button className="formosa-toast__close" onClick={removeToast} type="button">
+			<button className="formosa-toast__close" onClick={() => (removeToast(id))} type="button">
 				<CloseIcon aria-hidden="true" className="formosa-toast__close-icon" height={12} width={12} />
 				Close
 			</button>
