@@ -27,13 +27,13 @@ export default function FormInner({
 	successToastText,
 	...otherProps
 }) {
-	const { formState, setFormState } = useContext(FormContext);
+	const { formState, setFormState, getDirtyKeys } = useContext(FormContext);
 	const { addToast } = useContext(FormosaContext);
 
 	const submitApiRequest = (e) => {
 		e.preventDefault();
 
-		const dirtyKeys = formState.dirtyKeys(formState);
+		const dirtyKeys = getDirtyKeys();
 		if (preventEmptyRequest && dirtyKeys.length <= 0) {
 			addToast('No changes to save.');
 			if (afterNoSubmit) {

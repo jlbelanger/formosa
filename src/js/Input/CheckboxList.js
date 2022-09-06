@@ -36,7 +36,7 @@ export default function CheckboxList({
 	valueKey,
 	...otherProps
 }) {
-	const { formState } = useContext(FormContext);
+	const { formState, setValues } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 	const [isLoading, setIsLoading] = useState(showLoading || !!url);
 	const [message, setMessage] = useState('');
@@ -108,7 +108,7 @@ export default function CheckboxList({
 		if (setValue) {
 			setValue(newValue);
 		} else {
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 	};
 

@@ -15,7 +15,7 @@ export default function Input({
 	value,
 	...otherProps
 }) {
-	const { formState } = useContext(FormContext);
+	const { formState, setValues } = useContext(FormContext);
 
 	let currentValue = '';
 	if (setValue !== null) {
@@ -37,7 +37,7 @@ export default function Input({
 		if (setValue) {
 			setValue(newValue);
 		} else {
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 	};
 

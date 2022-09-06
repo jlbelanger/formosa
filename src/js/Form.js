@@ -11,6 +11,22 @@ export default function Form({
 	setRow,
 	...otherProps
 }) {
+	const [formState, setFormState] = useState({
+		errors: {},
+		files: {},
+		message: '',
+		originalRow: JSON.parse(JSON.stringify(row)), // Deep copy.
+		row,
+		setRow,
+	});
+
+	useEffect(() => {
+		setFormState({
+			...formState,
+			row,
+		});
+	}, [row]);
+
 	const getDirtyKeys = (r, originalRow) => {
 		let dirtyKeys = [];
 
@@ -42,52 +58,44 @@ export default function Form({
 				dirtyKeys.push(key);
 			}
 		});
+
 		return dirtyKeys;
 	};
 
-	const [formState, setFormState] = useState({
-		dirtyKeys: (fs) => getDirtyKeys(fs.row, fs.originalRow),
-		errors: {},
-		files: {},
-		message: '',
-		originalRow: JSON.parse(JSON.stringify(row)), // Deep copy.
-		row,
-		setRow,
-		setValues: (fs, e, name, value, afterChange = null, files = null) => {
-			const newRow = { ...fs.row };
-			set(newRow, name, value);
+	const setValues = (e, name, value, afterChange = null, files = null) => {
+		const newRow = { ...formState.row };
+		set(newRow, name, value);
 
-			if (afterChange) {
-				const additionalChanges = afterChange(e, newRow, value);
-				Object.keys(additionalChanges).forEach((key) => {
-					set(newRow, key, additionalChanges[key]);
-				});
-			}
+		if (afterChange) {
+			const additionalChanges = afterChange(e, newRow, value);
+			Object.keys(additionalChanges).forEach((key) => {
+				set(newRow, key, additionalChanges[key]);
+			});
+		}
 
-			const newFormState = {
-				...fs,
-				row: newRow,
-			};
-			if (files !== null) {
-				set(newFormState, `files.${name}`, files);
-			}
-
-			setFormState(newFormState);
-			if (fs.setRow) {
-				fs.setRow(newRow);
-			}
-		},
-	});
-
-	useEffect(() => {
-		setFormState({
+		const newFormState = {
 			...formState,
-			row,
-		});
-	}, [row]);
+			row: newRow,
+		};
+		if (files !== null) {
+			set(newFormState, `files.${name}`, files);
+		}
+
+		setFormState(newFormState);
+		if (formState.setRow) {
+			formState.setRow(newRow);
+		}
+	};
 
 	return (
-		<FormContext.Provider value={{ formState, setFormState }}>
+		<FormContext.Provider
+			value={{
+				formState,
+				setFormState,
+				getDirtyKeys: () => (getDirtyKeys(formState.row, formState.originalRow)),
+				setValues,
+			}}
+		>
 			<FormInner {...otherProps}>
 				{children}
 			</FormInner>

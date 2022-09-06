@@ -49,7 +49,7 @@ export default function Autocomplete({
 	wrapperClassName,
 	...otherProps
 }) {
-	const { formState } = useContext(FormContext);
+	const { formState, setValues } = useContext(FormContext);
 	const clearButtonRef = useRef(null);
 	const inputRef = useRef(null);
 	const removeButtonRef = useRef(null);
@@ -150,7 +150,7 @@ export default function Autocomplete({
 			setValue(newValue);
 		} else {
 			const e = { target: { name } };
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 
 		setIsOpen(false);
@@ -194,7 +194,7 @@ export default function Autocomplete({
 			setValue(newValue);
 		} else {
 			const e = { target: { name } };
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 
 		focus();
@@ -266,7 +266,7 @@ export default function Autocomplete({
 			setValue(newValue);
 		} else {
 			const e = { target: { name } };
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 
 		setFilter('');
