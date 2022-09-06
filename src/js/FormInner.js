@@ -83,10 +83,10 @@ export default function FormInner({
 					message: successMessageText,
 				};
 				if (clearOnSubmit) {
-					newState.originalRow = { ...defaultRow };
-					newState.row = { ...defaultRow };
+					newState.originalRow = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
+					newState.row = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
 				} else {
-					newState.originalRow = { ...formState.row };
+					newState.originalRow = JSON.parse(JSON.stringify(formState.row)); // Deep copy.
 				}
 				setFormState(newState);
 
