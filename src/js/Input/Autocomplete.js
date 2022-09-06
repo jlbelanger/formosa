@@ -76,17 +76,14 @@ export default function Autocomplete({
 					}
 				});
 		}
-		return () => {};
 	}, [url]);
 
 	useEffect(() => {
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
-		return () => {};
 	}, [options]);
 
 	useEffect(() => {
 		setIsLoading(showLoading);
-		return () => {};
 	}, [showLoading]);
 
 	if (isLoading) {

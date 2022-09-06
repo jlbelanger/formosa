@@ -53,7 +53,6 @@ export default function FormContainer({ children, loadingText }) {
 			disableWarningPrompt,
 			enableWarningPrompt,
 		});
-		return () => {};
 	}, []);
 
 	return (
