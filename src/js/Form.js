@@ -21,6 +21,9 @@ export default function Form({
 	});
 
 	useEffect(() => {
+		if (JSON.stringify(row) === JSON.stringify(formState.row)) {
+			return;
+		}
 		setFormState({
 			...formState,
 			row,
