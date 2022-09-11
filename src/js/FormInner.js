@@ -21,6 +21,7 @@ export default function FormInner({
 	params,
 	path,
 	preventEmptyRequest,
+	preventEmptyRequestText,
 	relationshipNames,
 	showMessage,
 	successMessageText,
@@ -35,7 +36,9 @@ export default function FormInner({
 
 		const dirtyKeys = getDirtyKeys();
 		if (preventEmptyRequest && dirtyKeys.length <= 0) {
-			addToast('No changes to save.');
+			if (preventEmptyRequestText) {
+				addToast(preventEmptyRequestText);
+			}
 			if (afterNoSubmit) {
 				afterNoSubmit();
 			}
@@ -168,6 +171,10 @@ FormInner.propTypes = {
 	params: PropTypes.string,
 	path: PropTypes.string,
 	preventEmptyRequest: PropTypes.bool,
+	preventEmptyRequestText: PropTypes.oneOfType([
+		PropTypes.bool,
+		PropTypes.string,
+	]),
 	relationshipNames: PropTypes.array,
 	showMessage: PropTypes.bool,
 	successMessageText: PropTypes.string,
@@ -189,6 +196,7 @@ FormInner.defaultProps = {
 	params: '',
 	path: null,
 	preventEmptyRequest: false,
+	preventEmptyRequestText: 'No changes to save.',
 	relationshipNames: [],
 	showMessage: true,
 	successMessageText: '',
