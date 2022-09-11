@@ -12,8 +12,10 @@ export default function FormContainer({ children, loadingText }) {
 
 	const removeToast = (toastId) => {
 		const toasts = { ...formosaState.toasts };
-		delete toasts[toastId];
-		setFormosaState({ ...formosaState, toasts });
+		if (Object.prototype.hasOwnProperty.call(toasts, toastId)) {
+			delete toasts[toastId];
+			setFormosaState({ ...formosaState, toasts });
+		}
 	};
 
 	const addToast = (text, type = '', milliseconds = 5000) => {
