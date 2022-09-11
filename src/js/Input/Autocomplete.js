@@ -391,6 +391,13 @@ export default function Autocomplete({
 							val = JSON.stringify(val);
 						}
 
+						let label = '';
+						if (labelFn) {
+							label = labelFn(option);
+						} else if (option && Object.prototype.hasOwnProperty.call(option, 'label')) {
+							label = option.label;
+						}
+
 						let optionListItemProps = {};
 						if (typeof optionListItemAttributes === 'function') {
 							optionListItemProps = optionListItemAttributes(option);
@@ -419,7 +426,7 @@ export default function Autocomplete({
 									type="button"
 									{...optionButtonProps}
 								>
-									{option.label}
+									{label}
 								</button>
 							</li>
 						);
