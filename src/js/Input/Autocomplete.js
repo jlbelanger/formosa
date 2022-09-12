@@ -26,6 +26,7 @@ export default function Autocomplete({
 	name,
 	optionButtonAttributes,
 	optionButtonClassName,
+	optionLabelFn,
 	optionListAttributes,
 	optionListClassName,
 	optionListItemAttributes,
@@ -392,8 +393,8 @@ export default function Autocomplete({
 						}
 
 						let label = '';
-						if (labelFn) {
-							label = labelFn(option);
+						if (optionLabelFn) {
+							label = optionLabelFn(option);
 						} else if (option && Object.prototype.hasOwnProperty.call(option, 'label')) {
 							label = option.label;
 						}
@@ -478,6 +479,7 @@ Autocomplete.propTypes = {
 		PropTypes.object,
 	]),
 	optionButtonClassName: PropTypes.string,
+	optionLabelFn: PropTypes.func,
 	optionListAttributes: PropTypes.object,
 	optionListClassName: PropTypes.string,
 	optionListItemAttributes: PropTypes.oneOfType([
@@ -540,6 +542,7 @@ Autocomplete.defaultProps = {
 	name: '',
 	optionButtonAttributes: null,
 	optionButtonClassName: '',
+	optionLabelFn: null,
 	optionListAttributes: null,
 	optionListClassName: '',
 	optionListItemAttributes: null,
