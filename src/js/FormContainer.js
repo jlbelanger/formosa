@@ -5,16 +5,14 @@ import Spinner from './Spinner';
 import ToastContainer from './ToastContainer';
 
 export default function FormContainer({ children, loadingText }) {
-	const [formosaState, setFormosaState] = useState({
-		toasts: {},
-		showWarningPrompt: true,
-	});
+	const [showWarningPrompt, setShowWarningPrompt] = useState(true);
+	const [toasts, setToasts] = useState({});
 
 	const removeToast = (toastId) => {
-		const toasts = { ...formosaState.toasts };
+		const newToasts = { ...toasts };
 		if (Object.prototype.hasOwnProperty.call(toasts, toastId)) {
-			delete toasts[toastId];
-			setFormosaState({ ...formosaState, toasts });
+			delete newToasts[toastId];
+			setToasts(newToasts);
 		}
 	};
 
@@ -25,29 +23,29 @@ export default function FormContainer({ children, loadingText }) {
 			text,
 			milliseconds,
 		};
-		const toasts = {
-			...formosaState.toasts,
+		const newToasts = {
+			...toasts,
 			[toastId]: toast,
 		};
-		setFormosaState({ ...formosaState, toasts });
+		setToasts(newToasts);
 		setTimeout(() => {
 			removeToast(toastId);
 		}, milliseconds);
 	};
 
 	const disableWarningPrompt = () => {
-		setFormosaState({ ...formosaState, showWarningPrompt: false });
+		setShowWarningPrompt(false);
 	};
 
 	const enableWarningPrompt = () => {
-		setFormosaState({ ...formosaState, showWarningPrompt: true });
+		setShowWarningPrompt(true);
 	};
 
 	return (
 		<FormosaContext.Provider
 			value={{
-				formosaState,
-				setFormosaState,
+				toasts,
+				showWarningPrompt,
 				addToast,
 				removeToast,
 				disableWarningPrompt,
