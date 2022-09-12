@@ -246,7 +246,7 @@ export const getBody = (
 				data.meta = values.meta;
 			} else if (fileKeys.includes(key)) {
 				unset(data.attributes, key);
-			} else if (key !== 'id' && key !== 'type' && key !== '_new' && !key.startsWith('_new.')) {
+			} else if (key !== 'id' && key !== 'type') {
 				set(data.attributes, key, get(values, key));
 			}
 		});

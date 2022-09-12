@@ -3,7 +3,6 @@ import ConditionalWrapper from './ConditionalWrapper';
 import Error from './Error';
 import FormContext from './FormContext';
 import getInputElement from './FieldInput';
-import HasMany from './Input/HasMany';
 import Label from './Label';
 import PropTypes from 'prop-types';
 
@@ -63,12 +62,7 @@ export default function Field({
 		}
 	}
 
-	let InputComponent = getInputElement(type, component);
-	if (type === 'has-many') {
-		// This prevents a dependency cycle.
-		InputComponent = HasMany;
-	}
-
+	const InputComponent = getInputElement(type, component);
 	const input = (
 		<InputComponent {...inputProps} />
 	);

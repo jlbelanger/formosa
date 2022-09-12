@@ -1,5 +1,4 @@
 import getInputElement from './FieldInput';
-import HasMany from './Input/HasMany';
 import PropTypes from 'prop-types';
 import React from 'react'; // eslint-disable-line import/no-unresolved
 
@@ -8,12 +7,7 @@ export default function ExportableInput({
 	type,
 	...otherProps
 }) {
-	let InputComponent = getInputElement(type, component);
-	if (type === 'has-many') {
-		// This prevents a dependency cycle.
-		InputComponent = HasMany;
-	}
-
+	const InputComponent = getInputElement(type, component);
 	return (
 		<InputComponent type={type} {...otherProps} />
 	);
