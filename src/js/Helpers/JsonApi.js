@@ -299,8 +299,6 @@ export const getBody = (
 			});
 
 			body = formData;
-		} else {
-			body = JSON.stringify(body);
 		}
 	}
 

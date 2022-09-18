@@ -74,7 +74,9 @@ export default function FormInner({
 			message: '',
 		});
 
-		Api.request(method, url, body)
+		const bodyString = body instanceof FormData ? body : JSON.stringify(body);
+
+		Api.request(method, url, bodyString)
 			.then((response) => {
 				if (!response) {
 					return;
