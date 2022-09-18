@@ -130,8 +130,17 @@ const getIncludedItemData = (rel, relName, childRelationshipNames, dirtyRelation
 		});
 	}
 
-	if (Object.keys(relData.relationships).length <= 0) {
+	const hasAttributes = Object.keys(relData.attributes).length > 0;
+	if (!hasAttributes) {
+		delete relData.attributes;
+	}
+	const hasRelationships = Object.keys(relData.relationships).length > 0;
+	if (!hasRelationships) {
 		delete relData.relationships;
+	}
+
+	if (!hasAttributes && !hasRelationships) {
+		return null;
 	}
 
 	return relData;
