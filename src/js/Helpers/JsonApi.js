@@ -166,11 +166,21 @@ const getIncluded = (data, dirtyKeys, relationshipNames) => {
 			if (Array.isArray(data.relationships[relName].data)) {
 				Object.keys(data.relationships[relName].data).forEach((relIndex) => {
 					const rel = data.relationships[relName].data[relIndex];
-					relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships, relIndex);
-					included.push(relData);
+					if (rel) {
+						relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships, relIndex);
+						if (relData) {
+							included.push(relData);
+						}
+					}
 				});
 			} else {
-				relData = getIncludedItemData(data.relationships[relName].data, relName, childRelationshipNames, dirtyRelationships);
+				const rel = data.relationships[relName].data;
+				if (rel) {
+					relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships);
+					if (relData) {
+						included.push(relData);
+					}
+				}
 			}
 		}
 	});
