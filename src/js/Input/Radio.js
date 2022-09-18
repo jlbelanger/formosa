@@ -31,7 +31,7 @@ export default function Radio({
 	valueKey,
 	...otherProps
 }) {
-	const { formState } = useContext(FormContext);
+	const { formState, setValues } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 	const [isLoading, setIsLoading] = useState(showLoading || !!url);
 	const [message, setMessage] = useState('');
@@ -52,17 +52,14 @@ export default function Radio({
 					}
 				});
 		}
-		return () => {};
 	}, [url]);
 
 	useEffect(() => {
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
-		return () => {};
 	}, [options]);
 
 	useEffect(() => {
 		setIsLoading(showLoading);
-		return () => {};
 	}, [showLoading]);
 
 	if (isLoading) {
@@ -98,7 +95,7 @@ export default function Radio({
 		if (setValue) {
 			setValue(newValue);
 		} else {
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 	};
 

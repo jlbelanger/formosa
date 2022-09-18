@@ -21,20 +21,24 @@ export default function FormInner({
 	params,
 	path,
 	preventEmptyRequest,
+	preventEmptyRequestText,
 	relationshipNames,
 	showMessage,
 	successMessageText,
 	successToastText,
 	...otherProps
 }) {
-	const { formState, setFormState } = useContext(FormContext);
-	const { formosaState } = useContext(FormosaContext);
+	const { formState, setFormState, getDirtyKeys } = useContext(FormContext);
+	const { addToast } = useContext(FormosaContext);
 
 	const submitApiRequest = (e) => {
 		e.preventDefault();
 
-		if (preventEmptyRequest && formState.dirty.length <= 0) {
-			formosaState.addToast('No changes to save.');
+		const dirtyKeys = getDirtyKeys();
+		if (preventEmptyRequest && dirtyKeys.length <= 0) {
+			if (preventEmptyRequestText) {
+				addToast(preventEmptyRequestText);
+			}
 			if (afterNoSubmit) {
 				afterNoSubmit();
 			}
@@ -58,6 +62,7 @@ export default function FormInner({
 			path,
 			id,
 			formState,
+			dirtyKeys,
 			relationshipNames,
 			filterBody,
 			filterValues
@@ -69,7 +74,9 @@ export default function FormInner({
 			message: '',
 		});
 
-		Api.request(method, url, body)
+		const bodyString = body instanceof FormData ? body : JSON.stringify(body);
+
+		Api.request(method, url, bodyString)
 			.then((response) => {
 				if (!response) {
 					return;
@@ -77,18 +84,19 @@ export default function FormInner({
 
 				const newState = {
 					...formState,
-					dirty: [],
-					dirtyIncluded: [],
 					errors: {},
 					message: successMessageText,
 				};
 				if (clearOnSubmit) {
-					newState.row = defaultRow;
+					newState.originalRow = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
+					newState.row = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
+				} else {
+					newState.originalRow = JSON.parse(JSON.stringify(formState.row)); // Deep copy.
 				}
 				setFormState(newState);
 
 				if (successToastText) {
-					formosaState.addToast(successToastText, 'success');
+					addToast(successToastText, 'success');
 				}
 				if (afterSubmit) {
 					afterSubmit(response);
@@ -96,12 +104,12 @@ export default function FormInner({
 			})
 			.catch((response) => {
 				if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
-					formosaState.addToast('Error.', 'error');
+					addToast('Error.', 'error');
 				} else if (Object.prototype.hasOwnProperty.call(response, 'message')) {
-					formosaState.addToast(response.message, 'error', 10000);
+					addToast(response.message, 'error', 10000);
 					return;
 				} else {
-					formosaState.addToast('Server error.', 'error');
+					addToast('Server error.', 'error');
 					throw response;
 				}
 
@@ -115,8 +123,8 @@ export default function FormInner({
 							const i = key.replace(/^\/included\/(\d+)\/.+$/g, '$1');
 							const includedRecord = body.included[parseInt(i, 10)];
 							key = key.replace(/^\/included\/(\d+)\//g, `included.${includedRecord.type}.${includedRecord.id}.`);
-							key = key.replace(/\//g, '.');
 						}
+						key = key.replace(/\//g, '.');
 						if (!document.querySelector(`[data-name="${key}"].formosa-field__error`)) {
 							key = '';
 						}
@@ -165,6 +173,10 @@ FormInner.propTypes = {
 	params: PropTypes.string,
 	path: PropTypes.string,
 	preventEmptyRequest: PropTypes.bool,
+	preventEmptyRequestText: PropTypes.oneOfType([
+		PropTypes.bool,
+		PropTypes.string,
+	]),
 	relationshipNames: PropTypes.array,
 	showMessage: PropTypes.bool,
 	successMessageText: PropTypes.string,
@@ -186,6 +198,7 @@ FormInner.defaultProps = {
 	params: '',
 	path: null,
 	preventEmptyRequest: false,
+	preventEmptyRequestText: 'No changes to save.',
 	relationshipNames: [],
 	showMessage: true,
 	successMessageText: '',

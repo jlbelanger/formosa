@@ -17,7 +17,7 @@ export default function Checkbox({
 	value,
 	...otherProps
 }) {
-	const { formState } = useContext(FormContext);
+	const { formState, setValues } = useContext(FormContext);
 
 	let checked = false;
 	if (setValue !== null) {
@@ -34,7 +34,7 @@ export default function Checkbox({
 		if (setValue) {
 			setValue(newValue);
 		} else {
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 	};
 

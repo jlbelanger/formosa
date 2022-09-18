@@ -26,6 +26,7 @@ export default function Autocomplete({
 	name,
 	optionButtonAttributes,
 	optionButtonClassName,
+	optionLabelFn,
 	optionListAttributes,
 	optionListClassName,
 	optionListItemAttributes,
@@ -49,7 +50,7 @@ export default function Autocomplete({
 	wrapperClassName,
 	...otherProps
 }) {
-	const { formState } = useContext(FormContext);
+	const { formState, setValues } = useContext(FormContext);
 	const clearButtonRef = useRef(null);
 	const inputRef = useRef(null);
 	const removeButtonRef = useRef(null);
@@ -76,17 +77,14 @@ export default function Autocomplete({
 					}
 				});
 		}
-		return () => {};
 	}, [url]);
 
 	useEffect(() => {
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
-		return () => {};
 	}, [options]);
 
 	useEffect(() => {
 		setIsLoading(showLoading);
-		return () => {};
 	}, [showLoading]);
 
 	if (isLoading) {
@@ -132,11 +130,9 @@ export default function Autocomplete({
 	}
 
 	const focus = () => {
-		setTimeout(() => {
-			if (inputRef.current) {
-				inputRef.current.focus();
-			}
-		});
+		if (inputRef.current) {
+			inputRef.current.focus();
+		}
 	};
 
 	const addValue = (v) => {
@@ -153,26 +149,12 @@ export default function Autocomplete({
 			setValue(newValue);
 		} else {
 			const e = { target: { name } };
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 
 		setIsOpen(false);
 		setFilter('');
-		if (max === 1) {
-			setTimeout(() => {
-				if (removeButtonRef.current) {
-					removeButtonRef.current.focus();
-				}
-			});
-		} else if (max === currentValueLength) {
-			setTimeout(() => {
-				if (clearButtonRef.current) {
-					clearButtonRef.current.focus();
-				}
-			});
-		} else {
-			focus();
-		}
+		focus();
 
 		if (afterAdd) {
 			afterAdd();
@@ -197,7 +179,7 @@ export default function Autocomplete({
 			setValue(newValue);
 		} else {
 			const e = { target: { name } };
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 
 		focus();
@@ -269,7 +251,7 @@ export default function Autocomplete({
 			setValue(newValue);
 		} else {
 			const e = { target: { name } };
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 
 		setFilter('');
@@ -394,6 +376,13 @@ export default function Autocomplete({
 							val = JSON.stringify(val);
 						}
 
+						let label = '';
+						if (optionLabelFn) {
+							label = optionLabelFn(option);
+						} else if (option && Object.prototype.hasOwnProperty.call(option, 'label')) {
+							label = option.label;
+						}
+
 						let optionListItemProps = {};
 						if (typeof optionListItemAttributes === 'function') {
 							optionListItemProps = optionListItemAttributes(option);
@@ -422,7 +411,7 @@ export default function Autocomplete({
 									type="button"
 									{...optionButtonProps}
 								>
-									{option.label}
+									{label}
 								</button>
 							</li>
 						);
@@ -474,6 +463,7 @@ Autocomplete.propTypes = {
 		PropTypes.object,
 	]),
 	optionButtonClassName: PropTypes.string,
+	optionLabelFn: PropTypes.func,
 	optionListAttributes: PropTypes.object,
 	optionListClassName: PropTypes.string,
 	optionListItemAttributes: PropTypes.oneOfType([
@@ -536,6 +526,7 @@ Autocomplete.defaultProps = {
 	name: '',
 	optionButtonAttributes: null,
 	optionButtonClassName: '',
+	optionLabelFn: null,
 	optionListAttributes: null,
 	optionListClassName: '',
 	optionListItemAttributes: null,

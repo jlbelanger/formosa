@@ -15,7 +15,6 @@ export default function JsonApiEdit() {
 			.then((response) => {
 				setRow(response);
 			});
-		return () => {};
 	}, [id]);
 
 	if (!row) {

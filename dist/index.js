@@ -156,63 +156,119 @@ var cleanRelationship = function cleanRelationship(values) {
   return cleanSingleRelationship(values);
 };
 
-var getIncluded = function getIncluded(data, dirtyIncluded, relationshipNames) {
-  var included = [];
-  var dirtyKeys = {};
-  dirtyIncluded.forEach(function (key) {
-    if (!key.startsWith('_new.')) {
-      var currentKeys = [];
-      key.split('.').forEach(function (k) {
-        currentKeys.push(k);
+var getIncludedItemData = function getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships, relIndex) {
+  if (relIndex === void 0) {
+    relIndex = null;
+  }
 
-        if (typeof get(dirtyKeys, currentKeys.join('.')) === 'undefined') {
-          set(dirtyKeys, currentKeys.join('.'), {});
-        }
-      });
-    }
-  });
-  relationshipNames.forEach(function (relationshipName) {
-    if (!Object.prototype.hasOwnProperty.call(data.relationships, relationshipName)) {
-      return;
-    }
+  var relData = {
+    id: rel.id,
+    type: rel.type,
+    attributes: {},
+    relationships: {}
+  };
 
-    if (!Object.prototype.hasOwnProperty.call(dirtyKeys, relationshipName)) {
-      return;
-    }
-
-    if (!Array.isArray(data.relationships[relationshipName].data)) {
-      return;
-    }
-
-    data.relationships[relationshipName].data.forEach(function (rel) {
-      if (Object.keys(rel).length <= 2) {
-        return;
-      }
-
-      if (Object.prototype.hasOwnProperty.call(dirtyKeys[relationshipName], rel.id)) {
-        var relData = {
-          id: rel.id,
-          type: rel.type,
-          attributes: {}
-        };
-
-        if (Object.keys(dirtyKeys[relationshipName][rel.id]).length === 0) {
-          Object.keys(rel).forEach(function (key) {
-            if (key !== 'id' && key !== 'type') {
-              set(relData.attributes, key, rel[key]);
+  if (rel.id.startsWith('temp-')) {
+    Object.keys(rel).forEach(function (key) {
+      if (key !== 'id' && key !== 'type') {
+        if (childRelationshipNames[relName].includes(key)) {
+          var childRel = {
+            data: {
+              id: rel[key].id,
+              type: rel[key].type
             }
-          });
+          };
+          set(relData.relationships, key, childRel);
         } else {
-          Object.keys(rel).forEach(function (key) {
-            if (Object.prototype.hasOwnProperty.call(dirtyKeys[relationshipName][rel.id], key)) {
-              set(relData.attributes, key, rel[key]);
-            }
-          });
+          set(relData.attributes, key, rel[key]);
         }
-
-        included.push(relData);
       }
     });
+  } else {
+    Object.keys(rel).forEach(function (key) {
+      if (key !== 'id' && key !== 'type') {
+        if (relIndex === null) {
+          if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], key)) {
+            set(relData.attributes, key, rel[key]);
+          }
+        } else if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], relIndex)) {
+          if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName][relIndex], key)) {
+            set(relData.attributes, key, rel[key]);
+          }
+        }
+      }
+    });
+  }
+
+  var hasAttributes = Object.keys(relData.attributes).length > 0;
+
+  if (!hasAttributes) {
+    delete relData.attributes;
+  }
+
+  var hasRelationships = Object.keys(relData.relationships).length > 0;
+
+  if (!hasRelationships) {
+    delete relData.relationships;
+  }
+
+  if (!hasAttributes && !hasRelationships) {
+    return null;
+  }
+
+  return relData;
+};
+
+var getIncluded = function getIncluded(data, dirtyKeys, relationshipNames) {
+  var included = [];
+  var dirtyRelationships = {};
+  dirtyKeys.forEach(function (key) {
+    var currentKeys = [];
+    key.split('.').forEach(function (k) {
+      currentKeys.push(k);
+
+      if (typeof get(dirtyRelationships, currentKeys.join('.')) === 'undefined') {
+        set(dirtyRelationships, currentKeys.join('.'), {});
+      }
+    });
+  });
+  var childRelationshipNames = {};
+  relationshipNames.forEach(function (relName) {
+    childRelationshipNames[relName] = [];
+
+    if (relName.includes('.')) {
+      var keys = relName.split('.');
+      childRelationshipNames[keys.shift()].push(keys.join('.'));
+    }
+  });
+  Object.keys(dirtyRelationships).forEach(function (relName) {
+    if (Object.prototype.hasOwnProperty.call(data.relationships, relName)) {
+      var relData;
+
+      if (Array.isArray(data.relationships[relName].data)) {
+        Object.keys(data.relationships[relName].data).forEach(function (relIndex) {
+          var rel = data.relationships[relName].data[relIndex];
+
+          if (rel) {
+            relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships, relIndex);
+
+            if (relData) {
+              included.push(relData);
+            }
+          }
+        });
+      } else {
+        var rel = data.relationships[relName].data;
+
+        if (rel) {
+          relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships);
+
+          if (relData) {
+            included.push(relData);
+          }
+        }
+      }
+    }
   });
   return included;
 };
@@ -231,18 +287,16 @@ var unset = function unset(obj, key) {
   return delete o[lastKey];
 };
 
-var getBody = function getBody(method, type, id, formState, relationshipNames, filterBody, filterValues) {
+var getBody = function getBody(method, type, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues) {
   var body = null;
 
   if (method === 'PUT' || method === 'POST') {
-    body = {};
     var data = {
       type: type,
       attributes: {},
-      meta: {},
-      relationships: {}
+      relationships: {},
+      meta: {}
     };
-    var keys = method === 'PUT' ? formState.dirty : Object.keys(formState.row);
 
     if (method === 'PUT' && id) {
       data.id = id;
@@ -255,16 +309,17 @@ var getBody = function getBody(method, type, id, formState, relationshipNames, f
     }
 
     var fileKeys = Object.keys(formState.files);
+    var keys = method === 'PUT' ? dirtyKeys : Object.keys(formState.row);
     keys.forEach(function (key) {
-      var cleanKey = key.replace(/\..+$/, '');
+      var firstPartOfKey = key.replace(/\..+$/, '');
 
-      if (relationshipNames.includes(cleanKey)) {
-        data.relationships[cleanKey] = {
-          data: get(values, cleanKey)
+      if (relationshipNames.includes(firstPartOfKey)) {
+        data.relationships[firstPartOfKey] = {
+          data: get(values, firstPartOfKey)
         };
       } else if (relationshipNames.includes(key)) {
         data.relationships[key] = {
-          data: get(values, cleanKey)
+          data: get(values, firstPartOfKey)
         };
       } else if (key.startsWith('meta.')) {
         set(data, key, get(values, key));
@@ -272,12 +327,14 @@ var getBody = function getBody(method, type, id, formState, relationshipNames, f
         data.meta = values.meta;
       } else if (fileKeys.includes(key)) {
         unset(data.attributes, key);
-      } else if (key !== '_new' && !key.startsWith('_new.')) {
+      } else {
         set(data.attributes, key, get(values, key));
       }
     });
-    body.data = data;
-    var included = getIncluded(data, formState.dirtyIncluded, relationshipNames);
+    body = {
+      data: data
+    };
+    var included = getIncluded(data, dirtyKeys, relationshipNames);
 
     if (included.length > 0) {
       body.included = included;
@@ -325,8 +382,6 @@ var getBody = function getBody(method, type, id, formState, relationshipNames, f
         formData.append(filename, formState.files[filename]);
       });
       body = formData;
-    } else {
-      body = JSON.stringify(body);
     }
   }
 
@@ -485,14 +540,12 @@ function SvgCheck(props) {
 }
 
 var formContext = /*#__PURE__*/React__default.createContext({
-  dirty: [],
-  dirtyIncluded: [],
   errors: {},
   files: {},
   message: '',
+  originalRow: {},
   row: {},
-  setRow: null,
-  setValues: null
+  setRow: null
 });
 
 function Error$1(_ref) {
@@ -639,7 +692,7 @@ function SvgX(props) {
   })));
 }
 
-var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "loadingText", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "setValue", "showLoading", "url", "value", "valueKey", "valueListItemAttributes", "wrapperAttributes", "wrapperClassName"];
+var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "loadingText", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionLabelFn", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "setValue", "showLoading", "url", "value", "valueKey", "valueListItemAttributes", "wrapperAttributes", "wrapperClassName"];
 function Autocomplete(_ref) {
   var afterAdd = _ref.afterAdd,
       afterChange = _ref.afterChange,
@@ -660,6 +713,7 @@ function Autocomplete(_ref) {
       name = _ref.name,
       optionButtonAttributes = _ref.optionButtonAttributes,
       optionButtonClassName = _ref.optionButtonClassName,
+      optionLabelFn = _ref.optionLabelFn,
       optionListAttributes = _ref.optionListAttributes,
       optionListClassName = _ref.optionListClassName,
       optionListItemAttributes = _ref.optionListItemAttributes,
@@ -684,7 +738,8 @@ function Autocomplete(_ref) {
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded);
 
   var _useContext = React.useContext(formContext),
-      formState = _useContext.formState;
+      formState = _useContext.formState,
+      setValues = _useContext.setValues;
 
   var clearButtonRef = React.useRef(null);
   var inputRef = React.useRef(null);
@@ -730,16 +785,12 @@ function Autocomplete(_ref) {
         }
       });
     }
-
-    return function () {};
   }, [url]);
   React.useEffect(function () {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
-    return function () {};
   }, [options]);
   React.useEffect(function () {
     setIsLoading(showLoading);
-    return function () {};
   }, [showLoading]);
 
   if (isLoading) {
@@ -798,11 +849,9 @@ function Autocomplete(_ref) {
   }
 
   var focus = function focus() {
-    setTimeout(function () {
-      if (inputRef.current) {
-        inputRef.current.focus();
-      }
-    });
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   var addValue = function addValue(v) {
@@ -824,27 +873,12 @@ function Autocomplete(_ref) {
           name: name
         }
       };
-      formState.setValues(formState, e, name, newValue, afterChange);
+      setValues(e, name, newValue, afterChange);
     }
 
     setIsOpen(false);
     setFilter('');
-
-    if (max === 1) {
-      setTimeout(function () {
-        if (removeButtonRef.current) {
-          removeButtonRef.current.focus();
-        }
-      });
-    } else if (max === currentValueLength) {
-      setTimeout(function () {
-        if (clearButtonRef.current) {
-          clearButtonRef.current.focus();
-        }
-      });
-    } else {
-      focus();
-    }
+    focus();
 
     if (afterAdd) {
       afterAdd();
@@ -876,7 +910,7 @@ function Autocomplete(_ref) {
           name: name
         }
       };
-      formState.setValues(formState, e, name, newValue, afterChange);
+      setValues(e, name, newValue, afterChange);
     }
 
     focus();
@@ -958,7 +992,7 @@ function Autocomplete(_ref) {
           name: name
         }
       };
-      formState.setValues(formState, e, name, newValue, afterChange);
+      setValues(e, name, newValue, afterChange);
     }
 
     setFilter('');
@@ -1075,6 +1109,14 @@ function Autocomplete(_ref) {
       val = JSON.stringify(val);
     }
 
+    var label = '';
+
+    if (optionLabelFn) {
+      label = optionLabelFn(option);
+    } else if (option && Object.prototype.hasOwnProperty.call(option, 'label')) {
+      label = option.label;
+    }
+
     var optionListItemProps = {};
 
     if (typeof optionListItemAttributes === 'function') {
@@ -1100,7 +1142,7 @@ function Autocomplete(_ref) {
       "data-value": val,
       onClick: onClickOption,
       type: "button"
-    }, optionButtonProps), option.label));
+    }, optionButtonProps), label));
   })), showClear && /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement("button", _extends({
     className: ("formosa-autocomplete__clear " + clearButtonClassName).trim(),
     onClick: clear,
@@ -1132,6 +1174,7 @@ Autocomplete.propTypes = {
   name: PropTypes.string,
   optionButtonAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   optionButtonClassName: PropTypes.string,
+  optionLabelFn: PropTypes.func,
   optionListAttributes: PropTypes.object,
   optionListClassName: PropTypes.string,
   optionListItemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
@@ -1174,6 +1217,7 @@ Autocomplete.defaultProps = {
   name: '',
   optionButtonAttributes: null,
   optionButtonClassName: '',
+  optionLabelFn: null,
   optionListAttributes: null,
   optionListClassName: '',
   optionListItemAttributes: null,
@@ -1212,7 +1256,8 @@ function Checkbox(_ref) {
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$1);
 
   var _useContext = React.useContext(formContext),
-      formState = _useContext.formState;
+      formState = _useContext.formState,
+      setValues = _useContext.setValues;
 
   var checked = false;
 
@@ -1232,7 +1277,7 @@ function Checkbox(_ref) {
     if (setValue) {
       setValue(newValue);
     } else {
-      formState.setValues(formState, e, name, newValue, afterChange);
+      setValues(e, name, newValue, afterChange);
     }
   };
 
@@ -1315,7 +1360,8 @@ function CheckboxList(_ref) {
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$2);
 
   var _useContext = React.useContext(formContext),
-      formState = _useContext.formState;
+      formState = _useContext.formState,
+      setValues = _useContext.setValues;
 
   var _useState = React.useState(options ? normalizeOptions(options, labelKey, valueKey) : []),
       optionValues = _useState[0],
@@ -1345,16 +1391,12 @@ function CheckboxList(_ref) {
         }
       });
     }
-
-    return function () {};
   }, [url]);
   React.useEffect(function () {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
-    return function () {};
   }, [options]);
   React.useEffect(function () {
     setIsLoading(showLoading);
-    return function () {};
   }, [showLoading]);
 
   if (isLoading) {
@@ -1385,7 +1427,7 @@ function CheckboxList(_ref) {
     currentValue = [];
   }
 
-  currentValue = currentValue.map(function (val) {
+  var currentValueStringified = currentValue.map(function (val) {
     return typeof val === 'object' ? JSON.stringify(val) : val;
   });
 
@@ -1400,7 +1442,7 @@ function CheckboxList(_ref) {
 
       newValue.push(val);
     } else {
-      var index = currentValue.indexOf(val);
+      var index = currentValueStringified.indexOf(val);
 
       if (index > -1) {
         newValue.splice(index, 1);
@@ -1410,7 +1452,7 @@ function CheckboxList(_ref) {
     if (setValue) {
       setValue(newValue);
     } else {
-      formState.setValues(formState, e, name, newValue, afterChange);
+      setValues(e, name, newValue, afterChange);
     }
   };
 
@@ -1427,7 +1469,7 @@ function CheckboxList(_ref) {
       optionValueVal = JSON.stringify(optionValueVal);
     }
 
-    var checked = currentValue.includes(optionValueVal);
+    var checked = currentValueStringified.includes(optionValueVal);
     var itemProps = {};
 
     if (typeof itemAttributes === 'function') {
@@ -1592,7 +1634,8 @@ function File(_ref) {
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$3);
 
   var _useContext = React.useContext(formContext),
-      formState = _useContext.formState;
+      formState = _useContext.formState,
+      setValues = _useContext.setValues;
 
   var inputRef = React.useRef(null);
   var currentValue = '';
@@ -1684,7 +1727,7 @@ function File(_ref) {
     if (setValue) {
       setValue(newFiles);
     } else {
-      formState.setValues(formState, e, name, newFiles, afterChange, newFiles);
+      setValues(e, name, newFiles, afterChange, newFiles);
     }
   };
 
@@ -1695,7 +1738,7 @@ function File(_ref) {
     if (setValue) {
       setValue(newValue);
     } else {
-      formState.setValues(formState, e, name, newValue, afterChange, newValue);
+      setValues(e, name, newValue, afterChange, newValue);
     }
 
     inputRef.current.focus();
@@ -1861,7 +1904,8 @@ function Input(_ref) {
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$4);
 
   var _useContext = React.useContext(formContext),
-      formState = _useContext.formState;
+      formState = _useContext.formState,
+      setValues = _useContext.setValues;
 
   var currentValue = '';
 
@@ -1887,7 +1931,7 @@ function Input(_ref) {
     if (setValue) {
       setValue(newValue);
     } else {
-      formState.setValues(formState, e, name, newValue, afterChange);
+      setValues(e, name, newValue, afterChange);
     }
   };
 
@@ -2016,7 +2060,8 @@ function Radio(_ref) {
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$6);
 
   var _useContext = React.useContext(formContext),
-      formState = _useContext.formState;
+      formState = _useContext.formState,
+      setValues = _useContext.setValues;
 
   var _useState = React.useState(options ? normalizeOptions(options, labelKey, valueKey) : []),
       optionValues = _useState[0],
@@ -2046,16 +2091,12 @@ function Radio(_ref) {
         }
       });
     }
-
-    return function () {};
   }, [url]);
   React.useEffect(function () {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
-    return function () {};
   }, [options]);
   React.useEffect(function () {
     setIsLoading(showLoading);
-    return function () {};
   }, [showLoading]);
 
   if (isLoading) {
@@ -2100,7 +2141,7 @@ function Radio(_ref) {
     if (setValue) {
       setValue(newValue);
     } else {
-      formState.setValues(formState, e, name, newValue, afterChange);
+      setValues(e, name, newValue, afterChange);
     }
   };
 
@@ -2352,7 +2393,8 @@ function Select(_ref) {
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$8);
 
   var _useContext = React.useContext(formContext),
-      formState = _useContext.formState;
+      formState = _useContext.formState,
+      setValues = _useContext.setValues;
 
   var _useState = React.useState(options ? normalizeOptions(options, labelKey, valueKey) : []),
       optionValues = _useState[0],
@@ -2382,16 +2424,12 @@ function Select(_ref) {
         }
       });
     }
-
-    return function () {};
   }, [url]);
   React.useEffect(function () {
     setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
-    return function () {};
   }, [options]);
   React.useEffect(function () {
     setIsLoading(showLoading);
-    return function () {};
   }, [showLoading]);
 
   if (isLoading) {
@@ -2437,7 +2475,7 @@ function Select(_ref) {
     if (setValue) {
       setValue(newValue);
     } else {
-      formState.setValues(formState, e, name, newValue, afterChange);
+      setValues(e, name, newValue, afterChange);
     }
   };
 
@@ -2547,7 +2585,8 @@ function Textarea(_ref) {
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$9);
 
   var _useContext = React.useContext(formContext),
-      formState = _useContext.formState;
+      formState = _useContext.formState,
+      setValues = _useContext.setValues;
 
   var currentValue = '';
 
@@ -2571,7 +2610,7 @@ function Textarea(_ref) {
     if (setValue) {
       setValue(newValue);
     } else {
-      formState.setValues(formState, e, name, newValue, afterChange);
+      setValues(e, name, newValue, afterChange);
     }
   };
 
@@ -2652,214 +2691,6 @@ var getInputElement = (function (type, component) {
   return Input;
 });
 
-var getNewDirty = (function (oldDirty, name) {
-  var newDirty = [].concat(oldDirty);
-
-  if (!newDirty.includes(name)) {
-    newDirty.push(name);
-  }
-
-  return newDirty;
-});
-
-function HasMany(_ref) {
-  var attributes = _ref.attributes,
-      buttonClassName = _ref.buttonClassName,
-      name = _ref.name,
-      recordType = _ref.recordType,
-      removable = _ref.removable;
-
-  var _useContext = React.useContext(formContext),
-      formState = _useContext.formState,
-      setFormState = _useContext.setFormState;
-
-  var _useState = React.useState(1),
-      tempId = _useState[0],
-      setTempId = _useState[1];
-
-  var values = get(formState.row, name) || [];
-
-  var onAdd = function onAdd() {
-    var newValue = get(formState.row, "_new." + name);
-    var hasNewValue = newValue && Object.keys(newValue).length > 0;
-
-    if (!hasNewValue) {
-      return;
-    }
-
-    newValue.id = "temp-" + tempId;
-    newValue.type = recordType;
-    setTempId(tempId + 1);
-
-    var newRow = _extends({}, formState.row);
-
-    var newValues = get(newRow, name) || [];
-    newValues.push(newValue);
-    set(newRow, name, newValues);
-    set(newRow, "_new." + name, {});
-    setFormState(_extends({}, formState, {
-      dirty: getNewDirty(formState.dirty, name),
-      dirtyIncluded: getNewDirty(formState.dirtyIncluded, newValue.type + "." + newValue.id),
-      row: newRow
-    }));
-    document.getElementById("_new." + name + "." + attributes[0].name).focus();
-  };
-
-  var onKeyDown = function onKeyDown(e) {
-    if (e.key !== 'Enter') {
-      return;
-    }
-
-    var newValue = get(formState.row, "_new." + name);
-    var hasNewValue = newValue && Object.keys(newValue).length > 0;
-
-    if (hasNewValue) {
-      e.preventDefault();
-      e.stopPropagation();
-      onAdd();
-    }
-  };
-
-  var onRemove = function onRemove(e) {
-    var i = e.target.getAttribute('data-index');
-
-    if (i < 0) {
-      return;
-    }
-
-    var newRow = _extends({}, formState.row);
-
-    var newValues = get(newRow, name);
-    newValues.splice(i, 1);
-    set(newRow, name, newValues);
-    setFormState(_extends({}, formState, {
-      dirty: getNewDirty(formState.dirty, name),
-      row: newRow
-    }));
-  };
-
-  var afterChange = function afterChange(e) {
-    setFormState(_extends({}, formState, {
-      dirty: getNewDirty(formState.dirty, name),
-      dirtyIncluded: getNewDirty(formState.dirtyIncluded, e.target.getAttribute('data-unique-name'))
-    }));
-  };
-
-  var visibleAttributes = attributes.filter(function (attribute) {
-    return attribute.type !== 'hidden';
-  });
-  var hiddenAttributes = attributes.filter(function (attribute) {
-    return attribute.type === 'hidden';
-  });
-  hiddenAttributes.push({
-    name: 'id',
-    type: 'hidden'
-  });
-  hiddenAttributes.push({
-    name: 'type',
-    type: 'hidden'
-  });
-  var showHeader = visibleAttributes.some(function (attribute) {
-    return attribute.label;
-  });
-  return /*#__PURE__*/React__default.createElement("table", {
-    className: "formosa-has-many"
-  }, showHeader && /*#__PURE__*/React__default.createElement("thead", {
-    className: "formosa-has-many__head"
-  }, /*#__PURE__*/React__default.createElement("tr", null, visibleAttributes.map(function (attribute) {
-    return /*#__PURE__*/React__default.createElement("th", {
-      key: attribute.name
-    }, attribute.label);
-  }), /*#__PURE__*/React__default.createElement("th", null))), /*#__PURE__*/React__default.createElement("tbody", {
-    className: "formosa-has-many__body"
-  }, values.map(function (value, i) {
-    var isRemovable = typeof removable === 'boolean' && removable;
-
-    if (typeof removable === 'function') {
-      isRemovable = removable(value);
-    }
-
-    var rowKey = "included." + value.type + "." + value.id;
-    return /*#__PURE__*/React__default.createElement("tr", {
-      className: "formosa-has-many__row",
-      key: rowKey
-    }, visibleAttributes.map(function (attribute) {
-      var Component = getInputElement(attribute.type, attribute.component);
-      var fieldKey = rowKey + "." + attribute.name;
-      var hasError = Object.prototype.hasOwnProperty.call(formState.errors, fieldKey);
-      var className = ['formosa-has-many__column'];
-
-      if (hasError) {
-        className.push('formosa-field--has-error');
-      }
-
-      return /*#__PURE__*/React__default.createElement("td", {
-        className: className.join(' '),
-        key: attribute.name
-      }, /*#__PURE__*/React__default.createElement(Component, _extends({}, attribute, {
-        afterChange: afterChange,
-        "data-unique-name": name + "." + value.id + "." + attribute.name,
-        name: name + "." + i + "." + attribute.name
-      })), hasError && /*#__PURE__*/React__default.createElement("div", {
-        className: "formosa-field__error"
-      }, formState.errors[rowKey].join( /*#__PURE__*/React__default.createElement("br", null))));
-    }), /*#__PURE__*/React__default.createElement("td", {
-      className: "formosa-has-many__column formosa-has-many__column--button"
-    }, hiddenAttributes.map(function (attribute) {
-      var Component = getInputElement(attribute.type, attribute.component);
-      return /*#__PURE__*/React__default.createElement(Component, _extends({}, attribute, {
-        key: attribute.name,
-        name: name + "." + i + "." + attribute.name
-      }));
-    }), /*#__PURE__*/React__default.createElement("button", {
-      className: ("formosa-button formosa-button--remove-has-many formosa-has-many__button " + buttonClassName).trim(),
-      "data-index": i,
-      disabled: !isRemovable,
-      onClick: onRemove,
-      type: "button"
-    }, "Remove")));
-  })), /*#__PURE__*/React__default.createElement("tfoot", {
-    className: "formosa-has-many__foot"
-  }, /*#__PURE__*/React__default.createElement("tr", {
-    className: "formosa-has-many__row formosa-has-many__row--new"
-  }, visibleAttributes.map(function (attribute) {
-    var Component = getInputElement(attribute.type, attribute.component);
-    return /*#__PURE__*/React__default.createElement("td", {
-      className: "formosa-has-many__column",
-      key: attribute.name
-    }, /*#__PURE__*/React__default.createElement(Component, _extends({}, attribute, {
-      name: "_new." + name + "." + attribute.name,
-      onKeyDown: onKeyDown
-    })));
-  }), /*#__PURE__*/React__default.createElement("td", {
-    className: "formosa-has-many__column formosa-has-many__column--button"
-  }, hiddenAttributes.map(function (attribute) {
-    var Component = getInputElement(attribute.type, attribute.component);
-    return /*#__PURE__*/React__default.createElement(Component, _extends({}, attribute, {
-      key: attribute.name,
-      name: "_new." + name + "." + attribute.name,
-      onKeyDown: onKeyDown
-    }));
-  }), /*#__PURE__*/React__default.createElement("button", {
-    className: ("formosa-button formosa-button--add-has-many formosa-has-many__button " + buttonClassName).trim(),
-    onClick: onAdd,
-    type: "button"
-  }, "Add")))));
-}
-HasMany.propTypes = {
-  attributes: PropTypes.array,
-  buttonClassName: PropTypes.string,
-  name: PropTypes.string,
-  recordType: PropTypes.string.isRequired,
-  removable: PropTypes.oneOfType([PropTypes.bool, PropTypes.func])
-};
-HasMany.defaultProps = {
-  attributes: [],
-  buttonClassName: '',
-  name: '',
-  removable: true
-};
-
 var _excluded$a = ["component", "type"];
 function ExportableInput(_ref) {
   var component = _ref.component,
@@ -2867,11 +2698,6 @@ function ExportableInput(_ref) {
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$a);
 
   var InputComponent = getInputElement(type, component);
-
-  if (type === 'has-many') {
-    InputComponent = HasMany;
-  }
-
   return /*#__PURE__*/React__default.createElement(InputComponent, _extends({
     type: type
   }, otherProps));
@@ -2907,7 +2733,7 @@ function Label(_ref) {
     wrapperClassName += ' formosa-label-wrapper--checkbox';
   }
 
-  var hasFieldset = ['radio', 'checkbox-list', 'has-many'].includes(type);
+  var hasFieldset = ['radio', 'checkbox-list'].includes(type);
   var props = {};
 
   if (htmlFor && !hasFieldset) {
@@ -2943,11 +2769,13 @@ Label.defaultProps = {
   type: ''
 };
 
-var _excluded$c = ["component", "disabled", "id", "inputWrapperAttributes", "inputWrapperClassName", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
+var _excluded$c = ["component", "disabled", "id", "inputInnerWrapperAttributes", "inputInnerWrapperClassName", "inputWrapperAttributes", "inputWrapperClassName", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
 function Field(_ref) {
   var component = _ref.component,
       disabled = _ref.disabled,
       id = _ref.id,
+      inputInnerWrapperAttributes = _ref.inputInnerWrapperAttributes,
+      inputInnerWrapperClassName = _ref.inputInnerWrapperClassName,
       inputWrapperAttributes = _ref.inputWrapperAttributes,
       inputWrapperClassName = _ref.inputWrapperClassName,
       label = _ref.label,
@@ -3009,11 +2837,6 @@ function Field(_ref) {
   }
 
   var InputComponent = getInputElement(type, component);
-
-  if (type === 'has-many') {
-    InputComponent = HasMany;
-  }
-
   var input = /*#__PURE__*/React__default.createElement(InputComponent, inputProps);
 
   if (type === 'hidden') {
@@ -3075,15 +2898,24 @@ function Field(_ref) {
     inputWrapperClassNameList.push('formosa-field--has-suffix');
   }
 
+  var inputInnerWrapperClassNameList = ['formosa-input-inner-wrapper'];
+
+  if (inputInnerWrapperClassName) {
+    inputInnerWrapperClassNameList.push(inputInnerWrapperClassName);
+  }
+
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: wrapperClassNameList.join(' ')
   }, wrapperAttributes), label && labelPosition === 'before' && labelComponent, label && labelPosition === 'after' && /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-label-wrapper"
   }), /*#__PURE__*/React__default.createElement("div", _extends({
     className: inputWrapperClassNameList.join(' ')
-  }, inputWrapperAttributes), prefix, input, label && labelPosition === 'after' && labelComponent, note && /*#__PURE__*/React__default.createElement("div", {
+  }, inputWrapperAttributes), /*#__PURE__*/React__default.createElement(ConditionalWrapper, _extends({
+    className: inputInnerWrapperClassNameList.join(' '),
+    condition: !!prefix || !!postfix
+  }, inputInnerWrapperAttributes), prefix, input, label && labelPosition === 'after' && labelComponent, note && /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-field__note"
-  }, note), postfix, /*#__PURE__*/React__default.createElement(Error$1, {
+  }, note), postfix), /*#__PURE__*/React__default.createElement(Error$1, {
     id: id,
     name: name
   })));
@@ -3092,6 +2924,8 @@ Field.propTypes = {
   component: PropTypes.func,
   disabled: PropTypes.bool,
   id: PropTypes.string,
+  inputInnerWrapperAttributes: PropTypes.object,
+  inputInnerWrapperClassName: PropTypes.string,
   inputWrapperAttributes: PropTypes.object,
   inputWrapperClassName: PropTypes.string,
   label: PropTypes.string,
@@ -3114,6 +2948,8 @@ Field.defaultProps = {
   component: null,
   disabled: false,
   id: null,
+  inputInnerWrapperAttributes: {},
+  inputInnerWrapperClassName: '',
   inputWrapperAttributes: {},
   inputWrapperClassName: '',
   label: '',
@@ -3134,12 +2970,12 @@ Field.defaultProps = {
 };
 
 var formosaContext = /*#__PURE__*/React__default.createContext({
-  addToast: null,
-  removeToast: null,
   toasts: {},
-  disableWarningPrompt: null,
-  enableWarningPrompt: null,
-  showWarningPrompt: true
+  showWarningPrompt: true,
+  addToast: function addToast() {},
+  removeToast: function removeToast() {},
+  disableWarningPrompt: function disableWarningPrompt() {},
+  enableWarningPrompt: function enableWarningPrompt() {}
 });
 
 function Message() {
@@ -3154,7 +2990,7 @@ function Message() {
   }, formState.message));
 }
 
-var _excluded$d = ["afterNoSubmit", "afterSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
+var _excluded$d = ["afterNoSubmit", "afterSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "preventEmptyRequestText", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
 function FormInner(_ref) {
   var afterNoSubmit = _ref.afterNoSubmit,
       afterSubmit = _ref.afterSubmit,
@@ -3170,6 +3006,7 @@ function FormInner(_ref) {
       params = _ref.params,
       path = _ref.path,
       preventEmptyRequest = _ref.preventEmptyRequest,
+      preventEmptyRequestText = _ref.preventEmptyRequestText,
       relationshipNames = _ref.relationshipNames,
       showMessage = _ref.showMessage,
       successMessageText = _ref.successMessageText,
@@ -3178,16 +3015,20 @@ function FormInner(_ref) {
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState,
-      setFormState = _useContext.setFormState;
+      setFormState = _useContext.setFormState,
+      getDirtyKeys = _useContext.getDirtyKeys;
 
   var _useContext2 = React.useContext(formosaContext),
-      formosaState = _useContext2.formosaState;
+      addToast = _useContext2.addToast;
 
   var submitApiRequest = function submitApiRequest(e) {
     e.preventDefault();
+    var dirtyKeys = getDirtyKeys();
 
-    if (preventEmptyRequest && formState.dirty.length <= 0) {
-      formosaState.addToast('No changes to save.');
+    if (preventEmptyRequest && dirtyKeys.length <= 0) {
+      if (preventEmptyRequestText) {
+        addToast(preventEmptyRequestText);
+      }
 
       if (afterNoSubmit) {
         afterNoSubmit();
@@ -3210,31 +3051,33 @@ function FormInner(_ref) {
       url += "?" + params;
     }
 
-    var body = getBody(method, path, id, formState, relationshipNames, filterBody, filterValues);
+    var body = getBody(method, path, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues);
     setFormState(_extends({}, formState, {
       errors: {},
       message: ''
     }));
-    Api.request(method, url, body).then(function (response) {
+    var bodyString = body instanceof FormData ? body : JSON.stringify(body);
+    Api.request(method, url, bodyString).then(function (response) {
       if (!response) {
         return;
       }
 
       var newState = _extends({}, formState, {
-        dirty: [],
-        dirtyIncluded: [],
         errors: {},
         message: successMessageText
       });
 
       if (clearOnSubmit) {
-        newState.row = defaultRow;
+        newState.originalRow = JSON.parse(JSON.stringify(defaultRow));
+        newState.row = JSON.parse(JSON.stringify(defaultRow));
+      } else {
+        newState.originalRow = JSON.parse(JSON.stringify(formState.row));
       }
 
       setFormState(newState);
 
       if (successToastText) {
-        formosaState.addToast(successToastText, 'success');
+        addToast(successToastText, 'success');
       }
 
       if (afterSubmit) {
@@ -3242,12 +3085,12 @@ function FormInner(_ref) {
       }
     })["catch"](function (response) {
       if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
-        formosaState.addToast('Error.', 'error');
+        addToast('Error.', 'error');
       } else if (Object.prototype.hasOwnProperty.call(response, 'message')) {
-        formosaState.addToast(response.message, 'error', 10000);
+        addToast(response.message, 'error', 10000);
         return;
       } else {
-        formosaState.addToast('Server error.', 'error');
+        addToast('Server error.', 'error');
         throw response;
       }
 
@@ -3262,8 +3105,9 @@ function FormInner(_ref) {
             var i = key.replace(/^\/included\/(\d+)\/.+$/g, '$1');
             var includedRecord = body.included[parseInt(i, 10)];
             key = key.replace(/^\/included\/(\d+)\//g, "included." + includedRecord.type + "." + includedRecord.id + ".");
-            key = key.replace(/\//g, '.');
           }
+
+          key = key.replace(/\//g, '.');
 
           if (!document.querySelector("[data-name=\"" + key + "\"].formosa-field__error")) {
             key = '';
@@ -3310,6 +3154,7 @@ FormInner.propTypes = {
   params: PropTypes.string,
   path: PropTypes.string,
   preventEmptyRequest: PropTypes.bool,
+  preventEmptyRequestText: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   relationshipNames: PropTypes.array,
   showMessage: PropTypes.bool,
   successMessageText: PropTypes.string,
@@ -3330,6 +3175,7 @@ FormInner.defaultProps = {
   params: '',
   path: null,
   preventEmptyRequest: false,
+  preventEmptyRequestText: 'No changes to save.',
   relationshipNames: [],
   showMessage: true,
   successMessageText: '',
@@ -3344,64 +3190,105 @@ function Form(_ref) {
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
 
   var _useState = React.useState({
-    dirty: [],
-    dirtyIncluded: [],
     errors: {},
     files: {},
     message: '',
+    originalRow: JSON.parse(JSON.stringify(row)),
     row: row,
-    setRow: setRow,
-    setValues: function setValues(fs, e, name, value, afterChange, files) {
-      if (afterChange === void 0) {
-        afterChange = null;
-      }
-
-      if (files === void 0) {
-        files = null;
-      }
-
-      var newDirty = getNewDirty(fs.dirty, name);
-
-      var newRow = _extends({}, fs.row);
-
-      set(newRow, name, value);
-
-      if (afterChange) {
-        var additionalChanges = afterChange(e, newRow, value);
-        Object.keys(additionalChanges).forEach(function (key) {
-          set(newRow, key, additionalChanges[key]);
-          newDirty = getNewDirty(newDirty, key);
-        });
-      }
-
-      var newFormState = _extends({}, fs, {
-        dirty: newDirty,
-        row: newRow
-      });
-
-      if (files !== null) {
-        set(newFormState, "files." + name, files);
-      }
-
-      setFormState(newFormState);
-
-      if (fs.setRow) {
-        fs.setRow(newRow);
-      }
-    }
+    setRow: setRow
   }),
       formState = _useState[0],
       setFormState = _useState[1];
 
   React.useEffect(function () {
+    if (JSON.stringify(row) === JSON.stringify(formState.row)) {
+      return;
+    }
+
     setFormState(_extends({}, formState, {
       row: row
     }));
   }, [row]);
+
+  var _getDirtyKeys = function getDirtyKeys(r, originalRow) {
+    var dirtyKeys = [];
+    Object.keys(r).forEach(function (key) {
+      var oldValue = get(originalRow, key);
+      var newValue = get(r, key);
+      var isArray = Array.isArray(oldValue) || Array.isArray(newValue);
+
+      if (isArray) {
+        var itemDirtyKeys;
+        Object.keys(newValue).forEach(function (newIndex) {
+          var oldIndex = oldValue ? oldValue.findIndex(function (o) {
+            return o.id === newValue[newIndex].id;
+          }) : -1;
+          itemDirtyKeys = _getDirtyKeys(newValue[newIndex], oldIndex > -1 ? oldValue[oldIndex] : {});
+          itemDirtyKeys = itemDirtyKeys.map(function (k2) {
+            return key + "." + newIndex + "." + k2;
+          });
+          dirtyKeys = dirtyKeys.concat(itemDirtyKeys);
+        });
+      }
+
+      if (typeof oldValue !== 'string') {
+        oldValue = JSON.stringify(oldValue);
+      }
+
+      if (typeof newValue !== 'string') {
+        newValue = JSON.stringify(newValue);
+      }
+
+      if (newValue !== oldValue) {
+        dirtyKeys.push(key);
+      }
+    });
+    return dirtyKeys;
+  };
+
+  var setValues = function setValues(e, name, value, afterChange, files) {
+    if (afterChange === void 0) {
+      afterChange = null;
+    }
+
+    if (files === void 0) {
+      files = null;
+    }
+
+    var newRow = _extends({}, formState.row);
+
+    set(newRow, name, value);
+
+    if (afterChange) {
+      var additionalChanges = afterChange(e, newRow, value);
+      Object.keys(additionalChanges).forEach(function (key) {
+        set(newRow, key, additionalChanges[key]);
+      });
+    }
+
+    var newFormState = _extends({}, formState, {
+      row: newRow
+    });
+
+    if (files !== null) {
+      set(newFormState, "files." + name, files);
+    }
+
+    setFormState(newFormState);
+
+    if (formState.setRow) {
+      formState.setRow(newRow);
+    }
+  };
+
   return /*#__PURE__*/React__default.createElement(formContext.Provider, {
     value: {
       formState: formState,
-      setFormState: setFormState
+      setFormState: setFormState,
+      getDirtyKeys: function getDirtyKeys() {
+        return _getDirtyKeys(formState.row, formState.originalRow);
+      },
+      setValues: setValues
     }
   }, /*#__PURE__*/React__default.createElement(FormInner, otherProps, children));
 }
@@ -3444,17 +3331,7 @@ function Toast(_ref) {
       text = _ref.text;
 
   var _useContext = React.useContext(formosaContext),
-      formosaState = _useContext.formosaState,
-      setFormosaState = _useContext.setFormosaState;
-
-  var removeToast = function removeToast() {
-    var toasts = _extends({}, formosaState.toasts);
-
-    delete toasts[id];
-    setFormosaState(_extends({}, formosaState, {
-      toasts: toasts
-    }));
-  };
+      removeToast = _useContext.removeToast;
 
   return /*#__PURE__*/React__default.createElement("div", {
     className: ("formosa-toast " + className).trim(),
@@ -3465,7 +3342,9 @@ function Toast(_ref) {
     className: "formosa-toast__text"
   }, text), /*#__PURE__*/React__default.createElement("button", {
     className: "formosa-toast__close",
-    onClick: removeToast,
+    onClick: function onClick() {
+      return removeToast(id);
+    },
     type: "button"
   }, /*#__PURE__*/React__default.createElement(SvgX, {
     "aria-hidden": "true",
@@ -3486,17 +3365,17 @@ Toast.defaultProps = {
 
 function ToastContainer() {
   var _useContext = React.useContext(formosaContext),
-      formosaState = _useContext.formosaState;
+      toasts = _useContext.toasts;
 
   return /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-toast-container"
-  }, Object.keys(formosaState.toasts).map(function (id) {
+  }, Object.keys(toasts).map(function (id) {
     return /*#__PURE__*/React__default.createElement(Toast, {
-      className: formosaState.toasts[id].className,
+      className: toasts[id].className,
       key: id,
       id: id,
-      milliseconds: formosaState.toasts[id].milliseconds,
-      text: formosaState.toasts[id].text
+      milliseconds: toasts[id].milliseconds,
+      text: toasts[id].text
     });
   }));
 }
@@ -3505,81 +3384,65 @@ function FormContainer(_ref) {
   var children = _ref.children,
       loadingText = _ref.loadingText;
 
-  var _useState = React.useState({
-    addToast: null,
-    removeToast: null,
-    toasts: {},
-    disableWarningPrompt: null,
-    enableWarningPrompt: null,
-    showWarningPrompt: true
-  }),
-      formosaState = _useState[0],
-      setFormosaState = _useState[1];
+  var _useState = React.useState(true),
+      showWarningPrompt = _useState[0],
+      setShowWarningPrompt = _useState[1];
 
-  var formosaStateRef = React.useRef(formosaState);
-  formosaStateRef.current = formosaState;
-  React.useEffect(function () {
-    var removeToast = function removeToast(toastId) {
-      var toasts = _extends({}, formosaStateRef.current.toasts);
+  var _useState2 = React.useState({}),
+      toasts = _useState2[0],
+      setToasts = _useState2[1];
 
-      delete toasts[toastId];
-      setFormosaState(_extends({}, formosaStateRef.current, {
-        toasts: toasts
-      }));
+  var removeToast = function removeToast(toastId) {
+    var newToasts = _extends({}, toasts);
+
+    if (Object.prototype.hasOwnProperty.call(toasts, toastId)) {
+      delete newToasts[toastId];
+      setToasts(newToasts);
+    }
+  };
+
+  var addToast = function addToast(text, type, milliseconds) {
+    var _extends2;
+
+    if (type === void 0) {
+      type = '';
+    }
+
+    if (milliseconds === void 0) {
+      milliseconds = 5000;
+    }
+
+    var toastId = new Date().getTime();
+    var toast = {
+      className: type ? "formosa-toast--" + type : '',
+      text: text,
+      milliseconds: milliseconds
     };
 
-    var addToast = function addToast(text, type, milliseconds) {
-      var _extends2;
+    var newToasts = _extends({}, toasts, (_extends2 = {}, _extends2[toastId] = toast, _extends2));
 
-      if (type === void 0) {
-        type = '';
-      }
+    setToasts(newToasts);
+    setTimeout(function () {
+      removeToast(toastId);
+    }, milliseconds);
+  };
 
-      if (milliseconds === void 0) {
-        milliseconds = 5000;
-      }
+  var disableWarningPrompt = function disableWarningPrompt() {
+    setShowWarningPrompt(false);
+  };
 
-      var toastId = new Date().getTime();
-      var toast = {
-        className: type ? "formosa-toast--" + type : '',
-        text: text,
-        milliseconds: milliseconds
-      };
+  var enableWarningPrompt = function enableWarningPrompt() {
+    setShowWarningPrompt(true);
+  };
 
-      var toasts = _extends({}, formosaStateRef.current.toasts, (_extends2 = {}, _extends2[toastId] = toast, _extends2));
-
-      setFormosaState(_extends({}, formosaStateRef.current, {
-        toasts: toasts
-      }));
-      setTimeout(function () {
-        formosaStateRef.current.removeToast(toastId);
-      }, milliseconds);
-    };
-
-    var disableWarningPrompt = function disableWarningPrompt() {
-      setFormosaState(_extends({}, formosaStateRef.current, {
-        showWarningPrompt: false
-      }));
-    };
-
-    var enableWarningPrompt = function enableWarningPrompt() {
-      setFormosaState(_extends({}, formosaStateRef.current, {
-        showWarningPrompt: true
-      }));
-    };
-
-    setFormosaState(_extends({}, formosaStateRef.current, {
+  return /*#__PURE__*/React__default.createElement(formosaContext.Provider, {
+    value: {
+      toasts: toasts,
+      showWarningPrompt: showWarningPrompt,
       addToast: addToast,
       removeToast: removeToast,
       disableWarningPrompt: disableWarningPrompt,
       enableWarningPrompt: enableWarningPrompt
-    }));
-    return function () {};
-  }, []);
-  return /*#__PURE__*/React__default.createElement(formosaContext.Provider, {
-    value: {
-      formosaState: formosaState,
-      setFormosaState: setFormosaState
     }
   }, children, /*#__PURE__*/React__default.createElement(Spinner, {
     loadingText: loadingText

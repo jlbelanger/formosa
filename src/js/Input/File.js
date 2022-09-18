@@ -32,7 +32,7 @@ export default function File({
 	wrapperClassName,
 	...otherProps
 }) {
-	const { formState } = useContext(FormContext);
+	const { formState, setValues } = useContext(FormContext);
 	const inputRef = useRef(null);
 
 	let currentValue = '';
@@ -105,7 +105,7 @@ export default function File({
 		if (setValue) {
 			setValue(newFiles);
 		} else {
-			formState.setValues(formState, e, name, newFiles, afterChange, newFiles);
+			setValues(e, name, newFiles, afterChange, newFiles);
 		}
 	};
 
@@ -116,7 +116,7 @@ export default function File({
 		if (setValue) {
 			setValue(newValue);
 		} else {
-			formState.setValues(formState, e, name, newValue, afterChange, newValue);
+			setValues(e, name, newValue, afterChange, newValue);
 		}
 
 		inputRef.current.focus();

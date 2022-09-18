@@ -88,68 +88,110 @@ const cleanRelationship = (values) => {
 	return cleanSingleRelationship(values);
 };
 
-const getIncluded = (data, dirtyIncluded, relationshipNames) => {
+const getIncludedItemData = (rel, relName, childRelationshipNames, dirtyRelationships, relIndex = null) => {
+	const relData = {
+		id: rel.id,
+		type: rel.type,
+		attributes: {},
+		relationships: {},
+	};
+
+	if (rel.id.startsWith('temp-')) {
+		// This is a new record; include all attributes.
+		Object.keys(rel).forEach((key) => {
+			if (key !== 'id' && key !== 'type') {
+				if (childRelationshipNames[relName].includes(key)) {
+					const childRel = {
+						data: {
+							id: rel[key].id,
+							type: rel[key].type,
+						},
+					};
+					set(relData.relationships, key, childRel);
+				} else {
+					set(relData.attributes, key, rel[key]);
+				}
+			}
+		});
+	} else {
+		// This is an existing record; include only the dirty attributes.
+		Object.keys(rel).forEach((key) => {
+			if (key !== 'id' && key !== 'type') {
+				if (relIndex === null) {
+					if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], key)) {
+						set(relData.attributes, key, rel[key]);
+					}
+				} else if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], relIndex)) {
+					if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName][relIndex], key)) {
+						set(relData.attributes, key, rel[key]);
+					}
+				}
+			}
+		});
+	}
+
+	const hasAttributes = Object.keys(relData.attributes).length > 0;
+	if (!hasAttributes) {
+		delete relData.attributes;
+	}
+	const hasRelationships = Object.keys(relData.relationships).length > 0;
+	if (!hasRelationships) {
+		delete relData.relationships;
+	}
+
+	if (!hasAttributes && !hasRelationships) {
+		return null;
+	}
+
+	return relData;
+};
+
+const getIncluded = (data, dirtyKeys, relationshipNames) => {
 	const included = [];
 
-	const dirtyKeys = {};
-	dirtyIncluded.forEach((key) => {
-		if (!key.startsWith('_new.')) {
-			const currentKeys = [];
-			key.split('.').forEach((k) => {
-				currentKeys.push(k);
-				if (typeof get(dirtyKeys, currentKeys.join('.')) === 'undefined') {
-					set(dirtyKeys, currentKeys.join('.'), {});
-				}
-			});
+	const dirtyRelationships = {};
+	dirtyKeys.forEach((key) => {
+		const currentKeys = [];
+		key.split('.').forEach((k) => {
+			currentKeys.push(k);
+			if (typeof get(dirtyRelationships, currentKeys.join('.')) === 'undefined') {
+				set(dirtyRelationships, currentKeys.join('.'), {});
+			}
+		});
+	});
+
+	const childRelationshipNames = {};
+	relationshipNames.forEach((relName) => {
+		childRelationshipNames[relName] = [];
+		if (relName.includes('.')) {
+			const keys = relName.split('.');
+			childRelationshipNames[keys.shift()].push(keys.join('.'));
 		}
 	});
 
-	relationshipNames.forEach((relationshipName) => {
-		if (!Object.prototype.hasOwnProperty.call(data.relationships, relationshipName)) {
-			// This relationship isn't defined.
-			return;
-		}
-
-		if (!Object.prototype.hasOwnProperty.call(dirtyKeys, relationshipName)) {
-			// No related records' attributes have changed.
-			return;
-		}
-
-		if (!Array.isArray(data.relationships[relationshipName].data)) {
-			return;
-		}
-
-		data.relationships[relationshipName].data.forEach((rel) => {
-			if (Object.keys(rel).length <= 2) {
-				// This relationship only has an id and type.
-				return;
-			}
-
-			if (Object.prototype.hasOwnProperty.call(dirtyKeys[relationshipName], rel.id)) {
-				const relData = {
-					id: rel.id,
-					type: rel.type,
-					attributes: {},
-				};
-
-				if (Object.keys(dirtyKeys[relationshipName][rel.id]).length === 0) {
-					// This is a new record; include all attributes.
-					Object.keys(rel).forEach((key) => {
-						if (key !== 'id' && key !== 'type') {
-							set(relData.attributes, key, rel[key]);
+	Object.keys(dirtyRelationships).forEach((relName) => {
+		if (Object.prototype.hasOwnProperty.call(data.relationships, relName)) {
+			let relData;
+			if (Array.isArray(data.relationships[relName].data)) {
+				Object.keys(data.relationships[relName].data).forEach((relIndex) => {
+					const rel = data.relationships[relName].data[relIndex];
+					if (rel) {
+						relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships, relIndex);
+						if (relData) {
+							included.push(relData);
 						}
-					});
-				} else {
-					// This is an existing record; include only the dirty attributes.
-					Object.keys(rel).forEach((key) => {
-						if (Object.prototype.hasOwnProperty.call(dirtyKeys[relationshipName][rel.id], key)) {
-							set(relData.attributes, key, rel[key]);
-						}
-					});
+					}
+				});
+			} else {
+				const rel = data.relationships[relName].data;
+				if (rel) {
+					relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships);
+					if (relData) {
+						included.push(relData);
+					}
 				}
-				included.push(relData);
 			}
-		});
+		}
 	});
 
 	return included;
@@ -174,6 +216,7 @@ export const getBody = (
 	type,
 	id,
 	formState,
+	dirtyKeys,
 	relationshipNames,
 	filterBody,
 	filterValues
@@ -181,35 +224,40 @@ export const getBody = (
 	let body = null;
 
 	if (method === 'PUT' || method === 'POST') {
-		body = {};
+		// Initialize the basic body structure.
 		const data = {
 			type,
 			attributes: {},
-			meta: {},
 			relationships: {},
+			meta: {},
 		};
-		const keys = method === 'PUT' ? formState.dirty : Object.keys(formState.row);
-
 		if (method === 'PUT' && id) {
 			data.id = id;
 		}
 
+		// Allow the app to modify values before they are sorted into sections.
 		let values = { ...formState.row };
 		if (filterValues) {
 			values = filterValues(values);
 		}
 
+		// Get keys for file fields.
 		const fileKeys = Object.keys(formState.files);
 
+		// If this is an update request, only include keys for changed values.
+		// Otherwise (this must be an add request), include keys for all values.
+		const keys = method === 'PUT' ? dirtyKeys : Object.keys(formState.row);
+
+		// Sort each value into the proper section.
 		keys.forEach((key) => {
-			const cleanKey = key.replace(/\..+$/, '');
-			if (relationshipNames.includes(cleanKey)) {
-				data.relationships[cleanKey] = {
-					data: get(values, cleanKey),
+			const firstPartOfKey = key.replace(/\..+$/, '');
+			if (relationshipNames.includes(firstPartOfKey)) {
+				data.relationships[firstPartOfKey] = {
+					data: get(values, firstPartOfKey),
 				};
 			} else if (relationshipNames.includes(key)) {
 				data.relationships[key] = {
-					data: get(values, cleanKey),
+					data: get(values, firstPartOfKey),
 				};
 			} else if (key.startsWith('meta.')) {
 				set(data, key, get(values, key));
@@ -217,14 +265,14 @@ export const getBody = (
 				data.meta = values.meta;
 			} else if (fileKeys.includes(key)) {
 				unset(data.attributes, key);
-			} else if (key !== '_new' && !key.startsWith('_new.')) {
+			} else {
 				set(data.attributes, key, get(values, key));
 			}
 		});
 
-		body.data = data;
+		body = { data };
 
-		const included = getIncluded(data, formState.dirtyIncluded, relationshipNames);
+		const included = getIncluded(data, dirtyKeys, relationshipNames);
 		if (included.length > 0) {
 			body.included = included;
 		}
@@ -242,10 +290,12 @@ export const getBody = (
 			}
 		});
 
+		// Allow the app to modify values after they have been sorted into sections.
 		if (filterBody) {
 			body = filterBody(body, formState.row);
 		}
 
+		// Remove any sections with no values.
 		if (Object.keys(data.attributes).length <= 0) {
 			delete data.attributes;
 		}
@@ -256,6 +306,7 @@ export const getBody = (
 			delete data.relationships;
 		}
 
+		// Handle file fields.
 		const filenames = fileKeys.filter((filename) => (formState.files[filename] !== false));
 		if (filenames.length > 0) {
 			const formData = new FormData();
@@ -267,8 +318,6 @@ export const getBody = (
 			});
 
 			body = formData;
-		} else {
-			body = JSON.stringify(body);
 		}
 	}
 

@@ -36,7 +36,7 @@ export default function CheckboxList({
 	valueKey,
 	...otherProps
 }) {
-	const { formState } = useContext(FormContext);
+	const { formState, setValues } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 	const [isLoading, setIsLoading] = useState(showLoading || !!url);
 	const [message, setMessage] = useState('');
@@ -57,17 +57,14 @@ export default function CheckboxList({
 					}
 				});
 		}
-		return () => {};
 	}, [url]);
 
 	useEffect(() => {
 		setOptionValues(options ? normalizeOptions(options, labelKey, valueKey) : []);
-		return () => {};
 	}, [options]);
 
 	useEffect(() => {
 		setIsLoading(showLoading);
-		return () => {};
 	}, [showLoading]);
 
 	if (isLoading) {
@@ -90,7 +87,7 @@ export default function CheckboxList({
 	if (currentValue === null || currentValue === undefined || currentValue === '') {
 		currentValue = [];
 	}
-	currentValue = currentValue.map((val) => (typeof val === 'object' ? JSON.stringify(val) : val));
+	const currentValueStringified = currentValue.map((val) => (typeof val === 'object' ? JSON.stringify(val) : val));
 
 	const onChange = (e) => {
 		const newValue = [...currentValue];
@@ -102,7 +99,7 @@ export default function CheckboxList({
 			}
 			newValue.push(val);
 		} else {
-			const index = currentValue.indexOf(val);
+			const index = currentValueStringified.indexOf(val);
 			if (index > -1) {
 				newValue.splice(index, 1);
 			}
@@ -111,7 +108,7 @@ export default function CheckboxList({
 		if (setValue) {
 			setValue(newValue);
 		} else {
-			formState.setValues(formState, e, name, newValue, afterChange);
+			setValues(e, name, newValue, afterChange);
 		}
 	};
 
@@ -126,7 +123,7 @@ export default function CheckboxList({
 					optionValueVal = JSON.stringify(optionValueVal);
 				}
 
-				const checked = currentValue.includes(optionValueVal);
+				const checked = currentValueStringified.includes(optionValueVal);
 
 				let itemProps = {};
 				if (typeof itemAttributes === 'function') {

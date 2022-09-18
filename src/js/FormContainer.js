@@ -1,63 +1,57 @@
-import React, { useEffect, useRef, useState } from 'react'; // eslint-disable-line import/no-unresolved
+import React, { useState } from 'react'; // eslint-disable-line import/no-unresolved
 import FormosaContext from './FormosaContext';
 import PropTypes from 'prop-types';
 import Spinner from './Spinner';
 import ToastContainer from './ToastContainer';
 
 export default function FormContainer({ children, loadingText }) {
-	const [formosaState, setFormosaState] = useState({
-		addToast: null,
-		removeToast: null,
-		toasts: {},
+	const [showWarningPrompt, setShowWarningPrompt] = useState(true);
+	const [toasts, setToasts] = useState({});
 
-		disableWarningPrompt: null,
-		enableWarningPrompt: null,
-		showWarningPrompt: true,
-	});
+	const removeToast = (toastId) => {
+		const newToasts = { ...toasts };
+		if (Object.prototype.hasOwnProperty.call(toasts, toastId)) {
+			delete newToasts[toastId];
+			setToasts(newToasts);
+		}
+	};
 
-	const formosaStateRef = useRef(formosaState);
-	formosaStateRef.current = formosaState;
+	const addToast = (text, type = '', milliseconds = 5000) => {
+		const toastId = new Date().getTime();
+		const toast = {
+			className: type ? `formosa-toast--${type}` : '',
+			text,
+			milliseconds,
+		};
+		const newToasts = {
+			...toasts,
+			[toastId]: toast,
+		};
+		setToasts(newToasts);
+		setTimeout(() => {
+			removeToast(toastId);
+		}, milliseconds);
+	};
 
-	useEffect(() => {
-		const removeToast = (toastId) => {
-			const toasts = { ...formosaStateRef.current.toasts };
-			delete toasts[toastId];
-			setFormosaState({ ...formosaStateRef.current, toasts });
-		};
-		const addToast = (text, type = '', milliseconds = 5000) => {
-			const toastId = new Date().getTime();
-			const toast = {
-				className: type ? `formosa-toast--${type}` : '',
-				text,
-				milliseconds,
-			};
-			const toasts = {
-				...formosaStateRef.current.toasts,
-				[toastId]: toast,
-			};
-			setFormosaState({ ...formosaStateRef.current, toasts });
-			setTimeout(() => {
-				formosaStateRef.current.removeToast(toastId);
-			}, milliseconds);
-		};
-		const disableWarningPrompt = () => {
-			setFormosaState({ ...formosaStateRef.current, showWarningPrompt: false });
-		};
-		const enableWarningPrompt = () => {
-			setFormosaState({ ...formosaStateRef.current, showWarningPrompt: true });
-		};
-		setFormosaState({
-			...formosaStateRef.current,
-			addToast,
-			removeToast,
-			disableWarningPrompt,
-			enableWarningPrompt,
-		});
-		return () => {};
-	}, []);
+	const disableWarningPrompt = () => {
+		setShowWarningPrompt(false);
+	};
+
+	const enableWarningPrompt = () => {
+		setShowWarningPrompt(true);
+	};
 
 	return (
-		<FormosaContext.Provider value={{ formosaState, setFormosaState }}>
+		<FormosaContext.Provider
+			value={{
+				toasts,
+				showWarningPrompt,
+				addToast,
+				removeToast,
+				disableWarningPrompt,
+				enableWarningPrompt,
+			}}
+		>
 			{children}
 			<Spinner loadingText={loadingText} />
 			<ToastContainer />

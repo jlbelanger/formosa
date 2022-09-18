@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'; // eslint-disable-line import/no-unresolved
+import ConditionalWrapper from './ConditionalWrapper';
 import Error from './Error';
 import FormContext from './FormContext';
 import getInputElement from './FieldInput';
-import HasMany from './Input/HasMany';
 import Label from './Label';
 import PropTypes from 'prop-types';
 
@@ -10,6 +10,8 @@ export default function Field({
 	component,
 	disabled,
 	id,
+	inputInnerWrapperAttributes,
+	inputInnerWrapperClassName,
 	inputWrapperAttributes,
 	inputWrapperClassName,
 	label,
@@ -60,12 +62,7 @@ export default function Field({
 		}
 	}
 
-	let InputComponent = getInputElement(type, component);
-	if (type === 'has-many') {
-		// This prevents a dependency cycle.
-		InputComponent = HasMany;
-	}
-
+	const InputComponent = getInputElement(type, component);
 	const input = (
 		<InputComponent {...inputProps} />
 	);
@@ -125,18 +122,29 @@ export default function Field({
 		inputWrapperClassNameList.push('formosa-field--has-suffix');
 	}
 
+	const inputInnerWrapperClassNameList = ['formosa-input-inner-wrapper'];
+	if (inputInnerWrapperClassName) {
+		inputInnerWrapperClassNameList.push(inputInnerWrapperClassName);
+	}
+
 	return (
 		<div className={wrapperClassNameList.join(' ')} {...wrapperAttributes}>
 			{label && labelPosition === 'before' && labelComponent}
 			{label && labelPosition === 'after' && <div className="formosa-label-wrapper" />}
 			<div className={inputWrapperClassNameList.join(' ')} {...inputWrapperAttributes}>
-				{prefix}
-				{input}
-				{label && labelPosition === 'after' && labelComponent}
-				{note && (
-					<div className="formosa-field__note">{note}</div>
-				)}
-				{postfix}
+				<ConditionalWrapper
+					className={inputInnerWrapperClassNameList.join(' ')}
+					condition={!!prefix || !!postfix}
+					{...inputInnerWrapperAttributes}
+				>
+					{prefix}
+					{input}
+					{label && labelPosition === 'after' && labelComponent}
+					{note && (
+						<div className="formosa-field__note">{note}</div>
+					)}
+					{postfix}
+				</ConditionalWrapper>
 				<Error id={id} name={name} />
 			</div>
 		</div>
@@ -147,6 +155,8 @@ Field.propTypes = {
 	component: PropTypes.func,
 	disabled: PropTypes.bool,
 	id: PropTypes.string,
+	inputInnerWrapperAttributes: PropTypes.object,
+	inputInnerWrapperClassName: PropTypes.string,
 	inputWrapperAttributes: PropTypes.object,
 	inputWrapperClassName: PropTypes.string,
 	label: PropTypes.string,
@@ -174,6 +184,8 @@ Field.defaultProps = {
 	component: null,
 	disabled: false,
 	id: null,
+	inputInnerWrapperAttributes: {},
+	inputInnerWrapperClassName: '',
 	inputWrapperAttributes: {},
 	inputWrapperClassName: '',
 	label: '',
