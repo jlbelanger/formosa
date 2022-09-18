@@ -70,6 +70,9 @@
   display: flex;
   min-height: 44px;
   position: relative; }
+  .formosa-autocomplete:focus-within {
+    border-color: #4ad;
+    box-shadow: 0 0 0 3px #6cf; }
 
 .formosa-autocomplete__options {
   background-color: white;
@@ -91,8 +94,9 @@ input.formosa-autocomplete__input {
   background-color: transparent;
   border: 0;
   box-sizing: border-box;
-  height: 44px;
+  height: auto;
   left: -5px;
+  margin: 4px;
   padding: 8px 8px;
   position: relative;
   top: -5px; }
@@ -137,7 +141,6 @@ input.formosa-autocomplete__input {
   background-color: white;
   height: 34px;
   line-height: 34px;
-  margin: 4px;
   overflow: hidden;
   padding-left: 8px;
   padding-right: 34px;
@@ -152,8 +155,6 @@ input.formosa-autocomplete__input {
     flex: 1 1 auto;
     padding-left: 0;
     padding-right: 0; }
-    .formosa-autocomplete__value.formosa-autocomplete__value--input:focus-within {
-      overflow: visible; }
 
 .formosa-autocomplete__value__remove,
 .formosa-autocomplete__clear {
@@ -307,19 +308,6 @@ input.formosa-field__input--checkbox {
   border-color: #4ad;
   box-shadow: 0 0 0 3px #6cf;
   outline: none !important; }
-
-.formosa-has-many {
-  border-spacing: 0;
-  margin: -2px -2px; }
-
-.formosa-has-many__column {
-  padding: 2px 2px; }
-
-.formosa-has-many__button {
-  width: 100%; }
-
-.formosa-has-many__column--button {
-  width: 0; }
 
 .formosa-horizontal {
   display: table;
@@ -629,6 +617,7 @@ input.formosa-field__input--search {
   bottom: 0;
   display: flex;
   flex-direction: column;
+  pointer-events: none;
   position: fixed;
   right: 0;
   z-index: 9998; }
@@ -643,7 +632,8 @@ input.formosa-field__input--search {
   color: #000;
   display: flex;
   margin: 8px;
-  max-width: 90vw; }
+  max-width: 90vw;
+  pointer-events: auto; }
 
 .formosa-toast__text {
   padding: 16px; }
