@@ -130,11 +130,9 @@ export default function Autocomplete({
 	}
 
 	const focus = () => {
-		setTimeout(() => {
-			if (inputRef.current) {
-				inputRef.current.focus();
-			}
-		});
+		if (inputRef.current) {
+			inputRef.current.focus();
+		}
 	};
 
 	const addValue = (v) => {
@@ -156,21 +154,7 @@ export default function Autocomplete({
 
 		setIsOpen(false);
 		setFilter('');
-		if (max === 1) {
-			setTimeout(() => {
-				if (removeButtonRef.current) {
-					removeButtonRef.current.focus();
-				}
-			});
-		} else if (max === currentValueLength) {
-			setTimeout(() => {
-				if (clearButtonRef.current) {
-					clearButtonRef.current.focus();
-				}
-			});
-		} else {
-			focus();
-		}
+		focus();
 
 		if (afterAdd) {
 			afterAdd();
