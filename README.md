@@ -361,6 +361,7 @@ import { Field, Form, Message, Submit } from '@jlbelanger/formosa';
 ## Examples
 
 - [Glick](https://github.com/jlbelanger/glick-app)
+- [Food Tracker](https://github.com/jlbelanger/food-app)
 - [Crudnick](https://github.com/jlbelanger/crudnick)
 	- [Corrieography Admin](https://github.com/jlbelanger/corrie-admin)
 	- [Jenny's Wardrobe Admin](https://github.com/jlbelanger/wardrobe-admin)
