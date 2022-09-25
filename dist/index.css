@@ -204,6 +204,7 @@ input.formosa-autocomplete__input {
   cursor: pointer;
   font-family: sans-serif;
   font-size: 18px;
+  font-weight: normal;
   line-height: 1.5;
   padding: 8px 12px; }
   .formosa-button:hover, .formosa-button:active, .formosa-button:focus {
@@ -293,6 +294,9 @@ input.formosa-field__input--checkbox {
     cursor: default;
     opacity: 0;
     pointer-events: none; }
+
+.formosa-file-name {
+  word-break: break-word; }
 
 .formosa-file-name--empty {
   opacity: .5; }

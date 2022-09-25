@@ -44,6 +44,7 @@ $formosa-button-background-color: $formosa-primary-background-color !default;
 $formosa-button-background-color-hover: scale-color($formosa-button-background-color, $lightness: -15%) !default;
 $formosa-button-color: $formosa-primary-color !default;
 $formosa-button-border-color: $formosa-button-background-color !default;
+$formosa-button-font-weight: normal !default;
 $formosa-button-padding: $formosa-input-padding !default;
 $formosa-button-padding-side: 12px !default;
 
