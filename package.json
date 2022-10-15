@@ -16,7 +16,7 @@
 		"build": "microbundle-crl --no-compress --format modern,cjs --css-modules false --jsxFragment React.Fragment",
 		"lint": "yarn lint:css && yarn lint:js",
 		"lint:css": "node_modules/.bin/stylelint 'src/scss/**/*.scss'",
-		"lint:js": "node_modules/.bin/eslint . --ext .js --ext .jsx",
+		"lint:js": "node_modules/.bin/eslint . --ext .js",
 		"start": "microbundle-crl watch --no-compress --format modern,cjs --css-modules false --jsxFragment React.Fragment",
 		"test": "node_modules/.bin/jest --watch"
 	},
@@ -42,7 +42,6 @@
 		"microbundle-crl": "^0.13.11",
 		"node-sass": "^7.0.0",
 		"postcss": "^8.4.8",
-		"sass-lint": "^1.13.1",
 		"stylelint": "^14.2.0",
 		"stylelint-config-standard-scss": "^3.0.0",
 		"stylelint-order": "^5.0.0",
