@@ -85,7 +85,7 @@ export default function Field({
 		/>
 	);
 
-	const hasError = formState && Object.prototype.hasOwnProperty.call(formState.errors, name);
+	const hasError = formState && name && Object.prototype.hasOwnProperty.call(formState.errors, name);
 
 	const cleanName = htmlFor.replace(/[^a-z0-9_-]/gi, '');
 	const wrapperClassNameList = ['formosa-field'];
