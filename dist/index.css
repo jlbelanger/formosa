@@ -555,14 +555,10 @@ input.formosa-field__input--search {
   display: flex;
   font-size: 0; }
   .formosa-spinner::before {
-    -webkit-animation-duration: 1s;
-            animation-duration: 1s;
-    -webkit-animation-iteration-count: infinite;
-            animation-iteration-count: infinite;
-    -webkit-animation-name: formosa-spin;
-            animation-name: formosa-spin;
-    -webkit-animation-timing-function: linear;
-            animation-timing-function: linear;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-name: formosa-spin;
+    animation-timing-function: linear;
     border-color: #9bc #fff #fff #fff;
     border-radius: 100px;
     border-style: solid;
@@ -584,12 +580,6 @@ input.formosa-field__input--search {
     border-width: 12px;
     height: 50px;
     width: 50px; }
-
-@-webkit-keyframes formosa-spin {
-  0% {
-    transform: rotate(0deg); }
-  100% {
-    transform: rotate(360deg); } }
 
 @keyframes formosa-spin {
   0% {
@@ -628,10 +618,8 @@ input.formosa-field__input--search {
 
 .formosa-toast {
   align-items: center;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards;
-  -webkit-animation-name: formosa-slide-in-out;
-          animation-name: formosa-slide-in-out;
+  animation-fill-mode: forwards;
+  animation-name: formosa-slide-in-out;
   background-color: #9bc;
   color: #000;
   display: flex;
@@ -667,16 +655,6 @@ input.formosa-field__input--search {
   color: #000; }
   .formosa-toast--success .formosa-toast__close path {
     fill: #000; }
-
-@-webkit-keyframes formosa-slide-in-out {
-  0% {
-    transform: translateX(200%) translateZ(0); }
-  10% {
-    transform: translateX(0%) translateZ(0); }
-  90% {
-    transform: translateX(0%) translateZ(0); }
-  100% {
-    transform: translateX(200%) translateZ(0); } }
 
 @keyframes formosa-slide-in-out {
   0% {

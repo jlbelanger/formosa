@@ -448,7 +448,12 @@ var Api = /*#__PURE__*/function () {
       options.body = body;
     }
 
-    var fullUrl = url.startsWith('http') ? url : process.env.REACT_APP_API_URL + "/" + url;
+    var fullUrl = url;
+
+    if (process.env.REACT_APP_API_URL && !url.startsWith('http')) {
+      fullUrl = process.env.REACT_APP_API_URL.replace(/\/$/, '') + "/" + url.replace(/^\//, '');
+    }
+
     var event = new CustomEvent('formosaApiRequest', {
       cancelable: true,
       detail: {
@@ -2849,7 +2854,7 @@ function Field(_ref) {
     required: required,
     type: type
   }, labelAttributes));
-  var hasError = formState && Object.prototype.hasOwnProperty.call(formState.errors, name);
+  var hasError = formState && name && Object.prototype.hasOwnProperty.call(formState.errors, name);
   var cleanName = htmlFor.replace(/[^a-z0-9_-]/gi, '');
   var wrapperClassNameList = ['formosa-field'];
 
