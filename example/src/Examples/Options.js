@@ -177,7 +177,7 @@ export default function Options() {
 					label="Select from API"
 					name="select_api"
 					type="select"
-					url="food.json"
+					url="/food.json"
 					valueKey={(option) => ({ id: option.id, type: option.type })}
 				/>
 
@@ -222,7 +222,7 @@ export default function Options() {
 							overflow: 'auto',
 						},
 					}}
-					url="food.json"
+					url="/food.json"
 					valueKey={(option) => ({ id: option.id, type: option.type })}
 				/>
 
@@ -267,7 +267,7 @@ export default function Options() {
 							overflow: 'auto',
 						},
 					}}
-					url="food.json"
+					url="/food.json"
 					valueKey={(option) => ({ id: option.id, type: option.type })}
 				/>
 
@@ -304,7 +304,7 @@ export default function Options() {
 					name="autocomplete_api"
 					max={1}
 					type="autocomplete"
-					url="food.json"
+					url="/food.json"
 					valueKey={(option) => ({ id: option.id, type: option.type })}
 				/>
 

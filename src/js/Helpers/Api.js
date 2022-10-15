@@ -35,7 +35,10 @@ export default class Api {
 			options.body = body;
 		}
 
-		const fullUrl = url.startsWith('http') ? url : `${process.env.REACT_APP_API_URL}/${url}`;
+		let fullUrl = url;
+		if (process.env.REACT_APP_API_URL && !url.startsWith('http')) {
+			fullUrl = `${process.env.REACT_APP_API_URL.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
+		}
 
 		const event = new CustomEvent('formosaApiRequest', { cancelable: true, detail: { url: fullUrl, options } });
 		if (!document.dispatchEvent(event)) {
