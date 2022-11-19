@@ -1,13 +1,14 @@
 .formosa-field--disabled > .formosa-input-wrapper {
-  opacity: 0.5; }
-
+  opacity: 0.5;
+}
 .formosa-field--disabled input:disabled,
 .formosa-field--disabled select:disabled,
 .formosa-field--disabled textarea:disabled {
-  opacity: 1; }
-
-.formosa-field--disabled input[type='file']:disabled {
-  opacity: 0; }
+  opacity: 1;
+}
+.formosa-field--disabled input[type=file]:disabled {
+  opacity: 0;
+}
 
 .formosa-field__input,
 .formosa-field__input--select,
@@ -19,49 +20,58 @@
   color: #000;
   font-family: sans-serif;
   font-size: 18px;
-  padding: 8px; }
-  .formosa-field__input:invalid,
-  .formosa-field__input--select:invalid,
-  .formosa-field__input--textarea:invalid,
-  .formosa-file-input-wrapper:invalid {
-    box-shadow: none; }
-    .formosa-field__input:invalid:focus,
-    .formosa-field__input--select:invalid:focus,
-    .formosa-field__input--textarea:invalid:focus,
-    .formosa-file-input-wrapper:invalid:focus {
-      box-shadow: 0 0 0 3px #6cf; }
-  .formosa-field--has-error .formosa-field__input, .formosa-field--has-error
-  .formosa-field__input--select, .formosa-field--has-error
-  .formosa-field__input--textarea, .formosa-field--has-error
-  .formosa-file-input-wrapper {
-    border-color: #c66; }
-    .formosa-field--has-error .formosa-field__input:focus, .formosa-field--has-error
-    .formosa-field__input--select:focus, .formosa-field--has-error
-    .formosa-field__input--textarea:focus, .formosa-field--has-error
-    .formosa-file-input-wrapper:focus {
-      border-color: #4ad; }
+  padding: 8px;
+}
+.formosa-field__input:invalid,
+.formosa-field__input--select:invalid,
+.formosa-field__input--textarea:invalid,
+.formosa-file-input-wrapper:invalid {
+  box-shadow: none;
+}
+.formosa-field__input:invalid:focus,
+.formosa-field__input--select:invalid:focus,
+.formosa-field__input--textarea:invalid:focus,
+.formosa-file-input-wrapper:invalid:focus {
+  box-shadow: 0 0 0 3px #6cf;
+}
+.formosa-field--has-error .formosa-field__input,
+.formosa-field--has-error .formosa-field__input--select,
+.formosa-field--has-error .formosa-field__input--textarea,
+.formosa-field--has-error .formosa-file-input-wrapper {
+  border-color: #c66;
+}
+.formosa-field--has-error .formosa-field__input:focus,
+.formosa-field--has-error .formosa-field__input--select:focus,
+.formosa-field--has-error .formosa-field__input--textarea:focus,
+.formosa-field--has-error .formosa-file-input-wrapper:focus {
+  border-color: #4ad;
+}
 
 .formosa-button,
 .formosa-field__input,
 .formosa-field__input--select,
 .formosa-file-input-wrapper {
-  line-height: 1.5; }
+  line-height: 1.5;
+}
 
 .formosa-button,
 .formosa-field__input,
 .formosa-field__input--select,
 .formosa-field__input--textarea {
-  margin: 0; }
+  margin: 0;
+}
 
 .formosa-field__input,
 .formosa-field__input--textarea {
   -webkit-appearance: none;
      -moz-appearance: none;
-          appearance: none; }
+          appearance: none;
+}
 
 .formosa-field__input:not([size]) {
   box-sizing: border-box;
-  width: 100%; }
+  width: 100%;
+}
 
 .formosa-autocomplete {
   background-color: #fff;
@@ -69,10 +79,12 @@
   border-radius: 0;
   display: flex;
   min-height: 44px;
-  position: relative; }
-  .formosa-autocomplete:focus-within {
-    border-color: #4ad;
-    box-shadow: 0 0 0 3px #6cf; }
+  position: relative;
+}
+.formosa-autocomplete:focus-within {
+  border-color: #4ad;
+  box-shadow: 0 0 0 3px #6cf;
+}
 
 .formosa-autocomplete__options {
   background-color: white;
@@ -85,10 +97,12 @@
   position: absolute;
   right: -1px;
   top: calc(100% + 3px);
-  z-index: 9996; }
+  z-index: 9996;
+}
 
 .formosa-autocomplete__input {
-  height: 34px; }
+  height: 34px;
+}
 
 input.formosa-autocomplete__input {
   background-color: transparent;
@@ -99,15 +113,19 @@ input.formosa-autocomplete__input {
   margin: 4px;
   padding: 8px 8px;
   position: relative;
-  top: -5px; }
-  input.formosa-autocomplete__input.formosa-field__input {
-    width: calc(100% + 10px); }
+  top: -5px;
+}
+input.formosa-autocomplete__input.formosa-field__input {
+  width: calc(100% + 10px);
+}
 
 .formosa-autocomplete__option + .formosa-autocomplete__option {
-  border-top: 1px solid white; }
+  border-top: 1px solid white;
+}
 
 .formosa-autocomplete__option--highlighted .formosa-autocomplete__option__button {
-  background-color: white; }
+  background-color: white;
+}
 
 .formosa-autocomplete__option__button {
   background-color: transparent;
@@ -122,9 +140,11 @@ input.formosa-autocomplete__input {
   padding: 8px;
   text-align: left;
   text-overflow: ellipsis;
-  width: 100%; }
-  .formosa-autocomplete__option__button:focus {
-    box-shadow: inset 0 0 0 3px #6cf; }
+  width: 100%;
+}
+.formosa-autocomplete__option__button:focus {
+  box-shadow: inset 0 0 0 3px #6cf;
+}
 
 .formosa-autocomplete__values {
   display: flex;
@@ -133,52 +153,63 @@ input.formosa-autocomplete__input {
   list-style: none;
   margin: 0;
   padding: 0;
-  width: 100%; }
-  .formosa-autocomplete--clearable .formosa-autocomplete__values {
-    width: calc(100% - 42px); }
+  width: 100%;
+}
+.formosa-autocomplete--clearable .formosa-autocomplete__values {
+  width: calc(100% - 42px);
+}
 
 .formosa-autocomplete__value {
   background-color: white;
   height: 34px;
   line-height: 34px;
+  margin: 4px;
   overflow: hidden;
   padding-left: 8px;
   padding-right: 34px;
   position: relative;
   text-overflow: ellipsis;
-  white-space: nowrap; }
-  .formosa-field--disabled .formosa-autocomplete__value,
-  .formosa-field--read-only .formosa-autocomplete__value {
-    padding-right: 8px; }
-  .formosa-autocomplete__value.formosa-autocomplete__value--input {
-    background-color: transparent;
-    flex: 1 1 auto;
-    padding-left: 0;
-    padding-right: 0; }
+  white-space: nowrap;
+}
+.formosa-field--disabled .formosa-autocomplete__value, .formosa-field--read-only .formosa-autocomplete__value {
+  padding-right: 8px;
+}
+.formosa-autocomplete__value.formosa-autocomplete__value--input {
+  background-color: transparent;
+  flex: 1 1 auto;
+  padding-left: 0;
+  padding-right: 0;
+}
 
 .formosa-autocomplete__value__remove,
 .formosa-autocomplete__clear {
   border-color: transparent;
+  color: #333;
   cursor: pointer;
   font-size: 0;
-  padding: 0; }
-  .formosa-autocomplete__value__remove path,
-  .formosa-autocomplete__clear path {
-    fill: #333; }
-  .formosa-autocomplete__value__remove:hover, .formosa-autocomplete__value__remove:active, .formosa-autocomplete__value__remove:focus,
-  .formosa-autocomplete__clear:hover,
-  .formosa-autocomplete__clear:active,
-  .formosa-autocomplete__clear:focus {
-    background-color: transparent;
-    border-color: transparent; }
-    .formosa-autocomplete__value__remove:hover path, .formosa-autocomplete__value__remove:active path, .formosa-autocomplete__value__remove:focus path,
-    .formosa-autocomplete__clear:hover path,
-    .formosa-autocomplete__clear:active path,
-    .formosa-autocomplete__clear:focus path {
-      fill: #000; }
-  .formosa-field--disabled .formosa-autocomplete__value__remove, .formosa-field--disabled
-  .formosa-autocomplete__clear {
-    cursor: default; }
+  padding: 0;
+}
+.formosa-autocomplete__value__remove path,
+.formosa-autocomplete__clear path {
+  fill: #333;
+}
+.formosa-autocomplete__value__remove:hover, .formosa-autocomplete__value__remove:active, .formosa-autocomplete__value__remove:focus,
+.formosa-autocomplete__clear:hover,
+.formosa-autocomplete__clear:active,
+.formosa-autocomplete__clear:focus {
+  background-color: transparent;
+  border-color: transparent;
+}
+.formosa-autocomplete__value__remove:hover path, .formosa-autocomplete__value__remove:active path, .formosa-autocomplete__value__remove:focus path,
+.formosa-autocomplete__clear:hover path,
+.formosa-autocomplete__clear:active path,
+.formosa-autocomplete__clear:focus path {
+  fill: #000;
+}
+.formosa-field--disabled .formosa-autocomplete__value__remove,
+.formosa-field--disabled .formosa-autocomplete__clear {
+  cursor: default;
+}
 
 .formosa-autocomplete__value__remove {
   background-color: transparent;
@@ -187,14 +218,17 @@ input.formosa-autocomplete__input {
   position: absolute;
   right: 0;
   top: 0;
-  width: 34px; }
-  .formosa-autocomplete__value__remove:focus {
-    box-shadow: inset 0 0 0 3px #6cf; }
+  width: 34px;
+}
+.formosa-autocomplete__value__remove:focus {
+  box-shadow: inset 0 0 0 3px #6cf;
+}
 
 .formosa-autocomplete__clear {
   background-color: #fff;
   height: 42px;
-  width: 42px; }
+  width: 42px;
+}
 
 .formosa-button {
   background-color: #9bc;
@@ -206,24 +240,32 @@ input.formosa-autocomplete__input {
   font-size: 18px;
   font-weight: normal;
   line-height: 1.5;
-  padding: 8px 12px; }
-  .formosa-button:hover, .formosa-button:active, .formosa-button:focus {
-    background-color: #75a3ba; }
-  .formosa-button[disabled] {
-    cursor: default; }
-    .formosa-button[disabled]:hover, .formosa-button[disabled]:active, .formosa-button[disabled]:focus {
-      background-color: #9bc; }
-  .formosa-button path {
-    fill: #000; }
+  padding: 8px 12px;
+}
+.formosa-button:hover, .formosa-button:active, .formosa-button:focus {
+  background-color: #75a3ba;
+}
+.formosa-button[disabled] {
+  cursor: default;
+}
+.formosa-button[disabled]:hover, .formosa-button[disabled]:active, .formosa-button[disabled]:focus {
+  background-color: #9bc;
+}
+.formosa-button path {
+  fill: #000;
+}
 
 .formosa-button--danger {
   background-color: #c66;
   border-color: #c66;
-  color: #000; }
-  .formosa-button--danger:hover, .formosa-button--danger:active, .formosa-button--danger:focus {
-    background-color: #c14444; }
-  .formosa-button--danger[disabled]:hover, .formosa-button--danger[disabled]:active, .formosa-button--danger[disabled]:focus {
-    background-color: #c66; }
+  color: #000;
+}
+.formosa-button--danger:hover, .formosa-button--danger:active, .formosa-button--danger:focus {
+  background-color: #c14444;
+}
+.formosa-button--danger[disabled]:hover, .formosa-button--danger[disabled]:active, .formosa-button--danger[disabled]:focus {
+  background-color: #c66;
+}
 
 input.formosa-field__input--checkbox {
   -webkit-appearance: none;
@@ -233,14 +275,18 @@ input.formosa-field__input--checkbox {
   cursor: pointer;
   height: 32px;
   margin: 0 8px 0 0;
-  vertical-align: middle; }
-  input.formosa-field__input--checkbox.formosa-field__input {
-    width: 32px; }
-  .formosa-field--disabled input.formosa-field__input--checkbox {
-    cursor: default; }
+  vertical-align: middle;
+}
+input.formosa-field__input--checkbox.formosa-field__input {
+  width: 32px;
+}
+.formosa-field--disabled input.formosa-field__input--checkbox {
+  cursor: default;
+}
 
 .formosa-input-wrapper--checkbox {
-  position: relative; }
+  position: relative;
+}
 
 .formosa-icon--check {
   bottom: 0;
@@ -249,34 +295,45 @@ input.formosa-field__input--checkbox {
   pointer-events: none;
   position: absolute;
   top: 6px;
-  width: 20px; }
-  .formosa-icon--check path {
-    fill: transparent; }
-  .formosa-field--disabled .formosa-icon--check {
-    opacity: 0.5; }
-  :checked + .formosa-icon--check path {
-    fill: #000; }
-  .formosa-icon--check + .formosa-label-wrapper .formosa-label {
-    font-weight: normal; }
+  width: 20px;
+}
+.formosa-icon--check path {
+  fill: transparent;
+}
+.formosa-field--disabled .formosa-icon--check {
+  opacity: 0.5;
+}
+:checked + .formosa-icon--check path {
+  fill: #000;
+}
+.formosa-icon--check + .formosa-label-wrapper .formosa-label {
+  font-weight: normal;
+}
 
 .formosa-field__error {
   color: #c66;
-  margin-top: 4px; }
-  .formosa-field__error:empty {
-    display: none; }
+  margin-top: 4px;
+}
+.formosa-field__error:empty {
+  display: none;
+}
 
 .formosa-field {
-  margin-top: 24px; }
+  margin-top: 24px;
+}
 
 .formosa-file-wrapper {
-  display: flex; }
+  display: flex;
+}
 
 .formosa-file-input-wrapper {
   flex: 1 1 auto;
-  position: relative; }
-  .formosa-file-input-wrapper:focus-within {
-    border-color: #4ad;
-    box-shadow: 0 0 0 3px #6cf; }
+  position: relative;
+}
+.formosa-file-input-wrapper:focus-within {
+  border-color: #4ad;
+  box-shadow: 0 0 0 3px #6cf;
+}
 
 .formosa-field__input--file {
   background-color: transparent;
@@ -289,171 +346,218 @@ input.formosa-field__input--checkbox {
   padding: 0;
   position: absolute;
   right: 0;
-  top: 0; }
-  .formosa-field--disabled .formosa-field__input--file {
-    cursor: default;
-    opacity: 0;
-    pointer-events: none; }
+  top: 0;
+}
+.formosa-field--disabled .formosa-field__input--file {
+  cursor: default;
+  opacity: 0;
+  pointer-events: none;
+}
 
 .formosa-file-name {
-  word-break: break-word; }
+  word-break: break-word;
+}
 
 .formosa-file-name--empty {
-  opacity: .5; }
+  opacity: 0.5;
+}
 
 .formosa-file-link {
   display: inline-block;
-  font-size: 0; }
+  font-size: 0;
+}
 
 .formosa-file-image {
-  max-width: 100%; }
+  max-width: 100%;
+}
 
 :focus {
   border-color: #4ad;
   box-shadow: 0 0 0 3px #6cf;
-  outline: none !important; }
+  outline: none !important;
+}
 
 .formosa-horizontal {
   display: table;
-  width: 100%; }
-  .formosa-horizontal > .formosa-field {
-    display: table-row; }
-    .formosa-horizontal > .formosa-field > .formosa-label-wrapper,
-    .formosa-horizontal > .formosa-field > .formosa-input-wrapper {
-      display: table-cell;
-      padding: 8px 0; }
-    .formosa-horizontal > .formosa-field > .formosa-label-wrapper {
-      padding-right: 8px;
-      text-align: right;
-      vertical-align: top;
-      white-space: nowrap;
-      width: 0; }
-    .formosa-horizontal > .formosa-field > .formosa-input-wrapper {
-      padding-left: 8px;
-      width: 100%; }
-      .formosa-horizontal > .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
-        left: 14px;
-        top: 14px; }
-    .formosa-horizontal > .formosa-field .formosa-label {
-      display: inline-block;
-      line-height: 1.5;
-      padding-left: 0;
-      padding-right: 0;
-      padding-top: 9px; }
-    .formosa-horizontal > .formosa-field .formosa-radio--inline {
-      padding-top: 9px; }
-  .formosa-horizontal > .formosa-field--label-after .formosa-label-wrapper:empty {
-    display: inline-block; }
+  width: 100%;
+}
+.formosa-horizontal > .formosa-field {
+  display: table-row;
+}
+.formosa-horizontal > .formosa-field > .formosa-label-wrapper, .formosa-horizontal > .formosa-field > .formosa-input-wrapper {
+  display: table-cell;
+  padding: 8px 0;
+}
+.formosa-horizontal > .formosa-field > .formosa-label-wrapper {
+  padding-right: 8px;
+  text-align: right;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 0;
+}
+.formosa-horizontal > .formosa-field > .formosa-input-wrapper {
+  padding-left: 8px;
+  width: 100%;
+}
+.formosa-horizontal > .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
+  left: 14px;
+  top: 14px;
+}
+.formosa-horizontal > .formosa-field .formosa-label {
+  display: inline-block;
+  line-height: 1.5;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 9px;
+}
+.formosa-horizontal > .formosa-field .formosa-radio--inline {
+  padding-top: 9px;
+}
+.formosa-horizontal > .formosa-field--label-after .formosa-label-wrapper:empty {
+  display: inline-block;
+}
 
 @media (min-width: 1024px) {
   .formosa-responsive {
     display: table;
-    width: 100%; }
-    .formosa-responsive > .formosa-field {
-      display: table-row; }
-      .formosa-responsive > .formosa-field > .formosa-label-wrapper,
-      .formosa-responsive > .formosa-field > .formosa-input-wrapper {
-        display: table-cell;
-        padding: 8px 0; }
-      .formosa-responsive > .formosa-field > .formosa-label-wrapper {
-        padding-right: 8px;
-        text-align: right;
-        vertical-align: top;
-        white-space: nowrap;
-        width: 0; }
-      .formosa-responsive > .formosa-field > .formosa-input-wrapper {
-        padding-left: 8px;
-        width: 100%; }
-        .formosa-responsive > .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
-          left: 14px;
-          top: 14px; }
-      .formosa-responsive > .formosa-field .formosa-label {
-        display: inline-block;
-        line-height: 1.5;
-        padding-left: 0;
-        padding-right: 0;
-        padding-top: 9px; }
-      .formosa-responsive > .formosa-field .formosa-radio--inline {
-        padding-top: 9px; }
-    .formosa-responsive > .formosa-field--label-after .formosa-label-wrapper:empty {
-      display: inline-block; } }
+    width: 100%;
+  }
+  .formosa-responsive > .formosa-field {
+    display: table-row;
+  }
+  .formosa-responsive > .formosa-field > .formosa-label-wrapper, .formosa-responsive > .formosa-field > .formosa-input-wrapper {
+    display: table-cell;
+    padding: 8px 0;
+  }
+  .formosa-responsive > .formosa-field > .formosa-label-wrapper {
+    padding-right: 8px;
+    text-align: right;
+    vertical-align: top;
+    white-space: nowrap;
+    width: 0;
+  }
+  .formosa-responsive > .formosa-field > .formosa-input-wrapper {
+    padding-left: 8px;
+    width: 100%;
+  }
+  .formosa-responsive > .formosa-field > .formosa-input-wrapper > .formosa-icon--check {
+    left: 14px;
+    top: 14px;
+  }
+  .formosa-responsive > .formosa-field .formosa-label {
+    display: inline-block;
+    line-height: 1.5;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 9px;
+  }
+  .formosa-responsive > .formosa-field .formosa-radio--inline {
+    padding-top: 9px;
+  }
+  .formosa-responsive > .formosa-field--label-after .formosa-label-wrapper:empty {
+    display: inline-block;
+  }
+}
 
 .formosa-label-wrapper {
   display: block;
-  margin-bottom: 4px; }
-  .formosa-label-wrapper:empty {
-    display: none; }
+  margin-bottom: 4px;
+}
+.formosa-label-wrapper:empty {
+  display: none;
+}
 
 .formosa-label {
-  font-weight: bold; }
-  .formosa-label[for] {
-    cursor: pointer; }
-    .formosa-field--disabled .formosa-label[for] {
-      cursor: default; }
-  .formosa-field--has-error .formosa-label {
-    color: #c66; }
+  font-weight: bold;
+}
+.formosa-label[for] {
+  cursor: pointer;
+}
+.formosa-field--disabled .formosa-label[for] {
+  cursor: default;
+}
+.formosa-field--has-error .formosa-label {
+  color: #c66;
+}
 
 .formosa-radio__label {
-  cursor: pointer; }
-  .formosa-field--disabled .formosa-radio__label {
-    cursor: default; }
+  cursor: pointer;
+}
+.formosa-field--disabled .formosa-radio__label {
+  cursor: default;
+}
 
 .formosa-label--required::after {
-  content: ' *'; }
+  content: " *";
+}
 
 .formosa-field--label-after .formosa-label-wrapper {
   display: inline-block;
-  margin: 0; }
-  .formosa-field--label-after .formosa-label-wrapper:empty {
-    display: none; }
+  margin: 0;
+}
+.formosa-field--label-after .formosa-label-wrapper:empty {
+  display: none;
+}
 
 .formosa-message {
-  padding: 16px; }
-  h1 + .formosa-message {
-    margin-top: 24px; }
+  padding: 16px;
+}
+h1 + .formosa-message {
+  margin-top: 24px;
+}
 
 .formosa-message--error {
   background-color: #c66;
-  color: #000; }
+  color: #000;
+}
 
 .formosa-message--success {
   background-color: #6c6;
-  color: #000; }
+  color: #000;
+}
 
 .formosa-field__note {
   font-size: 85%;
   line-height: 1.4;
   margin: 4px 0 0;
-  opacity: 0.75; }
+  opacity: 0.75;
+}
 
 input.formosa-field__input--password.formosa-field__input {
-  width: calc(100% - 70px); }
+  width: calc(100% - 70px);
+}
 
 .formosa-button--toggle-password {
   padding-left: 0;
   padding-right: 0;
-  width: 70px; }
+  width: 70px;
+}
 
 .formosa-prefix {
   border-bottom-right-radius: 0;
   border-right-width: 0;
-  border-top-right-radius: 0; }
-  .formosa-prefix:focus {
-    position: relative; }
+  border-top-right-radius: 0;
+}
+.formosa-prefix:focus {
+  position: relative;
+}
 
 .formosa-postfix {
   border-bottom-left-radius: 0;
   border-left-width: 0;
-  border-top-left-radius: 0; }
-  .formosa-postfix:focus {
-    position: relative; }
+  border-top-left-radius: 0;
+}
+.formosa-postfix:focus {
+  position: relative;
+}
 
 .formosa-radio {
   border: 0;
   list-style: none;
   margin: 0;
   padding: 0;
-  position: relative; }
+  position: relative;
+}
 
 .formosa-radio__legend {
   bottom: 0;
@@ -463,22 +567,28 @@ input.formosa-field__input--password.formosa-field__input {
   overflow: hidden;
   position: absolute;
   right: 0;
-  top: 0; }
+  top: 0;
+}
 
 .formosa-radio--inline {
   display: flex;
-  flex-wrap: wrap; }
-  .formosa-radio--inline .formosa-radio__item {
-    margin-bottom: 8px;
-    margin-right: 16px; }
+  flex-wrap: wrap;
+}
+.formosa-radio--inline .formosa-radio__item {
+  margin-bottom: 8px;
+  margin-right: 16px;
+}
 
 .formosa-radio__item {
-  position: relative; }
+  position: relative;
+}
 
 .formosa-radio__item + .formosa-radio__item {
-  margin-top: 8px; }
-  .formosa-radio--inline .formosa-radio__item + .formosa-radio__item {
-    margin-top: 0; }
+  margin-top: 8px;
+}
+.formosa-radio--inline .formosa-radio__item + .formosa-radio__item {
+  margin-top: 0;
+}
 
 input.formosa-radio__input {
   -webkit-appearance: none;
@@ -493,26 +603,33 @@ input.formosa-radio__input {
   line-height: 1.5;
   margin: 0 8px 0 0;
   padding: 0;
-  vertical-align: middle; }
-  .formosa-field--disabled input.formosa-radio__input {
-    cursor: default; }
-  input.formosa-radio__input.formosa-field__input {
-    width: 32px; }
-  input.formosa-radio__input:checked {
-    background-color: #000; }
-  input.formosa-radio__input:focus {
-    box-shadow: 0 0 0 1px #4ad, 0 0 0 4px #6cf; }
+  vertical-align: middle;
+}
+.formosa-field--disabled input.formosa-radio__input {
+  cursor: default;
+}
+input.formosa-radio__input.formosa-field__input {
+  width: 32px;
+}
+input.formosa-radio__input:checked {
+  background-color: #000;
+}
+input.formosa-radio__input:focus {
+  box-shadow: 0 0 0 1px #4ad, 0 0 0 4px #6cf;
+}
 
 .formosa-search-wrapper {
   display: table;
   position: relative;
-  width: 100%; }
+  width: 100%;
+}
 
 input.formosa-field__input--search {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  padding-right: 40px; }
+  padding-right: 40px;
+}
 
 .formosa-icon--search {
   height: 24px;
@@ -521,22 +638,27 @@ input.formosa-field__input--search {
   position: absolute;
   right: 8px;
   top: 50%;
-  width: 24px; }
-  .formosa-icon--search path {
-    fill: #000; }
+  width: 24px;
+}
+.formosa-icon--search path {
+  fill: #000;
+}
 
 .formosa-select-wrapper {
   display: table;
-  position: relative; }
+  position: relative;
+}
 
 .formosa-field__input--select {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
   cursor: pointer;
-  padding-right: 28px; }
-  .formosa-field--disabled .formosa-field__input--select {
-    cursor: default; }
+  padding-right: 28px;
+}
+.formosa-field--disabled .formosa-field__input--select {
+  cursor: default;
+}
 
 .formosa-icon--caret {
   height: 12px;
@@ -544,29 +666,33 @@ input.formosa-field__input--search {
   position: absolute;
   right: 9px;
   top: 50%;
-  width: 12px; }
-  .formosa-icon--caret path {
-    fill: #000; }
+  width: 12px;
+}
+.formosa-icon--caret path {
+  fill: #000;
+}
 
 .formosa-spinner {
   align-content: center;
   align-items: center;
   align-self: center;
   display: flex;
-  font-size: 0; }
-  .formosa-spinner::before {
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    animation-name: formosa-spin;
-    animation-timing-function: linear;
-    border-color: #9bc #fff #fff #fff;
-    border-radius: 100px;
-    border-style: solid;
-    border-width: 6px;
-    content: '';
-    display: block;
-    height: 32px;
-    width: 32px; }
+  font-size: 0;
+}
+.formosa-spinner::before {
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-name: formosa-spin;
+  animation-timing-function: linear;
+  border-color: #9bc #fff #fff #fff;
+  border-radius: 100px;
+  border-style: solid;
+  border-width: 6px;
+  content: "";
+  display: block;
+  height: 32px;
+  width: 32px;
+}
 
 .formosa-spinner--fullscreen {
   bottom: 0;
@@ -575,20 +701,25 @@ input.formosa-field__input--search {
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 9999; }
-  .formosa-spinner--fullscreen::before {
-    border-width: 12px;
-    height: 50px;
-    width: 50px; }
+  z-index: 9999;
+}
+.formosa-spinner--fullscreen::before {
+  border-width: 12px;
+  height: 50px;
+  width: 50px;
+}
 
 @keyframes formosa-spin {
   0% {
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
   100% {
-    transform: rotate(360deg); } }
-
+    transform: rotate(360deg);
+  }
+}
 .formosa-suffix-container {
-  position: relative; }
+  position: relative;
+}
 
 .formosa-suffix {
   border-color: transparent;
@@ -599,12 +730,14 @@ input.formosa-field__input--search {
   position: absolute;
   right: -1px;
   top: 0;
-  z-index: 1; }
+  z-index: 1;
+}
 
 .formosa-field__input--textarea {
   box-sizing: border-box;
   line-height: 1.5;
-  width: 100%; }
+  width: 100%;
+}
 
 .formosa-toast-container {
   align-items: flex-end;
@@ -614,7 +747,8 @@ input.formosa-field__input--search {
   pointer-events: none;
   position: fixed;
   right: 0;
-  z-index: 9998; }
+  z-index: 9998;
+}
 
 .formosa-toast {
   align-items: center;
@@ -625,10 +759,12 @@ input.formosa-field__input--search {
   display: flex;
   margin: 8px;
   max-width: 90vw;
-  pointer-events: auto; }
+  pointer-events: auto;
+}
 
 .formosa-toast__text {
-  padding: 16px; }
+  padding: 16px;
+}
 
 .formosa-toast__close {
   background-color: transparent;
@@ -638,30 +774,42 @@ input.formosa-field__input--search {
   height: 32px;
   margin: 0 8px 0 0;
   padding: 0;
-  width: 32px; }
-  .formosa-toast__close path {
-    fill: #000; }
-  .formosa-toast__close:hover, .formosa-toast__close:active, .formosa-toast__close:focus {
-    background-color: transparent; }
+  width: 32px;
+}
+.formosa-toast__close path {
+  fill: #000;
+}
+.formosa-toast__close:hover, .formosa-toast__close:active, .formosa-toast__close:focus {
+  background-color: transparent;
+}
 
 .formosa-toast--error {
   background-color: #c66;
-  color: #000; }
-  .formosa-toast--error .formosa-toast__close path {
-    fill: #000; }
+  color: #000;
+}
+.formosa-toast--error .formosa-toast__close path {
+  fill: #000;
+}
 
 .formosa-toast--success {
   background-color: #6c6;
-  color: #000; }
-  .formosa-toast--success .formosa-toast__close path {
-    fill: #000; }
+  color: #000;
+}
+.formosa-toast--success .formosa-toast__close path {
+  fill: #000;
+}
 
 @keyframes formosa-slide-in-out {
   0% {
-    transform: translateX(200%) translateZ(0); }
+    transform: translateX(200%) translateZ(0);
+  }
   10% {
-    transform: translateX(0%) translateZ(0); }
+    transform: translateX(0%) translateZ(0);
+  }
   90% {
-    transform: translateX(0%) translateZ(0); }
+    transform: translateX(0%) translateZ(0);
+  }
   100% {
-    transform: translateX(200%) translateZ(0); } }
+    transform: translateX(200%) translateZ(0);
+  }
+}
