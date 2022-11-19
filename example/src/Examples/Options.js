@@ -145,6 +145,8 @@ export default function Options() {
 	return (
 		<>
 			<Form row={row} setRow={setRow}>
+				<h1>Options</h1>
+
 				<h2>Select</h2>
 
 				<Field

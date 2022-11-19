@@ -37,7 +37,7 @@ export default function JsonApiEdit() {
 	return (
 		<>
 			<div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-				<h2 style={{ margin: 0 }}>{`Edit ${row.name}`}</h2>
+				<h1 style={{ margin: 0 }}>{`Edit ${row.name}`}</h1>
 
 				<Form method="DELETE" path="food" id={row.id} showMessage={false}>
 					<button className="formosa-button formosa-button--danger" type="submit">Delete</button>

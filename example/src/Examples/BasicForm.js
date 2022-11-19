@@ -52,6 +52,8 @@ export default function BasicForm() {
 	return (
 		<>
 			<Form onSubmit={onSubmit} row={row} setRow={setRow}>
+				<h1>Basic Form</h1>
+
 				<button className="formosa-button" onClick={populateFields} type="button">
 					Populate Fields
 				</button>

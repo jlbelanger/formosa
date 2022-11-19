@@ -43,7 +43,7 @@ export default function App() {
 	return (
 		<main>
 			<header>
-				<h1>Formosa Example</h1>
+				Formosa Example
 			</header>
 
 			<FormContainer>

@@ -9,7 +9,7 @@ export default function App() {
 		<BrowserRouter>
 			<main>
 				<header id="header">
-					<h1>Formosa</h1>
+					<div id="title">Formosa</div>
 					<a href="https://github.com/jlbelanger/formosa">GitHub</a>
 				</header>
 

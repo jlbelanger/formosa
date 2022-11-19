@@ -17,6 +17,8 @@ export default function HorizontalForm() {
 
 	return (
 		<>
+			<h1>Horizontal Form</h1>
+
 			<Form className="formosa-horizontal" onSubmit={onSubmit} row={row} setRow={setRow}>
 				<Field
 					label="Text"

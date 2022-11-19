@@ -6,6 +6,8 @@ export default function JsonApiAdd() {
 
 	return (
 		<>
+			<h1>JSON:API Add Form</h1>
+
 			<Form method="POST" path="food" row={row} setRow={setRow}>
 				<Field label="Name" name="name" />
 				<Field label="Slug" name="slug" />
