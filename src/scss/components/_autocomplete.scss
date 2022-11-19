@@ -97,6 +97,7 @@ input.formosa-autocomplete__input {
 	background-color: $formosa-autocomplete-value-background-color;
 	height: $formosa-autocomplete-value-height;
 	line-height: $formosa-autocomplete-value-height;
+	margin: $formosa-autocomplete-value-margin;
 	overflow: hidden;
 	padding-left: $formosa-autocomplete-value-padding-top;
 	padding-right: $formosa-autocomplete-value-height;
@@ -120,6 +121,7 @@ input.formosa-autocomplete__input {
 .formosa-autocomplete__value__remove,
 .formosa-autocomplete__clear {
 	border-color: transparent;
+	color: $formosa-autocomplete-clear-color;
 	cursor: pointer;
 	font-size: 0;
 	padding: 0;

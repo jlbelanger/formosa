@@ -38,6 +38,7 @@ $formosa-autocomplete-options-border-color: scale-color($formosa-autocomplete-op
 
 $formosa-autocomplete-value-background-color: scale-color($formosa-input-background-color, $lightness: 10%) !default;
 $formosa-autocomplete-value-padding-top: 8px !default;
+$formosa-autocomplete-value-margin: 4px !default;
 $formosa-autocomplete-value-height: ($formosa-autocomplete-value-padding-top * 2) + $formosa-input-font-size !default;
 
 $formosa-button-background-color: $formosa-primary-background-color !default;
