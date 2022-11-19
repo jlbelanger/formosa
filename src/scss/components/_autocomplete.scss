@@ -1,4 +1,4 @@
-$input-margin: ($formosa-input-height - ($formosa-input-border-width * 2) - $formosa-autocomplete-value-height) / 2;
+$input-margin: ($formosa-input-height - ($formosa-input-border-width * 2) - $formosa-autocomplete-value-height) * .5;
 $top: if($formosa-input-border-width > 0, calc(100% + #{$formosa-focus-border-width}), 100%);
 
 .formosa-autocomplete {

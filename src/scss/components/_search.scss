@@ -11,7 +11,7 @@ input.formosa-field__input--search {
 
 .formosa-icon--search {
 	height: $formosa-search-icon-size;
-	margin-top: #{$formosa-search-icon-size / -2};
+	margin-top: #{$formosa-search-icon-size * -.5};
 	pointer-events: none;
 	position: absolute;
 	right: $formosa-input-padding;

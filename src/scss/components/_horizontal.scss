@@ -24,8 +24,8 @@
 			width: 100%;
 
 			& > .formosa-icon--check {
-				left: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
-				top: #{($formosa-checkbox-padding / 2) + $formosa-horizontal-fields-padding};
+				left: #{($formosa-checkbox-padding * .5) + $formosa-horizontal-fields-padding};
+				top: #{($formosa-checkbox-padding * .5) + $formosa-horizontal-fields-padding};
 			}
 		}
 
