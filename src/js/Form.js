@@ -11,12 +11,22 @@ export default function Form({
 	setRow,
 	...otherProps
 }) {
+	const setOriginalValue = (fs, setFs, key, value) => {
+		const newRow = { ...fs.originalRow };
+		set(newRow, key, value);
+		setFs({
+			...fs,
+			originalRow: JSON.parse(JSON.stringify(newRow)), // Deep copy.
+		});
+	};
+
 	const [formState, setFormState] = useState({
 		errors: {},
 		files: {},
 		message: '',
 		originalRow: JSON.parse(JSON.stringify(row)), // Deep copy.
 		row,
+		setOriginalValue,
 		setRow,
 	});
 

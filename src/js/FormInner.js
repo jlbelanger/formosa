@@ -99,7 +99,7 @@ export default function FormInner({
 					addToast(successToastText, 'success');
 				}
 				if (afterSubmit) {
-					afterSubmit(response);
+					afterSubmit(response, formState, setFormState);
 				}
 			})
 			.catch((response) => {
