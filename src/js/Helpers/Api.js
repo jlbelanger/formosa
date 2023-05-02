@@ -91,4 +91,11 @@ export default class Api {
 	static setToken(token) {
 		window.FORMOSA_TOKEN = token;
 	}
+
+	static deserialize(json) {
+		if (Object.prototype.hasOwnProperty.call(json, 'data')) {
+			return deserialize(json);
+		}
+		return json;
+	}
 }
