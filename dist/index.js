@@ -512,6 +512,14 @@ var Api = /*#__PURE__*/function () {
     window.FORMOSA_TOKEN = token;
   };
 
+  Api.deserialize = function deserialize$1(json) {
+    if (Object.prototype.hasOwnProperty.call(json, 'data')) {
+      return deserialize(json);
+    }
+
+    return json;
+  };
+
   return Api;
 }();
 
@@ -2998,7 +3006,6 @@ function Message() {
 var _excluded$d = ["afterNoSubmit", "afterSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "preventEmptyRequestText", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
 function FormInner(_ref) {
   var afterNoSubmit = _ref.afterNoSubmit,
-      afterSubmit = _ref.afterSubmit,
       beforeSubmit = _ref.beforeSubmit,
       children = _ref.children,
       clearOnSubmit = _ref.clearOnSubmit,
@@ -3059,7 +3066,10 @@ function FormInner(_ref) {
     var body = getBody(method, path, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues);
     setFormState(_extends({}, formState, {
       errors: {},
-      message: ''
+      message: '',
+      response: null,
+      toastClass: '',
+      toastMessage: ''
     }));
     var bodyString = body instanceof FormData ? body : JSON.stringify(body);
     Api.request(method, url, bodyString).then(function (response) {
@@ -3068,8 +3078,12 @@ function FormInner(_ref) {
       }
 
       var newState = _extends({}, formState, {
+        dateSubmitted: new Date().getMilliseconds(),
         errors: {},
-        message: successMessageText
+        message: successMessageText,
+        response: response,
+        toastClass: 'success',
+        toastMessage: successToastText
       });
 
       if (clearOnSubmit) {
@@ -3080,14 +3094,6 @@ function FormInner(_ref) {
       }
 
       setFormState(newState);
-
-      if (successToastText) {
-        addToast(successToastText, 'success');
-      }
-
-      if (afterSubmit) {
-        afterSubmit(response);
-      }
     })["catch"](function (response) {
       if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
         addToast('Error.', 'error');
@@ -3194,13 +3200,30 @@ function Form(_ref) {
       setRow = _ref.setRow,
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
 
+  var _useContext = React.useContext(formosaContext),
+      addToast = _useContext.addToast;
+
+  var setOriginalValue = function setOriginalValue(fs, setFs, key, value) {
+    var newRow = _extends({}, fs.originalRow);
+
+    set(newRow, key, value);
+    setFs(_extends({}, fs, {
+      originalRow: JSON.parse(JSON.stringify(newRow))
+    }));
+  };
+
   var _useState = React.useState({
+    dateSubmitted: null,
     errors: {},
     files: {},
     message: '',
     originalRow: JSON.parse(JSON.stringify(row)),
     row: row,
-    setRow: setRow
+    setOriginalValue: setOriginalValue,
+    response: null,
+    setRow: setRow,
+    toastClass: '',
+    toastMessage: ''
   }),
       formState = _useState[0],
       setFormState = _useState[1];
@@ -3213,7 +3236,20 @@ function Form(_ref) {
     setFormState(_extends({}, formState, {
       row: row
     }));
-  }, [row]);
+  });
+  React.useEffect(function () {
+    if (!formState.dateSubmitted) {
+      return;
+    }
+
+    if (formState.toastMessage) {
+      addToast(formState.toastMessage, formState.toastClass);
+    }
+
+    if (otherProps.afterSubmit) {
+      otherProps.afterSubmit(formState.response, formState, setFormState);
+    }
+  }, [formState.dateSubmitted]);
 
   var _getDirtyKeys = function getDirtyKeys(r, originalRow) {
     var dirtyKeys = [];

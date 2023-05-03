@@ -72,6 +72,9 @@ export default function FormInner({
 			...formState,
 			errors: {},
 			message: '',
+			response: null,
+			toastClass: '',
+			toastMessage: '',
 		});
 
 		const bodyString = body instanceof FormData ? body : JSON.stringify(body);
@@ -84,23 +87,22 @@ export default function FormInner({
 
 				const newState = {
 					...formState,
+					dateSubmitted: new Date().getMilliseconds(),
 					errors: {},
 					message: successMessageText,
+					response,
+					toastClass: 'success',
+					toastMessage: successToastText,
 				};
+
 				if (clearOnSubmit) {
 					newState.originalRow = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
 					newState.row = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
 				} else {
 					newState.originalRow = JSON.parse(JSON.stringify(formState.row)); // Deep copy.
 				}
-				setFormState(newState);
 
-				if (successToastText) {
-					addToast(successToastText, 'success');
-				}
-				if (afterSubmit) {
-					afterSubmit(response, formState, setFormState);
-				}
+				setFormState(newState);
 			})
 			.catch((response) => {
 				if (Object.prototype.hasOwnProperty.call(response, 'errors')) {

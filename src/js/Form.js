@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'; // eslint-disable-line import/no-unresolved
+import React, { useContext, useEffect, useState } from 'react'; // eslint-disable-line import/no-unresolved
 import FormContext from './FormContext';
 import FormInner from './FormInner';
+import FormosaContext from './FormosaContext';
 import get from 'get-value';
 import PropTypes from 'prop-types';
 import set from 'set-value';
@@ -11,6 +12,8 @@ export default function Form({
 	setRow,
 	...otherProps
 }) {
+	const { addToast } = useContext(FormosaContext);
+
 	const setOriginalValue = (fs, setFs, key, value) => {
 		const newRow = { ...fs.originalRow };
 		set(newRow, key, value);
@@ -21,13 +24,17 @@ export default function Form({
 	};
 
 	const [formState, setFormState] = useState({
+		dateSubmitted: null,
 		errors: {},
 		files: {},
 		message: '',
 		originalRow: JSON.parse(JSON.stringify(row)), // Deep copy.
 		row,
 		setOriginalValue,
+		response: null,
 		setRow,
+		toastClass: '',
+		toastMessage: '',
 	});
 
 	useEffect(() => {
@@ -38,7 +45,19 @@ export default function Form({
 			...formState,
 			row,
 		});
-	}, [row]);
+	});
+
+	useEffect(() => {
+		if (!formState.dateSubmitted) {
+			return;
+		}
+		if (formState.toastMessage) {
+			addToast(formState.toastMessage, formState.toastClass);
+		}
+		if (otherProps.afterSubmit) {
+			otherProps.afterSubmit(formState.response, formState, setFormState);
+		}
+	}, [formState.dateSubmitted]);
 
 	const getDirtyKeys = (r, originalRow) => {
 		let dirtyKeys = [];
