@@ -3086,6 +3086,7 @@ function FormInner(_ref) {
       if (clearOnSubmit) {
         newState.originalRow = JSON.parse(JSON.stringify(defaultRow));
         newState.row = JSON.parse(JSON.stringify(defaultRow));
+        formState.setRow(newState.row);
       } else {
         newState.originalRow = JSON.parse(JSON.stringify(formState.row));
       }
