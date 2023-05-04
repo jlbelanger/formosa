@@ -98,7 +98,9 @@ export default function FormInner({
 				if (clearOnSubmit) {
 					newState.originalRow = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
 					newState.row = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
-					formState.setRow(newState.row);
+					if (formState.setRow) {
+						formState.setRow(newState.row);
+					}
 				} else {
 					newState.originalRow = JSON.parse(JSON.stringify(formState.row)); // Deep copy.
 				}
