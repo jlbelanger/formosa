@@ -133,6 +133,14 @@ var deserialize = function deserialize(body) {
     body.data.forEach(function (data) {
       output.push(deserializeSingle(data, body.data, body.included, null));
     });
+
+    if (Object.prototype.hasOwnProperty.call(body, 'meta')) {
+      return {
+        data: output,
+        meta: body.meta
+      };
+    }
+
     return output;
   }
 

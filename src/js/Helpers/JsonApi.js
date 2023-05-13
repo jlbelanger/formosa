@@ -71,6 +71,11 @@ export const deserialize = (body) => {
 		body.data.forEach((data) => {
 			output.push(deserializeSingle(data, body.data, body.included, null));
 		});
+
+		if (Object.prototype.hasOwnProperty.call(body, 'meta')) {
+			return { data: output, meta: body.meta };
+		}
+
 		return output;
 	}
 	return deserializeSingle(body.data, [], body.included, body.data);
