@@ -6,6 +6,7 @@ var reactPromiseTracker = require('react-promise-tracker');
 var React = require('react');
 var React__default = _interopDefault(React);
 var PropTypes = _interopDefault(require('prop-types'));
+var uuid = require('uuid');
 
 function _extends() {
   _extends = Object.assign || function (target) {
@@ -3086,12 +3087,12 @@ function FormInner(_ref) {
       }
 
       var newState = _extends({}, formState, {
-        dateSubmitted: new Date().getMilliseconds(),
         errors: {},
         message: successMessageText,
         response: response,
         toastClass: 'success',
-        toastMessage: successToastText
+        toastMessage: successToastText,
+        uuid: uuid.v4()
       });
 
       if (clearOnSubmit) {
@@ -3225,7 +3226,6 @@ function Form(_ref) {
   };
 
   var _useState = React.useState({
-    dateSubmitted: null,
     errors: {},
     files: {},
     message: '',
@@ -3235,7 +3235,8 @@ function Form(_ref) {
     response: null,
     setRow: setRow,
     toastClass: '',
-    toastMessage: ''
+    toastMessage: '',
+    uuid: null
   }),
       formState = _useState[0],
       setFormState = _useState[1];
@@ -3250,7 +3251,7 @@ function Form(_ref) {
     }));
   });
   React.useEffect(function () {
-    if (!formState.dateSubmitted) {
+    if (!formState.uuid) {
       return;
     }
 
@@ -3261,7 +3262,7 @@ function Form(_ref) {
     if (otherProps.afterSubmit) {
       otherProps.afterSubmit(formState.response, formState, setFormState);
     }
-  }, [formState.dateSubmitted]);
+  }, [formState.uuid]);
 
   var _getDirtyKeys = function getDirtyKeys(r, originalRow) {
     var dirtyKeys = [];

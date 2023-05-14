@@ -24,7 +24,8 @@
 		"get-value": "^3.0.1",
 		"prop-types": "^15.8.1",
 		"react-promise-tracker": "^2.1.1",
-		"set-value": "^4.1.0"
+		"set-value": "^4.1.0",
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.20.7",

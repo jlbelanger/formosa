@@ -24,7 +24,6 @@ export default function Form({
 	};
 
 	const [formState, setFormState] = useState({
-		dateSubmitted: null,
 		errors: {},
 		files: {},
 		message: '',
@@ -35,6 +34,7 @@ export default function Form({
 		setRow,
 		toastClass: '',
 		toastMessage: '',
+		uuid: null,
 	});
 
 	useEffect(() => {
@@ -48,7 +48,7 @@ export default function Form({
 	});
 
 	useEffect(() => {
-		if (!formState.dateSubmitted) {
+		if (!formState.uuid) {
 			return;
 		}
 		if (formState.toastMessage) {
@@ -57,7 +57,7 @@ export default function Form({
 		if (otherProps.afterSubmit) {
 			otherProps.afterSubmit(formState.response, formState, setFormState);
 		}
-	}, [formState.dateSubmitted]);
+	}, [formState.uuid]);
 
 	const getDirtyKeys = (r, originalRow) => {
 		let dirtyKeys = [];

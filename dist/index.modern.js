@@ -3,6 +3,7 @@ import set from 'set-value';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 import React__default, { createElement, useContext, useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { v4 } from 'uuid';
 
 function _extends() {
   _extends = Object.assign || function (target) {
@@ -3083,12 +3084,12 @@ function FormInner(_ref) {
       }
 
       var newState = _extends({}, formState, {
-        dateSubmitted: new Date().getMilliseconds(),
         errors: {},
         message: successMessageText,
         response: response,
         toastClass: 'success',
-        toastMessage: successToastText
+        toastMessage: successToastText,
+        uuid: v4()
       });
 
       if (clearOnSubmit) {
@@ -3222,7 +3223,6 @@ function Form(_ref) {
   };
 
   var _useState = useState({
-    dateSubmitted: null,
     errors: {},
     files: {},
     message: '',
@@ -3232,7 +3232,8 @@ function Form(_ref) {
     response: null,
     setRow: setRow,
     toastClass: '',
-    toastMessage: ''
+    toastMessage: '',
+    uuid: null
   }),
       formState = _useState[0],
       setFormState = _useState[1];
@@ -3247,7 +3248,7 @@ function Form(_ref) {
     }));
   });
   useEffect(function () {
-    if (!formState.dateSubmitted) {
+    if (!formState.uuid) {
       return;
     }
 
@@ -3258,7 +3259,7 @@ function Form(_ref) {
     if (otherProps.afterSubmit) {
       otherProps.afterSubmit(formState.response, formState, setFormState);
     }
-  }, [formState.dateSubmitted]);
+  }, [formState.uuid]);
 
   var _getDirtyKeys = function getDirtyKeys(r, originalRow) {
     var dirtyKeys = [];

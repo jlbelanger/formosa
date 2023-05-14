@@ -5,6 +5,7 @@ import FormosaContext from './FormosaContext';
 import { getBody } from './Helpers/JsonApi';
 import Message from './Message';
 import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function FormInner({
 	afterNoSubmit,
@@ -87,12 +88,12 @@ export default function FormInner({
 
 				const newState = {
 					...formState,
-					dateSubmitted: new Date().getMilliseconds(),
 					errors: {},
 					message: successMessageText,
 					response,
 					toastClass: 'success',
 					toastMessage: successToastText,
+					uuid: uuidv4(),
 				};
 
 				if (clearOnSubmit) {
