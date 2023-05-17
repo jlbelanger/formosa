@@ -68,6 +68,17 @@
 	}
 }
 
+.formosa-toast--warning {
+	background-color: $formosa-toast-warning-background-color;
+	color: $formosa-toast-warning-color;
+
+	.formosa-toast__close {
+		path {
+			fill: $formosa-toast-warning-color;
+		}
+	}
+}
+
 @keyframes formosa-slide-in-out {
 	0% {
 		transform: translateX(200%) translateZ(0);

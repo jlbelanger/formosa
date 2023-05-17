@@ -50,3 +50,43 @@
 		}
 	}
 }
+
+.formosa-button--success {
+	background-color: $formosa-button-success-background-color;
+	border-color: $formosa-button-success-border-color;
+	color: $formosa-button-success-color;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: $formosa-button-success-background-color-hover;
+	}
+
+	&[disabled] {
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: $formosa-button-success-background-color;
+		}
+	}
+}
+
+.formosa-button--warning {
+	background-color: $formosa-button-warning-background-color;
+	border-color: $formosa-button-warning-border-color;
+	color: $formosa-button-warning-color;
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: $formosa-button-warning-background-color-hover;
+	}
+
+	&[disabled] {
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: $formosa-button-warning-background-color;
+		}
+	}
+}

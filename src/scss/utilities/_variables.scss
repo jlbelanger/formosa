@@ -1,4 +1,4 @@
-$formosa-color-danger: #c66 !default;
+$formosa-color-danger: #f66 !default;
 
 $formosa-primary-background-color: #9bc !default;
 $formosa-primary-color: #000 !default;
@@ -8,6 +8,9 @@ $formosa-error-color: #000 !default;
 
 $formosa-success-background-color: #6c6 !default;
 $formosa-success-color: #000 !default;
+
+$formosa-warning-background-color: #f96 !default;
+$formosa-warning-color: #000 !default;
 
 $formosa-dark-mode: false !default;
 
@@ -54,6 +57,16 @@ $formosa-button-danger-background-color-hover: scale-color($formosa-button-dange
 $formosa-button-danger-border-color: $formosa-button-danger-background-color !default;
 $formosa-button-danger-color: $formosa-error-color !default;
 
+$formosa-button-warning-background-color: $formosa-warning-background-color !default;
+$formosa-button-warning-background-color-hover: scale-color($formosa-button-warning-background-color, $lightness: -15%) !default;
+$formosa-button-warning-border-color: $formosa-button-warning-background-color !default;
+$formosa-button-warning-color: $formosa-warning-color !default;
+
+$formosa-button-success-background-color: $formosa-success-background-color !default;
+$formosa-button-success-background-color-hover: scale-color($formosa-button-success-background-color, $lightness: -15%) !default;
+$formosa-button-success-border-color: $formosa-button-success-background-color !default;
+$formosa-button-success-color: $formosa-success-color !default;
+
 $formosa-checkbox-size: 32px !default;
 $formosa-checkbox-margin: 8px !default;
 $formosa-checkbox-padding: 12px !default;
@@ -75,8 +88,12 @@ $formosa-label-margin: 4px !default;
 $formosa-message-error-background-color: $formosa-error-background-color !default;
 $formosa-message-error-color: $formosa-error-color !default;
 $formosa-message-padding: 16px !default;
+$formosa-message-primary-background-color: $formosa-primary-background-color !default;
+$formosa-message-primary-color: $formosa-primary-color !default;
 $formosa-message-success-background-color: $formosa-success-background-color !default;
 $formosa-message-success-color: $formosa-success-color !default;
+$formosa-message-warning-background-color: $formosa-warning-background-color !default;
+$formosa-message-warning-color: $formosa-warning-color !default;
 
 $formosa-note-font-size: 85% !default;
 $formosa-note-line-height: 1.4 !default;
@@ -117,6 +134,8 @@ $formosa-toast-padding: 16px !default;
 $formosa-toast-right: 0 !default;
 $formosa-toast-success-background-color: $formosa-success-background-color !default;
 $formosa-toast-success-color: $formosa-success-color !default;
+$formosa-toast-warning-background-color: $formosa-warning-background-color !default;
+$formosa-toast-warning-color: $formosa-warning-color !default;
 
 $formosa-spinner-z-index: 9999 !default;
 $formosa-toast-z-index: 9998 !default;

@@ -1,4 +1,6 @@
 .formosa-message {
+	background-color: $formosa-message-primary-background-color;
+	color: $formosa-message-primary-color;
 	padding: $formosa-message-padding;
 
 	h1 + & {
@@ -14,4 +16,9 @@
 .formosa-message--success {
 	background-color: $formosa-message-success-background-color;
 	color: $formosa-message-success-color;
+}
+
+.formosa-message--warning {
+	background-color: $formosa-message-warning-background-color;
+	color: $formosa-message-warning-color;
 }
