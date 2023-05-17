@@ -21,11 +21,6 @@ export default function App() {
 							</NavLink>
 						</li>
 						<li className="nav__item">
-							<NavLink activeClassName="nav__link--active" className="nav__link" to="/horizontal-form">
-								Horizontal
-							</NavLink>
-						</li>
-						<li className="nav__item">
 							<NavLink activeClassName="nav__link--active" className="nav__link" to="/options">
 								Options
 							</NavLink>

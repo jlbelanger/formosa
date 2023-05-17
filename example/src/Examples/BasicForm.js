@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 export default function BasicForm() {
 	const [row, setRow] = useState({});
 	const [disabled, setDisabled] = useState(false);
+	const [horizontal, setHorizontal] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
 	const options = [
 		'Apple',
@@ -23,6 +24,10 @@ export default function BasicForm() {
 
 	const toggleReadOnly = () => {
 		setReadOnly(!readOnly);
+	};
+
+	const toggleHorizontal = () => {
+		setHorizontal(!horizontal);
 	};
 
 	const populateFields = () => {
@@ -51,21 +56,25 @@ export default function BasicForm() {
 
 	return (
 		<>
-			<Form onSubmit={onSubmit} row={row} setRow={setRow}>
-				<h1>Basic Form</h1>
+			<h1>Basic Form</h1>
 
-				<button className="formosa-button" onClick={populateFields} type="button">
-					Populate Fields
-				</button>
+			<button className="formosa-button" onClick={populateFields} type="button">
+				Populate Fields
+			</button>
 
-				<button className="formosa-button" onClick={toggleDisabled} type="button">
-					{disabled ? 'Enable Fields' : 'Disable Fields'}
-				</button>
+			<button className="formosa-button" onClick={toggleDisabled} type="button">
+				{disabled ? 'Enable Fields' : 'Disable Fields'}
+			</button>
 
-				<button className="formosa-button" onClick={toggleReadOnly} type="button">
-					{readOnly ? 'Disable Read Only' : 'Enable Read Only'}
-				</button>
+			<button className="formosa-button" onClick={toggleReadOnly} type="button">
+				{readOnly ? 'Disable Read Only' : 'Enable Read Only'}
+			</button>
 
+			<button className="formosa-button" onClick={toggleHorizontal} type="button">
+				{horizontal ? 'Disable Horizontal' : 'Enable Horizontal'}
+			</button>
+
+			<Form className={horizontal ? 'formosa-horizontal' : ''} onSubmit={onSubmit} row={row} setRow={setRow}>
 				<Field
 					label="Text"
 					name="text"
