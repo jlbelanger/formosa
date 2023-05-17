@@ -44,17 +44,16 @@ export default function CheckboxList({
 	useEffect(() => {
 		if (url) {
 			Api.get(url, false)
-				.then((response) => {
-					setOptionValues(normalizeOptions(response, labelKey, valueKey));
-					setIsLoading(false);
-				})
 				.catch((error) => {
 					if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
 						setMessage(error.errors.map((e) => (e.title)).join(' '));
 						setIsLoading(false);
-					} else {
-						throw error;
 					}
+					throw error;
+				})
+				.then((response) => {
+					setOptionValues(normalizeOptions(response, labelKey, valueKey));
+					setIsLoading(false);
 				});
 		}
 	}, [url]);

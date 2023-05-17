@@ -49,17 +49,14 @@ export default class Api {
 			.then((response) => {
 				if (!response.ok) {
 					return response.json()
-						.then((json) => {
-							json.status = response.status;
-							throw json;
-						})
 						.catch((error) => {
 							if (error instanceof SyntaxError) {
 								throw { // eslint-disable-line no-throw-literal
 									errors: [
 										{
-											title: 'The server returned invalid JSON.',
+											title: 'Unable to connect to the server. Please try again later.',
 											status: '500',
+											detail: 'The server returned invalid JSON.',
 										},
 									],
 									status: 500,
@@ -67,6 +64,10 @@ export default class Api {
 							} else {
 								throw error;
 							}
+						})
+						.then((json) => {
+							json.status = response.status;
+							throw json;
 						});
 				}
 				if (response.status === 204) {
