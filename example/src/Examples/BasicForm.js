@@ -44,7 +44,9 @@ export default function BasicForm() {
 			select: 'Apple',
 			checkbox: true,
 			checkbox_list: ['Apple', 'Banana'],
+			inline_checkbox_list: ['Apple', 'Banana'],
 			radio: 'Apple',
+			inline_radio: 'Apple',
 			autocomplete: 'Apple',
 			multiple_autocomplete: ['Apple', 'Banana'],
 			file: 'foo.pdf',
@@ -178,8 +180,28 @@ export default function BasicForm() {
 				/>
 
 				<Field
+					fieldsetClassName="formosa-radio--inline"
+					label="Inline checkbox list"
+					name="inline_checkbox_list"
+					type="checkbox-list"
+					options={options}
+					disabled={disabled}
+					readOnly={readOnly}
+				/>
+
+				<Field
 					label="Radio"
 					name="radio"
+					type="radio"
+					options={options}
+					disabled={disabled}
+					readOnly={readOnly}
+				/>
+
+				<Field
+					fieldsetClassName="formosa-radio--inline"
+					label="Inline radio"
+					name="inline_radio"
 					type="radio"
 					options={options}
 					disabled={disabled}
