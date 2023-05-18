@@ -42,6 +42,7 @@ export default function BasicForm() {
 			url: 'https://example.com',
 			textarea: 'Lorem ipsum',
 			select: 'Apple',
+			multiple_select: ['Apple', 'Banana'],
 			checkbox: true,
 			checkbox_list: ['Apple', 'Banana'],
 			inline_checkbox_list: ['Apple', 'Banana'],
@@ -156,6 +157,16 @@ export default function BasicForm() {
 				<Field
 					label="Select"
 					name="select"
+					type="select"
+					options={options}
+					disabled={disabled}
+					readOnly={readOnly}
+				/>
+
+				<Field
+					label="Multiple select"
+					multiple
+					name="multiple_select"
 					type="select"
 					options={options}
 					disabled={disabled}

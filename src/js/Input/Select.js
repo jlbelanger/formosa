@@ -17,6 +17,7 @@ export default function Select({
 	id,
 	labelKey,
 	loadingText,
+	multiple,
 	name,
 	optionAttributes,
 	options,
@@ -67,7 +68,7 @@ export default function Select({
 		return (<div className="formosa-field__error">{message}</div>);
 	}
 
-	let currentValue = '';
+	let currentValue = multiple ? [] : '';
 	if (setValue !== null) {
 		currentValue = value;
 	} else {
@@ -77,17 +78,22 @@ export default function Select({
 		currentValue = get(formState.row, name);
 	}
 	if (currentValue === null || currentValue === undefined) {
-		currentValue = '';
+		currentValue = multiple ? [] : '';
 	}
-	if (typeof currentValue === 'object') {
+	if (typeof currentValue === 'object' && !multiple) {
 		currentValue = JSON.stringify(currentValue);
 	}
 
 	const onChange = (e) => {
-		let newValue = e.target.value;
-		const option = e.target.querySelector(`[value="${newValue.replace(/"/g, '\\"')}"]`);
-		if (option.getAttribute('data-json') === 'true') {
-			newValue = JSON.parse(newValue);
+		let newValue;
+		if (multiple) {
+			newValue = Array.from(e.target.options).filter((option) => (option.selected)).map((option) => (option.value));
+		} else {
+			newValue = e.target.value;
+			const option = e.target.querySelector(`[value="${newValue.replace(/"/g, '\\"')}"]`);
+			if (option.getAttribute('data-json') === 'true') {
+				newValue = JSON.parse(newValue);
+			}
 		}
 
 		if (setValue) {
@@ -104,6 +110,9 @@ export default function Select({
 	if (name) {
 		props.name = name;
 	}
+	if (multiple) {
+		props.multiple = true;
+	}
 
 	return (
 		<div className={`formosa-select-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
@@ -114,7 +123,7 @@ export default function Select({
 				{...props}
 				{...otherProps}
 			>
-				{!hideBlank && <option value="" />}
+				{!hideBlank && !multiple && <option value="" />}
 				{optionValues.map((optionValue) => {
 					let optionValueVal = optionValue.value;
 					let isJson = false;
@@ -138,13 +147,15 @@ export default function Select({
 					);
 				})}
 			</select>
-			<CaretIcon
-				aria-hidden="true"
-				className={`formosa-icon--caret ${iconClassName}`.trim()}
-				height={iconHeight}
-				width={iconWidth}
-				{...iconAttributes}
-			/>
+			{!multiple && (
+				<CaretIcon
+					aria-hidden="true"
+					className={`formosa-icon--caret ${iconClassName}`.trim()}
+					height={iconHeight}
+					width={iconWidth}
+					{...iconAttributes}
+				/>
+			)}
 		</div>
 	);
 }
@@ -163,6 +174,7 @@ Select.propTypes = {
 		PropTypes.string,
 	]),
 	loadingText: PropTypes.string,
+	multiple: PropTypes.bool,
 	name: PropTypes.string,
 	optionAttributes: PropTypes.oneOfType([
 		PropTypes.func,
@@ -199,6 +211,7 @@ Select.defaultProps = {
 	id: null,
 	labelKey: 'name',
 	loadingText: 'Loading...',
+	multiple: false,
 	name: '',
 	optionAttributes: null,
 	options: null,
