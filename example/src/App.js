@@ -26,6 +26,11 @@ export default function App() {
 							</NavLink>
 						</li>
 						<li className="nav__item">
+							<NavLink activeClassName="nav__link--active" className="nav__link" to="/extras">
+								Extras
+							</NavLink>
+						</li>
+						<li className="nav__item">
 							<NavLink activeClassName="nav__link--active" className="nav__link" to="/json-api-add">
 								JSON:API Add
 							</NavLink>

@@ -46,6 +46,17 @@ h2 {
 	font-size: 20px;
 }
 
+h1,
+h2 {
+	margin-bottom: 12px;
+	margin-top: 32px;
+}
+
+h1 + *,
+h2 + * {
+	margin-top: 0 !important; // stylelint-disable-line declaration-no-important
+}
+
 a {
 	color: #0cf;
 

@@ -1,6 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 import BasicForm from './Examples/BasicForm';
 import Error404 from './Error404';
+import Extras from './Examples/Extras';
 import JsonApiAdd from './Examples/JsonApiAdd';
 import JsonApiEdit from './Examples/JsonApiEdit';
 import NoForm from './Examples/NoForm';
@@ -15,6 +16,7 @@ export default function Routes() {
 			<Route exact path="/json-api-add"><JsonApiAdd /></Route>
 			<Route exact path="/json-api-edit/:id"><JsonApiEdit /></Route>
 			<Route exact path="/options"><Options /></Route>
+			<Route exact path="/extras"><Extras /></Route>
 			<Route><Error404 /></Route>
 		</Switch>
 	);
