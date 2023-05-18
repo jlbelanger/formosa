@@ -34,6 +34,8 @@ export default function BasicForm() {
 		setRow({
 			text: 'Lorem ipsum',
 			text_size: 'Lorem ipsum',
+			text_note: 'Lorem ipsum',
+			text_required: 'Lorem ipsum',
 			email: 'foo@example.com',
 			number: 47,
 			password: 'foobar',
@@ -90,6 +92,24 @@ export default function BasicForm() {
 					label="Text with size"
 					name="text_size"
 					size={16}
+					type="text"
+					disabled={disabled}
+					readOnly={readOnly}
+				/>
+
+				<Field
+					label="Text with note"
+					name="text_note"
+					note="Lorem ipsum dolor sit amet."
+					type="text"
+					disabled={disabled}
+					readOnly={readOnly}
+				/>
+
+				<Field
+					label="Text required"
+					name="text_required"
+					required
 					type="text"
 					disabled={disabled}
 					readOnly={readOnly}
