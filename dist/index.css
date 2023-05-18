@@ -38,7 +38,7 @@
 .formosa-field--has-error .formosa-field__input--select,
 .formosa-field--has-error .formosa-field__input--textarea,
 .formosa-field--has-error .formosa-file-input-wrapper {
-  border-color: #c66;
+  border-color: #f66;
 }
 .formosa-field--has-error .formosa-field__input:focus,
 .formosa-field--has-error .formosa-field__input--select:focus,
@@ -256,15 +256,39 @@ input.formosa-autocomplete__input.formosa-field__input {
 }
 
 .formosa-button--danger {
-  background-color: #c66;
-  border-color: #c66;
+  background-color: #f66;
+  border-color: #f66;
   color: #000;
 }
 .formosa-button--danger:hover, .formosa-button--danger:active, .formosa-button--danger:focus {
-  background-color: #c14444;
+  background-color: #ff3030;
 }
 .formosa-button--danger[disabled]:hover, .formosa-button--danger[disabled]:active, .formosa-button--danger[disabled]:focus {
-  background-color: #c66;
+  background-color: #f66;
+}
+
+.formosa-button--success {
+  background-color: #6c6;
+  border-color: #6c6;
+  color: #000;
+}
+.formosa-button--success:hover, .formosa-button--success:active, .formosa-button--success:focus {
+  background-color: #44c144;
+}
+.formosa-button--success[disabled]:hover, .formosa-button--success[disabled]:active, .formosa-button--success[disabled]:focus {
+  background-color: #6c6;
+}
+
+.formosa-button--warning {
+  background-color: #f96;
+  border-color: #f96;
+  color: #000;
+}
+.formosa-button--warning:hover, .formosa-button--warning:active, .formosa-button--warning:focus {
+  background-color: #ff7530;
+}
+.formosa-button--warning[disabled]:hover, .formosa-button--warning[disabled]:active, .formosa-button--warning[disabled]:focus {
+  background-color: #f96;
 }
 
 input.formosa-field__input--checkbox {
@@ -311,7 +335,7 @@ input.formosa-field__input--checkbox.formosa-field__input {
 }
 
 .formosa-field__error {
-  color: #c66;
+  color: #f66;
   margin-top: 4px;
 }
 .formosa-field__error:empty {
@@ -477,7 +501,7 @@ input.formosa-field__input--checkbox.formosa-field__input {
   cursor: default;
 }
 .formosa-field--has-error .formosa-label {
-  color: #c66;
+  color: #f66;
 }
 
 .formosa-radio__label {
@@ -500,6 +524,8 @@ input.formosa-field__input--checkbox.formosa-field__input {
 }
 
 .formosa-message {
+  background-color: #9bc;
+  color: #000;
   padding: 16px;
 }
 h1 + .formosa-message {
@@ -507,12 +533,17 @@ h1 + .formosa-message {
 }
 
 .formosa-message--error {
-  background-color: #c66;
+  background-color: #f66;
   color: #000;
 }
 
 .formosa-message--success {
   background-color: #6c6;
+  color: #000;
+}
+
+.formosa-message--warning {
+  background-color: #f96;
   color: #000;
 }
 
@@ -684,7 +715,7 @@ input.formosa-field__input--search {
   animation-iteration-count: infinite;
   animation-name: formosa-spin;
   animation-timing-function: linear;
-  border-color: #9bc #fff #fff #fff;
+  border-color: transparent #fff #fff #fff;
   border-radius: 100px;
   border-style: solid;
   border-width: 6px;
@@ -784,7 +815,7 @@ input.formosa-field__input--search {
 }
 
 .formosa-toast--error {
-  background-color: #c66;
+  background-color: #f66;
   color: #000;
 }
 .formosa-toast--error .formosa-toast__close path {
@@ -796,6 +827,14 @@ input.formosa-field__input--search {
   color: #000;
 }
 .formosa-toast--success .formosa-toast__close path {
+  fill: #000;
+}
+
+.formosa-toast--warning {
+  background-color: #f96;
+  color: #000;
+}
+.formosa-toast--warning .formosa-toast__close path {
   fill: #000;
 }
 

@@ -477,21 +477,22 @@ var Api = /*#__PURE__*/function () {
 
     var promise = fetch(fullUrl, options).then(function (response) {
       if (!response.ok) {
-        return response.json().then(function (json) {
-          json.status = response.status;
-          throw json;
-        })["catch"](function (error) {
+        return response.json()["catch"](function (error) {
           if (error instanceof SyntaxError) {
             throw {
               errors: [{
-                title: 'The server returned invalid JSON.',
-                status: '500'
+                title: 'Unable to connect to the server. Please try again later.',
+                status: '500',
+                detail: 'The server returned invalid JSON.'
               }],
               status: 500
             };
           } else {
             throw error;
           }
+        }).then(function (json) {
+          json.status = response.status;
+          throw json;
         });
       }
 
@@ -790,18 +791,18 @@ function Autocomplete(_ref) {
 
   useEffect(function () {
     if (url) {
-      Api.get(url, false).then(function (response) {
-        setOptionValues(normalizeOptions(response, labelKey, valueKey));
-        setIsLoading(false);
-      })["catch"](function (error) {
+      Api.get(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
           setMessage(error.errors.map(function (e) {
             return e.title;
           }).join(' '));
           setIsLoading(false);
-        } else {
-          throw error;
         }
+
+        throw error;
+      }).then(function (response) {
+        setOptionValues(normalizeOptions(response, labelKey, valueKey));
+        setIsLoading(false);
       });
     }
   }, [url]);
@@ -1396,18 +1397,18 @@ function CheckboxList(_ref) {
 
   useEffect(function () {
     if (url) {
-      Api.get(url, false).then(function (response) {
-        setOptionValues(normalizeOptions(response, labelKey, valueKey));
-        setIsLoading(false);
-      })["catch"](function (error) {
+      Api.get(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
           setMessage(error.errors.map(function (e) {
             return e.title;
           }).join(' '));
           setIsLoading(false);
-        } else {
-          throw error;
         }
+
+        throw error;
+      }).then(function (response) {
+        setOptionValues(normalizeOptions(response, labelKey, valueKey));
+        setIsLoading(false);
       });
     }
   }, [url]);
@@ -2096,18 +2097,18 @@ function Radio(_ref) {
 
   useEffect(function () {
     if (url) {
-      Api.get(url, false).then(function (response) {
-        setOptionValues(normalizeOptions(response, labelKey, valueKey));
-        setIsLoading(false);
-      })["catch"](function (error) {
+      Api.get(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
           setMessage(error.errors.map(function (e) {
             return e.title;
           }).join(' '));
           setIsLoading(false);
-        } else {
-          throw error;
         }
+
+        throw error;
+      }).then(function (response) {
+        setOptionValues(normalizeOptions(response, labelKey, valueKey));
+        setIsLoading(false);
       });
     }
   }, [url]);
@@ -2387,7 +2388,7 @@ function SvgCaret(props) {
   })));
 }
 
-var _excluded$8 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "name", "optionAttributes", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded$8 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "multiple", "name", "optionAttributes", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
 function Select(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2399,6 +2400,7 @@ function Select(_ref) {
       id = _ref.id,
       labelKey = _ref.labelKey,
       loadingText = _ref.loadingText,
+      multiple = _ref.multiple,
       name = _ref.name,
       optionAttributes = _ref.optionAttributes,
       options = _ref.options,
@@ -2429,18 +2431,18 @@ function Select(_ref) {
 
   useEffect(function () {
     if (url) {
-      Api.get(url, false).then(function (response) {
-        setOptionValues(normalizeOptions(response, labelKey, valueKey));
-        setIsLoading(false);
-      })["catch"](function (error) {
+      Api.get(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
           setMessage(error.errors.map(function (e) {
             return e.title;
           }).join(' '));
           setIsLoading(false);
-        } else {
-          throw error;
         }
+
+        throw error;
+      }).then(function (response) {
+        setOptionValues(normalizeOptions(response, labelKey, valueKey));
+        setIsLoading(false);
       });
     }
   }, [url]);
@@ -2463,7 +2465,7 @@ function Select(_ref) {
     }, message);
   }
 
-  var currentValue = '';
+  var currentValue = multiple ? [] : '';
 
   if (setValue !== null) {
     currentValue = value;
@@ -2476,19 +2478,29 @@ function Select(_ref) {
   }
 
   if (currentValue === null || currentValue === undefined) {
-    currentValue = '';
+    currentValue = multiple ? [] : '';
   }
 
-  if (typeof currentValue === 'object') {
+  if (typeof currentValue === 'object' && !multiple) {
     currentValue = JSON.stringify(currentValue);
   }
 
   var onChange = function onChange(e) {
-    var newValue = e.target.value;
-    var option = e.target.querySelector("[value=\"" + newValue.replace(/"/g, '\\"') + "\"]");
+    var newValue;
 
-    if (option.getAttribute('data-json') === 'true') {
-      newValue = JSON.parse(newValue);
+    if (multiple) {
+      newValue = Array.from(e.target.options).filter(function (option) {
+        return option.selected;
+      }).map(function (option) {
+        return option.value;
+      });
+    } else {
+      newValue = e.target.value;
+      var option = e.target.querySelector("[value=\"" + newValue.replace(/"/g, '\\"') + "\"]");
+
+      if (option.getAttribute('data-json') === 'true') {
+        newValue = JSON.parse(newValue);
+      }
     }
 
     if (setValue) {
@@ -2508,13 +2520,17 @@ function Select(_ref) {
     props.name = name;
   }
 
+  if (multiple) {
+    props.multiple = true;
+  }
+
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: ("formosa-select-wrapper " + wrapperClassName).trim()
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement("select", _extends({
     className: ("formosa-field__input formosa-field__input--select " + className).trim(),
     onChange: onChange,
     value: currentValue
-  }, props, otherProps), !hideBlank && /*#__PURE__*/React__default.createElement("option", {
+  }, props, otherProps), !hideBlank && !multiple && /*#__PURE__*/React__default.createElement("option", {
     value: ""
   }), optionValues.map(function (optionValue) {
     var optionValueVal = optionValue.value;
@@ -2541,7 +2557,7 @@ function Select(_ref) {
       key: optionValueVal,
       value: optionValueVal
     }, optionProps), optionValue.label);
-  })), /*#__PURE__*/React__default.createElement(SvgCaret, _extends({
+  })), !multiple && /*#__PURE__*/React__default.createElement(SvgCaret, _extends({
     "aria-hidden": "true",
     className: ("formosa-icon--caret " + iconClassName).trim(),
     height: iconHeight,
@@ -2559,6 +2575,7 @@ Select.propTypes = {
   id: PropTypes.string,
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   loadingText: PropTypes.string,
+  multiple: PropTypes.bool,
   name: PropTypes.string,
   optionAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
   options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
@@ -2581,6 +2598,7 @@ Select.defaultProps = {
   id: null,
   labelKey: 'name',
   loadingText: 'Loading...',
+  multiple: false,
   name: '',
   optionAttributes: null,
   options: null,
