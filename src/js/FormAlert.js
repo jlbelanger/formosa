@@ -1,16 +1,15 @@
 import React, { useContext } from 'react'; // eslint-disable-line import/no-unresolved
+import Alert from './Alert';
 import FormContext from './FormContext';
 
-export default function Message() {
+export default function FormAlert({ ...otherProps }) {
 	const { formState } = useContext(FormContext);
 
-	if (!formState.messageText) {
+	if (!formState.alertText) {
 		return null;
 	}
 
 	return (
-		<p aria-live="polite" className={`formosa-message formosa-message--${formState.messageClass}`} role="alert">
-			{formState.messageText}
-		</p>
+		<Alert type={formState.alertClass} {...otherProps}>{formState.alertText}</Alert>
 	);
 }

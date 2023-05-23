@@ -1,5 +1,5 @@
+import { Alert, FormosaContext } from '@jlbelanger/formosa';
 import React, { useContext, useState } from 'react';
-import { FormosaContext } from '@jlbelanger/formosa';
 
 export default function Extras() {
 	const { addToast } = useContext(FormosaContext);
@@ -21,20 +21,20 @@ export default function Extras() {
 			<h1>Extras</h1>
 
 			<h2>Buttons</h2>
-			<button className="formosa-button" type="button">Button</button>
+			<button className="formosa-button" type="button">Primary</button>
 			<button className="formosa-button formosa-button--success" type="button">Success</button>
 			<button className="formosa-button formosa-button--warning" type="button">Warning</button>
 			<button className="formosa-button formosa-button--danger" type="button">Danger</button>
 
-			<h2>Messages</h2>
-			<div className="formosa-message">Lorem ipsum dolor sit amet.</div>
-			<div className="formosa-message formosa-message--success">Success: Lorem ipsum dolor sit amet.</div>
-			<div className="formosa-message formosa-message--warning">Warning: Lorem ipsum dolor sit amet.</div>
-			<div className="formosa-message formosa-message--error">Error: Lorem ipsum dolor sit amet.</div>
+			<h2>Alerts</h2>
+			<Alert type="primary">Primary: Lorem ipsum dolor sit amet.</Alert>
+			<Alert type="success">Success: Lorem ipsum dolor sit amet.</Alert>
+			<Alert type="warning">Warning: Lorem ipsum dolor sit amet.</Alert>
+			<Alert type="error">Error: Lorem ipsum dolor sit amet.</Alert>
 
 			<h2>Toasts</h2>
 			<button className="formosa-button" onClick={showToast} type="button">
-				Show Toast
+				Show Primary Toast
 			</button>
 			<button className="formosa-button formosa-button--success" onClick={showToast} data-type="success" type="button">
 				Show Success Toast

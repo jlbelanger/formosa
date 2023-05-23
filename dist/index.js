@@ -1,11 +1,11 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var PropTypes = _interopDefault(require('prop-types'));
+var React = require('react');
+var React__default = _interopDefault(React);
 var get = _interopDefault(require('get-value'));
 var set = _interopDefault(require('set-value'));
 var reactPromiseTracker = require('react-promise-tracker');
-var React = require('react');
-var React__default = _interopDefault(React);
-var PropTypes = _interopDefault(require('prop-types'));
 var uuid = require('uuid');
 
 function _extends() {
@@ -26,6 +26,10 @@ function _extends() {
   return _extends.apply(this, arguments);
 }
 
+function _objectDestructuringEmpty(obj) {
+  if (obj == null) throw new TypeError("Cannot destructure undefined");
+}
+
 function _objectWithoutPropertiesLoose(source, excluded) {
   if (source == null) return {};
   var target = {};
@@ -40,6 +44,43 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 
   return target;
 }
+
+var _excluded = ["className", "children", "type"];
+function Alert(_ref) {
+  var className = _ref.className,
+      children = _ref.children,
+      type = _ref.type,
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded);
+
+  if (!children) {
+    return null;
+  }
+
+  var alertClass = 'formosa-alert';
+
+  if (type) {
+    alertClass += " formosa-alert--" + type;
+  }
+
+  if (className) {
+    alertClass += " " + className;
+  }
+
+  return /*#__PURE__*/React__default.createElement("div", _extends({
+    "aria-live": "polite",
+    className: alertClass,
+    role: "alert"
+  }, otherProps), children);
+}
+Alert.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node.isRequired,
+  type: PropTypes.string
+};
+Alert.defaultProps = {
+  className: '',
+  type: null
+};
 
 var findIncluded = function findIncluded(included, id, type, mainRecord) {
   if (mainRecord && id === mainRecord.id && type === mainRecord.type) {
@@ -563,10 +604,10 @@ function SvgCheck(props) {
 }
 
 var formContext = /*#__PURE__*/React__default.createContext({
+  alertClass: '',
+  alertText: '',
   errors: {},
   files: {},
-  messageClass: '',
-  messageText: '',
   originalRow: {},
   row: {},
   response: null,
@@ -720,7 +761,7 @@ function SvgX(props) {
   })));
 }
 
-var _excluded = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "loadingText", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionLabelFn", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "setValue", "showLoading", "url", "value", "valueKey", "valueListItemAttributes", "wrapperAttributes", "wrapperClassName"];
+var _excluded$1 = ["afterAdd", "afterChange", "clearable", "clearButtonAttributes", "clearButtonClassName", "clearIconAttributes", "clearIconHeight", "clearIconWidth", "clearText", "disabled", "id", "inputClassName", "labelFn", "labelKey", "loadingText", "max", "name", "optionButtonAttributes", "optionButtonClassName", "optionLabelFn", "optionListAttributes", "optionListClassName", "optionListItemAttributes", "optionListItemClassName", "options", "placeholder", "readOnly", "removeButtonAttributes", "removeButtonClassName", "removeIconAttributes", "removeIconHeight", "removeIconWidth", "removeText", "setValue", "showLoading", "url", "value", "valueKey", "valueListItemAttributes", "wrapperAttributes", "wrapperClassName"];
 function Autocomplete(_ref) {
   var afterAdd = _ref.afterAdd,
       afterChange = _ref.afterChange,
@@ -763,7 +804,7 @@ function Autocomplete(_ref) {
       valueListItemAttributes = _ref.valueListItemAttributes,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$1);
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState,
@@ -794,14 +835,14 @@ function Autocomplete(_ref) {
       setIsLoading = _useState5[1];
 
   var _useState6 = React.useState(''),
-      message = _useState6[0],
-      setMessage = _useState6[1];
+      loadError = _useState6[0],
+      setLoadError = _useState6[1];
 
   React.useEffect(function () {
     if (url) {
       Api.get(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
-          setMessage(error.errors.map(function (e) {
+          setLoadError(error.errors.map(function (e) {
             return e.title;
           }).join(' '));
           setIsLoading(false);
@@ -829,10 +870,10 @@ function Autocomplete(_ref) {
     }, loadingText);
   }
 
-  if (message) {
+  if (loadError) {
     return /*#__PURE__*/React__default.createElement("div", {
       className: "formosa-field__error"
-    }, message);
+    }, loadError);
   }
 
   var currentValue = null;
@@ -1271,7 +1312,7 @@ Autocomplete.defaultProps = {
   wrapperClassName: ''
 };
 
-var _excluded$1 = ["afterChange", "className", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "name", "setValue", "value"];
+var _excluded$2 = ["afterChange", "className", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "name", "setValue", "value"];
 function Checkbox(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -1283,7 +1324,7 @@ function Checkbox(_ref) {
       name = _ref.name,
       setValue = _ref.setValue,
       value = _ref.value,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$1);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$2);
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState,
@@ -1358,7 +1399,7 @@ Checkbox.defaultProps = {
   value: null
 };
 
-var _excluded$2 = ["afterChange", "className", "disabled", "fieldsetAttributes", "fieldsetClassName", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "inputAttributes", "itemAttributes", "itemClassName", "itemLabelAttributes", "itemLabelClassName", "itemSpanAttributes", "itemSpanClassName", "labelKey", "legend", "loadingText", "name", "options", "readOnly", "setValue", "showLoading", "url", "value", "valueKey"];
+var _excluded$3 = ["afterChange", "className", "disabled", "fieldsetAttributes", "fieldsetClassName", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "inputAttributes", "itemAttributes", "itemClassName", "itemLabelAttributes", "itemLabelClassName", "itemSpanAttributes", "itemSpanClassName", "labelKey", "legend", "loadingText", "name", "options", "readOnly", "setValue", "showLoading", "url", "value", "valueKey"];
 function CheckboxList(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -1387,7 +1428,7 @@ function CheckboxList(_ref) {
       url = _ref.url,
       value = _ref.value,
       valueKey = _ref.valueKey,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$2);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$3);
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState,
@@ -1402,14 +1443,14 @@ function CheckboxList(_ref) {
       setIsLoading = _useState2[1];
 
   var _useState3 = React.useState(''),
-      message = _useState3[0],
-      setMessage = _useState3[1];
+      loadError = _useState3[0],
+      setLoadError = _useState3[1];
 
   React.useEffect(function () {
     if (url) {
       Api.get(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
-          setMessage(error.errors.map(function (e) {
+          setLoadError(error.errors.map(function (e) {
             return e.title;
           }).join(' '));
           setIsLoading(false);
@@ -1437,10 +1478,10 @@ function CheckboxList(_ref) {
     }, loadingText);
   }
 
-  if (message) {
+  if (loadError) {
     return /*#__PURE__*/React__default.createElement("div", {
       className: "formosa-field__error"
-    }, message);
+    }, loadError);
   }
 
   var currentValue = [];
@@ -1635,7 +1676,7 @@ CheckboxList.defaultProps = {
   valueKey: null
 };
 
-var _excluded$3 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageAttributes", "imageClassName", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "linkAttributes", "linkClassName", "linkImage", "multiple", "name", "readOnly", "removeText", "required", "setValue", "value", "wrapperAttributes", "wrapperClassName"];
+var _excluded$4 = ["afterChange", "buttonAttributes", "buttonClassName", "className", "disabled", "emptyText", "id", "imageAttributes", "imageClassName", "imageHeight", "imagePrefix", "imagePreview", "inputWrapperAttributes", "inputWrapperClassName", "linkAttributes", "linkClassName", "linkImage", "multiple", "name", "readOnly", "removeText", "required", "setValue", "value", "wrapperAttributes", "wrapperClassName"];
 function File(_ref) {
   var afterChange = _ref.afterChange,
       buttonAttributes = _ref.buttonAttributes,
@@ -1663,7 +1704,7 @@ function File(_ref) {
       value = _ref.value,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$3);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$4);
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState,
@@ -1923,7 +1964,7 @@ ConditionalWrapper.defaultProps = {
   condition: false
 };
 
-var _excluded$4 = ["afterChange", "className", "id", "name", "setValue", "suffix", "type", "value"];
+var _excluded$5 = ["afterChange", "className", "id", "name", "setValue", "suffix", "type", "value"];
 function Input(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -1933,7 +1974,7 @@ function Input(_ref) {
       suffix = _ref.suffix,
       type = _ref.type,
       value = _ref.value,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$4);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$5);
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState,
@@ -2010,7 +2051,7 @@ Input.defaultProps = {
   value: null
 };
 
-var _excluded$5 = ["buttonAttributes", "buttonClassName", "className", "hideText", "showText", "wrapperAttributes", "wrapperClassName"];
+var _excluded$6 = ["buttonAttributes", "buttonClassName", "className", "hideText", "showText", "wrapperAttributes", "wrapperClassName"];
 function Password(_ref) {
   var buttonAttributes = _ref.buttonAttributes,
       buttonClassName = _ref.buttonClassName,
@@ -2019,7 +2060,7 @@ function Password(_ref) {
       showText = _ref.showText,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$5);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$6);
 
   var _useState = React.useState('password'),
       tempType = _useState[0],
@@ -2065,7 +2106,7 @@ Password.defaultProps = {
   wrapperClassName: ''
 };
 
-var _excluded$6 = ["afterChange", "className", "fieldsetAttributes", "fieldsetClassName", "inputAttributes", "itemAttributes", "itemClassName", "itemLabelAttributes", "itemLabelClassName", "itemSpanAttributes", "itemSpanClassName", "label", "labelKey", "legend", "loadingText", "name", "options", "required", "setValue", "showLoading", "url", "value", "valueKey"];
+var _excluded$7 = ["afterChange", "className", "fieldsetAttributes", "fieldsetClassName", "inputAttributes", "itemAttributes", "itemClassName", "itemLabelAttributes", "itemLabelClassName", "itemSpanAttributes", "itemSpanClassName", "label", "labelKey", "legend", "loadingText", "name", "options", "required", "setValue", "showLoading", "url", "value", "valueKey"];
 function Radio(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2089,7 +2130,7 @@ function Radio(_ref) {
       url = _ref.url,
       value = _ref.value,
       valueKey = _ref.valueKey,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$6);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$7);
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState,
@@ -2104,14 +2145,14 @@ function Radio(_ref) {
       setIsLoading = _useState2[1];
 
   var _useState3 = React.useState(''),
-      message = _useState3[0],
-      setMessage = _useState3[1];
+      loadError = _useState3[0],
+      setLoadError = _useState3[1];
 
   React.useEffect(function () {
     if (url) {
       Api.get(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
-          setMessage(error.errors.map(function (e) {
+          setLoadError(error.errors.map(function (e) {
             return e.title;
           }).join(' '));
           setIsLoading(false);
@@ -2139,10 +2180,10 @@ function Radio(_ref) {
     }, loadingText);
   }
 
-  if (message) {
+  if (loadError) {
     return /*#__PURE__*/React__default.createElement("div", {
       className: "formosa-field__error"
-    }, message);
+    }, loadError);
   }
 
   var currentValue = '';
@@ -2332,7 +2373,7 @@ function SvgSearch(props) {
   })));
 }
 
-var _excluded$7 = ["className", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "wrapperAttributes", "wrapperClassName"];
+var _excluded$8 = ["className", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "wrapperAttributes", "wrapperClassName"];
 function Search(_ref) {
   var className = _ref.className,
       iconAttributes = _ref.iconAttributes,
@@ -2341,7 +2382,7 @@ function Search(_ref) {
       iconWidth = _ref.iconWidth,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$7);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$8);
 
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: ("formosa-search-wrapper " + wrapperClassName).trim()
@@ -2402,7 +2443,7 @@ function SvgCaret(props) {
   })));
 }
 
-var _excluded$8 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "multiple", "name", "optionAttributes", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded$9 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "multiple", "name", "optionAttributes", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
 function Select(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2425,7 +2466,7 @@ function Select(_ref) {
       valueKey = _ref.valueKey,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$8);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$9);
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState,
@@ -2440,14 +2481,14 @@ function Select(_ref) {
       setIsLoading = _useState2[1];
 
   var _useState3 = React.useState(''),
-      message = _useState3[0],
-      setMessage = _useState3[1];
+      loadError = _useState3[0],
+      setLoadError = _useState3[1];
 
   React.useEffect(function () {
     if (url) {
       Api.get(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
-          setMessage(error.errors.map(function (e) {
+          setLoadError(error.errors.map(function (e) {
             return e.title;
           }).join(' '));
           setIsLoading(false);
@@ -2475,10 +2516,10 @@ function Select(_ref) {
     }, loadingText);
   }
 
-  if (message) {
+  if (loadError) {
     return /*#__PURE__*/React__default.createElement("div", {
       className: "formosa-field__error"
-    }, message);
+    }, loadError);
   }
 
   var currentValue = multiple ? [] : '';
@@ -2627,7 +2668,7 @@ Select.defaultProps = {
   wrapperClassName: ''
 };
 
-var _excluded$9 = ["afterChange", "className", "id", "name", "setValue", "value"];
+var _excluded$a = ["afterChange", "className", "id", "name", "setValue", "value"];
 function Textarea(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2635,7 +2676,7 @@ function Textarea(_ref) {
       name = _ref.name,
       setValue = _ref.setValue,
       value = _ref.value,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$9);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$a);
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState,
@@ -2744,11 +2785,11 @@ var getInputElement = (function (type, component) {
   return Input;
 });
 
-var _excluded$a = ["component", "type"];
+var _excluded$b = ["component", "type"];
 function ExportableInput(_ref) {
   var component = _ref.component,
       type = _ref.type,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$a);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$b);
 
   var InputComponent = getInputElement(type, component);
   return /*#__PURE__*/React__default.createElement(InputComponent, _extends({
@@ -2764,7 +2805,7 @@ ExportableInput.defaultProps = {
   type: 'text'
 };
 
-var _excluded$b = ["className", "htmlFor", "label", "note", "required", "type"];
+var _excluded$c = ["className", "htmlFor", "label", "note", "required", "type"];
 function Label(_ref) {
   var className = _ref.className,
       htmlFor = _ref.htmlFor,
@@ -2772,7 +2813,7 @@ function Label(_ref) {
       note = _ref.note,
       required = _ref.required,
       type = _ref.type,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$b);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$c);
 
   var labelClassName = 'formosa-label';
 
@@ -2822,7 +2863,7 @@ Label.defaultProps = {
   type: ''
 };
 
-var _excluded$c = ["component", "disabled", "id", "inputInnerWrapperAttributes", "inputInnerWrapperClassName", "inputWrapperAttributes", "inputWrapperClassName", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
+var _excluded$d = ["component", "disabled", "id", "inputInnerWrapperAttributes", "inputInnerWrapperClassName", "inputWrapperAttributes", "inputWrapperClassName", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
 function Field(_ref) {
   var component = _ref.component,
       disabled = _ref.disabled,
@@ -2846,7 +2887,7 @@ function Field(_ref) {
       type = _ref.type,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$c);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$d);
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState;
@@ -3031,22 +3072,7 @@ var formosaContext = /*#__PURE__*/React__default.createContext({
   enableWarningPrompt: function enableWarningPrompt() {}
 });
 
-function Message() {
-  var _useContext = React.useContext(formContext),
-      formState = _useContext.formState;
-
-  if (!formState.messageText) {
-    return null;
-  }
-
-  return /*#__PURE__*/React__default.createElement("p", {
-    "aria-live": "polite",
-    className: "formosa-message formosa-message--" + formState.messageClass,
-    role: "alert"
-  }, formState.messageText);
-}
-
-var _excluded$d = ["afterNoSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "errorMessageText", "errorToastText", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "preventEmptyRequestText", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
+var _excluded$e = ["afterNoSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "errorMessageText", "errorToastText", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "preventEmptyRequestText", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
 function FormInner(_ref) {
   var afterNoSubmit = _ref.afterNoSubmit,
       beforeSubmit = _ref.beforeSubmit,
@@ -3068,7 +3094,7 @@ function FormInner(_ref) {
       showMessage = _ref.showMessage,
       successMessageText = _ref.successMessageText,
       successToastText = _ref.successToastText,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$d);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
 
   var _useContext = React.useContext(formContext),
       formState = _useContext.formState,
@@ -3110,9 +3136,9 @@ function FormInner(_ref) {
 
     var body = getBody(method, path, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues);
     setFormState(_extends({}, formState, {
+      alertClass: '',
+      alertText: '',
       errors: {},
-      messageClass: '',
-      messageText: '',
       response: null,
       toastClass: '',
       toastText: ''
@@ -3152,9 +3178,9 @@ function FormInner(_ref) {
         errors[key].push(error.title);
       });
       setFormState(_extends({}, formState, {
+        alertClass: 'error',
+        alertText: typeof errorMessageText === 'function' ? errorMessageText(response) : errorMessageText,
         errors: errors,
-        messageClass: 'error',
-        messageText: typeof errorMessageText === 'function' ? errorMessageText(response) : errorMessageText,
         response: response,
         toastClass: 'error',
         toastText: typeof errorToastText === 'function' ? errorToastText(response) : errorToastText,
@@ -3166,9 +3192,9 @@ function FormInner(_ref) {
       }
 
       var newState = _extends({}, formState, {
+        alertClass: 'success',
+        alertText: typeof successMessageText === 'function' ? successMessageText(response) : successMessageText,
         errors: {},
-        messageClass: 'success',
-        messageText: typeof successMessageText === 'function' ? successMessageText(response) : successMessageText,
         response: response,
         toastClass: 'success',
         toastText: typeof successToastText === 'function' ? successToastText(response) : successToastText,
@@ -3198,7 +3224,9 @@ function FormInner(_ref) {
     otherProps.id = htmlId;
   }
 
-  return /*#__PURE__*/React__default.createElement("form", otherProps, showMessage && /*#__PURE__*/React__default.createElement(Message, null), children);
+  return /*#__PURE__*/React__default.createElement("form", otherProps, showMessage && formState.alertText && /*#__PURE__*/React__default.createElement(Alert, {
+    type: formState.alertClass
+  }, formState.alertText), children);
 }
 FormInner.propTypes = {
   afterNoSubmit: PropTypes.func,
@@ -3245,7 +3273,7 @@ FormInner.defaultProps = {
   successToastText: ''
 };
 
-var _excluded$e = ["afterSubmitFailure", "afterSubmitSuccess", "children", "row", "setRow", "showInlineErrors"];
+var _excluded$f = ["afterSubmitFailure", "afterSubmitSuccess", "children", "row", "setRow", "showInlineErrors"];
 function Form(_ref) {
   var afterSubmitFailure = _ref.afterSubmitFailure,
       afterSubmitSuccess = _ref.afterSubmitSuccess,
@@ -3253,7 +3281,7 @@ function Form(_ref) {
       row = _ref.row,
       setRow = _ref.setRow,
       showInlineErrors = _ref.showInlineErrors,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$f);
 
   var _useContext = React.useContext(formosaContext),
       addToast = _useContext.addToast;
@@ -3268,10 +3296,10 @@ function Form(_ref) {
   };
 
   var _useState = React.useState({
+    alertClass: '',
+    alertText: '',
     errors: {},
     files: {},
-    messageClass: '',
-    messageText: '',
     originalRow: JSON.parse(JSON.stringify(row)),
     row: row,
     response: null,
@@ -3303,9 +3331,9 @@ function Form(_ref) {
       addToast(formState.toastText, formState.toastClass);
     }
 
-    if (formState.messageClass === 'success' && afterSubmitSuccess) {
+    if (formState.alertClass === 'success' && afterSubmitSuccess) {
       afterSubmitSuccess(formState.response, formState, setFormState);
-    } else if (formState.messageClass === 'error' && afterSubmitFailure) {
+    } else if (formState.alertClass === 'error' && afterSubmitFailure) {
       afterSubmitFailure(formState.response, formState, setFormState);
     }
   }, [formState.uuid]);
@@ -3408,6 +3436,21 @@ Form.defaultProps = {
   setRow: null,
   showInlineErrors: true
 };
+
+function FormAlert(_ref) {
+  var otherProps = _extends({}, (_objectDestructuringEmpty(_ref), _ref));
+
+  var _useContext = React.useContext(formContext),
+      formState = _useContext.formState;
+
+  if (!formState.alertText) {
+    return null;
+  }
+
+  return /*#__PURE__*/React__default.createElement(Alert, _extends({
+    type: formState.alertClass
+  }, otherProps), formState.alertText);
+}
 
 function Spinner(_ref) {
   var loadingText = _ref.loadingText;
@@ -3564,13 +3607,13 @@ FormContainer.defaultProps = {
   loadingText: 'Loading...'
 };
 
-var _excluded$f = ["className", "label", "prefix", "postfix"];
+var _excluded$g = ["className", "label", "prefix", "postfix"];
 function Submit(_ref) {
   var className = _ref.className,
       label = _ref.label,
       prefix = _ref.prefix,
       postfix = _ref.postfix,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$f);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$g);
 
   return /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-field formosa-field--submit"
@@ -3596,29 +3639,31 @@ Submit.defaultProps = {
   postfix: null
 };
 
+var Alert$1 = Alert;
 var Api$1 = Api;
 var CheckIcon = SvgCheck;
 var Error$2 = Error$1;
 var Field$1 = Field;
 var Form$1 = Form;
+var FormAlert$1 = FormAlert;
 var FormContainer$1 = FormContainer;
 var FormContext = formContext;
 var FormosaContext = formosaContext;
 var Input$1 = ExportableInput;
 var Label$1 = Label;
-var Message$1 = Message;
 var Submit$1 = Submit;
 
+exports.Alert = Alert$1;
 exports.Api = Api$1;
 exports.CheckIcon = CheckIcon;
 exports.Error = Error$2;
 exports.Field = Field$1;
 exports.Form = Form$1;
+exports.FormAlert = FormAlert$1;
 exports.FormContainer = FormContainer$1;
 exports.FormContext = FormContext;
 exports.FormosaContext = FormosaContext;
 exports.Input = Input$1;
 exports.Label = Label$1;
-exports.Message = Message$1;
 exports.Submit = Submit$1;
 //# sourceMappingURL=index.js.map

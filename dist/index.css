@@ -73,6 +73,30 @@
   width: 100%;
 }
 
+.formosa-alert {
+  background-color: #9bc;
+  color: #000;
+  padding: 16px;
+}
+h1 + .formosa-alert {
+  margin-top: 24px;
+}
+
+.formosa-alert--error {
+  background-color: #f66;
+  color: #000;
+}
+
+.formosa-alert--success {
+  background-color: #6c6;
+  color: #000;
+}
+
+.formosa-alert--warning {
+  background-color: #f96;
+  color: #000;
+}
+
 .formosa-autocomplete {
   background-color: #fff;
   border: 1px solid #ccc;
@@ -521,30 +545,6 @@ input.formosa-field__input--checkbox.formosa-field__input {
 }
 .formosa-field--label-after .formosa-label-wrapper:empty {
   display: none;
-}
-
-.formosa-message {
-  background-color: #9bc;
-  color: #000;
-  padding: 16px;
-}
-h1 + .formosa-message {
-  margin-top: 24px;
-}
-
-.formosa-message--error {
-  background-color: #f66;
-  color: #000;
-}
-
-.formosa-message--success {
-  background-color: #6c6;
-  color: #000;
-}
-
-.formosa-message--warning {
-  background-color: #f96;
-  color: #000;
 }
 
 .formosa-field__note {

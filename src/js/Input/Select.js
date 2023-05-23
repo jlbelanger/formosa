@@ -33,14 +33,14 @@ export default function Select({
 	const { formState, setValues } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 	const [isLoading, setIsLoading] = useState(showLoading || !!url);
-	const [message, setMessage] = useState('');
+	const [loadError, setLoadError] = useState('');
 
 	useEffect(() => {
 		if (url) {
 			Api.get(url, false)
 				.catch((error) => {
 					if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
-						setMessage(error.errors.map((e) => (e.title)).join(' '));
+						setLoadError(error.errors.map((e) => (e.title)).join(' '));
 						setIsLoading(false);
 					}
 				})
@@ -66,8 +66,8 @@ export default function Select({
 		return (<div className="formosa-spinner">{loadingText}</div>);
 	}
 
-	if (message) {
-		return (<div className="formosa-field__error">{message}</div>);
+	if (loadError) {
+		return (<div className="formosa-field__error">{loadError}</div>);
 	}
 
 	let currentValue = multiple ? [] : '';

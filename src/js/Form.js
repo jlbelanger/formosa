@@ -27,10 +27,10 @@ export default function Form({
 	};
 
 	const [formState, setFormState] = useState({
+		alertClass: '',
+		alertText: '',
 		errors: {},
 		files: {},
-		messageClass: '',
-		messageText: '',
 		originalRow: JSON.parse(JSON.stringify(row)), // Deep copy.
 		row,
 		response: null,
@@ -61,9 +61,9 @@ export default function Form({
 			addToast(formState.toastText, formState.toastClass);
 		}
 
-		if (formState.messageClass === 'success' && afterSubmitSuccess) {
+		if (formState.alertClass === 'success' && afterSubmitSuccess) {
 			afterSubmitSuccess(formState.response, formState, setFormState);
-		} else if (formState.messageClass === 'error' && afterSubmitFailure) {
+		} else if (formState.alertClass === 'error' && afterSubmitFailure) {
 			afterSubmitFailure(formState.response, formState, setFormState);
 		}
 	}, [formState.uuid]);

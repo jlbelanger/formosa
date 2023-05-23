@@ -2,10 +2,10 @@ import React from 'react'; // eslint-disable-line import/no-unresolved
 
 export default React.createContext(
 	{
+		alertClass: '',
+		alertText: '',
 		errors: {},
 		files: {},
-		messageClass: '',
-		messageText: '',
 		originalRow: {},
 		row: {},
 		response: null,

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'; // eslint-disable-line import/no-unresolved
+import Alert from './Alert';
 import Api from './Helpers/Api';
 import FormContext from './FormContext';
 import FormosaContext from './FormosaContext';
 import { getBody } from './Helpers/JsonApi';
-import Message from './Message';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -72,9 +72,9 @@ export default function FormInner({
 
 		setFormState({
 			...formState,
+			alertClass: '',
+			alertText: '',
 			errors: {},
-			messageClass: '',
-			messageText: '',
 			response: null,
 			toastClass: '',
 			toastText: '',
@@ -115,9 +115,9 @@ export default function FormInner({
 
 				setFormState({
 					...formState,
+					alertClass: 'error',
+					alertText: typeof errorMessageText === 'function' ? errorMessageText(response) : errorMessageText,
 					errors,
-					messageClass: 'error',
-					messageText: typeof errorMessageText === 'function' ? errorMessageText(response) : errorMessageText,
 					response,
 					toastClass: 'error',
 					toastText: typeof errorToastText === 'function' ? errorToastText(response) : errorToastText,
@@ -131,9 +131,9 @@ export default function FormInner({
 
 				const newState = {
 					...formState,
+					alertClass: 'success',
+					alertText: typeof successMessageText === 'function' ? successMessageText(response) : successMessageText,
 					errors: {},
-					messageClass: 'success',
-					messageText: typeof successMessageText === 'function' ? successMessageText(response) : successMessageText,
 					response,
 					toastClass: 'success',
 					toastText: typeof successToastText === 'function' ? successToastText(response) : successToastText,
@@ -162,7 +162,7 @@ export default function FormInner({
 
 	return (
 		<form {...otherProps}>
-			{showMessage && <Message />}
+			{showMessage && formState.alertText && (<Alert type={formState.alertClass}>{formState.alertText}</Alert>)}
 			{children}
 		</form>
 	);
