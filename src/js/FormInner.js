@@ -9,11 +9,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function FormInner({
 	afterNoSubmit,
-	afterSubmit,
 	beforeSubmit,
 	children,
 	clearOnSubmit,
 	defaultRow,
+	errorMessageText,
+	errorToastText,
 	filterBody,
 	filterValues,
 	htmlId,
@@ -72,50 +73,19 @@ export default function FormInner({
 		setFormState({
 			...formState,
 			errors: {},
-			message: '',
+			messageClass: '',
+			messageText: '',
 			response: null,
 			toastClass: '',
-			toastMessage: '',
+			toastText: '',
 		});
 
 		const bodyString = body instanceof FormData ? body : JSON.stringify(body);
 
 		Api.request(method, url, bodyString)
-			.then((response) => {
-				if (!response) {
-					return;
-				}
-
-				const newState = {
-					...formState,
-					errors: {},
-					message: successMessageText,
-					response,
-					toastClass: 'success',
-					toastMessage: successToastText,
-					uuid: uuidv4(),
-				};
-
-				if (clearOnSubmit) {
-					newState.originalRow = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
-					newState.row = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
-					if (formState.setRow) {
-						formState.setRow(newState.row);
-					}
-				} else {
-					newState.originalRow = JSON.parse(JSON.stringify(formState.row)); // Deep copy.
-				}
-
-				setFormState(newState);
-			})
 			.catch((response) => {
-				if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
-					addToast('Error.', 'error');
-				} else if (Object.prototype.hasOwnProperty.call(response, 'message')) {
-					addToast(response.message, 'error', 10000);
-					return;
-				} else {
-					addToast('Server error.', 'error');
+				if (!Object.prototype.hasOwnProperty.call(response, 'errors') || !Array.isArray(response.errors)) {
+					// This is not a JSON:API-style error response.
 					throw response;
 				}
 
@@ -142,11 +112,45 @@ export default function FormInner({
 					}
 					errors[key].push(error.title);
 				});
+
 				setFormState({
 					...formState,
 					errors,
-					message: '',
+					messageClass: 'error',
+					messageText: typeof errorMessageText === 'function' ? errorMessageText(response) : errorMessageText,
+					response,
+					toastClass: 'error',
+					toastText: typeof errorToastText === 'function' ? errorToastText(response) : errorToastText,
+					uuid: uuidv4(),
 				});
+			})
+			.then((response) => {
+				if (!response) {
+					return;
+				}
+
+				const newState = {
+					...formState,
+					errors: {},
+					messageClass: 'success',
+					messageText: typeof successMessageText === 'function' ? successMessageText(response) : successMessageText,
+					response,
+					toastClass: 'success',
+					toastText: typeof successToastText === 'function' ? successToastText(response) : successToastText,
+					uuid: uuidv4(),
+				};
+
+				if (clearOnSubmit) {
+					newState.originalRow = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
+					newState.row = JSON.parse(JSON.stringify(defaultRow)); // Deep copy.
+					if (formState.setRow) {
+						formState.setRow(newState.row);
+					}
+				} else {
+					newState.originalRow = JSON.parse(JSON.stringify(formState.row)); // Deep copy.
+				}
+
+				setFormState(newState);
 			});
 	};
 	if (method && path && !Object.prototype.hasOwnProperty.call(otherProps, 'onSubmit')) {
@@ -166,11 +170,18 @@ export default function FormInner({
 
 FormInner.propTypes = {
 	afterNoSubmit: PropTypes.func,
-	afterSubmit: PropTypes.func,
 	beforeSubmit: PropTypes.func,
 	children: PropTypes.node,
 	clearOnSubmit: PropTypes.bool,
 	defaultRow: PropTypes.object,
+	errorMessageText: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.string,
+	]),
+	errorToastText: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.string,
+	]),
 	filterBody: PropTypes.func,
 	filterValues: PropTypes.func,
 	htmlId: PropTypes.string,
@@ -185,17 +196,24 @@ FormInner.propTypes = {
 	]),
 	relationshipNames: PropTypes.array,
 	showMessage: PropTypes.bool,
-	successMessageText: PropTypes.string,
-	successToastText: PropTypes.string,
+	successMessageText: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.string,
+	]),
+	successToastText: PropTypes.oneOfType([
+		PropTypes.func,
+		PropTypes.string,
+	]),
 };
 
 FormInner.defaultProps = {
 	afterNoSubmit: null,
-	afterSubmit: null,
 	beforeSubmit: null,
 	children: null,
 	clearOnSubmit: false,
 	defaultRow: {},
+	errorMessageText: '',
+	errorToastText: '',
 	filterBody: null,
 	filterValues: null,
 	htmlId: '',

@@ -7,9 +7,12 @@ import PropTypes from 'prop-types';
 import set from 'set-value';
 
 export default function Form({
+	afterSubmitFailure,
+	afterSubmitSuccess,
 	children,
 	row,
 	setRow,
+	showInlineErrors,
 	...otherProps
 }) {
 	const { addToast } = useContext(FormosaContext);
@@ -26,14 +29,16 @@ export default function Form({
 	const [formState, setFormState] = useState({
 		errors: {},
 		files: {},
-		message: '',
+		messageClass: '',
+		messageText: '',
 		originalRow: JSON.parse(JSON.stringify(row)), // Deep copy.
 		row,
-		setOriginalValue,
 		response: null,
+		setOriginalValue,
 		setRow,
+		showInlineErrors,
 		toastClass: '',
-		toastMessage: '',
+		toastText: '',
 		uuid: null,
 	});
 
@@ -51,11 +56,15 @@ export default function Form({
 		if (!formState.uuid) {
 			return;
 		}
-		if (formState.toastMessage) {
-			addToast(formState.toastMessage, formState.toastClass);
+
+		if (formState.toastText) {
+			addToast(formState.toastText, formState.toastClass);
 		}
-		if (otherProps.afterSubmit) {
-			otherProps.afterSubmit(formState.response, formState, setFormState);
+
+		if (formState.messageClass === 'success' && afterSubmitSuccess) {
+			afterSubmitSuccess(formState.response, formState, setFormState);
+		} else if (formState.messageClass === 'error' && afterSubmitFailure) {
+			afterSubmitFailure(formState.response, formState, setFormState);
 		}
 	}, [formState.uuid]);
 
@@ -136,13 +145,19 @@ export default function Form({
 }
 
 Form.propTypes = {
+	afterSubmitFailure: PropTypes.func,
+	afterSubmitSuccess: PropTypes.func,
 	children: PropTypes.node,
 	row: PropTypes.object,
 	setRow: PropTypes.func,
+	showInlineErrors: PropTypes.bool,
 };
 
 Form.defaultProps = {
+	afterSubmitFailure: null,
+	afterSubmitSuccess: null,
 	children: null,
 	row: {},
 	setRow: null,
+	showInlineErrors: true,
 };

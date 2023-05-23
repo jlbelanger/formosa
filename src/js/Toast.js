@@ -12,7 +12,7 @@ export default function Toast({
 	const { removeToast } = useContext(FormosaContext);
 
 	return (
-		<div className={`formosa-toast ${className}`.trim()} style={{ animationDuration: `${milliseconds}ms` }}>
+		<div aria-live="polite" className={`formosa-toast ${className}`.trim()} role="alert" style={{ animationDuration: `${milliseconds}ms` }}>
 			<div className="formosa-toast__text">{text}</div>
 			<button className="formosa-toast__close" onClick={() => (removeToast(id))} type="button">
 				<CloseIcon aria-hidden="true" className="formosa-toast__close-icon" height={12} width={12} />

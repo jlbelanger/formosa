@@ -562,10 +562,15 @@ function SvgCheck(props) {
 var formContext = /*#__PURE__*/React__default.createContext({
   errors: {},
   files: {},
-  message: '',
+  messageClass: '',
+  messageText: '',
   originalRow: {},
   row: {},
-  setRow: null
+  response: null,
+  setRow: null,
+  toastClass: '',
+  toastText: '',
+  uuid: null
 });
 
 function Error$1(_ref) {
@@ -798,9 +803,11 @@ function Autocomplete(_ref) {
           }).join(' '));
           setIsLoading(false);
         }
-
-        throw error;
       }).then(function (response) {
+        if (!response) {
+          return;
+        }
+
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
         setIsLoading(false);
       });
@@ -1404,9 +1411,11 @@ function CheckboxList(_ref) {
           }).join(' '));
           setIsLoading(false);
         }
-
-        throw error;
       }).then(function (response) {
+        if (!response) {
+          return;
+        }
+
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
         setIsLoading(false);
       });
@@ -2104,9 +2113,11 @@ function Radio(_ref) {
           }).join(' '));
           setIsLoading(false);
         }
-
-        throw error;
       }).then(function (response) {
+        if (!response) {
+          return;
+        }
+
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
         setIsLoading(false);
       });
@@ -2438,9 +2449,11 @@ function Select(_ref) {
           }).join(' '));
           setIsLoading(false);
         }
-
-        throw error;
       }).then(function (response) {
+        if (!response) {
+          return;
+        }
+
         setOptionValues(normalizeOptions(response, labelKey, valueKey));
         setIsLoading(false);
       });
@@ -2952,7 +2965,7 @@ function Field(_ref) {
     condition: !!prefix || !!postfix
   }, inputInnerWrapperAttributes), prefix, input, label && labelPosition === 'after' && labelComponent, note && /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-field__note"
-  }, note), postfix), /*#__PURE__*/React__default.createElement(Error$1, {
+  }, note), postfix), formState && formState.showInlineErrors && /*#__PURE__*/React__default.createElement(Error$1, {
     id: id,
     name: name
   })));
@@ -3019,21 +3032,26 @@ function Message() {
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
 
-  var hasErrors = Object.prototype.hasOwnProperty.call(formState.errors, '');
-  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, hasErrors && /*#__PURE__*/React__default.createElement("p", {
-    className: "formosa-message formosa-message--error"
-  }, formState.errors[''].join(' ')), formState.message && /*#__PURE__*/React__default.createElement("p", {
-    className: "formosa-message formosa-message--success"
-  }, formState.message));
+  if (!formState.messageText) {
+    return null;
+  }
+
+  return /*#__PURE__*/React__default.createElement("p", {
+    "aria-live": "polite",
+    className: "formosa-message formosa-message--" + formState.messageClass,
+    role: "alert"
+  }, formState.messageText);
 }
 
-var _excluded$d = ["afterNoSubmit", "afterSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "preventEmptyRequestText", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
+var _excluded$d = ["afterNoSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "errorMessageText", "errorToastText", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "preventEmptyRequestText", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
 function FormInner(_ref) {
   var afterNoSubmit = _ref.afterNoSubmit,
       beforeSubmit = _ref.beforeSubmit,
       children = _ref.children,
       clearOnSubmit = _ref.clearOnSubmit,
       defaultRow = _ref.defaultRow,
+      errorMessageText = _ref.errorMessageText,
+      errorToastText = _ref.errorToastText,
       filterBody = _ref.filterBody,
       filterValues = _ref.filterValues,
       htmlId = _ref.htmlId,
@@ -3090,46 +3108,15 @@ function FormInner(_ref) {
     var body = getBody(method, path, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues);
     setFormState(_extends({}, formState, {
       errors: {},
-      message: '',
+      messageClass: '',
+      messageText: '',
       response: null,
       toastClass: '',
-      toastMessage: ''
+      toastText: ''
     }));
     var bodyString = body instanceof FormData ? body : JSON.stringify(body);
-    Api.request(method, url, bodyString).then(function (response) {
-      if (!response) {
-        return;
-      }
-
-      var newState = _extends({}, formState, {
-        errors: {},
-        message: successMessageText,
-        response: response,
-        toastClass: 'success',
-        toastMessage: successToastText,
-        uuid: v4()
-      });
-
-      if (clearOnSubmit) {
-        newState.originalRow = JSON.parse(JSON.stringify(defaultRow));
-        newState.row = JSON.parse(JSON.stringify(defaultRow));
-
-        if (formState.setRow) {
-          formState.setRow(newState.row);
-        }
-      } else {
-        newState.originalRow = JSON.parse(JSON.stringify(formState.row));
-      }
-
-      setFormState(newState);
-    })["catch"](function (response) {
-      if (Object.prototype.hasOwnProperty.call(response, 'errors')) {
-        addToast('Error.', 'error');
-      } else if (Object.prototype.hasOwnProperty.call(response, 'message')) {
-        addToast(response.message, 'error', 10000);
-        return;
-      } else {
-        addToast('Server error.', 'error');
+    Api.request(method, url, bodyString)["catch"](function (response) {
+      if (!Object.prototype.hasOwnProperty.call(response, 'errors') || !Array.isArray(response.errors)) {
         throw response;
       }
 
@@ -3163,8 +3150,40 @@ function FormInner(_ref) {
       });
       setFormState(_extends({}, formState, {
         errors: errors,
-        message: ''
+        messageClass: 'error',
+        messageText: typeof errorMessageText === 'function' ? errorMessageText(response) : errorMessageText,
+        response: response,
+        toastClass: 'error',
+        toastText: typeof errorToastText === 'function' ? errorToastText(response) : errorToastText,
+        uuid: v4()
       }));
+    }).then(function (response) {
+      if (!response) {
+        return;
+      }
+
+      var newState = _extends({}, formState, {
+        errors: {},
+        messageClass: 'success',
+        messageText: typeof successMessageText === 'function' ? successMessageText(response) : successMessageText,
+        response: response,
+        toastClass: 'success',
+        toastText: typeof successToastText === 'function' ? successToastText(response) : successToastText,
+        uuid: v4()
+      });
+
+      if (clearOnSubmit) {
+        newState.originalRow = JSON.parse(JSON.stringify(defaultRow));
+        newState.row = JSON.parse(JSON.stringify(defaultRow));
+
+        if (formState.setRow) {
+          formState.setRow(newState.row);
+        }
+      } else {
+        newState.originalRow = JSON.parse(JSON.stringify(formState.row));
+      }
+
+      setFormState(newState);
     });
   };
 
@@ -3180,11 +3199,12 @@ function FormInner(_ref) {
 }
 FormInner.propTypes = {
   afterNoSubmit: PropTypes.func,
-  afterSubmit: PropTypes.func,
   beforeSubmit: PropTypes.func,
   children: PropTypes.node,
   clearOnSubmit: PropTypes.bool,
   defaultRow: PropTypes.object,
+  errorMessageText: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  errorToastText: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   filterBody: PropTypes.func,
   filterValues: PropTypes.func,
   htmlId: PropTypes.string,
@@ -3196,16 +3216,17 @@ FormInner.propTypes = {
   preventEmptyRequestText: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   relationshipNames: PropTypes.array,
   showMessage: PropTypes.bool,
-  successMessageText: PropTypes.string,
-  successToastText: PropTypes.string
+  successMessageText: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+  successToastText: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
 };
 FormInner.defaultProps = {
   afterNoSubmit: null,
-  afterSubmit: null,
   beforeSubmit: null,
   children: null,
   clearOnSubmit: false,
   defaultRow: {},
+  errorMessageText: '',
+  errorToastText: '',
   filterBody: null,
   filterValues: null,
   htmlId: '',
@@ -3221,11 +3242,14 @@ FormInner.defaultProps = {
   successToastText: ''
 };
 
-var _excluded$e = ["children", "row", "setRow"];
+var _excluded$e = ["afterSubmitFailure", "afterSubmitSuccess", "children", "row", "setRow", "showInlineErrors"];
 function Form(_ref) {
-  var children = _ref.children,
+  var afterSubmitFailure = _ref.afterSubmitFailure,
+      afterSubmitSuccess = _ref.afterSubmitSuccess,
+      children = _ref.children,
       row = _ref.row,
       setRow = _ref.setRow,
+      showInlineErrors = _ref.showInlineErrors,
       otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
 
   var _useContext = useContext(formosaContext),
@@ -3243,14 +3267,16 @@ function Form(_ref) {
   var _useState = useState({
     errors: {},
     files: {},
-    message: '',
+    messageClass: '',
+    messageText: '',
     originalRow: JSON.parse(JSON.stringify(row)),
     row: row,
-    setOriginalValue: setOriginalValue,
     response: null,
+    setOriginalValue: setOriginalValue,
     setRow: setRow,
+    showInlineErrors: showInlineErrors,
     toastClass: '',
-    toastMessage: '',
+    toastText: '',
     uuid: null
   }),
       formState = _useState[0],
@@ -3270,12 +3296,14 @@ function Form(_ref) {
       return;
     }
 
-    if (formState.toastMessage) {
-      addToast(formState.toastMessage, formState.toastClass);
+    if (formState.toastText) {
+      addToast(formState.toastText, formState.toastClass);
     }
 
-    if (otherProps.afterSubmit) {
-      otherProps.afterSubmit(formState.response, formState, setFormState);
+    if (formState.messageClass === 'success' && afterSubmitSuccess) {
+      afterSubmitSuccess(formState.response, formState, setFormState);
+    } else if (formState.messageClass === 'error' && afterSubmitFailure) {
+      afterSubmitFailure(formState.response, formState, setFormState);
     }
   }, [formState.uuid]);
 
@@ -3362,14 +3390,20 @@ function Form(_ref) {
   }, /*#__PURE__*/React__default.createElement(FormInner, otherProps, children));
 }
 Form.propTypes = {
+  afterSubmitFailure: PropTypes.func,
+  afterSubmitSuccess: PropTypes.func,
   children: PropTypes.node,
   row: PropTypes.object,
-  setRow: PropTypes.func
+  setRow: PropTypes.func,
+  showInlineErrors: PropTypes.bool
 };
 Form.defaultProps = {
+  afterSubmitFailure: null,
+  afterSubmitSuccess: null,
   children: null,
   row: {},
-  setRow: null
+  setRow: null,
+  showInlineErrors: true
 };
 
 function Spinner(_ref) {
@@ -3403,7 +3437,9 @@ function Toast(_ref) {
       removeToast = _useContext.removeToast;
 
   return /*#__PURE__*/React__default.createElement("div", {
+    "aria-live": "polite",
     className: ("formosa-toast " + className).trim(),
+    role: "alert",
     style: {
       animationDuration: milliseconds + "ms"
     }

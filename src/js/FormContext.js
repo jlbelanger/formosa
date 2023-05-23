@@ -4,9 +4,14 @@ export default React.createContext(
 	{
 		errors: {},
 		files: {},
-		message: '',
+		messageClass: '',
+		messageText: '',
 		originalRow: {},
 		row: {},
+		response: null,
 		setRow: null,
+		toastClass: '',
+		toastText: '',
+		uuid: null,
 	}
 );

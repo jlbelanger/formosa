@@ -145,7 +145,7 @@ export default function Field({
 					)}
 					{postfix}
 				</ConditionalWrapper>
-				<Error id={id} name={name} />
+				{formState && formState.showInlineErrors && <Error id={id} name={name} />}
 			</div>
 		</div>
 	);

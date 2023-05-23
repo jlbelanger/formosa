@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default function Error() {
+export default function Error404() {
 	return (
-		<p>The requested URL was not found on this server.</p>
+		<p className="formosa-message formosa-message--error">The requested URL was not found on this server.</p>
 	);
 }
