@@ -44,9 +44,11 @@ export default function Radio({
 						setMessage(error.errors.map((e) => (e.title)).join(' '));
 						setIsLoading(false);
 					}
-					throw error;
 				})
 				.then((response) => {
+					if (!response) {
+						return;
+					}
 					setOptionValues(normalizeOptions(response, labelKey, valueKey));
 					setIsLoading(false);
 				});
