@@ -1938,30 +1938,27 @@ File.defaultProps = {
   wrapperClassName: ''
 };
 
+var _excluded$5 = ["children", "condition"];
 function ConditionalWrapper(_ref) {
   var children = _ref.children,
-      className = _ref.className,
-      condition = _ref.condition;
+      condition = _ref.condition,
+      props = _objectWithoutPropertiesLoose(_ref, _excluded$5);
 
   if (!condition) {
     return children;
   }
 
-  return /*#__PURE__*/React__default.createElement("div", {
-    className: className
-  }, children);
+  return /*#__PURE__*/React__default.createElement("div", props, children);
 }
 ConditionalWrapper.propTypes = {
   children: PropTypes.node.isRequired,
-  className: PropTypes.string,
   condition: PropTypes.any
 };
 ConditionalWrapper.defaultProps = {
-  className: '',
   condition: false
 };
 
-var _excluded$5 = ["afterChange", "className", "id", "name", "setValue", "suffix", "type", "value"];
+var _excluded$6 = ["afterChange", "className", "id", "name", "setValue", "suffix", "type", "value"];
 function Input(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -1971,7 +1968,7 @@ function Input(_ref) {
       suffix = _ref.suffix,
       type = _ref.type,
       value = _ref.value,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$5);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$6);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState,
@@ -2048,16 +2045,18 @@ Input.defaultProps = {
   value: null
 };
 
-var _excluded$6 = ["buttonAttributes", "buttonClassName", "className", "hideText", "showText", "wrapperAttributes", "wrapperClassName"];
+var _excluded$7 = ["buttonAttributes", "buttonClassName", "className", "hideAria", "hideText", "showAria", "showText", "wrapperAttributes", "wrapperClassName"];
 function Password(_ref) {
   var buttonAttributes = _ref.buttonAttributes,
       buttonClassName = _ref.buttonClassName,
       className = _ref.className,
+      hideAria = _ref.hideAria,
       hideText = _ref.hideText,
+      showAria = _ref.showAria,
       showText = _ref.showText,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$6);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$7);
 
   var _useState = useState('password'),
       tempType = _useState[0],
@@ -2079,6 +2078,8 @@ function Password(_ref) {
   }, otherProps, {
     type: tempType
   })), /*#__PURE__*/React__default.createElement("button", _extends({
+    "aria-controls": otherProps.id || otherProps.name,
+    "aria-label": tempType === 'password' ? showAria : hideAria,
     className: ("formosa-button formosa-button--toggle-password formosa-postfix " + buttonClassName).trim(),
     onClick: togglePassword,
     type: "button"
@@ -2088,7 +2089,9 @@ Password.propTypes = {
   buttonAttributes: PropTypes.object,
   buttonClassName: PropTypes.string,
   className: PropTypes.string,
+  hideAria: PropTypes.string,
   hideText: PropTypes.string,
+  showAria: PropTypes.string,
   showText: PropTypes.string,
   wrapperAttributes: PropTypes.object,
   wrapperClassName: PropTypes.string
@@ -2097,13 +2100,15 @@ Password.defaultProps = {
   buttonAttributes: null,
   buttonClassName: '',
   className: '',
+  hideAria: 'Hide Password',
   hideText: 'Hide',
+  showAria: 'Show Password',
   showText: 'Show',
   wrapperAttributes: null,
   wrapperClassName: ''
 };
 
-var _excluded$7 = ["afterChange", "className", "fieldsetAttributes", "fieldsetClassName", "inputAttributes", "itemAttributes", "itemClassName", "itemLabelAttributes", "itemLabelClassName", "itemSpanAttributes", "itemSpanClassName", "label", "labelKey", "legend", "loadingText", "name", "options", "required", "setValue", "showLoading", "url", "value", "valueKey"];
+var _excluded$8 = ["afterChange", "className", "fieldsetAttributes", "fieldsetClassName", "inputAttributes", "itemAttributes", "itemClassName", "itemLabelAttributes", "itemLabelClassName", "itemSpanAttributes", "itemSpanClassName", "label", "labelKey", "legend", "loadingText", "name", "options", "required", "setValue", "showLoading", "url", "value", "valueKey"];
 function Radio(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2127,7 +2132,7 @@ function Radio(_ref) {
       url = _ref.url,
       value = _ref.value,
       valueKey = _ref.valueKey,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$7);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$8);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState,
@@ -2370,7 +2375,7 @@ function SvgSearch(props) {
   })));
 }
 
-var _excluded$8 = ["className", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "wrapperAttributes", "wrapperClassName"];
+var _excluded$9 = ["className", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "wrapperAttributes", "wrapperClassName"];
 function Search(_ref) {
   var className = _ref.className,
       iconAttributes = _ref.iconAttributes,
@@ -2379,7 +2384,7 @@ function Search(_ref) {
       iconWidth = _ref.iconWidth,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$8);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$9);
 
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: ("formosa-search-wrapper " + wrapperClassName).trim()
@@ -2440,7 +2445,7 @@ function SvgCaret(props) {
   })));
 }
 
-var _excluded$9 = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "multiple", "name", "optionAttributes", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
+var _excluded$a = ["afterChange", "className", "hideBlank", "iconAttributes", "iconClassName", "iconHeight", "iconWidth", "id", "labelKey", "loadingText", "multiple", "name", "optionAttributes", "options", "setValue", "showLoading", "url", "value", "valueKey", "wrapperAttributes", "wrapperClassName"];
 function Select(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2463,7 +2468,7 @@ function Select(_ref) {
       valueKey = _ref.valueKey,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$9);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$a);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState,
@@ -2665,7 +2670,7 @@ Select.defaultProps = {
   wrapperClassName: ''
 };
 
-var _excluded$a = ["afterChange", "className", "id", "name", "setValue", "value"];
+var _excluded$b = ["afterChange", "className", "id", "name", "setValue", "value"];
 function Textarea(_ref) {
   var afterChange = _ref.afterChange,
       className = _ref.className,
@@ -2673,7 +2678,7 @@ function Textarea(_ref) {
       name = _ref.name,
       setValue = _ref.setValue,
       value = _ref.value,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$a);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$b);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState,
@@ -2782,11 +2787,11 @@ var getInputElement = (function (type, component) {
   return Input;
 });
 
-var _excluded$b = ["component", "type"];
+var _excluded$c = ["component", "type"];
 function ExportableInput(_ref) {
   var component = _ref.component,
       type = _ref.type,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$b);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$c);
 
   var InputComponent = getInputElement(type, component);
   return /*#__PURE__*/React__default.createElement(InputComponent, _extends({
@@ -2802,7 +2807,7 @@ ExportableInput.defaultProps = {
   type: 'text'
 };
 
-var _excluded$c = ["className", "htmlFor", "label", "note", "required", "type"];
+var _excluded$d = ["className", "htmlFor", "label", "note", "required", "type"];
 function Label(_ref) {
   var className = _ref.className,
       htmlFor = _ref.htmlFor,
@@ -2810,7 +2815,7 @@ function Label(_ref) {
       note = _ref.note,
       required = _ref.required,
       type = _ref.type,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$c);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$d);
 
   var labelClassName = 'formosa-label';
 
@@ -2860,7 +2865,7 @@ Label.defaultProps = {
   type: ''
 };
 
-var _excluded$d = ["component", "disabled", "id", "inputInnerWrapperAttributes", "inputInnerWrapperClassName", "inputWrapperAttributes", "inputWrapperClassName", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
+var _excluded$e = ["component", "disabled", "id", "inputInnerWrapperAttributes", "inputInnerWrapperClassName", "inputWrapperAttributes", "inputWrapperClassName", "label", "labelAttributes", "labelClassName", "labelNote", "labelPosition", "name", "note", "prefix", "postfix", "readOnly", "required", "suffix", "type", "wrapperAttributes", "wrapperClassName"];
 function Field(_ref) {
   var component = _ref.component,
       disabled = _ref.disabled,
@@ -2884,7 +2889,7 @@ function Field(_ref) {
       type = _ref.type,
       wrapperAttributes = _ref.wrapperAttributes,
       wrapperClassName = _ref.wrapperClassName,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$d);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState;
@@ -3069,7 +3074,7 @@ var formosaContext = /*#__PURE__*/React__default.createContext({
   enableWarningPrompt: function enableWarningPrompt() {}
 });
 
-var _excluded$e = ["afterNoSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "errorMessageText", "errorToastText", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "preventEmptyRequestText", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
+var _excluded$f = ["afterNoSubmit", "beforeSubmit", "children", "clearOnSubmit", "defaultRow", "errorMessageText", "errorToastText", "filterBody", "filterValues", "htmlId", "id", "method", "params", "path", "preventEmptyRequest", "preventEmptyRequestText", "relationshipNames", "showMessage", "successMessageText", "successToastText"];
 function FormInner(_ref) {
   var afterNoSubmit = _ref.afterNoSubmit,
       beforeSubmit = _ref.beforeSubmit,
@@ -3091,7 +3096,7 @@ function FormInner(_ref) {
       showMessage = _ref.showMessage,
       successMessageText = _ref.successMessageText,
       successToastText = _ref.successToastText,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$e);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$f);
 
   var _useContext = useContext(formContext),
       formState = _useContext.formState,
@@ -3270,7 +3275,7 @@ FormInner.defaultProps = {
   successToastText: ''
 };
 
-var _excluded$f = ["afterSubmitFailure", "afterSubmitSuccess", "children", "row", "setRow", "showInlineErrors"];
+var _excluded$g = ["afterSubmitFailure", "afterSubmitSuccess", "children", "row", "setRow", "showInlineErrors"];
 function Form(_ref) {
   var afterSubmitFailure = _ref.afterSubmitFailure,
       afterSubmitSuccess = _ref.afterSubmitSuccess,
@@ -3278,7 +3283,7 @@ function Form(_ref) {
       row = _ref.row,
       setRow = _ref.setRow,
       showInlineErrors = _ref.showInlineErrors,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$f);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$g);
 
   var _useContext = useContext(formosaContext),
       addToast = _useContext.addToast;
@@ -3604,13 +3609,13 @@ FormContainer.defaultProps = {
   loadingText: 'Loading...'
 };
 
-var _excluded$g = ["className", "label", "prefix", "postfix"];
+var _excluded$h = ["className", "label", "prefix", "postfix"];
 function Submit(_ref) {
   var className = _ref.className,
       label = _ref.label,
       prefix = _ref.prefix,
       postfix = _ref.postfix,
-      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$g);
+      otherProps = _objectWithoutPropertiesLoose(_ref, _excluded$h);
 
   return /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-field formosa-field--submit"
