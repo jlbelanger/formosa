@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react'; // eslint-disable-line import/no-unresolved
 
-export default function ConditionalWrapper({ children, className, condition }) {
+export default function ConditionalWrapper({ children, condition, ...props }) {
 	if (!condition) {
 		return children;
 	}
 
 	return (
-		<div className={className}>
+		<div {...props}>
 			{children}
 		</div>
 	);
@@ -15,11 +15,9 @@ export default function ConditionalWrapper({ children, className, condition }) {
 
 ConditionalWrapper.propTypes = {
 	children: PropTypes.node.isRequired,
-	className: PropTypes.string,
 	condition: PropTypes.any,
 };
 
 ConditionalWrapper.defaultProps = {
-	className: '',
 	condition: false,
 };
