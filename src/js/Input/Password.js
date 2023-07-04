@@ -6,7 +6,9 @@ export default function Password({
 	buttonAttributes,
 	buttonClassName,
 	className,
+	hideAria,
 	hideText,
+	showAria,
 	showText,
 	wrapperAttributes,
 	wrapperClassName,
@@ -30,6 +32,8 @@ export default function Password({
 				type={tempType}
 			/>
 			<button
+				aria-controls={otherProps.id || otherProps.name}
+				aria-label={tempType === 'password' ? showAria : hideAria}
 				className={`formosa-button formosa-button--toggle-password formosa-postfix ${buttonClassName}`.trim()}
 				onClick={togglePassword}
 				type="button"
@@ -45,7 +49,9 @@ Password.propTypes = {
 	buttonAttributes: PropTypes.object,
 	buttonClassName: PropTypes.string,
 	className: PropTypes.string,
+	hideAria: PropTypes.string,
 	hideText: PropTypes.string,
+	showAria: PropTypes.string,
 	showText: PropTypes.string,
 	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
@@ -55,7 +61,9 @@ Password.defaultProps = {
 	buttonAttributes: null,
 	buttonClassName: '',
 	className: '',
+	hideAria: 'Hide Password',
 	hideText: 'Hide',
+	showAria: 'Show Password',
 	showText: 'Show',
 	wrapperAttributes: null,
 	wrapperClassName: '',
