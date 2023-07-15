@@ -16,3 +16,4 @@ cd example
 build_static
 deploy_git
 deploy_static "/example"
+printf "\e[0;32mDone.\n\e[0m"
