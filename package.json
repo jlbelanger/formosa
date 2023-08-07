@@ -13,7 +13,7 @@
 		"url": "https://github.com/jlbelanger/formosa.git"
 	},
 	"scripts": {
-		"build": "rm -r dist && microbundle-crl --no-compress --format modern,cjs --css-modules false --jsxFragment React.Fragment",
+		"build": "rm -r dist/ && microbundle-crl --no-compress --format modern,cjs --css-modules false --jsxFragment React.Fragment",
 		"lint": "yarn lint:css && yarn lint:js",
 		"lint:css": "node_modules/.bin/stylelint 'src/scss/**/*.scss'",
 		"lint:js": "node_modules/.bin/eslint . --ext .js",
