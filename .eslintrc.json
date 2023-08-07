@@ -20,6 +20,7 @@
 		"jsx-a11y/heading-has-content": 0,
 		"jsx-a11y/label-has-associated-control": 0,
 		"jsx-a11y/label-has-for": 0,
+		"jsx-a11y/media-has-caption": 0,
 		"jsx-a11y/no-autofocus": 0,
 		"max-len": ["error", { "code": 150 }],
 		"no-param-reassign": 0,
@@ -37,9 +38,7 @@
 		"react/no-unstable-nested-components": 0,
 		"react/state-in-constructor": ["error", "never"],
 		"react/static-property-placement": ["error", "static public field"],
-		"sort-imports": ["error", {
-			"ignoreCase": true
-		}]
+		"sort-imports": ["error", { "ignoreCase": true }]
 	},
 	"overrides": [
 		{
