@@ -69,7 +69,7 @@ export default function CheckboxList({
 	}, [showLoading]);
 
 	if (isLoading) {
-		return (<div className="formosa-spinner">{loadingText}</div>);
+		return (<div className="formosa-spinner" role="status">{loadingText}</div>);
 	}
 
 	if (loadError) {

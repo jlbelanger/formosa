@@ -8,7 +8,7 @@ export default function Spinner({ loadingText }) {
 		return null;
 	}
 	return (
-		<div className="formosa-spinner formosa-spinner--fullscreen">{loadingText}</div>
+		<div className="formosa-spinner formosa-spinner--fullscreen" role="status">{loadingText}</div>
 	);
 }
 

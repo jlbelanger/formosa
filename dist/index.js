@@ -866,7 +866,8 @@ function Autocomplete(_ref) {
 
   if (isLoading) {
     return /*#__PURE__*/React__default.createElement("div", {
-      className: "formosa-spinner"
+      className: "formosa-spinner",
+      role: "status"
     }, loadingText);
   }
 
@@ -1474,7 +1475,8 @@ function CheckboxList(_ref) {
 
   if (isLoading) {
     return /*#__PURE__*/React__default.createElement("div", {
-      className: "formosa-spinner"
+      className: "formosa-spinner",
+      role: "status"
     }, loadingText);
   }
 
@@ -2181,7 +2183,8 @@ function Radio(_ref) {
 
   if (isLoading) {
     return /*#__PURE__*/React__default.createElement("div", {
-      className: "formosa-spinner"
+      className: "formosa-spinner",
+      role: "status"
     }, loadingText);
   }
 
@@ -2517,7 +2520,8 @@ function Select(_ref) {
 
   if (isLoading) {
     return /*#__PURE__*/React__default.createElement("div", {
-      className: "formosa-spinner"
+      className: "formosa-spinner",
+      role: "status"
     }, loadingText);
   }
 
@@ -3468,7 +3472,8 @@ function Spinner(_ref) {
   }
 
   return /*#__PURE__*/React__default.createElement("div", {
-    className: "formosa-spinner formosa-spinner--fullscreen"
+    className: "formosa-spinner formosa-spinner--fullscreen",
+    role: "status"
   }, loadingText);
 }
 Spinner.propTypes = {

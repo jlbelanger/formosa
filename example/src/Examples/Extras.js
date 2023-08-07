@@ -9,7 +9,7 @@ export default function Extras() {
 		setShowFullscreenSpinner(true);
 		setTimeout(() => {
 			setShowFullscreenSpinner(false);
-		}, 1000);
+		}, 3000);
 	};
 
 	const showToast = (e) => {
