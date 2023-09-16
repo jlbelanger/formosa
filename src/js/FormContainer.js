@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; // eslint-disable-line import/no-unresolved
+import React, { useMemo, useState } from 'react'; // eslint-disable-line import/no-unresolved
 import FormosaContext from './FormosaContext';
 import PropTypes from 'prop-types';
 import Spinner from './Spinner';
@@ -41,17 +41,17 @@ export default function FormContainer({ children, loadingText }) {
 		setShowWarningPrompt(true);
 	};
 
+	const value = useMemo(() => ({
+		toasts,
+		showWarningPrompt,
+		addToast,
+		removeToast,
+		disableWarningPrompt,
+		enableWarningPrompt,
+	}), [toasts, showWarningPrompt]);
+
 	return (
-		<FormosaContext.Provider
-			value={{
-				toasts,
-				showWarningPrompt,
-				addToast,
-				removeToast,
-				disableWarningPrompt,
-				enableWarningPrompt,
-			}}
-		>
+		<FormosaContext.Provider value={value}>
 			{children}
 			<Spinner loadingText={loadingText} />
 			<ToastContainer />

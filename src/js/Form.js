@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'; // eslint-disable-line import/no-unresolved
+import React, { useContext, useEffect, useMemo, useState } from 'react'; // eslint-disable-line import/no-unresolved
 import FormContext from './FormContext';
 import FormInner from './FormInner';
 import FormosaContext from './FormosaContext';
@@ -128,15 +128,15 @@ export default function Form({
 		}
 	};
 
+	const value = useMemo(() => ({
+		formState,
+		setFormState,
+		getDirtyKeys: () => (getDirtyKeys(formState.row, formState.originalRow)),
+		setValues,
+	}), [formState]);
+
 	return (
-		<FormContext.Provider
-			value={{
-				formState,
-				setFormState,
-				getDirtyKeys: () => (getDirtyKeys(formState.row, formState.originalRow)),
-				setValues,
-			}}
-		>
+		<FormContext.Provider value={value}>
 			<FormInner {...otherProps}>
 				{children}
 			</FormInner>

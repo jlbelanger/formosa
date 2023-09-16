@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React__default, { createElement, useContext, useRef, useState, useEffect } from 'react';
+import React__default, { createElement, useContext, useRef, useState, useEffect, useMemo } from 'react';
 import get from 'get-value';
 import set from 'set-value';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
@@ -438,6 +438,17 @@ var getBody = function getBody(method, type, id, formState, dirtyKeys, relations
 var Api = /*#__PURE__*/function () {
   function Api() {}
 
+  Api.instance = function instance() {
+    var responses = {};
+    return function (url, showSpinner) {
+      if (!Object.prototype.hasOwnProperty.call(responses, url)) {
+        responses[url] = Api.get(url, showSpinner);
+      }
+
+      return responses[url];
+    };
+  };
+
   Api.get = function get(url, showSpinner) {
     if (showSpinner === void 0) {
       showSpinner = true;
@@ -835,9 +846,10 @@ function Autocomplete(_ref) {
       loadError = _useState6[0],
       setLoadError = _useState6[1];
 
+  var api = Api.instance();
   useEffect(function () {
     if (url) {
-      Api.get(url, false)["catch"](function (error) {
+      api(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
           setLoadError(error.errors.map(function (e) {
             return e.title;
@@ -1444,9 +1456,10 @@ function CheckboxList(_ref) {
       loadError = _useState3[0],
       setLoadError = _useState3[1];
 
+  var api = Api.instance();
   useEffect(function () {
     if (url) {
-      Api.get(url, false)["catch"](function (error) {
+      api(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
           setLoadError(error.errors.map(function (e) {
             return e.title;
@@ -2152,9 +2165,10 @@ function Radio(_ref) {
       loadError = _useState3[0],
       setLoadError = _useState3[1];
 
+  var api = Api.instance();
   useEffect(function () {
     if (url) {
-      Api.get(url, false)["catch"](function (error) {
+      api(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
           setLoadError(error.errors.map(function (e) {
             return e.title;
@@ -2489,9 +2503,10 @@ function Select(_ref) {
       loadError = _useState3[0],
       setLoadError = _useState3[1];
 
+  var api = Api.instance();
   useEffect(function () {
     if (url) {
-      Api.get(url, false)["catch"](function (error) {
+      api(url, false)["catch"](function (error) {
         if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
           setLoadError(error.errors.map(function (e) {
             return e.title;
@@ -3415,15 +3430,18 @@ function Form(_ref) {
     }
   };
 
-  return /*#__PURE__*/React__default.createElement(formContext.Provider, {
-    value: {
+  var value = useMemo(function () {
+    return {
       formState: formState,
       setFormState: setFormState,
       getDirtyKeys: function getDirtyKeys() {
         return _getDirtyKeys(formState.row, formState.originalRow);
       },
       setValues: setValues
-    }
+    };
+  }, [formState]);
+  return /*#__PURE__*/React__default.createElement(formContext.Provider, {
+    value: value
   }, /*#__PURE__*/React__default.createElement(FormInner, otherProps, children));
 }
 Form.propTypes = {
@@ -3593,15 +3611,18 @@ function FormContainer(_ref) {
     setShowWarningPrompt(true);
   };
 
-  return /*#__PURE__*/React__default.createElement(formosaContext.Provider, {
-    value: {
+  var value = useMemo(function () {
+    return {
       toasts: toasts,
       showWarningPrompt: showWarningPrompt,
       addToast: addToast,
       removeToast: removeToast,
       disableWarningPrompt: disableWarningPrompt,
       enableWarningPrompt: enableWarningPrompt
-    }
+    };
+  }, [toasts, showWarningPrompt]);
+  return /*#__PURE__*/React__default.createElement(formosaContext.Provider, {
+    value: value
   }, children, /*#__PURE__*/React__default.createElement(Spinner, {
     loadingText: loadingText
   }), /*#__PURE__*/React__default.createElement(ToastContainer, null));
