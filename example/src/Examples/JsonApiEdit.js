@@ -10,8 +10,10 @@ import { useParams } from 'react-router-dom';
 export default function JsonApiEdit() {
 	const { id } = useParams();
 	const [row, setRow] = useState(null);
+	const api = Api.instance();
+
 	useEffect(() => {
-		Api.get(`food/${id}.json`)
+		api(`food/${id}.json`)
 			.then((response) => {
 				setRow(response);
 			});

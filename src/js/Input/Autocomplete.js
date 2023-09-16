@@ -60,10 +60,11 @@ export default function Autocomplete({
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
 	const [isLoading, setIsLoading] = useState(showLoading || !!url);
 	const [loadError, setLoadError] = useState('');
+	const api = Api.instance();
 
 	useEffect(() => {
 		if (url) {
-			Api.get(url, false)
+			api(url, false)
 				.catch((error) => {
 					if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
 						setLoadError(error.errors.map((e) => (e.title)).join(' '));

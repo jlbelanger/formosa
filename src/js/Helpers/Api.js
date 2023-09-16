@@ -2,6 +2,16 @@ import { deserialize } from './JsonApi';
 import { trackPromise } from 'react-promise-tracker';
 
 export default class Api {
+	static instance() {
+		const responses = {};
+		return (url, showSpinner) => {
+			if (!Object.prototype.hasOwnProperty.call(responses, url)) {
+				responses[url] = Api.get(url, showSpinner);
+			}
+			return responses[url];
+		};
+	}
+
 	static get(url, showSpinner = true) {
 		return Api.request('GET', url, null, showSpinner);
 	}
