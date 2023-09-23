@@ -17,7 +17,7 @@
 		"lint": "yarn lint:css && yarn lint:js",
 		"lint:css": "node_modules/.bin/stylelint 'src/scss/**/*.scss'",
 		"lint:js": "node_modules/.bin/eslint . --ext .js",
-		"start": "npx browserslist@latest --update-db && microbundle-crl watch --no-compress --format modern,cjs --css-modules false --jsxFragment React.Fragment",
+		"start": "npx update-browserslist-db@latest && microbundle-crl watch --no-compress --format modern,cjs --css-modules false --jsxFragment React.Fragment",
 		"test": "node_modules/.bin/jest --watch"
 	},
 	"dependencies": {
