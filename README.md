@@ -1,10 +1,6 @@
 # Formosa
 
-Formosa is a [React](https://www.npmjs.com/package/react) form component library. It works well with [JSON:API](https://jsonapi.org/), but it is not required.
-
-## Demo
-
-https://formosa.jennybelanger.com/
+Formosa is a [React](https://www.npmjs.com/package/react) form component library. It works well with [JSON:API](https://jsonapi.org/), but it is not required. [View the demo](https://formosa.jennybelanger.com/).
 
 ## Features
 
@@ -16,6 +12,10 @@ https://formosa.jennybelanger.com/
 - Excludes styles by default, so all styles can be completely customized; all elements have classes so they can be easily targeted
 - Includes optional basic SCSS, if you don't want to spend time styling form elements *yet again*; uses SCSS variables that can be overridden
 - Supports nested field names (eg. `name="foo.bar"`)
+
+## Requirements
+
+- [React](https://www.npmjs.com/package/react) 18+
 
 ## Install
 
@@ -63,14 +63,14 @@ export default function App() {
 By default, no styles are included. To include all styles (eg. in `src/index.scss`):
 
 ``` scss
-@import '../node_modules/@jlbelanger/formosa/src/style';
+@import '@jlbelanger/formosa/src/style';
 ```
 
 To selectively include specific styles listed in the [components](https://github.com/jlbelanger/formosa/tree/main/src/scss/components) folder:
 
 ``` scss
-@import '../node_modules/@jlbelanger/formosa/src/scss/utilities/variables';
-@import '../node_modules/@jlbelanger/formosa/src/scss/components/checkbox';
+@import '@jlbelanger/formosa/src/scss/utilities/variables';
+@import '@jlbelanger/formosa/src/scss/components/checkbox';
 ```
 
 A list of Sass variables is available in [_variables.scss](https://github.com/jlbelanger/formosa/blob/main/src/scss/utilities/_variables.scss).
