@@ -28,7 +28,7 @@
 	position: fixed;
 	right: 0;
 	top: 0;
-	z-index: $formosa-spinner-z-index;
+	z-index: $formosa-spinner-zindex;
 
 	&::before {
 		border-width: $formosa-spinner-fullscreen-border-width;

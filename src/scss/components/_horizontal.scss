@@ -56,7 +56,7 @@
 }
 
 .formosa-responsive {
-	@media (min-width: #{$formosa-responsive-breakpoint}) {
+	@media (min-width: $formosa-responsive-breakpoint) {
 		@include formosa-horizontal;
 	}
 }

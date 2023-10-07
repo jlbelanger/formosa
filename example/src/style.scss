@@ -21,7 +21,7 @@ main {
 	margin: 0 auto;
 	max-width: $content-width;
 
-	@media (min-width: #{$breakpoint}) {
+	@media (min-width: $breakpoint) {
 		padding-right: $sidebar-width;
 	}
 }
@@ -130,7 +130,7 @@ a {
 			font-weight: bold;
 		}
 
-		@media (min-width: #{$breakpoint}) {
+		@media (min-width: $breakpoint) {
 			bottom: 0;
 			margin: 0;
 			position: fixed;
