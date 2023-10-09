@@ -131,6 +131,8 @@ export default function Form({
 	const value = useMemo(() => ({
 		formState,
 		setFormState,
+		clearAlert: () => (setFormState({ ...formState, alertText: '', alertClass: '' })),
+		clearErrors: () => (setFormState({ ...formState, errors: {} })),
 		getDirtyKeys: () => (getDirtyKeys(formState.row, formState.originalRow)),
 		setValues,
 	}), [formState]);

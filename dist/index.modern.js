@@ -3434,6 +3434,17 @@ function Form(_ref) {
     return {
       formState: formState,
       setFormState: setFormState,
+      clearAlert: function clearAlert() {
+        return setFormState(_extends({}, formState, {
+          alertText: '',
+          alertClass: ''
+        }));
+      },
+      clearErrors: function clearErrors() {
+        return setFormState(_extends({}, formState, {
+          errors: {}
+        }));
+      },
       getDirtyKeys: function getDirtyKeys() {
         return _getDirtyKeys(formState.row, formState.originalRow);
       },
