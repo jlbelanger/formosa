@@ -334,6 +334,25 @@ var unset = function unset(obj, key) {
   return delete o[lastKey];
 };
 
+var appendToFormData = function appendToFormData(obj, formData, prefix) {
+  if (prefix === void 0) {
+    prefix = '';
+  }
+
+  Object.entries(obj).forEach(function (entry) {
+    var key = entry[0],
+        value = entry[1];
+    var newKey = prefix ? prefix + "[" + key + "]" : key;
+
+    if (typeof value === 'object') {
+      formData = appendToFormData(value, formData, newKey);
+    } else {
+      formData.append(newKey, JSON.stringify(value));
+    }
+  });
+  return formData;
+};
+
 var getBody = function getBody(method, type, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues) {
   var body = null;
 
@@ -422,9 +441,8 @@ var getBody = function getBody(method, type, id, formState, dirtyKeys, relations
     });
 
     if (filenames.length > 0) {
-      var formData = new FormData();
-      formData.append('json', JSON.stringify(body));
-      formData.append('files', JSON.stringify(filenames));
+      var formData = appendToFormData(body, new FormData());
+      formData.append('meta[files]', JSON.stringify(filenames));
       filenames.forEach(function (filename) {
         formData.append(filename, formState.files[filename]);
       });

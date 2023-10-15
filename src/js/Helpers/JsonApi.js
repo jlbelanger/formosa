@@ -216,6 +216,19 @@ const unset = (obj, key) => {
 	return delete o[lastKey];
 };
 
+const appendToFormData = (obj, formData, prefix = '') => {
+	Object.entries(obj).forEach((entry) => {
+		const [key, value] = entry;
+		const newKey = prefix ? `${prefix}[${key}]` : key;
+		if (typeof value === 'object') {
+			formData = appendToFormData(value, formData, newKey);
+		} else {
+			formData.append(newKey, JSON.stringify(value));
+		}
+	});
+	return formData;
+};
+
 export const getBody = (
 	method,
 	type,
@@ -314,9 +327,8 @@ export const getBody = (
 		// Handle file fields.
 		const filenames = fileKeys.filter((filename) => (formState.files[filename] !== false));
 		if (filenames.length > 0) {
-			const formData = new FormData();
-			formData.append('json', JSON.stringify(body));
-			formData.append('files', JSON.stringify(filenames));
+			const formData = appendToFormData(body, new FormData());
+			formData.append('meta[files]', JSON.stringify(filenames));
 
 			filenames.forEach((filename) => {
 				formData.append(filename, formState.files[filename]);
