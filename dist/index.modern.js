@@ -511,6 +511,7 @@ var Api = /*#__PURE__*/function () {
     var options = {
       method: method,
       headers: {
+        Accept: 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
       }
     };

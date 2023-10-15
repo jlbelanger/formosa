@@ -32,6 +32,7 @@ export default class Api {
 		const options = {
 			method,
 			headers: {
+				Accept: 'application/json',
 				'X-Requested-With': 'XMLHttpRequest',
 			},
 		};
