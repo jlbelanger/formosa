@@ -2107,8 +2107,8 @@ function Password(_ref) {
   return /*#__PURE__*/React__default.createElement("div", _extends({
     className: ("formosa-password-wrapper " + wrapperClassName).trim()
   }, wrapperAttributes), /*#__PURE__*/React__default.createElement(Input, _extends({
-    autoCorrect: "off",
-    className: ("formosa-field__input--password formosa-prefix " + className).trim()
+    className: ("formosa-field__input--password formosa-prefix " + className).trim(),
+    spellCheck: "false"
   }, otherProps, {
     type: tempType
   })), /*#__PURE__*/React__default.createElement("button", _extends({
