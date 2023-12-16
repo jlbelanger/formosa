@@ -7,7 +7,7 @@
 		"@jlbelanger/formosa": "link:..",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-router-dom": "^5.3.0",
+		"react-router-dom": "~5.3.4",
 		"react-scripts": "^5.0.1"
 	},
 	"scripts": {
@@ -16,9 +16,7 @@
 		"test": "DISABLE_ESLINT_PLUGIN=true node ./node_modules/react-scripts/bin/react-scripts.js test"
 	},
 	"browserslist": [
-		">0.2%",
-		"not dead",
-		"not ie <= 11",
-		"not op_mini all"
+		"defaults",
+		"iOS >= 12"
 	]
 }
