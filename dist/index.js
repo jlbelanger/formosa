@@ -502,7 +502,7 @@ function SvgCheck(props) {
   })));
 }
 
-var formContext = /*#__PURE__*/React__default.createContext({
+var FormContext = /*#__PURE__*/React__default.createContext({
   alertClass: '',
   alertText: '',
   errors: {},
@@ -523,7 +523,7 @@ function Error$1(_ref) {
   } = _ref;
   const {
     formState
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   const hasError = formState && Object.prototype.hasOwnProperty.call(formState.errors, name);
   const props = {};
   if (name) {
@@ -687,7 +687,7 @@ function Autocomplete(_ref) {
   const {
     formState,
     setValues
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   const clearButtonRef = React.useRef(null);
   const inputRef = React.useRef(null);
   const removeButtonRef = React.useRef(null);
@@ -1119,7 +1119,7 @@ function Checkbox(_ref) {
   const {
     formState,
     setValues
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   let checked = false;
   if (setValue !== null) {
     checked = value;
@@ -1215,7 +1215,7 @@ function CheckboxList(_ref) {
   const {
     formState,
     setValues
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   const [optionValues, setOptionValues] = React.useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
   const [isLoading, setIsLoading] = React.useState(showLoading || !!url);
   const [loadError, setLoadError] = React.useState('');
@@ -1452,7 +1452,7 @@ function File(_ref) {
   const {
     formState,
     setValues
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   const inputRef = React.useRef(null);
   let currentValue = '';
   if (setValue !== null) {
@@ -1678,7 +1678,7 @@ function Input(_ref) {
   const {
     formState,
     setValues
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   let currentValue = '';
   if (setValue !== null) {
     currentValue = value;
@@ -1830,7 +1830,7 @@ function Radio(_ref) {
   const {
     formState,
     setValues
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   const [optionValues, setOptionValues] = React.useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
   const [isLoading, setIsLoading] = React.useState(showLoading || !!url);
   const [loadError, setLoadError] = React.useState('');
@@ -2123,7 +2123,7 @@ function Select(_ref) {
   const {
     formState,
     setValues
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   const [optionValues, setOptionValues] = React.useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
   const [isLoading, setIsLoading] = React.useState(showLoading || !!url);
   const [loadError, setLoadError] = React.useState('');
@@ -2298,7 +2298,7 @@ function Textarea(_ref) {
   const {
     formState,
     setValues
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   let currentValue = '';
   if (setValue !== null) {
     currentValue = value;
@@ -2482,7 +2482,7 @@ function Field(_ref) {
   } = _ref;
   const {
     formState
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   const inputProps = {
     ...otherProps
   };
@@ -2630,7 +2630,7 @@ Field.defaultProps = {
   wrapperClassName: ''
 };
 
-var formosaContext = /*#__PURE__*/React__default.createContext({
+var FormosaContext = /*#__PURE__*/React__default.createContext({
   toasts: {},
   showWarningPrompt: true,
   addToast: () => {},
@@ -2667,10 +2667,10 @@ function FormInner(_ref) {
     formState,
     setFormState,
     getDirtyKeys
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   const {
     addToast
-  } = React.useContext(formosaContext);
+  } = React.useContext(FormosaContext);
   const submitApiRequest = e => {
     e.preventDefault();
     const dirtyKeys = getDirtyKeys();
@@ -2834,7 +2834,7 @@ function Form(_ref) {
   } = _ref;
   const {
     addToast
-  } = React.useContext(formosaContext);
+  } = React.useContext(FormosaContext);
   const setOriginalValue = (fs, setFs, key, value) => {
     const newRow = {
       ...fs.originalRow
@@ -2953,7 +2953,7 @@ function Form(_ref) {
     getDirtyKeys: () => getDirtyKeys(formState.row, formState.originalRow),
     setValues
   }), [formState]);
-  return /*#__PURE__*/React__default.createElement(formContext.Provider, {
+  return /*#__PURE__*/React__default.createElement(FormContext.Provider, {
     value: value
   }, /*#__PURE__*/React__default.createElement(FormInner, otherProps, children));
 }
@@ -2980,7 +2980,7 @@ function FormAlert(_ref) {
   } = _ref;
   const {
     formState
-  } = React.useContext(formContext);
+  } = React.useContext(FormContext);
   if (!formState.alertText) {
     return null;
   }
@@ -3020,7 +3020,7 @@ function Toast(_ref) {
   } = _ref;
   const {
     removeToast
-  } = React.useContext(formosaContext);
+  } = React.useContext(FormosaContext);
   return /*#__PURE__*/React__default.createElement("div", {
     "aria-live": "polite",
     className: ("formosa-toast " + className).trim(),
@@ -3054,7 +3054,7 @@ Toast.defaultProps = {
 function ToastContainer() {
   const {
     toasts
-  } = React.useContext(formosaContext);
+  } = React.useContext(FormosaContext);
   return /*#__PURE__*/React__default.createElement("div", {
     className: "formosa-toast-container"
   }, Object.keys(toasts).map(id => /*#__PURE__*/React__default.createElement(Toast, {
@@ -3118,7 +3118,7 @@ function FormContainer(_ref) {
     disableWarningPrompt,
     enableWarningPrompt
   }), [toasts, showWarningPrompt]);
-  return /*#__PURE__*/React__default.createElement(formosaContext.Provider, {
+  return /*#__PURE__*/React__default.createElement(FormosaContext.Provider, {
     value: value
   }, children, /*#__PURE__*/React__default.createElement(Spinner, {
     loadingText: loadingText
@@ -3164,31 +3164,17 @@ Submit.defaultProps = {
   postfix: null
 };
 
-const Alert$1 = Alert;
-const Api$1 = Api;
-const CheckIcon = SvgCheck;
-const Error$2 = Error$1;
-const Field$1 = Field;
-const Form$1 = Form;
-const FormAlert$1 = FormAlert;
-const FormContainer$1 = FormContainer;
-const FormContext = formContext;
-const FormosaContext = formosaContext;
-const Input$1 = ExportableInput;
-const Label$1 = Label;
-const Submit$1 = Submit;
-
-exports.Alert = Alert$1;
-exports.Api = Api$1;
-exports.CheckIcon = CheckIcon;
-exports.Error = Error$2;
-exports.Field = Field$1;
-exports.Form = Form$1;
-exports.FormAlert = FormAlert$1;
-exports.FormContainer = FormContainer$1;
+exports.Alert = Alert;
+exports.Api = Api;
+exports.CheckIcon = SvgCheck;
+exports.Error = Error$1;
+exports.Field = Field;
+exports.Form = Form;
+exports.FormAlert = FormAlert;
+exports.FormContainer = FormContainer;
 exports.FormContext = FormContext;
 exports.FormosaContext = FormosaContext;
-exports.Input = Input$1;
-exports.Label = Label$1;
-exports.Submit = Submit$1;
+exports.Input = ExportableInput;
+exports.Label = Label;
+exports.Submit = Submit;
 //# sourceMappingURL=index.js.map
