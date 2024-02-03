@@ -35,7 +35,7 @@ export default function Input({
 	const onChange = (e) => {
 		const newValue = e.target.value;
 		if (setValue) {
-			setValue(newValue);
+			setValue(newValue, e);
 		} else {
 			setValues(e, name, newValue, afterChange);
 		}
