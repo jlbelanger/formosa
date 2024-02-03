@@ -148,7 +148,7 @@ export default function Autocomplete({
 		}
 
 		if (setValue) {
-			setValue(newValue);
+			setValue(newValue, e);
 		} else {
 			const e = { target: { name } };
 			setValues(e, name, newValue, afterChange);
@@ -178,7 +178,7 @@ export default function Autocomplete({
 		}
 
 		if (setValue) {
-			setValue(newValue);
+			setValue(newValue, e);
 		} else {
 			const e = { target: { name } };
 			setValues(e, name, newValue, afterChange);
@@ -250,7 +250,7 @@ export default function Autocomplete({
 		const newValue = [];
 
 		if (setValue) {
-			setValue(newValue);
+			setValue(newValue, e);
 		} else {
 			const e = { target: { name } };
 			setValues(e, name, newValue, afterChange);

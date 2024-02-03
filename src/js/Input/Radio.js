@@ -95,7 +95,7 @@ export default function Radio({
 		}
 
 		if (setValue) {
-			setValue(newValue);
+			setValue(newValue, e);
 		} else {
 			setValues(e, name, newValue, afterChange);
 		}

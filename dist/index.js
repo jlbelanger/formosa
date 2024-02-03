@@ -777,7 +777,7 @@ function Autocomplete(_ref) {
       newValue = [v];
     }
     if (setValue) {
-      setValue(newValue);
+      setValue(newValue, e);
     } else {
       const e = {
         target: {
@@ -807,7 +807,7 @@ function Autocomplete(_ref) {
       newValue = '';
     }
     if (setValue) {
-      setValue(newValue);
+      setValue(newValue, e);
     } else {
       const e = {
         target: {
@@ -874,7 +874,7 @@ function Autocomplete(_ref) {
   const clear = () => {
     const newValue = [];
     if (setValue) {
-      setValue(newValue);
+      setValue(newValue, e);
     } else {
       const e = {
         target: {
@@ -1132,7 +1132,7 @@ function Checkbox(_ref) {
   const onChange = e => {
     const newValue = e.target.checked;
     if (setValue) {
-      setValue(newValue);
+      setValue(newValue, e);
     } else {
       setValues(e, name, newValue, afterChange);
     }
@@ -1281,7 +1281,7 @@ function CheckboxList(_ref) {
       }
     }
     if (setValue) {
-      setValue(newValue);
+      setValue(newValue, e);
     } else {
       setValues(e, name, newValue, afterChange);
     }
@@ -1515,7 +1515,7 @@ function File(_ref) {
       setSrcs(getSrcs(newFiles));
     }
     if (setValue) {
-      setValue(newFiles);
+      setValue(newFiles, e);
     } else {
       setValues(e, name, newFiles, afterChange, newFiles);
     }
@@ -1524,7 +1524,7 @@ function File(_ref) {
     setFilenames('');
     const newValue = '';
     if (setValue) {
-      setValue(newValue);
+      setValue(newValue, e);
     } else {
       setValues(e, name, newValue, afterChange, newValue);
     }
@@ -1889,7 +1889,7 @@ function Radio(_ref) {
       newValue = JSON.parse(newValue);
     }
     if (setValue) {
-      setValue(newValue);
+      setValue(newValue, e);
     } else {
       setValues(e, name, newValue, afterChange);
     }
@@ -2188,7 +2188,7 @@ function Select(_ref) {
       }
     }
     if (setValue) {
-      setValue(newValue);
+      setValue(newValue, e);
     } else {
       setValues(e, name, newValue, afterChange);
     }
@@ -2314,7 +2314,7 @@ function Textarea(_ref) {
   const onChange = e => {
     const newValue = e.target.value;
     if (setValue) {
-      setValue(newValue);
+      setValue(newValue, e);
     } else {
       setValues(e, name, newValue, afterChange);
     }

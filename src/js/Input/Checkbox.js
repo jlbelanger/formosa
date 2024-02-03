@@ -32,7 +32,7 @@ export default function Checkbox({
 	const onChange = (e) => {
 		const newValue = e.target.checked;
 		if (setValue) {
-			setValue(newValue);
+			setValue(newValue, e);
 		} else {
 			setValues(e, name, newValue, afterChange);
 		}

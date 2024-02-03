@@ -103,7 +103,7 @@ export default function File({
 		}
 
 		if (setValue) {
-			setValue(newFiles);
+			setValue(newFiles, e);
 		} else {
 			setValues(e, name, newFiles, afterChange, newFiles);
 		}
@@ -114,7 +114,7 @@ export default function File({
 
 		const newValue = '';
 		if (setValue) {
-			setValue(newValue);
+			setValue(newValue, e);
 		} else {
 			setValues(e, name, newValue, afterChange, newValue);
 		}
