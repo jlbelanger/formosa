@@ -147,10 +147,10 @@ export default function Autocomplete({
 			newValue = [v];
 		}
 
+		const e = { target: { name } };
 		if (setValue) {
 			setValue(newValue, e);
 		} else {
-			const e = { target: { name } };
 			setValues(e, name, newValue, afterChange);
 		}
 
@@ -177,10 +177,10 @@ export default function Autocomplete({
 			newValue = '';
 		}
 
+		const e = { target: { name } };
 		if (setValue) {
 			setValue(newValue, e);
 		} else {
-			const e = { target: { name } };
 			setValues(e, name, newValue, afterChange);
 		}
 
@@ -249,10 +249,10 @@ export default function Autocomplete({
 	const clear = () => {
 		const newValue = [];
 
+		const e = { target: { name } };
 		if (setValue) {
 			setValue(newValue, e);
 		} else {
-			const e = { target: { name } };
 			setValues(e, name, newValue, afterChange);
 		}
 

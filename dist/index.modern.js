@@ -773,14 +773,14 @@ function Autocomplete(_ref) {
     } else {
       newValue = [v];
     }
+    const e = {
+      target: {
+        name
+      }
+    };
     if (setValue) {
       setValue(newValue, e);
     } else {
-      const e = {
-        target: {
-          name
-        }
-      };
       setValues(e, name, newValue, afterChange);
     }
     setIsOpen(false);
@@ -803,14 +803,14 @@ function Autocomplete(_ref) {
     } else {
       newValue = '';
     }
+    const e = {
+      target: {
+        name
+      }
+    };
     if (setValue) {
       setValue(newValue, e);
     } else {
-      const e = {
-        target: {
-          name
-        }
-      };
       setValues(e, name, newValue, afterChange);
     }
     focus();
@@ -870,14 +870,14 @@ function Autocomplete(_ref) {
   };
   const clear = () => {
     const newValue = [];
+    const e = {
+      target: {
+        name
+      }
+    };
     if (setValue) {
       setValue(newValue, e);
     } else {
-      const e = {
-        target: {
-          name
-        }
-      };
       setValues(e, name, newValue, afterChange);
     }
     setFilter('');
