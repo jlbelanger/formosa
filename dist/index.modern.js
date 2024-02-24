@@ -2438,7 +2438,7 @@ const cleanRecord = record => {
   if (!hasRelationships) {
     delete record.relationships;
   }
-  if (!hasAttributes && !hasRelationships) {
+  if (!hasAttributes && !hasRelationships && !record.id.startsWith('temp-')) {
     return null;
   }
   return record;

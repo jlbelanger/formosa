@@ -24,7 +24,7 @@ export const cleanRecord = (record) => {
 		delete record.relationships;
 	}
 
-	if (!hasAttributes && !hasRelationships) {
+	if (!hasAttributes && !hasRelationships && !record.id.startsWith('temp-')) {
 		return null;
 	}
 
