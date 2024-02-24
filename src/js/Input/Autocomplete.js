@@ -19,6 +19,7 @@ export default function Autocomplete({
 	disabled,
 	id,
 	inputClassName,
+	inputAttributes,
 	labelFn,
 	labelKey,
 	loadingText,
@@ -53,6 +54,7 @@ export default function Autocomplete({
 	const { formState, setValues } = useContext(FormContext);
 	const clearButtonRef = useRef(null);
 	const inputRef = useRef(null);
+	const hiddenInputRef = useRef(null);
 	const removeButtonRef = useRef(null);
 	const [filter, setFilter] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -147,7 +149,7 @@ export default function Autocomplete({
 			newValue = [v];
 		}
 
-		const e = { target: { name } };
+		const e = { target: hiddenInputRef.current };
 		if (setValue) {
 			setValue(newValue, e);
 		} else {
@@ -177,7 +179,7 @@ export default function Autocomplete({
 			newValue = '';
 		}
 
-		const e = { target: { name } };
+		const e = { target: hiddenInputRef.current };
 		if (setValue) {
 			setValue(newValue, e);
 		} else {
@@ -249,7 +251,7 @@ export default function Autocomplete({
 	const clear = () => {
 		const newValue = [];
 
-		const e = { target: { name } };
+		const e = { target: hiddenInputRef.current };
 		if (setValue) {
 			setValue(newValue, e);
 		} else {
@@ -345,7 +347,7 @@ export default function Autocomplete({
 				{canAddValues && (
 					<li className="formosa-autocomplete__value formosa-autocomplete__value--input">
 						<input
-							{...otherProps}
+							{...inputAttributes}
 							autoComplete="off"
 							className={`formosa-field__input formosa-autocomplete__input ${inputClassName}`.trim()}
 							id={id || name}
@@ -435,6 +437,14 @@ export default function Autocomplete({
 					</button>
 				</div>
 			)}
+
+			<input
+				{...otherProps}
+				name={name}
+				ref={hiddenInputRef}
+				type="hidden"
+				value={filter}
+			/>
 		</div>
 	);
 }
@@ -451,6 +461,7 @@ Autocomplete.propTypes = {
 	clearText: PropTypes.string,
 	disabled: PropTypes.bool,
 	id: PropTypes.string,
+	inputAttributes: PropTypes.object,
 	inputClassName: PropTypes.string,
 	labelFn: PropTypes.func,
 	labelKey: PropTypes.oneOfType([
@@ -520,6 +531,7 @@ Autocomplete.defaultProps = {
 	clearText: 'Clear',
 	disabled: false,
 	id: '',
+	inputAttributes: null,
 	inputClassName: '',
 	labelFn: null,
 	labelKey: 'name',
