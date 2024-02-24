@@ -1,208 +1,164 @@
 import get from 'get-value';
 import set from 'set-value';
 
-const findIncluded = (included, id, type, mainRecord) => {
-	if (mainRecord && id === mainRecord.id && type === mainRecord.type) {
-		const output = {
-			id: mainRecord.id,
-			type: mainRecord.type,
-		};
-		if (Object.prototype.hasOwnProperty.call(mainRecord, 'attributes')) {
-			output.attributes = mainRecord.attributes;
-		}
-		if (Object.prototype.hasOwnProperty.call(mainRecord, 'meta')) {
-			output.meta = mainRecord.meta;
-		}
-		return output;
-	}
-	return included.find((data) => (data.id === id && data.type === type));
-};
-
-const deserializeSingle = (data, otherRows = [], included = [], mainRecord = null) => {
-	if (!data) {
-		return data;
-	}
-	const output = {
-		id: data.id,
-		type: data.type,
-		...data.attributes,
-	};
-
-	if (Object.prototype.hasOwnProperty.call(data, 'relationships')) {
-		let includedRecord;
-		Object.keys(data.relationships).forEach((relationshipName) => {
-			output[relationshipName] = data.relationships[relationshipName].data;
-			if (Array.isArray(output[relationshipName])) {
-				output[relationshipName].forEach((rel, i) => {
-					includedRecord = findIncluded(included, rel.id, rel.type, mainRecord);
-					if (includedRecord) {
-						output[relationshipName][i] = deserializeSingle(includedRecord, otherRows, included, mainRecord);
-					} else {
-						includedRecord = findIncluded(otherRows, rel.id, rel.type, mainRecord);
-						if (includedRecord) {
-							output[relationshipName][i] = deserializeSingle(includedRecord, otherRows, included, mainRecord);
-						}
-					}
-				});
-			} else if (output[relationshipName] !== null) {
-				includedRecord = findIncluded(included, output[relationshipName].id, output[relationshipName].type, mainRecord);
-				if (includedRecord) {
-					output[relationshipName] = deserializeSingle(includedRecord, otherRows, included, mainRecord);
-				} else {
-					includedRecord = findIncluded(otherRows, output[relationshipName].id, output[relationshipName].type, mainRecord);
-					if (includedRecord) {
-						output[relationshipName] = deserializeSingle(includedRecord, otherRows, included, mainRecord);
-					}
-				}
-			}
-		});
-	}
-
-	if (Object.prototype.hasOwnProperty.call(data, 'meta')) {
-		output.meta = data.meta;
-	}
-
-	return output;
-};
-
-export const deserialize = (body) => {
-	if (Array.isArray(body.data)) {
-		const output = [];
-		body.data.forEach((data) => {
-			output.push(deserializeSingle(data, body.data, body.included, null));
-		});
-
-		if (Object.prototype.hasOwnProperty.call(body, 'meta')) {
-			return { data: output, meta: body.meta };
-		}
-
-		return output;
-	}
-	return deserializeSingle(body.data, [], body.included, body.data);
-};
-
-const cleanSingleRelationship = (values) => ({
-	id: values.id,
-	type: values.type,
+export const getSimpleRecord = (record) => ({
+	id: record.id,
+	type: record.type,
 });
 
-const cleanRelationship = (values) => {
+export const cleanRelationship = (values) => {
 	if (Array.isArray(values)) {
-		return values.map((value) => cleanSingleRelationship(value));
+		return values.map((value) => getSimpleRecord(value));
 	}
-	return cleanSingleRelationship(values);
+	return getSimpleRecord(values);
 };
 
-const getIncludedItemData = (rel, relName, childRelationshipNames, dirtyRelationships, relIndex = null) => {
-	const relData = {
-		id: rel.id,
-		type: rel.type,
-		attributes: {},
-		relationships: {},
-	};
-
-	if (rel.id.startsWith('temp-')) {
-		// This is a new record; include all attributes.
-		Object.keys(rel).forEach((key) => {
-			if (key !== 'id' && key !== 'type') {
-				if (childRelationshipNames[relName].includes(key)) {
-					const childRel = {
-						data: {
-							id: rel[key].id,
-							type: rel[key].type,
-						},
-					};
-					set(relData.relationships, key, childRel);
-				} else {
-					set(relData.attributes, key, rel[key]);
-				}
-			}
-		});
-	} else {
-		// This is an existing record; include only the dirty attributes.
-		Object.keys(rel).forEach((key) => {
-			if (key !== 'id' && key !== 'type') {
-				if (relIndex === null) {
-					if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], key)) {
-						set(relData.attributes, key, rel[key]);
-					}
-				} else if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], relIndex)) {
-					if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName][relIndex], key)) {
-						set(relData.attributes, key, rel[key]);
-					}
-				}
-			}
-		});
-	}
-
-	const hasAttributes = Object.keys(relData.attributes).length > 0;
+export const cleanRecord = (record) => {
+	const hasAttributes = Object.keys(record.attributes).length > 0;
 	if (!hasAttributes) {
-		delete relData.attributes;
+		delete record.attributes;
 	}
-	const hasRelationships = Object.keys(relData.relationships).length > 0;
+
+	const hasRelationships = Object.keys(record.relationships).length > 0;
 	if (!hasRelationships) {
-		delete relData.relationships;
+		delete record.relationships;
 	}
 
 	if (!hasAttributes && !hasRelationships) {
 		return null;
 	}
 
-	return relData;
+	return record;
 };
 
-const getIncluded = (data, dirtyKeys, relationshipNames) => {
-	const included = [];
-
-	const dirtyRelationships = {};
-	dirtyKeys.forEach((key) => {
-		const currentKeys = [];
-		key.split('.').forEach((k) => {
-			currentKeys.push(k);
-			if (typeof get(dirtyRelationships, currentKeys.join('.')) === 'undefined') {
-				set(dirtyRelationships, currentKeys.join('.'), {});
-			}
-		});
-	});
-
-	const childRelationshipNames = {};
+export const filterByKey = (relationshipNames, key) => {
+	const output = [];
 	relationshipNames.forEach((relName) => {
-		childRelationshipNames[relName] = [];
-		if (relName.includes('.')) {
+		if (relName.startsWith(`${key}.`)) {
 			const keys = relName.split('.');
-			childRelationshipNames[keys.shift()].push(keys.join('.'));
+			keys.shift();
+			output.push(keys.join('.'));
 		}
 	});
+	return output;
+};
 
-	Object.keys(dirtyRelationships).forEach((relName) => {
-		if (Object.prototype.hasOwnProperty.call(data.relationships, relName)) {
-			let relData;
-			if (Array.isArray(data.relationships[relName].data)) {
-				Object.keys(data.relationships[relName].data).forEach((relIndex) => {
-					const rel = data.relationships[relName].data[relIndex];
-					if (rel) {
-						relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships, relIndex);
-						if (relData) {
-							included.push(relData);
-						}
+export const getDirtyRecords = (record, relationshipNames, dirtyRelationships) => {
+	let otherRecords = [];
+	const output = getSimpleRecord(record);
+	output.attributes = {};
+	output.relationships = {};
+
+	Object.keys(record).forEach((key) => {
+		if (key !== 'id' && key !== 'type') {
+			if (Object.prototype.hasOwnProperty.call(dirtyRelationships, key)) {
+				if (relationshipNames.includes(key)) {
+					if (Array.isArray(record[key])) {
+						// This is an array relationship.
+						const data = [];
+						record[key].forEach((rel, relIndex) => {
+							if (typeof dirtyRelationships[key][relIndex] !== 'undefined') {
+								// eslint-disable-next-line no-use-before-define
+								const x = getIncludedRecordData(rel, filterByKey(relationshipNames, key), dirtyRelationships[key][relIndex]);
+								otherRecords = otherRecords.concat(x);
+							}
+							data.push(getSimpleRecord(rel));
+						});
+						set(output.relationships, key, { data });
+					} else {
+						// This is an object relationship.
+						// eslint-disable-next-line no-use-before-define
+						const x = getIncludedRecordData(record[key], filterByKey(relationshipNames, key), dirtyRelationships[key]);
+						const data = x.shift();
+						otherRecords = otherRecords.concat(x);
+						set(output.relationships, key, { data });
 					}
-				});
-			} else {
-				const rel = data.relationships[relName].data;
-				if (rel) {
-					relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships);
-					if (relData) {
-						included.push(relData);
-					}
+				} else {
+					// This is an attribute.
+					set(output.attributes, key, record[key]);
 				}
 			}
 		}
 	});
 
-	return included;
+	const rec = cleanRecord(output);
+	if (rec !== null) {
+		otherRecords.unshift(rec);
+	}
+
+	return otherRecords;
 };
 
-const unset = (obj, key) => {
+export const getIncludedRecordData = (record, relationshipNames, dirtyRelationships) => {
+	// This is a new record; include all attributes.
+	if (record.id.startsWith('temp-')) {
+		return getDirtyRecords(record, relationshipNames, dirtyRelationships);
+	}
+
+	// This is an existing record with no changes; don't include it.
+	if (typeof dirtyRelationships === 'undefined') {
+		return [];
+	}
+
+	// This is an existing record with no changes, but it's part of a relationship; include only the id/type.
+	if (Object.keys(dirtyRelationships).length <= 0) {
+		return [getSimpleRecord(record)];
+	}
+
+	// This is an existing record with changes; include all the dirty attributes and relationships.
+	return getDirtyRecords(record, relationshipNames, dirtyRelationships);
+};
+
+export const getDirtyRelationships = (dirtyKeys) => {
+	const output = {};
+	dirtyKeys.forEach((key) => {
+		const currentKeys = [];
+		key.split('.').forEach((k) => {
+			currentKeys.push(k);
+			if (typeof get(output, currentKeys.join('.')) === 'undefined') {
+				set(output, currentKeys.join('.'), {});
+			}
+		});
+	});
+	return output;
+};
+
+export const getIncludedRecords = (data, dirtyKeys, relationshipNames) => {
+	let output = [];
+	if (dirtyKeys.length <= 0) {
+		return output;
+	}
+
+	const dirtyRelationships = getDirtyRelationships(dirtyKeys);
+
+	// For each dirty relationship, add the dirty records to the output.
+	Object.keys(dirtyRelationships).forEach((relName) => {
+		if (Object.prototype.hasOwnProperty.call(data.relationships, relName)) {
+			if (Array.isArray(data.relationships[relName].data)) {
+				// This is an array relationship.
+				Object.keys(data.relationships[relName].data).forEach((relIndex) => {
+					const record = data.relationships[relName].data[relIndex];
+					if (record) {
+						const records = getIncludedRecordData(record, filterByKey(relationshipNames, relName), dirtyRelationships[relName][relIndex]);
+						output = output.concat(records);
+					}
+				});
+			} else {
+				// This is an object relationship.
+				const record = data.relationships[relName].data;
+				if (record) {
+					const records = getIncludedRecordData(record, filterByKey(relationshipNames, relName), dirtyRelationships[relName]);
+					output = output.concat(records);
+				}
+			}
+		}
+	});
+
+	// Remove records with only an id/type.
+	return output.filter((record) => (Object.keys(record).length > 2));
+};
+
+export const unset = (obj, key) => {
 	if (Object.prototype.hasOwnProperty.call(obj, key)) {
 		return delete obj[key];
 	}
@@ -216,7 +172,7 @@ const unset = (obj, key) => {
 	return delete o[lastKey];
 };
 
-const appendToFormData = (obj, formData, prefix = '') => {
+export const appendToFormData = (obj, formData, prefix = '') => {
 	Object.entries(obj).forEach((entry) => {
 		const [key, value] = entry;
 		const newKey = prefix ? `${prefix}[${key}]` : key;
@@ -229,15 +185,15 @@ const appendToFormData = (obj, formData, prefix = '') => {
 	return formData;
 };
 
-export const getBody = (
+export const getBody = ( // eslint-disable-line import/prefer-default-export
 	method,
 	type,
 	id,
 	formState,
 	dirtyKeys,
 	relationshipNames,
-	filterBody,
-	filterValues
+	filterBody = null,
+	filterValues = null
 ) => {
 	let body = null;
 
@@ -290,7 +246,7 @@ export const getBody = (
 
 		body = { data };
 
-		const included = getIncluded(data, dirtyKeys, relationshipNames);
+		const included = getIncludedRecords(data, dirtyKeys, relationshipNames);
 		if (included.length > 0) {
 			body.included = included;
 		}

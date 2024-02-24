@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React__default, { createElement, useContext, useRef, useState, useEffect, useMemo } from 'react';
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 import get from 'get-value';
 import set from 'set-value';
-import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 import { v4 } from 'uuid';
 
 function _extends() {
@@ -136,226 +136,6 @@ const deserialize = body => {
     return output;
   }
   return deserializeSingle(body.data, [], body.included, body.data);
-};
-const cleanSingleRelationship = values => ({
-  id: values.id,
-  type: values.type
-});
-const cleanRelationship = values => {
-  if (Array.isArray(values)) {
-    return values.map(value => cleanSingleRelationship(value));
-  }
-  return cleanSingleRelationship(values);
-};
-const getIncludedItemData = function (rel, relName, childRelationshipNames, dirtyRelationships, relIndex) {
-  if (relIndex === void 0) {
-    relIndex = null;
-  }
-  const relData = {
-    id: rel.id,
-    type: rel.type,
-    attributes: {},
-    relationships: {}
-  };
-  if (rel.id.startsWith('temp-')) {
-    Object.keys(rel).forEach(key => {
-      if (key !== 'id' && key !== 'type') {
-        if (childRelationshipNames[relName].includes(key)) {
-          const childRel = {
-            data: {
-              id: rel[key].id,
-              type: rel[key].type
-            }
-          };
-          set(relData.relationships, key, childRel);
-        } else {
-          set(relData.attributes, key, rel[key]);
-        }
-      }
-    });
-  } else {
-    Object.keys(rel).forEach(key => {
-      if (key !== 'id' && key !== 'type') {
-        if (relIndex === null) {
-          if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], key)) {
-            set(relData.attributes, key, rel[key]);
-          }
-        } else if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName], relIndex)) {
-          if (Object.prototype.hasOwnProperty.call(dirtyRelationships[relName][relIndex], key)) {
-            set(relData.attributes, key, rel[key]);
-          }
-        }
-      }
-    });
-  }
-  const hasAttributes = Object.keys(relData.attributes).length > 0;
-  if (!hasAttributes) {
-    delete relData.attributes;
-  }
-  const hasRelationships = Object.keys(relData.relationships).length > 0;
-  if (!hasRelationships) {
-    delete relData.relationships;
-  }
-  if (!hasAttributes && !hasRelationships) {
-    return null;
-  }
-  return relData;
-};
-const getIncluded = (data, dirtyKeys, relationshipNames) => {
-  const included = [];
-  const dirtyRelationships = {};
-  dirtyKeys.forEach(key => {
-    const currentKeys = [];
-    key.split('.').forEach(k => {
-      currentKeys.push(k);
-      if (typeof get(dirtyRelationships, currentKeys.join('.')) === 'undefined') {
-        set(dirtyRelationships, currentKeys.join('.'), {});
-      }
-    });
-  });
-  const childRelationshipNames = {};
-  relationshipNames.forEach(relName => {
-    childRelationshipNames[relName] = [];
-    if (relName.includes('.')) {
-      const keys = relName.split('.');
-      childRelationshipNames[keys.shift()].push(keys.join('.'));
-    }
-  });
-  Object.keys(dirtyRelationships).forEach(relName => {
-    if (Object.prototype.hasOwnProperty.call(data.relationships, relName)) {
-      let relData;
-      if (Array.isArray(data.relationships[relName].data)) {
-        Object.keys(data.relationships[relName].data).forEach(relIndex => {
-          const rel = data.relationships[relName].data[relIndex];
-          if (rel) {
-            relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships, relIndex);
-            if (relData) {
-              included.push(relData);
-            }
-          }
-        });
-      } else {
-        const rel = data.relationships[relName].data;
-        if (rel) {
-          relData = getIncludedItemData(rel, relName, childRelationshipNames, dirtyRelationships);
-          if (relData) {
-            included.push(relData);
-          }
-        }
-      }
-    }
-  });
-  return included;
-};
-const unset = (obj, key) => {
-  if (Object.prototype.hasOwnProperty.call(obj, key)) {
-    return delete obj[key];
-  }
-  const keys = key.split('.');
-  const lastKey = keys.pop();
-  let o = obj;
-  keys.forEach(k => {
-    o = o[k];
-  });
-  return delete o[lastKey];
-};
-const appendToFormData = function (obj, formData, prefix) {
-  if (prefix === void 0) {
-    prefix = '';
-  }
-  Object.entries(obj).forEach(entry => {
-    const [key, value] = entry;
-    const newKey = prefix ? prefix + "[" + key + "]" : key;
-    if (typeof value === 'object') {
-      formData = appendToFormData(value, formData, newKey);
-    } else {
-      formData.append(newKey, JSON.stringify(value));
-    }
-  });
-  return formData;
-};
-const getBody = (method, type, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues) => {
-  let body = null;
-  if (method === 'PUT' || method === 'POST') {
-    const data = {
-      type,
-      attributes: {},
-      relationships: {},
-      meta: {}
-    };
-    if (method === 'PUT' && id) {
-      data.id = id;
-    }
-    let values = {
-      ...formState.row
-    };
-    if (filterValues) {
-      values = filterValues(values);
-    }
-    const fileKeys = Object.keys(formState.files);
-    const keys = method === 'PUT' ? dirtyKeys : Object.keys(formState.row);
-    keys.forEach(key => {
-      const firstPartOfKey = key.replace(/\..+$/, '');
-      if (relationshipNames.includes(firstPartOfKey)) {
-        data.relationships[firstPartOfKey] = {
-          data: get(values, firstPartOfKey)
-        };
-      } else if (relationshipNames.includes(key)) {
-        data.relationships[key] = {
-          data: get(values, firstPartOfKey)
-        };
-      } else if (key.startsWith('meta.')) {
-        set(data, key, get(values, key));
-      } else if (key === 'meta') {
-        data.meta = values.meta;
-      } else if (fileKeys.includes(key)) {
-        unset(data.attributes, key);
-      } else {
-        set(data.attributes, key, get(values, key));
-      }
-    });
-    body = {
-      data
-    };
-    const included = getIncluded(data, dirtyKeys, relationshipNames);
-    if (included.length > 0) {
-      body.included = included;
-    }
-    Object.keys(data.relationships).forEach(relationshipName => {
-      if (typeof data.relationships[relationshipName].data === 'string') {
-        if (data.relationships[relationshipName].data === '') {
-          data.relationships[relationshipName].data = null;
-        } else {
-          data.relationships[relationshipName].data = JSON.parse(data.relationships[relationshipName].data);
-        }
-      }
-      if (data.relationships[relationshipName].data) {
-        data.relationships[relationshipName].data = cleanRelationship(data.relationships[relationshipName].data);
-      }
-    });
-    if (filterBody) {
-      body = filterBody(body, formState.row);
-    }
-    if (Object.keys(data.attributes).length <= 0) {
-      delete data.attributes;
-    }
-    if (Object.keys(data.meta).length <= 0) {
-      delete data.meta;
-    }
-    if (Object.keys(data.relationships).length <= 0) {
-      delete data.relationships;
-    }
-    const filenames = fileKeys.filter(filename => formState.files[filename] !== false);
-    if (filenames.length > 0) {
-      const formData = appendToFormData(body, new FormData());
-      formData.append('meta[files]', JSON.stringify(filenames));
-      filenames.forEach(filename => {
-        formData.append(filename, formState.files[filename]);
-      });
-      body = formData;
-    }
-  }
-  return body;
 };
 
 class Api {
@@ -650,6 +430,7 @@ function Autocomplete(_ref) {
     disabled,
     id,
     inputClassName,
+    inputAttributes,
     labelFn,
     labelKey,
     loadingText,
@@ -687,6 +468,7 @@ function Autocomplete(_ref) {
   } = useContext(FormContext);
   const clearButtonRef = useRef(null);
   const inputRef = useRef(null);
+  const hiddenInputRef = useRef(null);
   const removeButtonRef = useRef(null);
   const [filter, setFilter] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -774,9 +556,7 @@ function Autocomplete(_ref) {
       newValue = [v];
     }
     const e = {
-      target: {
-        name
-      }
+      target: hiddenInputRef.current
     };
     if (setValue) {
       setValue(newValue, e);
@@ -804,9 +584,7 @@ function Autocomplete(_ref) {
       newValue = '';
     }
     const e = {
-      target: {
-        name
-      }
+      target: hiddenInputRef.current
     };
     if (setValue) {
       setValue(newValue, e);
@@ -871,9 +649,7 @@ function Autocomplete(_ref) {
   const clear = () => {
     const newValue = [];
     const e = {
-      target: {
-        name
-      }
+      target: hiddenInputRef.current
     };
     if (setValue) {
       setValue(newValue, e);
@@ -947,7 +723,7 @@ function Autocomplete(_ref) {
     }, removeIconProps)), removeText));
   }), canAddValues && /*#__PURE__*/React__default.createElement("li", {
     className: "formosa-autocomplete__value formosa-autocomplete__value--input"
-  }, /*#__PURE__*/React__default.createElement("input", _extends({}, otherProps, {
+  }, /*#__PURE__*/React__default.createElement("input", _extends({}, inputAttributes, {
     autoComplete: "off",
     className: ("formosa-field__input formosa-autocomplete__input " + inputClassName).trim(),
     id: id || name,
@@ -1010,7 +786,12 @@ function Autocomplete(_ref) {
     "aria-hidden": "true",
     height: clearIconHeight,
     width: clearIconWidth
-  }, clearIconAttributes)), clearText)));
+  }, clearIconAttributes)), clearText)), /*#__PURE__*/React__default.createElement("input", _extends({}, otherProps, {
+    name: name,
+    ref: hiddenInputRef,
+    type: "hidden",
+    value: filter
+  })));
 }
 Autocomplete.propTypes = {
   afterAdd: PropTypes.func,
@@ -1024,6 +805,7 @@ Autocomplete.propTypes = {
   clearText: PropTypes.string,
   disabled: PropTypes.bool,
   id: PropTypes.string,
+  inputAttributes: PropTypes.object,
   inputClassName: PropTypes.string,
   labelFn: PropTypes.func,
   labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
@@ -1067,6 +849,7 @@ Autocomplete.defaultProps = {
   clearText: 'Clear',
   disabled: false,
   id: '',
+  inputAttributes: null,
   inputClassName: '',
   labelFn: null,
   labelKey: 'name',
@@ -2635,6 +2418,251 @@ var FormosaContext = /*#__PURE__*/React__default.createContext({
   disableWarningPrompt: () => {},
   enableWarningPrompt: () => {}
 });
+
+const getSimpleRecord = record => ({
+  id: record.id,
+  type: record.type
+});
+const cleanRelationship = values => {
+  if (Array.isArray(values)) {
+    return values.map(value => getSimpleRecord(value));
+  }
+  return getSimpleRecord(values);
+};
+const cleanRecord = record => {
+  const hasAttributes = Object.keys(record.attributes).length > 0;
+  if (!hasAttributes) {
+    delete record.attributes;
+  }
+  const hasRelationships = Object.keys(record.relationships).length > 0;
+  if (!hasRelationships) {
+    delete record.relationships;
+  }
+  if (!hasAttributes && !hasRelationships) {
+    return null;
+  }
+  return record;
+};
+const filterByKey$1 = (relationshipNames, key) => {
+  const output = [];
+  relationshipNames.forEach(relName => {
+    if (relName.startsWith(key + ".")) {
+      const keys = relName.split('.');
+      keys.shift();
+      output.push(keys.join('.'));
+    }
+  });
+  return output;
+};
+const getDirtyRecords = (record, relationshipNames, dirtyRelationships) => {
+  let otherRecords = [];
+  const output = getSimpleRecord(record);
+  output.attributes = {};
+  output.relationships = {};
+  Object.keys(record).forEach(key => {
+    if (key !== 'id' && key !== 'type') {
+      if (Object.prototype.hasOwnProperty.call(dirtyRelationships, key)) {
+        if (relationshipNames.includes(key)) {
+          if (Array.isArray(record[key])) {
+            const data = [];
+            record[key].forEach((rel, relIndex) => {
+              if (typeof dirtyRelationships[key][relIndex] !== 'undefined') {
+                const x = getIncludedRecordData(rel, filterByKey$1(relationshipNames, key), dirtyRelationships[key][relIndex]);
+                otherRecords = otherRecords.concat(x);
+              }
+              data.push(getSimpleRecord(rel));
+            });
+            set(output.relationships, key, {
+              data
+            });
+          } else {
+            const x = getIncludedRecordData(record[key], filterByKey$1(relationshipNames, key), dirtyRelationships[key]);
+            const data = x.shift();
+            otherRecords = otherRecords.concat(x);
+            set(output.relationships, key, {
+              data
+            });
+          }
+        } else {
+          set(output.attributes, key, record[key]);
+        }
+      }
+    }
+  });
+  const rec = cleanRecord(output);
+  if (rec !== null) {
+    otherRecords.unshift(rec);
+  }
+  return otherRecords;
+};
+const getIncludedRecordData = (record, relationshipNames, dirtyRelationships) => {
+  if (record.id.startsWith('temp-')) {
+    return getDirtyRecords(record, relationshipNames, dirtyRelationships);
+  }
+  if (typeof dirtyRelationships === 'undefined') {
+    return [];
+  }
+  if (Object.keys(dirtyRelationships).length <= 0) {
+    return [getSimpleRecord(record)];
+  }
+  return getDirtyRecords(record, relationshipNames, dirtyRelationships);
+};
+const getDirtyRelationships = dirtyKeys => {
+  const output = {};
+  dirtyKeys.forEach(key => {
+    const currentKeys = [];
+    key.split('.').forEach(k => {
+      currentKeys.push(k);
+      if (typeof get(output, currentKeys.join('.')) === 'undefined') {
+        set(output, currentKeys.join('.'), {});
+      }
+    });
+  });
+  return output;
+};
+const getIncludedRecords = (data, dirtyKeys, relationshipNames) => {
+  let output = [];
+  if (dirtyKeys.length <= 0) {
+    return output;
+  }
+  const dirtyRelationships = getDirtyRelationships(dirtyKeys);
+  Object.keys(dirtyRelationships).forEach(relName => {
+    if (Object.prototype.hasOwnProperty.call(data.relationships, relName)) {
+      if (Array.isArray(data.relationships[relName].data)) {
+        Object.keys(data.relationships[relName].data).forEach(relIndex => {
+          const record = data.relationships[relName].data[relIndex];
+          if (record) {
+            const records = getIncludedRecordData(record, filterByKey$1(relationshipNames, relName), dirtyRelationships[relName][relIndex]);
+            output = output.concat(records);
+          }
+        });
+      } else {
+        const record = data.relationships[relName].data;
+        if (record) {
+          const records = getIncludedRecordData(record, filterByKey$1(relationshipNames, relName), dirtyRelationships[relName]);
+          output = output.concat(records);
+        }
+      }
+    }
+  });
+  return output.filter(record => Object.keys(record).length > 2);
+};
+const unset = (obj, key) => {
+  if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    return delete obj[key];
+  }
+  const keys = key.split('.');
+  const lastKey = keys.pop();
+  let o = obj;
+  keys.forEach(k => {
+    o = o[k];
+  });
+  return delete o[lastKey];
+};
+const appendToFormData = function (obj, formData, prefix) {
+  if (prefix === void 0) {
+    prefix = '';
+  }
+  Object.entries(obj).forEach(entry => {
+    const [key, value] = entry;
+    const newKey = prefix ? prefix + "[" + key + "]" : key;
+    if (typeof value === 'object') {
+      formData = appendToFormData(value, formData, newKey);
+    } else {
+      formData.append(newKey, JSON.stringify(value));
+    }
+  });
+  return formData;
+};
+const getBody = function (method, type, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues) {
+  if (filterBody === void 0) {
+    filterBody = null;
+  }
+  if (filterValues === void 0) {
+    filterValues = null;
+  }
+  let body = null;
+  if (method === 'PUT' || method === 'POST') {
+    const data = {
+      type,
+      attributes: {},
+      relationships: {},
+      meta: {}
+    };
+    if (method === 'PUT' && id) {
+      data.id = id;
+    }
+    let values = {
+      ...formState.row
+    };
+    if (filterValues) {
+      values = filterValues(values);
+    }
+    const fileKeys = Object.keys(formState.files);
+    const keys = method === 'PUT' ? dirtyKeys : Object.keys(formState.row);
+    keys.forEach(key => {
+      const firstPartOfKey = key.replace(/\..+$/, '');
+      if (relationshipNames.includes(firstPartOfKey)) {
+        data.relationships[firstPartOfKey] = {
+          data: get(values, firstPartOfKey)
+        };
+      } else if (relationshipNames.includes(key)) {
+        data.relationships[key] = {
+          data: get(values, firstPartOfKey)
+        };
+      } else if (key.startsWith('meta.')) {
+        set(data, key, get(values, key));
+      } else if (key === 'meta') {
+        data.meta = values.meta;
+      } else if (fileKeys.includes(key)) {
+        unset(data.attributes, key);
+      } else {
+        set(data.attributes, key, get(values, key));
+      }
+    });
+    body = {
+      data
+    };
+    const included = getIncludedRecords(data, dirtyKeys, relationshipNames);
+    if (included.length > 0) {
+      body.included = included;
+    }
+    Object.keys(data.relationships).forEach(relationshipName => {
+      if (typeof data.relationships[relationshipName].data === 'string') {
+        if (data.relationships[relationshipName].data === '') {
+          data.relationships[relationshipName].data = null;
+        } else {
+          data.relationships[relationshipName].data = JSON.parse(data.relationships[relationshipName].data);
+        }
+      }
+      if (data.relationships[relationshipName].data) {
+        data.relationships[relationshipName].data = cleanRelationship(data.relationships[relationshipName].data);
+      }
+    });
+    if (filterBody) {
+      body = filterBody(body, formState.row);
+    }
+    if (Object.keys(data.attributes).length <= 0) {
+      delete data.attributes;
+    }
+    if (Object.keys(data.meta).length <= 0) {
+      delete data.meta;
+    }
+    if (Object.keys(data.relationships).length <= 0) {
+      delete data.relationships;
+    }
+    const filenames = fileKeys.filter(filename => formState.files[filename] !== false);
+    if (filenames.length > 0) {
+      const formData = appendToFormData(body, new FormData());
+      formData.append('meta[files]', JSON.stringify(filenames));
+      filenames.forEach(filename => {
+        formData.append(filename, formState.files[filename]);
+      });
+      body = formData;
+    }
+  }
+  return body;
+};
 
 function FormInner(_ref) {
   let {

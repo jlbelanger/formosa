@@ -1,4 +1,4 @@
-import { deserialize } from './JsonApi';
+import { deserialize } from './JsonApiDeserialize';
 import { trackPromise } from 'react-promise-tracker';
 
 export default class Api {
