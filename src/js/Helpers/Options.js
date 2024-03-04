@@ -46,7 +46,10 @@ export const normalizeOptions = (options, labelKey, valueKey = null) => {
 export const escapeRegExp = (string) => (string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'));
 
 const toSlug = (s) => (
-	s.toLowerCase()
+	s
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.toLowerCase()
 		.replace(/ & /g, '-and-')
 		.replace(/<[^>]+>/g, '')
 		.replace(/['’.]/g, '')
