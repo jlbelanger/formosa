@@ -2656,7 +2656,13 @@ const getBody = function (method, type, id, formState, dirtyKeys, relationshipNa
       const formData = appendToFormData(body, new FormData());
       formData.append('meta[files]', JSON.stringify(filenames));
       filenames.forEach(filename => {
-        formData.append(filename, formState.files[filename]);
+        if (Object.prototype.toString.call(formState.files[filename]) === '[object FileList]') {
+          Array.from(formState.files[filename]).forEach((file, i) => {
+            formData.append(filename + "[" + i + "]", file);
+          });
+        } else {
+          formData.append(filename, formState.files[filename]);
+        }
       });
       body = formData;
     }
