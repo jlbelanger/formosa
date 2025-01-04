@@ -1,3 +1,5 @@
+@use '../utilities/variables';
+
 .formosa-spinner {
 	align-content: center;
 	align-items: center;
@@ -10,14 +12,18 @@
 		animation-iteration-count: infinite;
 		animation-name: formosa-spin;
 		animation-timing-function: linear;
-		border-color: $formosa-spinner-color $formosa-spinner-color-alternate $formosa-spinner-color-alternate $formosa-spinner-color-alternate;
+		border-color:
+			variables.$formosa-spinner-color
+			variables.$formosa-spinner-color-alternate
+			variables.$formosa-spinner-color-alternate
+			variables.$formosa-spinner-color-alternate;
 		border-radius: 100px;
 		border-style: solid;
-		border-width: $formosa-spinner-border-width;
+		border-width: variables.$formosa-spinner-border-width;
 		content: '';
 		display: block;
-		height: $formosa-spinner-size;
-		width: $formosa-spinner-size;
+		height: variables.$formosa-spinner-size;
+		width: variables.$formosa-spinner-size;
 	}
 }
 
@@ -25,12 +31,12 @@
 	inset: 0;
 	justify-content: center;
 	position: fixed;
-	z-index: $formosa-spinner-zindex;
+	z-index: variables.$formosa-spinner-zindex;
 
 	&::before {
-		border-width: $formosa-spinner-fullscreen-border-width;
-		height: $formosa-spinner-fullscreen-size;
-		width: $formosa-spinner-fullscreen-size;
+		border-width: variables.$formosa-spinner-fullscreen-border-width;
+		height: variables.$formosa-spinner-fullscreen-size;
+		width: variables.$formosa-spinner-fullscreen-size;
 	}
 }
 

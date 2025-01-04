@@ -7,12 +7,12 @@ import PropTypes from 'prop-types';
 import set from 'set-value';
 
 export default function Form({
-	afterSubmitFailure,
-	afterSubmitSuccess,
-	children,
-	row,
-	setRow,
-	showInlineErrors,
+	afterSubmitFailure = null,
+	afterSubmitSuccess = null,
+	children = null,
+	row = {},
+	setRow = null,
+	showInlineErrors = true,
 	...otherProps
 }) {
 	const { addToast } = useContext(FormosaContext);
@@ -153,13 +153,4 @@ Form.propTypes = {
 	row: PropTypes.object,
 	setRow: PropTypes.func,
 	showInlineErrors: PropTypes.bool,
-};
-
-Form.defaultProps = {
-	afterSubmitFailure: null,
-	afterSubmitSuccess: null,
-	children: null,
-	row: {},
-	setRow: null,
-	showInlineErrors: true,
 };

@@ -1,3 +1,5 @@
+@use '../utilities/variables';
+
 .formosa-select-wrapper {
 	display: table;
 	position: relative;
@@ -6,7 +8,7 @@
 .formosa-field__input--select {
 	appearance: none;
 	cursor: pointer;
-	padding-right: $formosa-select-padding-right;
+	padding-right: variables.$formosa-select-padding-right;
 
 	.formosa-field--disabled & {
 		cursor: default;
@@ -14,14 +16,14 @@
 }
 
 .formosa-icon--caret {
-	height: $formosa-select-arrow-size;
-	margin-top: #{$formosa-select-arrow-size * -.5};
+	height: variables.$formosa-select-arrow-size;
+	margin-top: calc(variables.$formosa-select-arrow-size * -.5);
 	position: absolute;
-	right: #{$formosa-input-padding + $formosa-input-border-width};
+	right: calc(variables.$formosa-input-padding + variables.$formosa-input-border-width);
 	top: 50%;
-	width: $formosa-select-arrow-size;
+	width: variables.$formosa-select-arrow-size;
 
 	path {
-		fill: $formosa-input-color;
+		fill: variables.$formosa-input-color;
 	}
 }

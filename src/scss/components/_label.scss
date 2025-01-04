@@ -1,6 +1,8 @@
+@use '../utilities/variables';
+
 .formosa-label-wrapper {
 	display: block;
-	margin-bottom: $formosa-label-margin;
+	margin-bottom: variables.$formosa-label-margin;
 
 	&:empty {
 		display: none;
@@ -8,7 +10,7 @@
 }
 
 .formosa-label {
-	font-weight: $formosa-label-font-weight;
+	font-weight: variables.$formosa-label-font-weight;
 
 	&[for] {
 		cursor: pointer;
@@ -19,7 +21,7 @@
 	}
 
 	.formosa-field--has-error & {
-		color: $formosa-label-error-color;
+		color: variables.$formosa-label-error-color;
 	}
 }
 

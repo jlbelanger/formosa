@@ -1,5 +1,7 @@
+@use '../utilities/variables';
+
 .formosa-field__error {
-	color: $formosa-field-error-color;
+	color: variables.$formosa-field-error-color;
 	margin-top: 4px;
 
 	&:empty {

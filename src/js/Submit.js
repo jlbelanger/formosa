@@ -2,10 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react'; // eslint-disable-line import/no-unresolved
 
 export default function Submit({
-	className,
-	label,
-	prefix,
-	postfix,
+	className = '',
+	label = 'Submit',
+	prefix = null,
+	postfix = null,
 	...otherProps
 }) {
 	return (
@@ -31,11 +31,4 @@ Submit.propTypes = {
 	label: PropTypes.string,
 	prefix: PropTypes.node,
 	postfix: PropTypes.node,
-};
-
-Submit.defaultProps = {
-	className: '',
-	label: 'Submit',
-	prefix: null,
-	postfix: null,
 };

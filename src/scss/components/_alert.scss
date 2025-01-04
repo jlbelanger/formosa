@@ -1,24 +1,26 @@
+@use '../utilities/variables';
+
 .formosa-alert {
-	background-color: $formosa-alert-primary-background-color;
-	color: $formosa-alert-primary-color;
-	padding: $formosa-alert-padding;
+	background-color: variables.$formosa-alert-primary-background-color;
+	color: variables.$formosa-alert-primary-color;
+	padding: variables.$formosa-alert-padding;
 
 	h1 + & {
-		margin-top: $formosa-margin-large;
+		margin-top: variables.$formosa-margin-large;
 	}
 }
 
 .formosa-alert--error {
-	background-color: $formosa-alert-error-background-color;
-	color: $formosa-alert-error-color;
+	background-color: variables.$formosa-alert-error-background-color;
+	color: variables.$formosa-alert-error-color;
 }
 
 .formosa-alert--success {
-	background-color: $formosa-alert-success-background-color;
-	color: $formosa-alert-success-color;
+	background-color: variables.$formosa-alert-success-background-color;
+	color: variables.$formosa-alert-success-color;
 }
 
 .formosa-alert--warning {
-	background-color: $formosa-alert-warning-background-color;
-	color: $formosa-alert-warning-color;
+	background-color: variables.$formosa-alert-warning-background-color;
+	color: variables.$formosa-alert-warning-color;
 }

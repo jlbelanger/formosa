@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react'; // eslint-disable-line import/no-unresolved
 
 export default function ExportableInput({
-	component,
-	type,
+	component = null,
+	type = 'text',
 	...otherProps
 }) {
 	const InputComponent = getInputElement(type, component);
@@ -16,9 +16,4 @@ export default function ExportableInput({
 ExportableInput.propTypes = {
 	component: PropTypes.func,
 	type: PropTypes.string,
-};
-
-ExportableInput.defaultProps = {
-	component: null,
-	type: 'text',
 };

@@ -1,5 +1,7 @@
+@use '../utilities/variables';
+
 :focus {
-	border-color: $formosa-focus-border-color;
-	box-shadow: 0 0 0 $formosa-focus-border-width $formosa-focus-box-shadow-color;
-	outline: none !important; // stylelint-disable-line declaration-no-important
+	border-color: variables.$formosa-focus-border-color;
+	box-shadow: 0 0 0 variables.$formosa-focus-border-width variables.$formosa-focus-box-shadow-color;
+	outline: none !important; /* stylelint-disable-line declaration-no-important */
 }

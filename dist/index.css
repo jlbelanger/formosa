@@ -1,3 +1,8 @@
+/* stylelint-disable-next-line @stylistic/max-line-length */
+/* Ensure height is even. */
+.formosa-field--disabled {
+  /* Undo iOS Safari styles. */
+}
 .formosa-field--disabled > .formosa-input-wrapper {
   opacity: 0.5;
 }
@@ -65,7 +70,7 @@
 .formosa-field__input--textarea {
   -webkit-appearance: none;
      -moz-appearance: none;
-          appearance: none;
+          appearance: none; /* So focus style works on iOS. */
 }
 
 .formosa-field__input:not([size]) {
@@ -267,7 +272,7 @@ input.formosa-autocomplete__input.formosa-field__input {
   padding: 8px 12px;
 }
 .formosa-button:hover, .formosa-button:active, .formosa-button:focus {
-  background-color: #75a3ba;
+  background-color: rgb(117.3, 163.2, 186.15);
 }
 .formosa-button[disabled] {
   cursor: default;
@@ -285,7 +290,7 @@ input.formosa-autocomplete__input.formosa-field__input {
   color: #000;
 }
 .formosa-button--danger:hover, .formosa-button--danger:active, .formosa-button--danger:focus {
-  background-color: #ff3030;
+  background-color: rgb(255, 48.45, 48.45);
 }
 .formosa-button--danger[disabled]:hover, .formosa-button--danger[disabled]:active, .formosa-button--danger[disabled]:focus {
   background-color: #f66;
@@ -297,7 +302,7 @@ input.formosa-autocomplete__input.formosa-field__input {
   color: #000;
 }
 .formosa-button--success:hover, .formosa-button--success:active, .formosa-button--success:focus {
-  background-color: #44c144;
+  background-color: rgb(67.575, 192.525, 67.575);
 }
 .formosa-button--success[disabled]:hover, .formosa-button--success[disabled]:active, .formosa-button--success[disabled]:focus {
   background-color: #6c6;
@@ -309,7 +314,7 @@ input.formosa-autocomplete__input.formosa-field__input {
   color: #000;
 }
 .formosa-button--warning:hover, .formosa-button--warning:active, .formosa-button--warning:focus {
-  background-color: #ff7530;
+  background-color: rgb(255, 117.3, 48.45);
 }
 .formosa-button--warning[disabled]:hover, .formosa-button--warning[disabled]:active, .formosa-button--warning[disabled]:focus {
   background-color: #f96;
@@ -419,7 +424,7 @@ input.formosa-field__input--checkbox.formosa-field__input {
 :focus {
   border-color: #4ad;
   box-shadow: 0 0 0 3px #6cf;
-  outline: none !important;
+  outline: none !important; /* stylelint-disable-line declaration-no-important */
 }
 
 .formosa-horizontal {

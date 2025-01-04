@@ -1,3 +1,5 @@
+@use '../utilities/variables';
+
 .formosa-suffix-container {
 	position: relative;
 }
@@ -5,11 +7,11 @@
 .formosa-suffix {
 	border-color: transparent;
 	border-style: solid;
-	border-width: $formosa-input-border-width 0;
+	border-width: variables.$formosa-input-border-width 0;
 	bottom: 0;
-	padding: $formosa-input-padding;
+	padding: variables.$formosa-input-padding;
 	position: absolute;
-	right: #{$formosa-input-border-width * -1};
+	right: calc(variables.$formosa-input-border-width * -1);
 	top: 0;
 	z-index: 1;
 }

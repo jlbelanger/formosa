@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Spinner from './Spinner';
 import ToastContainer from './ToastContainer';
 
-export default function FormContainer({ children, loadingText }) {
+export default function FormContainer({ children, loadingText = 'Loading...' }) {
 	const [showWarningPrompt, setShowWarningPrompt] = useState(true);
 	const [toasts, setToasts] = useState({});
 
@@ -62,8 +62,4 @@ export default function FormContainer({ children, loadingText }) {
 FormContainer.propTypes = {
 	children: PropTypes.node.isRequired,
 	loadingText: PropTypes.string,
-};
-
-FormContainer.defaultProps = {
-	loadingText: 'Loading...',
 };

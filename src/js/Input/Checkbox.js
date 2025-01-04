@@ -5,16 +5,16 @@ import get from 'get-value';
 import PropTypes from 'prop-types';
 
 export default function Checkbox({
-	afterChange,
-	className,
-	iconAttributes,
-	iconClassName,
-	iconHeight,
-	iconWidth,
-	id,
-	name,
-	setValue,
-	value,
+	afterChange = null,
+	className = '',
+	iconAttributes = null,
+	iconClassName = '',
+	iconHeight = 16,
+	iconWidth = 16,
+	id = null,
+	name = '',
+	setValue = null,
+	value = null,
 	...otherProps
 }) {
 	const { formState, setValues } = useContext(FormContext);
@@ -78,17 +78,4 @@ Checkbox.propTypes = {
 	name: PropTypes.string,
 	setValue: PropTypes.func,
 	value: PropTypes.bool,
-};
-
-Checkbox.defaultProps = {
-	afterChange: null,
-	className: '',
-	iconAttributes: null,
-	iconClassName: '',
-	iconHeight: 16,
-	iconWidth: 16,
-	id: null,
-	name: '',
-	setValue: null,
-	value: null,
 };

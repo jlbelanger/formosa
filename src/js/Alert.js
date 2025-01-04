@@ -1,7 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react'; // eslint-disable-line import/no-unresolved
 
-export default function Alert({ className, children, type, ...otherProps }) {
+export default function Alert({
+	className = '',
+	children,
+	type = null,
+	...otherProps
+}) {
 	if (!children) {
 		return null;
 	}
@@ -25,9 +30,4 @@ Alert.propTypes = {
 	className: PropTypes.string,
 	children: PropTypes.node.isRequired,
 	type: PropTypes.string,
-};
-
-Alert.defaultProps = {
-	className: '',
-	type: null,
 };

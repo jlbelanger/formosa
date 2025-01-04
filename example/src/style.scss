@@ -1,9 +1,9 @@
-$formosa-dark-mode: true;
+@use 'sass:color';
+@use '../../src/scss/utilities/variables' with ($formosa-dark-mode: true);
+@use '../../src/style';
 
-@import '../../src/style';
-
-$background-color: if($formosa-dark-mode, #000, #fff);
-$color: if($formosa-dark-mode, #fff, #000);
+$background-color: if(variables.$formosa-dark-mode, #000, #fff);
+$color: if(variables.$formosa-dark-mode, #fff, #000);
 $margin: 20px;
 $content-width: 700px;
 $sidebar-width: 400px;
@@ -12,8 +12,8 @@ $breakpoint: $content-width + $sidebar-width + 20px;
 body {
 	background-color: $background-color;
 	color: $color;
-	font-family: $formosa-input-font-family;
-	font-size: $formosa-input-font-size;
+	font-family: variables.$formosa-input-font-family;
+	font-size: variables.$formosa-input-font-size;
 	margin: $margin;
 }
 
@@ -54,7 +54,7 @@ h2 {
 
 h1 + *,
 h2 + * {
-	margin-top: 0 !important; // stylelint-disable-line declaration-no-important
+	margin-top: 0 !important; /* stylelint-disable-line declaration-no-important */
 }
 
 a {
@@ -82,8 +82,8 @@ a {
 
 .nav__link {
 	align-items: center;
-	background-color: $formosa-primary-background-color;
-	color: $formosa-primary-color;
+	background-color: variables.$formosa-primary-background-color;
+	color: variables.$formosa-primary-color;
 	display: flex;
 	justify-content: center;
 	min-height: 44px;
@@ -93,7 +93,7 @@ a {
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: scale-color($formosa-primary-background-color, $lightness: -10%);
+		background-color: color.scale(variables.$formosa-primary-background-color, $lightness: -10%);
 	}
 }
 

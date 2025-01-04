@@ -5,14 +5,14 @@ import get from 'get-value';
 import PropTypes from 'prop-types';
 
 export default function Input({
-	afterChange,
-	className,
-	id,
-	name,
-	setValue,
-	suffix,
-	type,
-	value,
+	afterChange = null,
+	className = '',
+	id = null,
+	name = '',
+	setValue = null,
+	suffix = '',
+	type = 'text',
+	value = null,
 	...otherProps
 }) {
 	const { formState, setValues } = useContext(FormContext);
@@ -76,15 +76,4 @@ Input.propTypes = {
 		PropTypes.number,
 		PropTypes.string,
 	]),
-};
-
-Input.defaultProps = {
-	afterChange: null,
-	className: '',
-	id: null,
-	name: '',
-	setValue: null,
-	suffix: '',
-	type: 'text',
-	value: null,
 };

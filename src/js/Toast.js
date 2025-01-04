@@ -4,7 +4,7 @@ import FormosaContext from './FormosaContext';
 import PropTypes from 'prop-types';
 
 export default function Toast({
-	className,
+	className = '',
 	id,
 	milliseconds,
 	text,
@@ -27,8 +27,4 @@ Toast.propTypes = {
 	id: PropTypes.string.isRequired,
 	milliseconds: PropTypes.number.isRequired,
 	text: PropTypes.string.isRequired,
-};
-
-Toast.defaultProps = {
-	className: '',
 };

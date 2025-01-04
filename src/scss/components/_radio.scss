@@ -1,3 +1,5 @@
+@use '../utilities/variables';
+
 .formosa-radio {
 	border: 0;
 	list-style: none;
@@ -22,8 +24,8 @@
 	flex-wrap: wrap;
 
 	.formosa-radio__item {
-		margin-bottom: $formosa-radio-margin;
-		margin-right: $formosa-radio-margin-inline;
+		margin-bottom: variables.$formosa-radio-margin;
+		margin-right: variables.$formosa-radio-margin-inline;
 	}
 }
 
@@ -32,7 +34,7 @@
 }
 
 .formosa-radio__item + .formosa-radio__item {
-	margin-top: $formosa-radio-margin;
+	margin-top: variables.$formosa-radio-margin;
 
 	.formosa-radio--inline & {
 		margin-top: 0;
@@ -41,14 +43,14 @@
 
 input.formosa-radio__input {
 	appearance: none;
-	border-color: $formosa-input-background-color;
-	border-radius: $formosa-radio-border-radius;
-	border-width: $formosa-radio-border-width;
-	box-shadow: 0 0 0 $formosa-input-border-width $formosa-input-border-color;
+	border-color: variables.$formosa-input-background-color;
+	border-radius: variables.$formosa-radio-border-radius;
+	border-width: variables.$formosa-radio-border-width;
+	box-shadow: 0 0 0 variables.$formosa-input-border-width variables.$formosa-input-border-color;
 	cursor: pointer;
-	height: $formosa-radio-size;
-	line-height: $formosa-input-line-height;
-	margin: 0 $formosa-radio-margin-side 0 0;
+	height: variables.$formosa-radio-size;
+	line-height: variables.$formosa-input-line-height;
+	margin: 0 variables.$formosa-radio-margin-side 0 0;
 	padding: 0;
 	vertical-align: middle;
 
@@ -57,16 +59,16 @@ input.formosa-radio__input {
 	}
 
 	&.formosa-field__input {
-		width: $formosa-radio-size;
+		width: variables.$formosa-radio-size;
 	}
 
 	&:checked {
-		background-color: $formosa-input-color;
+		background-color: variables.$formosa-input-color;
 	}
 
 	&:focus {
 		box-shadow:
-			0 0 0 $formosa-input-border-width $formosa-focus-border-color,
-			0 0 0 #{$formosa-input-border-width + $formosa-focus-border-width} $formosa-focus-box-shadow-color;
+			0 0 0 variables.$formosa-input-border-width variables.$formosa-focus-border-color,
+			0 0 0 calc(variables.$formosa-input-border-width + variables.$formosa-focus-border-width) variables.$formosa-focus-box-shadow-color;
 	}
 }

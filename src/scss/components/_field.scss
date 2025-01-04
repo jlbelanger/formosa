@@ -1,3 +1,5 @@
+@use '../utilities/variables';
+
 .formosa-field {
-	margin-top: $formosa-margin-large;
+	margin-top: variables.$formosa-margin-large;
 }

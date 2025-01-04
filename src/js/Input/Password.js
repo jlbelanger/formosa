@@ -3,15 +3,15 @@ import Input from '../Input';
 import PropTypes from 'prop-types';
 
 export default function Password({
-	buttonAttributes,
-	buttonClassName,
-	className,
-	hideAria,
-	hideText,
-	showAria,
-	showText,
-	wrapperAttributes,
-	wrapperClassName,
+	buttonAttributes = null,
+	buttonClassName = '',
+	className = '',
+	hideAria = 'Hide Password',
+	hideText = 'Hide',
+	showAria = 'Show Password',
+	showText = 'Show',
+	wrapperAttributes = null,
+	wrapperClassName = '',
 	...otherProps
 }) {
 	const [tempType, setTempType] = useState('password');
@@ -55,16 +55,4 @@ Password.propTypes = {
 	showText: PropTypes.string,
 	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
-};
-
-Password.defaultProps = {
-	buttonAttributes: null,
-	buttonClassName: '',
-	className: '',
-	hideAria: 'Hide Password',
-	hideText: 'Hide',
-	showAria: 'Show Password',
-	showText: 'Show',
-	wrapperAttributes: null,
-	wrapperClassName: '',
 };

@@ -1,6 +1,8 @@
+@use '../utilities/variables';
+
 .formosa-field__note {
-	font-size: $formosa-note-font-size;
-	line-height: $formosa-note-line-height;
-	margin: $formosa-note-margin;
-	opacity: $formosa-note-opacity;
+	font-size: variables.$formosa-note-font-size;
+	line-height: variables.$formosa-note-line-height;
+	margin: variables.$formosa-note-margin;
+	opacity: variables.$formosa-note-opacity;
 }

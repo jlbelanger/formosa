@@ -5,10 +5,13 @@
 	"private": true,
 	"dependencies": {
 		"@jlbelanger/formosa": "link:..",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
+		"react": "^19.0.0",
+		"react-dom": "^19.0.0",
 		"react-router-dom": "~5.3.4",
 		"react-scripts": "^5.0.1"
+	},
+	"devDependencies": {
+		"@babel/plugin-proposal-private-property-in-object": "^7.21.11"
 	},
 	"scripts": {
 		"start": "DISABLE_ESLINT_PLUGIN=true node ./node_modules/react-scripts/bin/react-scripts.js start",

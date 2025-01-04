@@ -4,13 +4,13 @@ import React from 'react'; // eslint-disable-line import/no-unresolved
 import { ReactComponent as SearchIcon } from '../../svg/search.svg';
 
 export default function Search({
-	className,
-	iconAttributes,
-	iconClassName,
-	iconHeight,
-	iconWidth,
-	wrapperAttributes,
-	wrapperClassName,
+	className = '',
+	iconAttributes = null,
+	iconClassName = '',
+	iconHeight = 16,
+	iconWidth = 16,
+	wrapperAttributes = null,
+	wrapperClassName = '',
 	...otherProps
 }) {
 	return (
@@ -38,14 +38,4 @@ Search.propTypes = {
 	iconWidth: PropTypes.number,
 	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
-};
-
-Search.defaultProps = {
-	className: '',
-	iconAttributes: null,
-	iconClassName: '',
-	iconHeight: 16,
-	iconWidth: 16,
-	wrapperAttributes: null,
-	wrapperClassName: '',
 };

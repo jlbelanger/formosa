@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react'; // eslint-disable-line import/no-unresolved
 import { usePromiseTracker } from 'react-promise-tracker';
 
-export default function Spinner({ loadingText }) {
+export default function Spinner({ loadingText = 'Loading...' }) {
 	const { promiseInProgress } = usePromiseTracker();
 	if (!promiseInProgress) {
 		return null;
@@ -14,8 +14,4 @@ export default function Spinner({ loadingText }) {
 
 Spinner.propTypes = {
 	loadingText: PropTypes.string,
-};
-
-Spinner.defaultProps = {
-	loadingText: 'Loading...',
 };

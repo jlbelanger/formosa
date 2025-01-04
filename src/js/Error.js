@@ -3,8 +3,8 @@ import FormContext from './FormContext';
 import PropTypes from 'prop-types';
 
 export default function Error({
-	id,
-	name,
+	id = null,
+	name = '',
 }) {
 	const { formState } = useContext(FormContext);
 	const hasError = formState && Object.prototype.hasOwnProperty.call(formState.errors, name);
@@ -28,9 +28,4 @@ export default function Error({
 Error.propTypes = {
 	id: PropTypes.string,
 	name: PropTypes.string,
-};
-
-Error.defaultProps = {
-	id: null,
-	name: '',
 };

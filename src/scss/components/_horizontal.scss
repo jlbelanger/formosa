@@ -1,3 +1,5 @@
+@use '../utilities/variables';
+
 @mixin formosa-horizontal() {
 	display: table;
 	width: 100%;
@@ -8,11 +10,11 @@
 		& > .formosa-label-wrapper,
 		& > .formosa-input-wrapper {
 			display: table-cell;
-			padding: $formosa-horizontal-fields-padding 0;
+			padding: variables.$formosa-horizontal-fields-padding 0;
 		}
 
 		& > .formosa-label-wrapper {
-			padding-right: $formosa-horizontal-fields-padding;
+			padding-right: variables.$formosa-horizontal-fields-padding;
 			text-align: right;
 			vertical-align: top;
 			white-space: nowrap;
@@ -20,25 +22,25 @@
 		}
 
 		& > .formosa-input-wrapper {
-			padding-left: $formosa-horizontal-fields-padding;
+			padding-left: variables.$formosa-horizontal-fields-padding;
 			width: 100%;
 
 			& > .formosa-icon--check {
-				left: #{($formosa-checkbox-padding * .5) + $formosa-horizontal-fields-padding};
-				top: #{($formosa-checkbox-padding * .5) + $formosa-horizontal-fields-padding};
+				left: calc((variables.$formosa-checkbox-padding * .5) + variables.$formosa-horizontal-fields-padding);
+				top: calc((variables.$formosa-checkbox-padding * .5) + variables.$formosa-horizontal-fields-padding);
 			}
 		}
 
 		.formosa-label {
 			display: inline-block;
-			line-height: $formosa-input-line-height;
+			line-height: variables.$formosa-input-line-height;
 			padding-left: 0;
 			padding-right: 0;
-			padding-top: #{$formosa-input-padding + $formosa-input-border-width};
+			padding-top: calc(variables.$formosa-input-padding + variables.$formosa-input-border-width);
 		}
 
 		.formosa-radio--inline {
-			padding-top: #{$formosa-input-padding + $formosa-input-border-width};
+			padding-top: calc(variables.$formosa-input-padding + variables.$formosa-input-border-width);
 		}
 	}
 
@@ -56,7 +58,7 @@
 }
 
 .formosa-responsive {
-	@media (width >= $formosa-responsive-breakpoint) {
+	@media (width >= variables.$formosa-responsive-breakpoint) {
 		@include formosa-horizontal;
 	}
 }

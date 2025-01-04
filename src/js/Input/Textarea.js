@@ -4,12 +4,12 @@ import get from 'get-value';
 import PropTypes from 'prop-types';
 
 export default function Textarea({
-	afterChange,
-	className,
-	id,
-	name,
-	setValue,
-	value,
+	afterChange = null,
+	className = '',
+	id = null,
+	name = '',
+	setValue = null,
+	value = null,
 	...otherProps
 }) {
 	const { formState, setValues } = useContext(FormContext);
@@ -62,13 +62,4 @@ Textarea.propTypes = {
 	name: PropTypes.string,
 	setValue: PropTypes.func,
 	value: PropTypes.string,
-};
-
-Textarea.defaultProps = {
-	afterChange: null,
-	className: '',
-	id: null,
-	name: '',
-	setValue: null,
-	value: null,
 };

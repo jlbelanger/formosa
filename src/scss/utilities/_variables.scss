@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $formosa-color-danger: #f66 !default;
 
 $formosa-primary-background-color: #9bc !default;
@@ -25,9 +27,9 @@ $formosa-input-font-family: sans-serif !default;
 $formosa-input-font-size: 18px !default;
 $formosa-input-padding: 8px !default;
 $formosa-input-line-height: 1.5 !default;
-// stylelint-disable-next-line stylistic/max-line-length
-$formosa-input-height: ($formosa-input-border-width * 2) + ($formosa-input-padding * 2) + ($formosa-input-font-size * $formosa-input-line-height) !default;
-$formosa-input-height: if($formosa-input-height % 2 == 0, $formosa-input-height, $formosa-input-height - 1); // Ensure height is even.
+/* stylelint-disable-next-line @stylistic/max-line-length */
+$formosa-input-height: (($formosa-input-border-width + $formosa-input-padding) * 2) + ($formosa-input-font-size * $formosa-input-line-height) !default;
+$formosa-input-height: if($formosa-input-height % 2 == 0, $formosa-input-height, $formosa-input-height - 1); /* Ensure height is even. */
 
 $formosa-margin-large: 24px !default;
 
@@ -35,17 +37,17 @@ $formosa-autocomplete-clear-size: $formosa-input-height - ($formosa-input-border
 $formosa-autocomplete-clear-color: if($formosa-dark-mode, #ddd, #333) !default;
 $formosa-autocomplete-clear-color-hover: if($formosa-dark-mode, #fff, #000) !default;
 
-$formosa-autocomplete-options-background-color: scale-color($formosa-input-background-color, $lightness: 10%) !default;
-$formosa-autocomplete-options-background-color-highlighted: scale-color($formosa-input-background-color, $lightness: 25%) !default;
-$formosa-autocomplete-options-border-color: scale-color($formosa-autocomplete-options-background-color, $lightness: 15%) !default;
+$formosa-autocomplete-options-background-color: color.scale($formosa-input-background-color, $lightness: 10%) !default;
+$formosa-autocomplete-options-background-color-highlighted: color.scale($formosa-input-background-color, $lightness: 25%) !default;
+$formosa-autocomplete-options-border-color: color.scale($formosa-autocomplete-options-background-color, $lightness: 15%) !default;
 
-$formosa-autocomplete-value-background-color: scale-color($formosa-input-background-color, $lightness: 10%) !default;
+$formosa-autocomplete-value-background-color: color.scale($formosa-input-background-color, $lightness: 10%) !default;
 $formosa-autocomplete-value-padding-top: 8px !default;
 $formosa-autocomplete-value-margin: 4px !default;
 $formosa-autocomplete-value-height: ($formosa-autocomplete-value-padding-top * 2) + $formosa-input-font-size !default;
 
 $formosa-button-background-color: $formosa-primary-background-color !default;
-$formosa-button-background-color-hover: scale-color($formosa-button-background-color, $lightness: -15%) !default;
+$formosa-button-background-color-hover: color.scale($formosa-button-background-color, $lightness: -15%) !default;
 $formosa-button-color: $formosa-primary-color !default;
 $formosa-button-border-color: $formosa-button-background-color !default;
 $formosa-button-font-weight: normal !default;
@@ -53,17 +55,17 @@ $formosa-button-padding: $formosa-input-padding !default;
 $formosa-button-padding-side: 12px !default;
 
 $formosa-button-danger-background-color: $formosa-error-background-color !default;
-$formosa-button-danger-background-color-hover: scale-color($formosa-button-danger-background-color, $lightness: -15%) !default;
+$formosa-button-danger-background-color-hover: color.scale($formosa-button-danger-background-color, $lightness: -15%) !default;
 $formosa-button-danger-border-color: $formosa-button-danger-background-color !default;
 $formosa-button-danger-color: $formosa-error-color !default;
 
 $formosa-button-warning-background-color: $formosa-warning-background-color !default;
-$formosa-button-warning-background-color-hover: scale-color($formosa-button-warning-background-color, $lightness: -15%) !default;
+$formosa-button-warning-background-color-hover: color.scale($formosa-button-warning-background-color, $lightness: -15%) !default;
 $formosa-button-warning-border-color: $formosa-button-warning-background-color !default;
 $formosa-button-warning-color: $formosa-warning-color !default;
 
 $formosa-button-success-background-color: $formosa-success-background-color !default;
-$formosa-button-success-background-color-hover: scale-color($formosa-button-success-background-color, $lightness: -15%) !default;
+$formosa-button-success-background-color-hover: color.scale($formosa-button-success-background-color, $lightness: -15%) !default;
 $formosa-button-success-border-color: $formosa-button-success-background-color !default;
 $formosa-button-success-color: $formosa-success-color !default;
 

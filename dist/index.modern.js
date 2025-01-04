@@ -6,25 +6,20 @@ import set from 'set-value';
 import { v4 } from 'uuid';
 
 function _extends() {
-  _extends = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
-    return target;
-  };
-  return _extends.apply(this, arguments);
+    return n;
+  }, _extends.apply(null, arguments);
 }
 
 function Alert(_ref) {
   let {
-    className,
+    className = '',
     children,
-    type,
+    type = null,
     ...otherProps
   } = _ref;
   if (!children) {
@@ -47,10 +42,6 @@ Alert.propTypes = {
   className: PropTypes.string,
   children: PropTypes.node.isRequired,
   type: PropTypes.string
-};
-Alert.defaultProps = {
-  className: '',
-  type: null
 };
 
 const findIncluded = (included, id, type, mainRecord) => {
@@ -257,18 +248,13 @@ class Api {
 
 var _path;
 function _extends$1() {
-  _extends$1 = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
+  return _extends$1 = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
-    return target;
-  };
-  return _extends$1.apply(this, arguments);
+    return n;
+  }, _extends$1.apply(null, arguments);
 }
 function SvgCheck(props) {
   return /*#__PURE__*/createElement("svg", _extends$1({
@@ -295,8 +281,8 @@ var FormContext = /*#__PURE__*/React__default.createContext({
 
 function Error$1(_ref) {
   let {
-    id,
-    name
+    id = null,
+    name = ''
   } = _ref;
   const {
     formState
@@ -318,10 +304,6 @@ function Error$1(_ref) {
 Error$1.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string
-};
-Error$1.defaultProps = {
-  id: null,
-  name: ''
 };
 
 const normalizeOptions = function (options, labelKey, valueKey) {
@@ -394,18 +376,13 @@ const filterByKey = (records, key, value) => {
 
 var _path$1;
 function _extends$2() {
-  _extends$2 = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
+  return _extends$2 = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
-    return target;
-  };
-  return _extends$2.apply(this, arguments);
+    return n;
+  }, _extends$2.apply(null, arguments);
 }
 function SvgX(props) {
   return /*#__PURE__*/createElement("svg", _extends$2({
@@ -418,48 +395,48 @@ function SvgX(props) {
 
 function Autocomplete(_ref) {
   let {
-    afterAdd,
-    afterChange,
-    clearable,
-    clearButtonAttributes,
-    clearButtonClassName,
-    clearIconAttributes,
-    clearIconHeight,
-    clearIconWidth,
-    clearText,
-    disabled,
-    id,
-    inputClassName,
-    inputAttributes,
-    labelFn,
-    labelKey,
-    loadingText,
-    max,
-    name,
-    optionButtonAttributes,
-    optionButtonClassName,
-    optionLabelFn,
-    optionListAttributes,
-    optionListClassName,
-    optionListItemAttributes,
-    optionListItemClassName,
-    options,
-    placeholder,
-    readOnly,
-    removeButtonAttributes,
-    removeButtonClassName,
-    removeIconAttributes,
-    removeIconHeight,
-    removeIconWidth,
-    removeText,
-    setValue,
-    showLoading,
-    url,
-    value,
-    valueKey,
-    valueListItemAttributes,
-    wrapperAttributes,
-    wrapperClassName,
+    afterAdd = null,
+    afterChange = null,
+    clearable = true,
+    clearButtonAttributes = null,
+    clearButtonClassName = '',
+    clearIconAttributes = null,
+    clearIconHeight = 12,
+    clearIconWidth = 12,
+    clearText = 'Clear',
+    disabled = false,
+    id = '',
+    inputAttributes = null,
+    inputClassName = '',
+    labelFn = null,
+    labelKey = 'name',
+    loadingText = 'Loading...',
+    max = null,
+    name = '',
+    optionButtonAttributes = null,
+    optionButtonClassName = '',
+    optionLabelFn = null,
+    optionListAttributes = null,
+    optionListClassName = '',
+    optionListItemAttributes = null,
+    optionListItemClassName = '',
+    options = null,
+    placeholder = 'Search',
+    readOnly = false,
+    removeButtonAttributes = null,
+    removeButtonClassName = '',
+    removeIconAttributes = null,
+    removeIconHeight = 12,
+    removeIconWidth = 12,
+    removeText = 'Remove',
+    setValue = null,
+    showLoading = false,
+    url = null,
+    value = null,
+    valueKey = null,
+    valueListItemAttributes = null,
+    wrapperAttributes = null,
+    wrapperClassName = '',
     ...otherProps
   } = _ref;
   const {
@@ -837,63 +814,19 @@ Autocomplete.propTypes = {
   wrapperAttributes: PropTypes.object,
   wrapperClassName: PropTypes.string
 };
-Autocomplete.defaultProps = {
-  afterAdd: null,
-  afterChange: null,
-  clearable: true,
-  clearButtonAttributes: null,
-  clearButtonClassName: '',
-  clearIconAttributes: null,
-  clearIconHeight: 12,
-  clearIconWidth: 12,
-  clearText: 'Clear',
-  disabled: false,
-  id: '',
-  inputAttributes: null,
-  inputClassName: '',
-  labelFn: null,
-  labelKey: 'name',
-  loadingText: 'Loading...',
-  max: null,
-  name: '',
-  optionButtonAttributes: null,
-  optionButtonClassName: '',
-  optionLabelFn: null,
-  optionListAttributes: null,
-  optionListClassName: '',
-  optionListItemAttributes: null,
-  optionListItemClassName: '',
-  options: null,
-  placeholder: 'Search',
-  readOnly: false,
-  removeButtonAttributes: null,
-  removeButtonClassName: '',
-  removeIconAttributes: null,
-  removeIconHeight: 12,
-  removeIconWidth: 12,
-  removeText: 'Remove',
-  setValue: null,
-  showLoading: false,
-  url: null,
-  value: null,
-  valueKey: null,
-  valueListItemAttributes: null,
-  wrapperAttributes: null,
-  wrapperClassName: ''
-};
 
 function Checkbox(_ref) {
   let {
-    afterChange,
-    className,
-    iconAttributes,
-    iconClassName,
-    iconHeight,
-    iconWidth,
-    id,
-    name,
-    setValue,
-    value,
+    afterChange = null,
+    className = '',
+    iconAttributes = null,
+    iconClassName = '',
+    iconHeight = 16,
+    iconWidth = 16,
+    id = null,
+    name = '',
+    setValue = null,
+    value = null,
     ...otherProps
   } = _ref;
   const {
@@ -948,48 +881,36 @@ Checkbox.propTypes = {
   setValue: PropTypes.func,
   value: PropTypes.bool
 };
-Checkbox.defaultProps = {
-  afterChange: null,
-  className: '',
-  iconAttributes: null,
-  iconClassName: '',
-  iconHeight: 16,
-  iconWidth: 16,
-  id: null,
-  name: '',
-  setValue: null,
-  value: null
-};
 
 function CheckboxList(_ref) {
   let {
-    afterChange,
-    className,
-    disabled,
-    fieldsetAttributes,
-    fieldsetClassName,
-    iconAttributes,
-    iconClassName,
-    iconHeight,
-    iconWidth,
-    inputAttributes,
-    itemAttributes,
-    itemClassName,
-    itemLabelAttributes,
-    itemLabelClassName,
-    itemSpanAttributes,
-    itemSpanClassName,
-    labelKey,
-    legend,
-    loadingText,
-    name,
-    options,
-    readOnly,
-    setValue,
-    showLoading,
-    url,
-    value,
-    valueKey,
+    afterChange = null,
+    className = '',
+    disabled = false,
+    fieldsetAttributes = null,
+    fieldsetClassName = '',
+    iconAttributes = null,
+    iconClassName = '',
+    iconHeight = 16,
+    iconWidth = 16,
+    inputAttributes = null,
+    itemAttributes = null,
+    itemClassName = '',
+    itemLabelAttributes = null,
+    itemLabelClassName = '',
+    itemSpanAttributes = null,
+    itemSpanClassName = '',
+    labelKey = 'name',
+    legend = '',
+    loadingText = 'Loading...',
+    name = '',
+    options = null,
+    readOnly = false,
+    setValue = null,
+    showLoading = false,
+    url = null,
+    value = null,
+    valueKey = null,
     ...otherProps
   } = _ref;
   const {
@@ -1169,64 +1090,35 @@ CheckboxList.propTypes = {
   value: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.number), PropTypes.arrayOf(PropTypes.object), PropTypes.arrayOf(PropTypes.string)]),
   valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
 };
-CheckboxList.defaultProps = {
-  afterChange: null,
-  className: '',
-  disabled: false,
-  fieldsetAttributes: null,
-  fieldsetClassName: '',
-  iconAttributes: null,
-  iconClassName: '',
-  iconHeight: 16,
-  iconWidth: 16,
-  inputAttributes: null,
-  itemAttributes: null,
-  itemClassName: '',
-  itemLabelAttributes: null,
-  itemLabelClassName: '',
-  itemSpanAttributes: null,
-  itemSpanClassName: '',
-  labelKey: 'name',
-  legend: '',
-  loadingText: 'Loading...',
-  name: '',
-  options: null,
-  readOnly: false,
-  setValue: null,
-  showLoading: false,
-  url: null,
-  value: null,
-  valueKey: null
-};
 
 function File(_ref) {
   let {
-    afterChange,
-    buttonAttributes,
-    buttonClassName,
-    className,
-    disabled,
-    emptyText,
-    id,
-    imageAttributes,
-    imageClassName,
-    imageHeight,
-    imagePrefix,
-    imagePreview,
-    inputWrapperAttributes,
-    inputWrapperClassName,
-    linkAttributes,
-    linkClassName,
-    linkImage,
-    multiple,
-    name,
-    readOnly,
-    removeText,
-    required,
-    setValue,
-    value,
-    wrapperAttributes,
-    wrapperClassName,
+    afterChange = null,
+    buttonAttributes = null,
+    buttonClassName = '',
+    className = '',
+    disabled = false,
+    emptyText = 'No file selected.',
+    id = '',
+    imageAttributes = null,
+    imageClassName = '',
+    imageHeight = 100,
+    imagePrefix = '',
+    imagePreview = false,
+    inputWrapperAttributes = null,
+    inputWrapperClassName = '',
+    linkAttributes = null,
+    linkClassName = '',
+    linkImage = false,
+    multiple = false,
+    name = '',
+    readOnly = false,
+    removeText = 'Remove',
+    required = false,
+    setValue = null,
+    value = null,
+    wrapperAttributes = null,
+    wrapperClassName = '',
     ...otherProps
   } = _ref;
   const {
@@ -1395,39 +1287,11 @@ File.propTypes = {
   wrapperAttributes: PropTypes.object,
   wrapperClassName: PropTypes.string
 };
-File.defaultProps = {
-  afterChange: null,
-  buttonAttributes: null,
-  buttonClassName: '',
-  className: '',
-  disabled: false,
-  emptyText: 'No file selected.',
-  id: '',
-  imageAttributes: null,
-  imageClassName: '',
-  imageHeight: 100,
-  imagePrefix: '',
-  imagePreview: false,
-  inputWrapperAttributes: null,
-  inputWrapperClassName: '',
-  linkAttributes: null,
-  linkClassName: '',
-  linkImage: false,
-  multiple: false,
-  name: '',
-  readOnly: false,
-  removeText: 'Remove',
-  required: false,
-  setValue: null,
-  value: null,
-  wrapperAttributes: null,
-  wrapperClassName: ''
-};
 
 function ConditionalWrapper(_ref) {
   let {
     children,
-    condition,
+    condition = false,
     ...props
   } = _ref;
   if (!condition) {
@@ -1439,20 +1303,17 @@ ConditionalWrapper.propTypes = {
   children: PropTypes.node.isRequired,
   condition: PropTypes.any
 };
-ConditionalWrapper.defaultProps = {
-  condition: false
-};
 
 function Input(_ref) {
   let {
-    afterChange,
-    className,
-    id,
-    name,
-    setValue,
-    suffix,
-    type,
-    value,
+    afterChange = null,
+    className = '',
+    id = null,
+    name = '',
+    setValue = null,
+    suffix = '',
+    type = 'text',
+    value = null,
     ...otherProps
   } = _ref;
   const {
@@ -1510,28 +1371,18 @@ Input.propTypes = {
   type: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
-Input.defaultProps = {
-  afterChange: null,
-  className: '',
-  id: null,
-  name: '',
-  setValue: null,
-  suffix: '',
-  type: 'text',
-  value: null
-};
 
 function Password(_ref) {
   let {
-    buttonAttributes,
-    buttonClassName,
-    className,
-    hideAria,
-    hideText,
-    showAria,
-    showText,
-    wrapperAttributes,
-    wrapperClassName,
+    buttonAttributes = null,
+    buttonClassName = '',
+    className = '',
+    hideAria = 'Hide Password',
+    hideText = 'Hide',
+    showAria = 'Show Password',
+    showText = 'Show',
+    wrapperAttributes = null,
+    wrapperClassName = '',
     ...otherProps
   } = _ref;
   const [tempType, setTempType] = useState('password');
@@ -1568,43 +1419,31 @@ Password.propTypes = {
   wrapperAttributes: PropTypes.object,
   wrapperClassName: PropTypes.string
 };
-Password.defaultProps = {
-  buttonAttributes: null,
-  buttonClassName: '',
-  className: '',
-  hideAria: 'Hide Password',
-  hideText: 'Hide',
-  showAria: 'Show Password',
-  showText: 'Show',
-  wrapperAttributes: null,
-  wrapperClassName: ''
-};
 
 function Radio(_ref) {
   let {
-    afterChange,
-    className,
-    fieldsetAttributes,
-    fieldsetClassName,
-    inputAttributes,
-    itemAttributes,
-    itemClassName,
-    itemLabelAttributes,
-    itemLabelClassName,
-    itemSpanAttributes,
-    itemSpanClassName,
-    label,
-    labelKey,
-    legend,
-    loadingText,
-    name,
-    options,
-    required,
-    setValue,
-    showLoading,
-    url,
-    value,
-    valueKey,
+    afterChange = null,
+    className = '',
+    fieldsetAttributes = null,
+    fieldsetClassName = '',
+    inputAttributes = null,
+    itemAttributes = null,
+    itemClassName = '',
+    itemLabelAttributes = null,
+    itemLabelClassName = '',
+    itemSpanAttributes = null,
+    itemSpanClassName = '',
+    labelKey = 'name',
+    legend = '',
+    loadingText = 'Loading...',
+    name = '',
+    options = null,
+    required = false,
+    setValue = null,
+    showLoading = false,
+    url = null,
+    value = null,
+    valueKey = null,
     ...otherProps
   } = _ref;
   const {
@@ -1760,46 +1599,16 @@ Radio.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.string]),
   valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
 };
-Radio.defaultProps = {
-  afterChange: null,
-  className: '',
-  fieldsetAttributes: null,
-  fieldsetClassName: '',
-  inputAttributes: null,
-  itemAttributes: null,
-  itemClassName: '',
-  itemLabelAttributes: null,
-  itemLabelClassName: '',
-  itemSpanAttributes: null,
-  itemSpanClassName: '',
-  label: '',
-  labelKey: 'name',
-  legend: '',
-  loadingText: 'Loading...',
-  name: '',
-  options: null,
-  required: false,
-  setValue: null,
-  showLoading: false,
-  url: null,
-  value: null,
-  valueKey: null
-};
 
 var _path$2;
 function _extends$3() {
-  _extends$3 = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
+  return _extends$3 = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
-    return target;
-  };
-  return _extends$3.apply(this, arguments);
+    return n;
+  }, _extends$3.apply(null, arguments);
 }
 function SvgSearch(props) {
   return /*#__PURE__*/createElement("svg", _extends$3({
@@ -1812,13 +1621,13 @@ function SvgSearch(props) {
 
 function Search(_ref) {
   let {
-    className,
-    iconAttributes,
-    iconClassName,
-    iconHeight,
-    iconWidth,
-    wrapperAttributes,
-    wrapperClassName,
+    className = '',
+    iconAttributes = null,
+    iconClassName = '',
+    iconHeight = 16,
+    iconWidth = 16,
+    wrapperAttributes = null,
+    wrapperClassName = '',
     ...otherProps
   } = _ref;
   return /*#__PURE__*/React__default.createElement("div", _extends({
@@ -1841,30 +1650,16 @@ Search.propTypes = {
   wrapperAttributes: PropTypes.object,
   wrapperClassName: PropTypes.string
 };
-Search.defaultProps = {
-  className: '',
-  iconAttributes: null,
-  iconClassName: '',
-  iconHeight: 16,
-  iconWidth: 16,
-  wrapperAttributes: null,
-  wrapperClassName: ''
-};
 
 var _path$3;
 function _extends$4() {
-  _extends$4 = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
+  return _extends$4 = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
-    return target;
-  };
-  return _extends$4.apply(this, arguments);
+    return n;
+  }, _extends$4.apply(null, arguments);
 }
 function SvgCaret(props) {
   return /*#__PURE__*/createElement("svg", _extends$4({
@@ -1877,27 +1672,27 @@ function SvgCaret(props) {
 
 function Select(_ref) {
   let {
-    afterChange,
-    className,
-    hideBlank,
-    iconAttributes,
-    iconClassName,
-    iconHeight,
-    iconWidth,
-    id,
-    labelKey,
-    loadingText,
-    multiple,
-    name,
-    optionAttributes,
-    options,
-    setValue,
-    showLoading,
-    url,
-    value,
-    valueKey,
-    wrapperAttributes,
-    wrapperClassName,
+    afterChange = null,
+    className = '',
+    hideBlank = false,
+    iconAttributes = null,
+    iconClassName = '',
+    iconHeight = 16,
+    iconWidth = 16,
+    id = null,
+    labelKey = 'name',
+    loadingText = 'Loading...',
+    multiple = false,
+    name = '',
+    optionAttributes = null,
+    options = null,
+    setValue = null,
+    showLoading = false,
+    url = null,
+    value = null,
+    valueKey = null,
+    wrapperAttributes = null,
+    wrapperClassName = '',
     ...otherProps
   } = _ref;
   const {
@@ -2041,38 +1836,15 @@ Select.propTypes = {
   wrapperAttributes: PropTypes.object,
   wrapperClassName: PropTypes.string
 };
-Select.defaultProps = {
-  afterChange: null,
-  className: '',
-  hideBlank: false,
-  iconAttributes: null,
-  iconClassName: '',
-  iconHeight: 16,
-  iconWidth: 16,
-  id: null,
-  labelKey: 'name',
-  loadingText: 'Loading...',
-  multiple: false,
-  name: '',
-  optionAttributes: null,
-  options: null,
-  setValue: null,
-  showLoading: false,
-  url: null,
-  value: null,
-  valueKey: null,
-  wrapperAttributes: null,
-  wrapperClassName: ''
-};
 
 function Textarea(_ref) {
   let {
-    afterChange,
-    className,
-    id,
-    name,
-    setValue,
-    value,
+    afterChange = null,
+    className = '',
+    id = null,
+    name = '',
+    setValue = null,
+    value = null,
     ...otherProps
   } = _ref;
   const {
@@ -2120,16 +1892,8 @@ Textarea.propTypes = {
   setValue: PropTypes.func,
   value: PropTypes.string
 };
-Textarea.defaultProps = {
-  afterChange: null,
-  className: '',
-  id: null,
-  name: '',
-  setValue: null,
-  value: null
-};
 
-var getInputElement = ((type, component) => {
+var getInputElement = (type, component) => {
   if (component) {
     return component;
   }
@@ -2161,12 +1925,12 @@ var getInputElement = ((type, component) => {
     return CheckboxList;
   }
   return Input;
-});
+};
 
 function ExportableInput(_ref) {
   let {
-    component,
-    type,
+    component = null,
+    type = 'text',
     ...otherProps
   } = _ref;
   const InputComponent = getInputElement(type, component);
@@ -2178,19 +1942,15 @@ ExportableInput.propTypes = {
   component: PropTypes.func,
   type: PropTypes.string
 };
-ExportableInput.defaultProps = {
-  component: null,
-  type: 'text'
-};
 
 function Label(_ref) {
   let {
-    className,
-    htmlFor,
-    label,
-    note,
-    required,
-    type,
+    className = '',
+    htmlFor = '',
+    label = '',
+    note = '',
+    required = false,
+    type = '',
     ...otherProps
   } = _ref;
   let labelClassName = 'formosa-label';
@@ -2225,39 +1985,31 @@ Label.propTypes = {
   required: PropTypes.bool,
   type: PropTypes.string
 };
-Label.defaultProps = {
-  className: '',
-  htmlFor: '',
-  label: '',
-  note: '',
-  required: false,
-  type: ''
-};
 
 function Field(_ref) {
   let {
-    component,
-    disabled,
-    id,
-    inputInnerWrapperAttributes,
-    inputInnerWrapperClassName,
-    inputWrapperAttributes,
-    inputWrapperClassName,
-    label,
-    labelAttributes,
-    labelClassName,
-    labelNote,
-    labelPosition,
-    name,
-    note,
-    prefix,
-    postfix,
-    readOnly,
-    required,
-    suffix,
-    type,
-    wrapperAttributes,
-    wrapperClassName,
+    component = null,
+    disabled = false,
+    id = null,
+    inputInnerWrapperAttributes = {},
+    inputInnerWrapperClassName = '',
+    inputWrapperAttributes = {},
+    inputWrapperClassName = '',
+    label = '',
+    labelAttributes = {},
+    labelClassName = '',
+    labelNote = '',
+    labelPosition = 'before',
+    name = '',
+    note = '',
+    prefix = null,
+    postfix = null,
+    readOnly = false,
+    required = false,
+    suffix = '',
+    type = 'text',
+    wrapperAttributes = {},
+    wrapperClassName = '',
     ...otherProps
   } = _ref;
   const {
@@ -2384,30 +2136,6 @@ Field.propTypes = {
   type: PropTypes.string,
   wrapperAttributes: PropTypes.object,
   wrapperClassName: PropTypes.string
-};
-Field.defaultProps = {
-  component: null,
-  disabled: false,
-  id: null,
-  inputInnerWrapperAttributes: {},
-  inputInnerWrapperClassName: '',
-  inputWrapperAttributes: {},
-  inputWrapperClassName: '',
-  label: '',
-  labelAttributes: {},
-  labelClassName: '',
-  labelNote: '',
-  labelPosition: 'before',
-  name: '',
-  note: '',
-  prefix: null,
-  postfix: null,
-  readOnly: false,
-  required: false,
-  suffix: '',
-  type: 'text',
-  wrapperAttributes: {},
-  wrapperClassName: ''
 };
 
 var FormosaContext = /*#__PURE__*/React__default.createContext({
@@ -2672,26 +2400,26 @@ const getBody = function (method, type, id, formState, dirtyKeys, relationshipNa
 
 function FormInner(_ref) {
   let {
-    afterNoSubmit,
-    beforeSubmit,
-    children,
-    clearOnSubmit,
-    defaultRow,
-    errorMessageText,
-    errorToastText,
-    filterBody,
-    filterValues,
-    htmlId,
-    id,
-    method,
-    params,
-    path,
-    preventEmptyRequest,
-    preventEmptyRequestText,
-    relationshipNames,
-    showMessage,
-    successMessageText,
-    successToastText,
+    afterNoSubmit = null,
+    beforeSubmit = null,
+    children = null,
+    clearOnSubmit = false,
+    defaultRow = {},
+    errorMessageText = '',
+    errorToastText = '',
+    filterBody = null,
+    filterValues = null,
+    htmlId = '',
+    id = '',
+    method = null,
+    params = '',
+    path = null,
+    preventEmptyRequest = false,
+    preventEmptyRequestText = 'No changes to save.',
+    relationshipNames = [],
+    showMessage = true,
+    successMessageText = '',
+    successToastText = '',
     ...otherProps
   } = _ref;
   const {
@@ -2830,37 +2558,15 @@ FormInner.propTypes = {
   successMessageText: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
   successToastText: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
 };
-FormInner.defaultProps = {
-  afterNoSubmit: null,
-  beforeSubmit: null,
-  children: null,
-  clearOnSubmit: false,
-  defaultRow: {},
-  errorMessageText: '',
-  errorToastText: '',
-  filterBody: null,
-  filterValues: null,
-  htmlId: '',
-  id: '',
-  method: null,
-  params: '',
-  path: null,
-  preventEmptyRequest: false,
-  preventEmptyRequestText: 'No changes to save.',
-  relationshipNames: [],
-  showMessage: true,
-  successMessageText: '',
-  successToastText: ''
-};
 
 function Form(_ref) {
   let {
-    afterSubmitFailure,
-    afterSubmitSuccess,
-    children,
-    row,
-    setRow,
-    showInlineErrors,
+    afterSubmitFailure = null,
+    afterSubmitSuccess = null,
+    children = null,
+    row = {},
+    setRow = null,
+    showInlineErrors = true,
     ...otherProps
   } = _ref;
   const {
@@ -2996,14 +2702,6 @@ Form.propTypes = {
   setRow: PropTypes.func,
   showInlineErrors: PropTypes.bool
 };
-Form.defaultProps = {
-  afterSubmitFailure: null,
-  afterSubmitSuccess: null,
-  children: null,
-  row: {},
-  setRow: null,
-  showInlineErrors: true
-};
 
 function FormAlert(_ref) {
   let {
@@ -3022,7 +2720,7 @@ function FormAlert(_ref) {
 
 function Spinner(_ref) {
   let {
-    loadingText
+    loadingText = 'Loading...'
   } = _ref;
   const {
     promiseInProgress
@@ -3038,13 +2736,10 @@ function Spinner(_ref) {
 Spinner.propTypes = {
   loadingText: PropTypes.string
 };
-Spinner.defaultProps = {
-  loadingText: 'Loading...'
-};
 
 function Toast(_ref) {
   let {
-    className,
+    className = '',
     id,
     milliseconds,
     text
@@ -3078,9 +2773,6 @@ Toast.propTypes = {
   milliseconds: PropTypes.number.isRequired,
   text: PropTypes.string.isRequired
 };
-Toast.defaultProps = {
-  className: ''
-};
 
 function ToastContainer() {
   const {
@@ -3100,7 +2792,7 @@ function ToastContainer() {
 function FormContainer(_ref) {
   let {
     children,
-    loadingText
+    loadingText = 'Loading...'
   } = _ref;
   const [showWarningPrompt, setShowWarningPrompt] = useState(true);
   const [toasts, setToasts] = useState({});
@@ -3159,16 +2851,13 @@ FormContainer.propTypes = {
   children: PropTypes.node.isRequired,
   loadingText: PropTypes.string
 };
-FormContainer.defaultProps = {
-  loadingText: 'Loading...'
-};
 
 function Submit(_ref) {
   let {
-    className,
-    label,
-    prefix,
-    postfix,
+    className = '',
+    label = 'Submit',
+    prefix = null,
+    postfix = null,
     ...otherProps
   } = _ref;
   return /*#__PURE__*/React__default.createElement("div", {
@@ -3187,12 +2876,6 @@ Submit.propTypes = {
   label: PropTypes.string,
   prefix: PropTypes.node,
   postfix: PropTypes.node
-};
-Submit.defaultProps = {
-  className: '',
-  label: 'Submit',
-  prefix: null,
-  postfix: null
 };
 
 export { Alert, Api, SvgCheck as CheckIcon, Error$1 as Error, Field, Form, FormAlert, FormContainer, FormContext, FormosaContext, ExportableInput as Input, Label, Submit };

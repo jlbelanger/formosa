@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react'; // eslint-disable-line import/no-unresolved
 
 export default function Label({
-	className,
-	htmlFor,
-	label,
-	note,
-	required,
-	type,
+	className = '',
+	htmlFor = '',
+	label = '',
+	note = '',
+	required = false,
+	type = '',
 	...otherProps
 }) {
 	let labelClassName = 'formosa-label';
@@ -44,13 +44,4 @@ Label.propTypes = {
 	note: PropTypes.string,
 	required: PropTypes.bool,
 	type: PropTypes.string,
-};
-
-Label.defaultProps = {
-	className: '',
-	htmlFor: '',
-	label: '',
-	note: '',
-	required: false,
-	type: '',
 };

@@ -1,3 +1,5 @@
+@use '../utilities/variables';
+
 .formosa-search-wrapper {
 	display: table;
 	position: relative;
@@ -6,19 +8,19 @@
 
 input.formosa-field__input--search {
 	appearance: none;
-	padding-right: #{$formosa-search-icon-size + ($formosa-input-padding * 2)};
+	padding-right: calc(variables.$formosa-search-icon-size + (variables.$formosa-input-padding * 2));
 }
 
 .formosa-icon--search {
-	height: $formosa-search-icon-size;
-	margin-top: #{$formosa-search-icon-size * -.5};
+	height: variables.$formosa-search-icon-size;
+	margin-top: calc(variables.$formosa-search-icon-size * -.5);
 	pointer-events: none;
 	position: absolute;
-	right: $formosa-input-padding;
+	right: variables.$formosa-input-padding;
 	top: 50%;
-	width: $formosa-search-icon-size;
+	width: variables.$formosa-search-icon-size;
 
 	path {
-		fill: $formosa-input-color;
+		fill: variables.$formosa-input-color;
 	}
 }
