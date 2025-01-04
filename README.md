@@ -15,7 +15,7 @@ Formosa is a [React](https://www.npmjs.com/package/react) form component library
 
 ## Requirements
 
-- [React](https://www.npmjs.com/package/react) 18+
+- [React](https://www.npmjs.com/package/react) 19+
 
 ## Install
 
@@ -63,14 +63,19 @@ export default function App() {
 By default, no styles are included. To include all styles (eg. in `src/index.scss`):
 
 ``` scss
-@import '@jlbelanger/formosa/src/style';
+@use '@jlbelanger/formosa/src/scss/utilities/variables' with (
+	/* Your variable overrides go here. */
+);
+@use '@jlbelanger/formosa/src/style';
 ```
 
 To selectively include specific styles listed in the [components](https://github.com/jlbelanger/formosa/tree/main/src/scss/components) folder:
 
 ``` scss
-@import '@jlbelanger/formosa/src/scss/utilities/variables';
-@import '@jlbelanger/formosa/src/scss/components/checkbox';
+@use '@jlbelanger/formosa/src/scss/utilities/variables' with (
+	/* Your variable overrides go here. */
+);
+@use '@jlbelanger/formosa/src/scss/components/checkbox';
 ```
 
 A list of Sass variables is available in [_variables.scss](https://github.com/jlbelanger/formosa/blob/main/src/scss/utilities/_variables.scss).
@@ -106,7 +111,7 @@ import { Form } from '@jlbelanger/formosa';
 	/* Optional (TODO: add other fields) */
 	htmlId="foo"
 
-	/* All other props are added to the form element */
+	/* All other props are added to the <form> element */
 	className="my-class-name"
 	data-foo="example"
 >
@@ -218,7 +223,7 @@ import { Field } from '@jlbelanger/formosa';
 
 The `<Submit>` component offers a simple way to display the submit button in a horizontal form.
 
-If you aren't using a horizontal form, or if you want more control over how the submit button is displayed, you can use a regular old `<button type="submit">Submit</button>`; as long as it is inside the `<Form>`, it will work. (Or, to display the button outside the `<Form>`, you can give the `<Form>` a `htmlId` prop, and add `form="whatever-the-htmlId-is"` to the `<button>`).
+If you aren't using a horizontal form, or if you want more control over how the submit button is displayed, you can use a regular old `<button type="submit">Submit</button>`; as long as it is inside the `<Form>`, it will work. (Or, to display the button outside the `<Form>`, you can give the `<Form>` an `htmlId` prop, and add `form="whatever-the-htmlId-is"` to the `<button>`).
 
 ``` jsx
 import { Submit } from '@jlbelanger/formosa';
