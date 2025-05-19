@@ -12,8 +12,7 @@ source "${HOME}/Websites/infrastructure/deploy/static.sh"
 
 check_git_branch
 check_git_changes
-cd example
-build_static
+build_static "example"
 deploy_git
 deploy_static "/example"
 printf "\e[0;32mDone.\n\e[0m"
