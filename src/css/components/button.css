@@ -1,0 +1,92 @@
+.formosa-button {
+	background-color: var(--formosa-button-background-color);
+	border: var(--formosa-input-border-width) solid var(--formosa-button-border-color);
+	border-radius: var(--formosa-input-border-radius);
+	color: var(--formosa-button-color);
+	cursor: pointer;
+	font-family: var(--formosa-input-font-family);
+	font-size: var(--formosa-input-font-size);
+	font-weight: var(--formosa-button-font-weight);
+	line-height: var(--formosa-input-line-height);
+	padding: var(--formosa-button-padding) var(--formosa-button-padding-side);
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: var(--formosa-button-background-color-hover);
+	}
+
+	&[disabled] {
+		cursor: default;
+
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: var(--formosa-button-background-color);
+		}
+	}
+
+	path {
+		fill: var(--formosa-button-color);
+	}
+}
+
+.formosa-button--danger {
+	background-color: var(--formosa-button-danger-background-color);
+	border-color: var(--formosa-button-danger-border-color);
+	color: var(--formosa-button-danger-color);
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: var(--formosa-button-danger-background-color-hover);
+	}
+
+	&[disabled] {
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: var(--formosa-button-danger-background-color);
+		}
+	}
+}
+
+.formosa-button--success {
+	background-color: var(--formosa-button-success-background-color);
+	border-color: var(--formosa-button-success-border-color);
+	color: var(--formosa-button-success-color);
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: var(--formosa-button-success-background-color-hover);
+	}
+
+	&[disabled] {
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: var(--formosa-button-success-background-color);
+		}
+	}
+}
+
+.formosa-button--warning {
+	background-color: var(--formosa-button-warning-background-color);
+	border-color: var(--formosa-button-warning-border-color);
+	color: var(--formosa-button-warning-color);
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: var(--formosa-button-warning-background-color-hover);
+	}
+
+	&[disabled] {
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: var(--formosa-button-warning-background-color);
+		}
+	}
+}

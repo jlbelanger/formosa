@@ -1,8 +1,6 @@
-@use '../utilities/variables';
-
 .formosa-prefix {
 	border-bottom-right-radius: 0;
-	border-right-width: variables.$formosa-prefix-border-width;
+	border-right-width: var(--formosa-prefix-border-width);
 	border-top-right-radius: 0;
 
 	&:focus {
@@ -12,7 +10,7 @@
 
 .formosa-postfix {
 	border-bottom-left-radius: 0;
-	border-left-width: variables.$formosa-postfix-border-width;
+	border-left-width: var(--formosa-postfix-border-width);
 	border-top-left-radius: 0;
 
 	&:focus {

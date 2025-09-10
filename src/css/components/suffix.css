@@ -1,0 +1,15 @@
+.formosa-suffix-container {
+	position: relative;
+}
+
+.formosa-suffix {
+	border-color: transparent;
+	border-style: solid;
+	border-width: var(--formosa-input-border-width) 0;
+	bottom: 0;
+	padding: var(--formosa-input-padding);
+	position: absolute;
+	right: calc(var(--formosa-input-border-width) * -1);
+	top: 0;
+	z-index: 1;
+}

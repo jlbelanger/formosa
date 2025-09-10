@@ -1,28 +1,28 @@
-@use 'sass:color';
-@use '../../src/scss/utilities/variables' with ($formosa-dark-mode: true);
-@use '../../src/style';
+:root {
+	--background-color: #eee;
+	--color: #000;
+	--margin: 20px;
+	--content-width: 700px;
+	--sidebar-width: 400px;
+}
 
-$background-color: if(variables.$formosa-dark-mode, #000, #fff);
-$color: if(variables.$formosa-dark-mode, #fff, #000);
-$margin: 20px;
-$content-width: 700px;
-$sidebar-width: 400px;
-$breakpoint: $content-width + $sidebar-width + 20px;
+/* var(--content-width) + var(--sidebar-width) + var(--margin) */
+@custom-media --breakpoint (width >= 1140px);
 
 body {
-	background-color: $background-color;
-	color: $color;
-	font-family: variables.$formosa-input-font-family;
-	font-size: variables.$formosa-input-font-size;
-	margin: $margin;
+	background-color: var(--background-color);
+	color: var(--color);
+	font-family: var(--formosa-input-font-family);
+	font-size: var(--formosa-input-font-size);
+	margin: var(--margin);
 }
 
 main {
 	margin: 0 auto;
-	max-width: $content-width;
+	max-width: var(--content-width);
 
-	@media (width >= $breakpoint) {
-		padding-right: $sidebar-width;
+	@media (--breakpoint) {
+		padding-right: var(--sidebar-width);
 	}
 }
 
@@ -58,7 +58,7 @@ h2 + * {
 }
 
 a {
-	color: #0cf;
+	color: #06f;
 
 	&:hover,
 	&:active,
@@ -71,7 +71,7 @@ a {
 	display: flex;
 	flex-wrap: wrap;
 	list-style: none;
-	margin: 0 -1px $margin;
+	margin: 0 -1px var(--margin);
 	padding: 0;
 }
 
@@ -82,8 +82,8 @@ a {
 
 .nav__link {
 	align-items: center;
-	background-color: variables.$formosa-primary-background-color;
-	color: variables.$formosa-primary-color;
+	background-color: var(--formosa-button-background-color);
+	color: var(--formosa-primary-color);
 	display: flex;
 	justify-content: center;
 	min-height: 44px;
@@ -93,18 +93,18 @@ a {
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: color.scale(variables.$formosa-primary-background-color, $lightness: -10%);
+		background-color: var(--formosa-button-background-color-hover);
 	}
 }
 
 .nav__link--active {
-	background-color: $background-color;
-	color: $color;
+	background-color: var(--background-color);
+	color: var(--color);
 
 	&:hover,
 	&:active,
 	&:focus {
-		background-color: $background-color;
+		background-color: var(--background-color);
 	}
 }
 
@@ -114,11 +114,11 @@ a {
 
 .code {
 	pre {
-		background-color: #333;
+		background-color: #ccc;
 		box-sizing: border-box;
 		font-size: 16px;
 		line-height: 1.5;
-		margin: $margin 0 0;
+		margin: var(--margin) 0 0;
 		overflow: auto;
 		padding: 12px;
 		white-space: pre-wrap;
@@ -130,13 +130,13 @@ a {
 			font-weight: bold;
 		}
 
-		@media (width >= $breakpoint) {
+		@media (--breakpoint) {
 			bottom: 0;
 			margin: 0;
 			position: fixed;
 			right: 0;
 			top: 0;
-			width: $sidebar-width;
+			width: var(--sidebar-width);
 			z-index: 999;
 		}
 	}

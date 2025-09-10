@@ -1,5 +1,3 @@
-@use '../utilities/variables';
-
 .formosa-spinner {
 	align-content: center;
 	align-items: center;
@@ -13,17 +11,17 @@
 		animation-name: formosa-spin;
 		animation-timing-function: linear;
 		border-color:
-			variables.$formosa-spinner-color
-			variables.$formosa-spinner-color-alternate
-			variables.$formosa-spinner-color-alternate
-			variables.$formosa-spinner-color-alternate;
+			var(--formosa-spinner-color)
+			var(--formosa-spinner-color-alternate)
+			var(--formosa-spinner-color-alternate)
+			var(--formosa-spinner-color-alternate);
 		border-radius: 100px;
 		border-style: solid;
-		border-width: variables.$formosa-spinner-border-width;
+		border-width: var(--formosa-spinner-border-width);
 		content: '';
 		display: block;
-		height: variables.$formosa-spinner-size;
-		width: variables.$formosa-spinner-size;
+		height: var(--formosa-spinner-size);
+		width: var(--formosa-spinner-size);
 	}
 }
 
@@ -31,12 +29,12 @@
 	inset: 0;
 	justify-content: center;
 	position: fixed;
-	z-index: variables.$formosa-spinner-zindex;
+	z-index: var(--formosa-spinner-zindex);
 
 	&::before {
-		border-width: variables.$formosa-spinner-fullscreen-border-width;
-		height: variables.$formosa-spinner-fullscreen-size;
-		width: variables.$formosa-spinner-fullscreen-size;
+		border-width: var(--formosa-spinner-fullscreen-border-width);
+		height: var(--formosa-spinner-fullscreen-size);
+		width: var(--formosa-spinner-fullscreen-size);
 	}
 }
 

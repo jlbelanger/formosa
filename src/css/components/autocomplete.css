@@ -1,0 +1,168 @@
+.formosa-autocomplete {
+	background-color: var(--formosa-input-background-color);
+	border: var(--formosa-input-border-width) solid var(--formosa-input-border-color);
+	border-radius: var(--formosa-input-border-radius);
+	display: flex;
+	min-height: var(--formosa-input-height);
+	position: relative;
+
+	&:focus-within {
+		border-color: var(--formosa-focus-border-color);
+		box-shadow: 0 0 0 var(--formosa-focus-border-width) var(--formosa-focus-box-shadow-color);
+	}
+}
+
+.formosa-autocomplete__options {
+	--top: calc(100% + var(--formosa-focus-border-width));
+
+	background-color: var(--formosa-autocomplete-options-background-color);
+	left: calc(var(--formosa-input-border-width) * -1);
+	list-style: none;
+	margin: 0;
+	max-height: 50vh;
+	overflow: auto;
+	padding: 0;
+	position: absolute;
+	right: calc(var(--formosa-input-border-width) * -1);
+	top: var(--top);
+	z-index: var(--formosa-autocomplete-zindex);
+}
+
+.formosa-autocomplete__input {
+	height: var(--formosa-autocomplete-value-height);
+}
+
+input.formosa-autocomplete__input {
+	--input-margin: calc((var(--formosa-input-height) - (var(--formosa-input-border-width) * 2) - var(--formosa-autocomplete-value-height)) * .5);
+
+	background-color: transparent;
+	border: 0;
+	box-sizing: border-box;
+	height: auto;
+	left: calc((var(--formosa-input-border-width) + var(--input-margin)) * -1);
+	margin: var(--input-margin);
+	padding: var(--formosa-autocomplete-value-padding-top) var(--formosa-input-padding);
+	position: relative;
+	top: calc((var(--formosa-input-border-width) + var(--input-margin)) * -1);
+
+	&.formosa-field__input {
+		width: calc(100% + (var(--formosa-input-border-width) + var(--input-margin)) * 2);
+	}
+}
+
+.formosa-autocomplete__option + .formosa-autocomplete__option {
+	border-top: 1px solid var(--formosa-autocomplete-options-border-color);
+}
+
+.formosa-autocomplete__option--highlighted {
+	.formosa-autocomplete__option__button {
+		background-color: var(--formosa-autocomplete-options-background-color-highlighted);
+	}
+}
+
+.formosa-autocomplete__option__button {
+	background-color: transparent;
+	border: 0;
+	border-radius: 0;
+	color: var(--formosa-input-color);
+	cursor: pointer;
+	font-family: var(--formosa-input-font-family);
+	font-size: var(--formosa-input-font-size);
+	min-height: 44px;
+	overflow: hidden;
+	padding: var(--formosa-input-padding);
+	text-align: left;
+	text-overflow: ellipsis;
+	width: 100%;
+
+	&:focus {
+		box-shadow: inset 0 0 0 var(--formosa-focus-border-width) var(--formosa-focus-box-shadow-color);
+	}
+}
+
+.formosa-autocomplete__values {
+	display: flex;
+	flex-wrap: wrap;
+	line-height: 1;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+
+	.formosa-autocomplete--clearable & {
+		width: calc(100% - var(--formosa-autocomplete-clear-size));
+	}
+}
+
+.formosa-autocomplete__value {
+	background-color: var(--formosa-autocomplete-value-background-color);
+	height: var(--formosa-autocomplete-value-height);
+	line-height: var(--formosa-autocomplete-value-height);
+	margin: var(--formosa-autocomplete-value-margin);
+	overflow: hidden;
+	padding-left: var(--formosa-autocomplete-value-padding-top);
+	padding-right: var(--formosa-autocomplete-value-height);
+	position: relative;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	.formosa-field--disabled &,
+	.formosa-field--read-only & {
+		padding-right: var(--formosa-autocomplete-value-padding-top);
+	}
+
+	&.formosa-autocomplete__value--input {
+		background-color: transparent;
+		flex: 1 1 auto;
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+.formosa-autocomplete__value__remove,
+.formosa-autocomplete__clear {
+	border-color: transparent;
+	color: var(--formosa-autocomplete-clear-color);
+	cursor: pointer;
+	font-size: 0;
+	padding: 0;
+
+	path {
+		fill: var(--formosa-autocomplete-clear-color);
+	}
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: transparent;
+		border-color: transparent;
+
+		path {
+			fill: var(--formosa-autocomplete-clear-color-hover);
+		}
+	}
+
+	.formosa-field--disabled & {
+		cursor: default;
+	}
+}
+
+.formosa-autocomplete__value__remove {
+	background-color: transparent;
+	bottom: 0;
+	height: var(--formosa-autocomplete-value-height);
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: var(--formosa-autocomplete-value-height);
+
+	&:focus {
+		box-shadow: inset 0 0 0 var(--formosa-focus-border-width) var(--formosa-focus-box-shadow-color);
+	}
+}
+
+.formosa-autocomplete__clear {
+	background-color: var(--formosa-input-background-color);
+	height: var(--formosa-autocomplete-clear-size);
+	width: var(--formosa-autocomplete-clear-size);
+}

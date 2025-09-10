@@ -1,30 +1,28 @@
-@use '../utilities/variables';
-
 .formosa-toast-container {
 	align-items: flex-end;
-	bottom: variables.$formosa-toast-bottom;
+	bottom: var(--formosa-toast-bottom);
 	display: flex;
 	flex-direction: column;
 	pointer-events: none;
 	position: fixed;
-	right: variables.$formosa-toast-right;
-	z-index: variables.$formosa-toast-zindex;
+	right: var(--formosa-toast-right);
+	z-index: var(--formosa-toast-zindex);
 }
 
 .formosa-toast {
 	align-items: center;
 	animation-fill-mode: forwards;
 	animation-name: formosa-slide-in-out;
-	background-color: variables.$formosa-primary-background-color;
-	color: variables.$formosa-primary-color;
+	background-color: var(--formosa-primary-background-color);
+	color: var(--formosa-primary-color);
 	display: flex;
-	margin: variables.$formosa-toast-margin;
+	margin: var(--formosa-toast-margin);
 	max-width: 90vw;
 	pointer-events: auto;
 }
 
 .formosa-toast__text {
-	padding: variables.$formosa-toast-padding;
+	padding: var(--formosa-toast-padding);
 }
 
 .formosa-toast__close {
@@ -38,7 +36,7 @@
 	width: 32px;
 
 	path {
-		fill: variables.$formosa-primary-color;
+		fill: var(--formosa-primary-color);
 	}
 
 	&:hover,
@@ -49,34 +47,34 @@
 }
 
 .formosa-toast--error {
-	background-color: variables.$formosa-toast-error-background-color;
-	color: variables.$formosa-toast-error-color;
+	background-color: var(--formosa-toast-error-background-color);
+	color: var(--formosa-toast-error-color);
 
 	.formosa-toast__close {
 		path {
-			fill: variables.$formosa-toast-error-color;
+			fill: var(--formosa-toast-error-color);
 		}
 	}
 }
 
 .formosa-toast--success {
-	background-color: variables.$formosa-toast-success-background-color;
-	color: variables.$formosa-toast-success-color;
+	background-color: var(--formosa-toast-success-background-color);
+	color: var(--formosa-toast-success-color);
 
 	.formosa-toast__close {
 		path {
-			fill: variables.$formosa-toast-success-color;
+			fill: var(--formosa-toast-success-color);
 		}
 	}
 }
 
 .formosa-toast--warning {
-	background-color: variables.$formosa-toast-warning-background-color;
-	color: variables.$formosa-toast-warning-color;
+	background-color: var(--formosa-toast-warning-background-color);
+	color: var(--formosa-toast-warning-color);
 
 	.formosa-toast__close {
 		path {
-			fill: variables.$formosa-toast-warning-color;
+			fill: var(--formosa-toast-warning-color);
 		}
 	}
 }

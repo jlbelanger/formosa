@@ -1,0 +1,155 @@
+:root {
+	/* Colors. */
+	--formosa-color-danger: #f66;
+	--formosa-primary-background-color: #9bc;
+	--formosa-primary-color: #000;
+	--formosa-error-background-color: var(--formosa-color-danger);
+	--formosa-error-color: #000;
+	--formosa-success-background-color: #6c6;
+	--formosa-success-color: #000;
+	--formosa-warning-background-color: #f96;
+	--formosa-warning-color: #000;
+
+	/* Input. */
+	--formosa-input-background-color: #fff;
+	--formosa-input-border-color: #ccc;
+	--formosa-input-border-radius: 0;
+	--formosa-input-border-width: 1px;
+	--formosa-input-color: #000;
+	--formosa-input-font-family: sans-serif;
+	--formosa-input-font-size: 18px;
+	--formosa-input-padding: 8px;
+	--formosa-input-line-height: 1.5;
+	/* stylelint-disable-next-line @stylistic/max-line-length */
+	--formosa-input-height: calc(((var(--formosa-input-border-width) + var(--formosa-input-padding)) * 2) + (var(--formosa-input-font-size) * var(--formosa-input-line-height)));
+
+	/* Autocomplete clear. */
+	--formosa-autocomplete-clear-size: calc(var(--formosa-input-height) - (var(--formosa-input-border-width) * 2));
+	--formosa-autocomplete-clear-color: #333;
+	--formosa-autocomplete-clear-color-hover: #000;
+
+	/* Autocomplete options. */
+	--formosa-autocomplete-options-background-color: var(--formosa-input-background-color);
+	--formosa-autocomplete-options-background-color-highlighted: hsl(from var(--formosa-primary-background-color) h s calc(l * 1.35));
+	--formosa-autocomplete-options-border-color: var(--formosa-input-border-color);
+
+	/* Autocomplete values. */
+	--formosa-autocomplete-value-background-color: hsl(from var(--formosa-primary-background-color) h s calc(l * 1.3));
+	--formosa-autocomplete-value-padding-top: 8px;
+	--formosa-autocomplete-value-margin: 4px;
+	--formosa-autocomplete-value-height: calc((var(--formosa-autocomplete-value-padding-top) * 2) + var(--formosa-input-font-size));
+
+	/* Buttons. */
+	--formosa-button-background-color: var(--formosa-primary-background-color);
+	--formosa-button-background-color-hover: hsl(from var(--formosa-button-background-color) h s calc(l * .85));
+	--formosa-button-color: var(--formosa-primary-color);
+	--formosa-button-border-color: var(--formosa-button-background-color);
+	--formosa-button-font-weight: normal;
+	--formosa-button-padding: var(--formosa-input-padding);
+	--formosa-button-padding-side: 12px;
+
+	/* Danger buttons. */
+	--formosa-button-danger-background-color: var(--formosa-error-background-color);
+	--formosa-button-danger-background-color-hover: hsl(from var(--formosa-button-danger-background-color) h s calc(l * .85));
+	--formosa-button-danger-border-color: var(--formosa-button-danger-background-color);
+	--formosa-button-danger-color: var(--formosa-error-color);
+
+	/* Warning buttons. */
+	--formosa-button-warning-background-color: var(--formosa-warning-background-color);
+	--formosa-button-warning-background-color-hover: hsl(from var(--formosa-button-warning-background-color) h s calc(l * .85));
+	--formosa-button-warning-border-color: var(--formosa-button-warning-background-color);
+	--formosa-button-warning-color: var(--formosa-warning-color);
+
+	/* Success buttons. */
+	--formosa-button-success-background-color: var(--formosa-success-background-color);
+	--formosa-button-success-background-color-hover: hsl(from var(--formosa-button-success-background-color) h s calc(l * .85));
+	--formosa-button-success-border-color: var(--formosa-button-success-background-color);
+	--formosa-button-success-color: var(--formosa-success-color);
+
+	/* Checkboxes. */
+	--formosa-checkbox-size: 32px;
+	--formosa-checkbox-margin: 8px;
+	--formosa-checkbox-padding: 12px;
+	--formosa-checkbox-border-radius: 0;
+
+	/* Focus. */
+	--formosa-focus-border-color: #4ad;
+	--formosa-focus-border-width: 3px;
+	--formosa-focus-box-shadow-color: #6cf;
+	--formosa-focus-error-border-color: var(--formosa-color-danger);
+
+	/* Labels. */
+	--formosa-label-error-color: var(--formosa-color-danger);
+	--formosa-label-font-weight: bold;
+	--formosa-label-margin: 4px;
+
+	/* Alerts. */
+	--formosa-alert-error-background-color: var(--formosa-error-background-color);
+	--formosa-alert-error-color: var(--formosa-error-color);
+	--formosa-alert-padding: 16px;
+	--formosa-alert-primary-background-color: var(--formosa-primary-background-color);
+	--formosa-alert-primary-color: var(--formosa-primary-color);
+	--formosa-alert-success-background-color: var(--formosa-success-background-color);
+	--formosa-alert-success-color: var(--formosa-success-color);
+	--formosa-alert-warning-background-color: var(--formosa-warning-background-color);
+	--formosa-alert-warning-color: var(--formosa-warning-color);
+
+	/* Notes. */
+	--formosa-note-font-size: 85%;
+	--formosa-note-line-height: 1.4;
+	--formosa-note-opacity: .75;
+	--formosa-note-margin: 4px 0 0;
+
+	/* Passwords. */
+	--formosa-password-button-width: 70px;
+
+	/* Prefix/postfix. */
+	--formosa-prefix-border-width: 0;
+	--formosa-postfix-border-width: 0;
+
+	/* Radio buttons. */
+	--formosa-radio-border-width: 6px;
+	--formosa-radio-border-radius: 100px;
+	--formosa-radio-margin: 8px;
+	--formosa-radio-margin-inline: 16px;
+	--formosa-radio-margin-side: var(--formosa-checkbox-margin);
+	--formosa-radio-size: var(--formosa-checkbox-size);
+
+	/* Search. */
+	--formosa-search-icon-size: 24px;
+
+	/* Selects. */
+	--formosa-select-arrow-size: 12px;
+	--formosa-select-padding-right: calc(var(--formosa-select-arrow-size) + (var(--formosa-input-padding) * 2));
+
+	/* Spinners. */
+	--formosa-spinner-border-width: 6px;
+	--formosa-spinner-color: transparent;
+	--formosa-spinner-color-alternate: #fff;
+	--formosa-spinner-fullscreen-border-width: 12px;
+	--formosa-spinner-fullscreen-size: 50px;
+	--formosa-spinner-size: calc(var(--formosa-input-height) - (var(--formosa-spinner-border-width) * 2));
+
+	/* Toasts. */
+	--formosa-toast-bottom: 0;
+	--formosa-toast-error-background-color: var(--formosa-error-background-color);
+	--formosa-toast-error-color: var(--formosa-error-color);
+	--formosa-toast-margin: 8px;
+	--formosa-toast-padding: 16px;
+	--formosa-toast-right: 0;
+	--formosa-toast-success-background-color: var(--formosa-success-background-color);
+	--formosa-toast-success-color: var(--formosa-success-color);
+	--formosa-toast-warning-background-color: var(--formosa-warning-background-color);
+	--formosa-toast-warning-color: var(--formosa-warning-color);
+
+	/* Z-index. */
+	--formosa-spinner-zindex: 9999;
+	--formosa-toast-zindex: 9998;
+	--formosa-autocomplete-zindex: 9996;
+
+	/* Misc. */
+	--formosa-disabled-opacity: .5;
+	--formosa-field-error-color: var(--formosa-color-danger);
+	--formosa-horizontal-fields-padding: 8px;
+	--formosa-margin-large: 24px;
+}

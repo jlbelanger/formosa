@@ -10,7 +10,7 @@ Formosa is a [React](https://www.npmjs.com/package/react) form component library
 - Displays toast messages (without additional library dependencies)
 - Shows spinner automatically during API requests (using [react-promise-tracker](https://www.npmjs.com/package/react-promise-tracker))
 - Excludes styles by default, so all styles can be completely customized; all elements have classes so they can be easily targeted
-- Includes optional basic SCSS, if you don't want to spend time styling form elements *yet again*; uses SCSS variables that can be overridden
+- Includes optional basic CSS, if you don't want to spend time styling form elements *yet again*; uses CSS variables that can be overridden
 - Supports nested field names (eg. `name="foo.bar"`)
 
 ## Requirements
@@ -60,25 +60,20 @@ export default function App() {
 
 ### Styles
 
-By default, no styles are included. To include all styles (eg. in `src/index.scss`):
+By default, no styles are included. To include all styles (eg. in `src/index.css`):
 
-``` scss
-@use '@jlbelanger/formosa/src/scss/utilities/variables' with (
-	/* Your variable overrides go here. */
-);
-@use '@jlbelanger/formosa/src/style';
+``` css
+@import url('@jlbelanger/formosa/src/style');
 ```
 
-To selectively include specific styles listed in the [components](https://github.com/jlbelanger/formosa/tree/main/src/scss/components) folder:
+To selectively include specific styles listed in the [components](https://github.com/jlbelanger/formosa/tree/main/src/css/components) folder:
 
-``` scss
-@use '@jlbelanger/formosa/src/scss/utilities/variables' with (
-	/* Your variable overrides go here. */
-);
-@use '@jlbelanger/formosa/src/scss/components/checkbox';
+``` css
+@import url('@jlbelanger/formosa/src/css/utilities/variables');
+@import url('@jlbelanger/formosa/src/css/components/checkbox');
 ```
 
-A list of Sass variables is available in [_variables.scss](https://github.com/jlbelanger/formosa/blob/main/src/scss/utilities/_variables.scss).
+A list of CSS variables is available in [variables.css](https://github.com/jlbelanger/formosa/blob/main/src/css/utilities/variables.css).
 
 ### Components
 

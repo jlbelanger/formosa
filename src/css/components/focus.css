@@ -1,0 +1,5 @@
+:focus {
+	border-color: var(--formosa-focus-border-color);
+	box-shadow: 0 0 0 var(--formosa-focus-border-width) var(--formosa-focus-box-shadow-color);
+	outline: none !important; /* stylelint-disable-line declaration-no-important */
+}

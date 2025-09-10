@@ -1,4 +1,4 @@
-import './style.scss';
+import './style.css';
 
 export { default as Alert } from './js/Alert';
 export { default as Api } from './js/Helpers/Api';

@@ -1,4 +1,5 @@
-import './style.scss';
+import '@jlbelanger/formosa/src/style.css';
+import './style.css';
 import { BrowserRouter, NavLink } from 'react-router-dom';
 import { FormContainer } from '@jlbelanger/formosa';
 import React from 'react';

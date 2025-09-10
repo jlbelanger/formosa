@@ -1,0 +1,8 @@
+.formosa-field__error {
+	color: var(--formosa-field-error-color);
+	margin-top: 4px;
+
+	&:empty {
+		display: none;
+	}
+}

@@ -1,0 +1,60 @@
+.formosa-horizontal {
+	display: table;
+	width: 100%;
+
+	& > .formosa-field {
+		display: table-row;
+
+		& > .formosa-label-wrapper,
+		& > .formosa-input-wrapper {
+			display: table-cell;
+			padding: var(--formosa-horizontal-fields-padding) 0;
+		}
+
+		& > .formosa-label-wrapper {
+			padding-right: var(--formosa-horizontal-fields-padding);
+			text-align: right;
+			vertical-align: top;
+			white-space: nowrap;
+			width: 0;
+		}
+
+		& > .formosa-input-wrapper {
+			padding-left: var(--formosa-horizontal-fields-padding);
+			width: 100%;
+
+			& > .formosa-icon--check {
+				left: calc((var(--formosa-checkbox-padding) * .5) + var(--formosa-horizontal-fields-padding));
+				top: calc((var(--formosa-checkbox-padding) * .5) + var(--formosa-horizontal-fields-padding));
+			}
+		}
+
+		.formosa-label {
+			display: inline-block;
+			line-height: var(--formosa-input-line-height);
+			padding-left: 0;
+			padding-right: 0;
+			padding-top: calc(var(--formosa-input-padding) + var(--formosa-input-border-width));
+		}
+
+		.formosa-radio--inline {
+			padding-top: calc(var(--formosa-input-padding) + var(--formosa-input-border-width));
+		}
+	}
+
+	& > .formosa-field--label-after {
+		.formosa-label-wrapper {
+			&:empty {
+				display: inline-block;
+			}
+		}
+	}
+}
+
+@custom-media --formosa-responsive-breakpoint (width >= 1024px);
+
+.formosa-responsive {
+	@media (--formosa-responsive-breakpoint) {
+		composes: formosa-horizontal; /* stylelint-disable-line property-no-unknown */
+	}
+}
