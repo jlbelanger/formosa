@@ -5,7 +5,6 @@
 		"jest": true
 	},
 	"ignorePatterns": ["example/build/**/*", "dist/**/*", "*.min.js"],
-	"parser": "@babel/eslint-parser",
 	"rules": {
 		"class-methods-use-this": 0,
 		"comma-dangle": ["error", {
@@ -48,5 +47,9 @@
 				"import/no-unresolved": "off"
 			}
 		}
-	]
+	],
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	}
 }

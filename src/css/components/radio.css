@@ -33,10 +33,10 @@
 
 .formosa-radio__item + .formosa-radio__item {
 	margin-top: var(--formosa-radio-margin);
+}
 
-	.formosa-radio--inline & {
-		margin-top: 0;
-	}
+.formosa-radio--inline .formosa-radio__item + .formosa-radio__item {
+	margin-top: 0;
 }
 
 input.formosa-radio__input {

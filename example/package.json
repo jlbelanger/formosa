@@ -3,20 +3,20 @@
 	"homepage": ".",
 	"version": "0.0.0",
 	"private": true,
+	"type": "module",
 	"scripts": {
-		"start": "DISABLE_ESLINT_PLUGIN=true node ./node_modules/react-scripts/bin/react-scripts.js start",
-		"build": "DISABLE_ESLINT_PLUGIN=true node ./node_modules/react-scripts/bin/react-scripts.js build",
-		"test": "DISABLE_ESLINT_PLUGIN=true node ./node_modules/react-scripts/bin/react-scripts.js test"
+		"start": "vite",
+		"build": "vite build"
 	},
 	"dependencies": {
 		"@jlbelanger/formosa": "link:..",
+		"@vitejs/plugin-react": "^5.0.2",
+		"postcss": "^8.5.6",
+		"postcss-preset-env": "^10.3.1",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
-		"react-router-dom": "~5.3.4",
-		"react-scripts": "^5.0.1"
-	},
-	"devDependencies": {
-		"@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+		"react-router": "^7.9.5",
+		"vite": "^7.1.5"
 	},
 	"browserslist": [
 		"defaults",

@@ -31,9 +31,25 @@ yarn add https://github.com/jlbelanger/formosa
 
 ## Setup
 
+Call `FormosaConfig.init()` in `index.jsx`:
+
+``` jsx
+// src/index.jsx
+import App from './App';
+import { FormosaConfig } from '@jlbelanger/formosa';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+
+FormosaConfig.init({ apiPrefix: 'https://example.com/api' });
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+```
+
 Your app must include the `<FormContainer>` component once (eg. in the main `App` component). All `<Form>`s must be inside this container. The `<FormContainer>` does not take any props; it is used to display a spinner during API requests and to display toast messages when forms are submitted.
 
 ```jsx
+// src/App.jsx
 import { Field, FormContainer, Form, Submit } from '@jlbelanger/formosa';
 import React, { useState } from 'react';
 
@@ -60,17 +76,19 @@ export default function App() {
 
 ### Styles
 
-By default, no styles are included. To include all styles (eg. in `src/index.css`):
+By default, no styles are included. To include all styles:
 
-``` css
-@import url('@jlbelanger/formosa/src/style');
+``` jsx
+// src/App.jsx
+import '@jlbelanger/formosa/dist/formosa.css';
 ```
 
 To selectively include specific styles listed in the [components](https://github.com/jlbelanger/formosa/tree/main/src/css/components) folder:
 
-``` css
-@import url('@jlbelanger/formosa/src/css/utilities/variables');
-@import url('@jlbelanger/formosa/src/css/components/checkbox');
+``` jsx
+// src/App.jsx
+import '@jlbelanger/formosa/src/css/utilities/variables';
+import '@jlbelanger/formosa/src/css/components/checkbox';
 ```
 
 A list of CSS variables is available in [variables.css](https://github.com/jlbelanger/formosa/blob/main/src/css/utilities/variables.css).

@@ -1,4 +1,4 @@
-.formosa-horizontal {
+@define-mixin formosa-horizontal {
 	display: table;
 	width: 100%;
 
@@ -51,10 +51,14 @@
 	}
 }
 
+.formosa-horizontal {
+	@mixin formosa-horizontal;
+}
+
 @custom-media --formosa-responsive-breakpoint (width >= 1024px);
 
 .formosa-responsive {
 	@media (--formosa-responsive-breakpoint) {
-		composes: formosa-horizontal; /* stylelint-disable-line property-no-unknown */
+		@mixin formosa-horizontal;
 	}
 }
