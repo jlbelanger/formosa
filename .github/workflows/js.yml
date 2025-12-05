@@ -9,5 +9,6 @@ jobs:
       with:
         node-version: '22'
     - uses: actions/checkout@v3
+    - run: cd example && yarn install && cd ../
     - run: yarn install
     - run: yarn run lint
