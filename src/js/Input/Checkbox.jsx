@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
 import CheckIcon from '../../svg/check.svg?react'; // eslint-disable-line import/no-unresolved
-import FormContext from '../FormContext';
+import FormContext from '../FormContext.jsx';
 import get from 'get-value';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
 export default function Checkbox({
 	afterChange = null,
@@ -19,14 +19,14 @@ export default function Checkbox({
 }) {
 	const { formState, setValues } = useContext(FormContext);
 
-	let checked = false;
-	if (setValue !== null) {
-		checked = value;
-	} else {
+	let checked;
+	if (setValue === null) {
 		if (formState === undefined) {
 			throw new Error('<Checkbox> component must be inside a <Form> component.');
 		}
-		checked = !!get(formState.row, name);
+		checked = Boolean(get(formState.row, name));
+	} else {
+		checked = value;
 	}
 
 	const onChange = (e) => {
@@ -49,8 +49,8 @@ export default function Checkbox({
 	return (
 		<>
 			<input
-				className={`formosa-field__input formosa-field__input--checkbox ${className}`.trim()}
 				checked={checked}
+				className={`formosa-field__input formosa-field__input--checkbox ${className}`.trim()}
 				onChange={onChange}
 				type="checkbox"
 				{...props}

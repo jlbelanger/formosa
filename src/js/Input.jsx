@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import ConditionalWrapper from './ConditionalWrapper';
-import FormContext from './FormContext';
+import ConditionalWrapper from './ConditionalWrapper.jsx';
+import FormContext from './FormContext.jsx';
 import get from 'get-value';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
 export default function Input({
 	afterChange = null,
@@ -18,9 +18,7 @@ export default function Input({
 	const { formState, setValues } = useContext(FormContext);
 
 	let currentValue = '';
-	if (setValue !== null) {
-		currentValue = value;
-	} else {
+	if (setValue === null) {
 		if (formState === undefined) {
 			throw new Error('<Input> component must be inside a <Form> component.');
 		}
@@ -30,6 +28,8 @@ export default function Input({
 				currentValue = '';
 			}
 		}
+	} else {
+		currentValue = value;
 	}
 
 	const onChange = (e) => {

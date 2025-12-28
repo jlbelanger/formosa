@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Api from '../Helpers/Api';
+import { useContext, useEffect, useState } from 'react';
+import Api from '../Helpers/Api.js';
 import CheckIcon from '../../svg/check.svg?react'; // eslint-disable-line import/no-unresolved
-import FormContext from '../FormContext';
+import FormContext from '../FormContext.jsx';
 import get from 'get-value';
-import { normalizeOptions } from '../Helpers/Options';
+import { normalizeOptions } from '../Helpers/Options.js';
 import PropTypes from 'prop-types';
 
-export default function CheckboxList({
+export default function CheckboxList({ // eslint-disable-line complexity
 	afterChange = null,
 	className = '',
 	disabled = false,
@@ -38,7 +38,7 @@ export default function CheckboxList({
 }) {
 	const { formState, setValues } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
-	const [isLoading, setIsLoading] = useState(showLoading || !!url);
+	const [isLoading, setIsLoading] = useState(showLoading || Boolean(url));
 	const [loadError, setLoadError] = useState('');
 	const api = Api.instance();
 
@@ -46,7 +46,7 @@ export default function CheckboxList({
 		if (url) {
 			api(url, false)
 				.catch((error) => {
-					if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
+					if (Object.hasOwn(error, 'errors')) {
 						setLoadError(error.errors.map((e) => (e.title)).join(' '));
 						setIsLoading(false);
 					}
@@ -78,13 +78,13 @@ export default function CheckboxList({
 	}
 
 	let currentValue = [];
-	if (setValue !== null) {
-		currentValue = value;
-	} else {
+	if (setValue === null) {
 		if (formState === undefined) {
 			throw new Error('<CheckboxList> component must be inside a <Form> component.');
 		}
 		currentValue = get(formState.row, name);
+	} else {
+		currentValue = value;
 	}
 	if (currentValue === null || currentValue === undefined || currentValue === '') {
 		currentValue = [];

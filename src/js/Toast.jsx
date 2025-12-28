@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
 import CloseIcon from '../svg/x.svg?react'; // eslint-disable-line import/no-unresolved
-import FormosaContext from './FormosaContext';
+import FormosaContext from './FormosaContext.jsx';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
 export default function Toast({
 	className = '',

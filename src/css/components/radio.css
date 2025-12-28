@@ -8,7 +8,7 @@
 
 .formosa-radio__legend {
 	bottom: 0;
-	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(1px 1px 1px 1px);
 	font-size: 0;
 	margin: 0;
 	overflow: hidden;

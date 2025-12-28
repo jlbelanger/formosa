@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
-import Alert from './Alert';
-import Api from './Helpers/Api';
-import FormContext from './FormContext';
-import FormosaContext from './FormosaContext';
-import { getBody } from './Helpers/JsonApi';
+import Alert from './Alert.jsx';
+import Api from './Helpers/Api.js';
+import FormContext from './FormContext.jsx';
+import FormosaContext from './FormosaContext.jsx';
+import { getBody } from './Helpers/JsonApi.js';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
+import { useContext } from 'react';
+import { v4 as uuidv4 } from 'uuid'; // eslint-disable-line import/no-unresolved
 
-export default function FormInner({
+export default function FormInner({ // eslint-disable-line complexity
 	afterNoSubmit = null,
 	beforeSubmit = null,
 	children = null,
@@ -84,7 +84,7 @@ export default function FormInner({
 
 		Api.request(method, url, bodyString)
 			.catch((response) => {
-				if (!Object.prototype.hasOwnProperty.call(response, 'errors') || !Array.isArray(response.errors)) {
+				if (!Object.hasOwn(response, 'errors') || !Array.isArray(response.errors)) {
 					// This is not a JSON:API-style error response.
 					throw response;
 				}
@@ -92,7 +92,7 @@ export default function FormInner({
 				const errors = {};
 				let key;
 				response.errors.forEach((error) => {
-					if (Object.prototype.hasOwnProperty.call(error, 'source')) {
+					if (Object.hasOwn(error, 'source')) {
 						key = error.source.pointer.replace('/data/attributes/', '');
 						key = key.replace('/data/meta/', 'meta.');
 						if (key.startsWith('/included/')) {
@@ -107,7 +107,7 @@ export default function FormInner({
 					} else {
 						key = '';
 					}
-					if (!Object.prototype.hasOwnProperty.call(errors, key)) {
+					if (!Object.hasOwn(errors, key)) {
 						errors[key] = [];
 					}
 					errors[key].push(error.title);
@@ -153,7 +153,7 @@ export default function FormInner({
 				setFormState(newState);
 			});
 	};
-	if (method && path && !Object.prototype.hasOwnProperty.call(otherProps, 'onSubmit')) {
+	if (method && path && !Object.hasOwn(otherProps, 'onSubmit')) {
 		otherProps.onSubmit = submitApiRequest;
 	}
 	if (htmlId) {

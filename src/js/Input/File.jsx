@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import FormContext from '../FormContext';
+import { useContext, useEffect, useRef, useState } from 'react';
+import FormContext from '../FormContext.jsx';
 import get from 'get-value';
 import PropTypes from 'prop-types';
 
-export default function File({
+export default function File({ // eslint-disable-line complexity
 	afterChange = null,
 	buttonAttributes = null,
 	buttonClassName = '',
@@ -36,18 +36,18 @@ export default function File({
 	const inputRef = useRef(null);
 
 	let currentValue = '';
-	if (setValue !== null) {
-		currentValue = value;
-	} else {
+	if (setValue === null) {
 		if (formState === undefined) {
 			throw new Error('<File> component must be inside a <Form> component.');
 		}
 		currentValue = get(formState.row, name);
+	} else {
+		currentValue = value;
 	}
 	if (currentValue === null || currentValue === undefined) {
 		currentValue = '';
 	}
-	const hasValue = multiple ? currentValue.length > 0 : !!currentValue;
+	const hasValue = multiple ? currentValue.length > 0 : Boolean(currentValue);
 
 	const getFilenames = (v) => {
 		if (v instanceof FileList) {
@@ -171,7 +171,7 @@ export default function File({
 			<div className={`formosa-file-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 				<div className={`formosa-file-input-wrapper ${prefixClassName}`.trim()} {...inputWrapperAttributes}>
 					<div
-						className={`formosa-file-name${!filenames ? ' formosa-file-name--empty' : ''}`}
+						className={`formosa-file-name${filenames ? '' : ' formosa-file-name--empty'}`}
 						id={`${id || name}-name`}
 					>
 						{filenames || emptyText}

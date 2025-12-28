@@ -1,5 +1,5 @@
 import { Alert, FormosaContext } from '@jlbelanger/formosa';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 
 export default function Extras() {
 	const { addToast } = useContext(FormosaContext);
@@ -36,13 +36,13 @@ export default function Extras() {
 			<button className="formosa-button" onClick={showToast} type="button">
 				Show Primary Toast
 			</button>
-			<button className="formosa-button formosa-button--success" onClick={showToast} data-type="success" type="button">
+			<button className="formosa-button formosa-button--success" data-type="success" onClick={showToast} type="button">
 				Show Success Toast
 			</button>
-			<button className="formosa-button formosa-button--warning" onClick={showToast} data-type="warning" type="button">
+			<button className="formosa-button formosa-button--warning" data-type="warning" onClick={showToast} type="button">
 				Show Warning Toast
 			</button>
-			<button className="formosa-button formosa-button--danger" onClick={showToast} data-type="error" type="button">
+			<button className="formosa-button formosa-button--danger" data-type="error" onClick={showToast} type="button">
 				Show Error Toast
 			</button>
 

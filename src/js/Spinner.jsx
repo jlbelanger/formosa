@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 
 export default function Spinner({ loadingText = 'Loading...' }) {

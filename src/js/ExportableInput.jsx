@@ -1,6 +1,5 @@
-import getInputElement from './FieldInput';
+import getInputElement from './FieldInput.jsx';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 export default function ExportableInput({
 	component = null,

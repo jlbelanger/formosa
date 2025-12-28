@@ -1,11 +1,16 @@
-import App from './App';
+import { createRoot } from 'react-dom/client';
 import { FormosaConfig } from '@jlbelanger/formosa';
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { RouterProvider } from 'react-router';
+import Routes from './Routes.jsx';
+import { StrictMode } from 'react';
 
 FormosaConfig.init({
 	apiPrefix: import.meta.env.VITE_API_URL,
 });
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+const root = createRoot(document.getElementById('root'));
+root.render(
+	<StrictMode>
+		<RouterProvider router={Routes} />
+	</StrictMode>
+);

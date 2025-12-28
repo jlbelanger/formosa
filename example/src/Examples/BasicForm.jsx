@@ -1,5 +1,5 @@
 import { Field, Form, Submit } from '@jlbelanger/formosa';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function BasicForm() {
 	const [row, setRow] = useState({});

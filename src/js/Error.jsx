@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
-import FormContext from './FormContext';
+import FormContext from './FormContext.jsx';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
 export default function Error({
 	id = null,
 	name = '',
 }) {
 	const { formState } = useContext(FormContext);
-	const hasError = formState && Object.prototype.hasOwnProperty.call(formState.errors, name);
+	const hasError = formState && Object.hasOwn(formState.errors, name);
 
 	const props = {};
 	if (name) {

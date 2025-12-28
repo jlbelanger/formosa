@@ -1,6 +1,5 @@
-import Input from '../Input';
+import Input from '../Input.jsx';
 import PropTypes from 'prop-types';
-import React from 'react';
 import SearchIcon from '../../svg/search.svg?react'; // eslint-disable-line import/no-unresolved
 
 export default function Search({

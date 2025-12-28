@@ -36,13 +36,13 @@ Call `FormosaConfig.init()` in `index.jsx`:
 ``` jsx
 // src/index.jsx
 import App from './App';
+import { createRoot } from 'react-dom/client';
 import { FormosaConfig } from '@jlbelanger/formosa';
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 
 FormosaConfig.init({ apiPrefix: 'https://example.com/api' });
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById('root'));
 root.render(<App />);
 ```
 

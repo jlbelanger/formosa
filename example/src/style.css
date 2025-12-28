@@ -95,21 +95,21 @@ a {
 	&:focus {
 		background-color: var(--formosa-button-background-color-hover);
 	}
-}
 
-.nav__link--active {
-	background-color: var(--background-color);
-	color: var(--color);
-
-	&:hover,
-	&:active,
-	&:focus {
+	&.active {
 		background-color: var(--background-color);
+		color: var(--color);
+
+		&:hover,
+		&:active,
+		&:focus {
+			background-color: var(--background-color);
+		}
 	}
 }
 
 .formosa-field__note {
-	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 .code {

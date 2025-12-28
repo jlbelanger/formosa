@@ -1,12 +1,12 @@
-import { filterByKey, normalizeOptions } from '../Helpers/Options';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import Api from '../Helpers/Api';
+import { filterByKey, normalizeOptions } from '../Helpers/Options.js';
+import { useContext, useEffect, useRef, useState } from 'react';
+import Api from '../Helpers/Api.js';
 import CloseIcon from '../../svg/x.svg?react'; // eslint-disable-line import/no-unresolved
-import FormContext from '../FormContext';
+import FormContext from '../FormContext.jsx';
 import get from 'get-value';
 import PropTypes from 'prop-types';
 
-export default function Autocomplete({
+export default function Autocomplete({ // eslint-disable-line complexity
 	afterAdd = null,
 	afterChange = null,
 	clearable = true,
@@ -60,7 +60,7 @@ export default function Autocomplete({
 	const [isOpen, setIsOpen] = useState(false);
 	const [highlightedIndex, setHighlightedIndex] = useState(0);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
-	const [isLoading, setIsLoading] = useState(showLoading || !!url);
+	const [isLoading, setIsLoading] = useState(showLoading || Boolean(url));
 	const [loadError, setLoadError] = useState('');
 	const api = Api.instance();
 
@@ -68,7 +68,7 @@ export default function Autocomplete({
 		if (url) {
 			api(url, false)
 				.catch((error) => {
-					if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
+					if (Object.hasOwn(error, 'errors')) {
 						setLoadError(error.errors.map((e) => (e.title)).join(' '));
 						setIsLoading(false);
 					}
@@ -100,13 +100,13 @@ export default function Autocomplete({
 	}
 
 	let currentValue = null;
-	if (setValue !== null) {
-		currentValue = value;
-	} else {
+	if (setValue === null) {
 		if (formState === undefined) {
 			throw new Error('<Autocomplete> component must be inside a <Form> component.');
 		}
 		currentValue = get(formState.row, name);
+	} else {
+		currentValue = value;
 	}
 	if (currentValue === null || currentValue === undefined || currentValue === '') {
 		currentValue = null;
@@ -170,13 +170,13 @@ export default function Autocomplete({
 		if (currentValue) {
 			newValue = [...currentValue];
 		}
-		if (max !== 1) {
+		if (max === 1) {
+			newValue = '';
+		} else {
 			const index = newValue.indexOf(v);
 			if (index > -1) {
 				newValue.splice(index, 1);
 			}
-		} else {
-			newValue = '';
 		}
 
 		const e = { target: hiddenInputRef.current };
@@ -300,7 +300,7 @@ export default function Autocomplete({
 					let label = '';
 					if (labelFn) {
 						label = labelFn(option || v);
-					} else if (option && Object.prototype.hasOwnProperty.call(option, 'label')) {
+					} else if (option && Object.hasOwn(option, 'label')) {
 						label = option.label;
 					}
 
@@ -383,7 +383,7 @@ export default function Autocomplete({
 						let label = '';
 						if (optionLabelFn) {
 							label = optionLabelFn(option);
-						} else if (option && Object.prototype.hasOwnProperty.call(option, 'label')) {
+						} else if (option && Object.hasOwn(option, 'label')) {
 							label = option.label;
 						}
 
@@ -452,13 +452,13 @@ export default function Autocomplete({
 Autocomplete.propTypes = {
 	afterAdd: PropTypes.func,
 	afterChange: PropTypes.func,
-	clearable: PropTypes.bool,
 	clearButtonAttributes: PropTypes.object,
 	clearButtonClassName: PropTypes.string,
 	clearIconAttributes: PropTypes.object,
 	clearIconHeight: PropTypes.number,
 	clearIconWidth: PropTypes.number,
 	clearText: PropTypes.string,
+	clearable: PropTypes.bool,
 	disabled: PropTypes.bool,
 	id: PropTypes.string,
 	inputAttributes: PropTypes.object,

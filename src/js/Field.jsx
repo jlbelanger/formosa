@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
-import ConditionalWrapper from './ConditionalWrapper';
-import Error from './Error';
-import FormContext from './FormContext';
-import getInputElement from './FieldInput';
-import Label from './Label';
+import ConditionalWrapper from './ConditionalWrapper.jsx';
+import Error from './Error.jsx';
+import FormContext from './FormContext.jsx';
+import getInputElement from './FieldInput.jsx';
+import Label from './Label.jsx';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
-export default function Field({
+export default function Field({ // eslint-disable-line complexity
 	component = null,
 	disabled = false,
 	id = null,
@@ -85,7 +85,7 @@ export default function Field({
 		/>
 	);
 
-	const hasError = formState && name && Object.prototype.hasOwnProperty.call(formState.errors, name);
+	const hasError = formState && name && Object.hasOwn(formState.errors, name);
 
 	const cleanName = htmlFor.replace(/[^a-z0-9_-]/gi, '');
 	const wrapperClassNameList = ['formosa-field'];
@@ -134,7 +134,7 @@ export default function Field({
 			<div className={inputWrapperClassNameList.join(' ')} {...inputWrapperAttributes}>
 				<ConditionalWrapper
 					className={inputInnerWrapperClassNameList.join(' ')}
-					condition={!!prefix || !!postfix}
+					condition={Boolean(prefix) || Boolean(postfix)}
 					{...inputInnerWrapperAttributes}
 				>
 					{prefix}
@@ -170,8 +170,8 @@ Field.propTypes = {
 		PropTypes.object,
 		PropTypes.string,
 	]),
-	prefix: PropTypes.node,
 	postfix: PropTypes.node,
+	prefix: PropTypes.node,
 	readOnly: PropTypes.bool,
 	required: PropTypes.bool,
 	suffix: PropTypes.string,

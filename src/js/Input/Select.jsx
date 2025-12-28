@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Api from '../Helpers/Api';
+import { useContext, useEffect, useState } from 'react';
+import Api from '../Helpers/Api.js';
 import CaretIcon from '../../svg/caret.svg?react'; // eslint-disable-line import/no-unresolved
-import FormContext from '../FormContext';
+import FormContext from '../FormContext.jsx';
 import get from 'get-value';
-import { normalizeOptions } from '../Helpers/Options';
+import { normalizeOptions } from '../Helpers/Options.js';
 import PropTypes from 'prop-types';
 
-export default function Select({
+export default function Select({ // eslint-disable-line complexity
 	afterChange = null,
 	className = '',
 	hideBlank = false,
@@ -32,7 +32,7 @@ export default function Select({
 }) {
 	const { formState, setValues } = useContext(FormContext);
 	const [optionValues, setOptionValues] = useState(options ? normalizeOptions(options, labelKey, valueKey) : []);
-	const [isLoading, setIsLoading] = useState(showLoading || !!url);
+	const [isLoading, setIsLoading] = useState(showLoading || Boolean(url));
 	const [loadError, setLoadError] = useState('');
 	const api = Api.instance();
 
@@ -40,7 +40,7 @@ export default function Select({
 		if (url) {
 			api(url, false)
 				.catch((error) => {
-					if (Object.prototype.hasOwnProperty.call(error, 'errors')) {
+					if (Object.hasOwn(error, 'errors')) {
 						setLoadError(error.errors.map((e) => (e.title)).join(' '));
 						setIsLoading(false);
 					}
@@ -71,14 +71,14 @@ export default function Select({
 		return (<div className="formosa-field__error">{loadError}</div>);
 	}
 
-	let currentValue = multiple ? [] : '';
-	if (setValue !== null) {
-		currentValue = value;
-	} else {
+	let currentValue;
+	if (setValue === null) {
 		if (formState === undefined) {
 			throw new Error('<Select> component must be inside a <Form> component.');
 		}
 		currentValue = get(formState.row, name);
+	} else {
+		currentValue = value;
 	}
 	if (currentValue === null || currentValue === undefined) {
 		currentValue = multiple ? [] : '';

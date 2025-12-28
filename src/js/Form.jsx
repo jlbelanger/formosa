@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
-import FormContext from './FormContext';
-import FormInner from './FormInner';
-import FormosaContext from './FormosaContext';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import FormContext from './FormContext.jsx';
+import FormInner from './FormInner.jsx';
+import FormosaContext from './FormosaContext.jsx';
 import get from 'get-value';
 import PropTypes from 'prop-types';
 import set from 'set-value';

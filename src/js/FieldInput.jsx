@@ -1,13 +1,13 @@
-import Autocomplete from './Input/Autocomplete';
-import Checkbox from './Input/Checkbox';
-import CheckboxList from './Input/CheckboxList';
-import File from './Input/File';
-import Input from './Input';
-import Password from './Input/Password';
-import Radio from './Input/Radio';
-import Search from './Input/Search';
-import Select from './Input/Select';
-import Textarea from './Input/Textarea';
+import Autocomplete from './Input/Autocomplete.jsx';
+import Checkbox from './Input/Checkbox.jsx';
+import CheckboxList from './Input/CheckboxList.jsx';
+import File from './Input/File.jsx';
+import Input from './Input.jsx';
+import Password from './Input/Password.jsx';
+import Radio from './Input/Radio.jsx';
+import Search from './Input/Search.jsx';
+import Select from './Input/Select.jsx';
+import Textarea from './Input/Textarea.jsx';
 
 export default (type, component) => {
 	if (component) {

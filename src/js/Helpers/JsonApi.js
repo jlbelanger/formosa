@@ -51,14 +51,13 @@ export const getDirtyRecords = (record, relationshipNames, dirtyRelationships) =
 
 	Object.keys(record).forEach((key) => {
 		if (key !== 'id' && key !== 'type') {
-			if (Object.prototype.hasOwnProperty.call(dirtyRelationships, key)) {
+			if (Object.hasOwn(dirtyRelationships, key)) {
 				if (relationshipNames.includes(key)) {
 					if (Array.isArray(record[key])) {
 						// This is an array relationship.
 						const data = [];
 						record[key].forEach((rel, relIndex) => {
 							if (typeof dirtyRelationships[key][relIndex] !== 'undefined') {
-								// eslint-disable-next-line no-use-before-define
 								const x = getIncludedRecordData(rel, filterByKey(relationshipNames, key), dirtyRelationships[key][relIndex]);
 								otherRecords = otherRecords.concat(x);
 							}
@@ -67,7 +66,6 @@ export const getDirtyRecords = (record, relationshipNames, dirtyRelationships) =
 						set(output.relationships, key, { data });
 					} else {
 						// This is an object relationship.
-						// eslint-disable-next-line no-use-before-define
 						const x = getIncludedRecordData(record[key], filterByKey(relationshipNames, key), dirtyRelationships[key]);
 						const data = x.shift();
 						otherRecords = otherRecords.concat(x);
@@ -133,7 +131,7 @@ export const getIncludedRecords = (data, dirtyKeys, relationshipNames) => {
 
 	// For each dirty relationship, add the dirty records to the output.
 	Object.keys(dirtyRelationships).forEach((relName) => {
-		if (Object.prototype.hasOwnProperty.call(data.relationships, relName)) {
+		if (Object.hasOwn(data.relationships, relName)) {
 			if (Array.isArray(data.relationships[relName].data)) {
 				// This is an array relationship.
 				Object.keys(data.relationships[relName].data).forEach((relIndex) => {
@@ -159,7 +157,7 @@ export const getIncludedRecords = (data, dirtyKeys, relationshipNames) => {
 };
 
 export const unset = (obj, key) => {
-	if (Object.prototype.hasOwnProperty.call(obj, key)) {
+	if (Object.hasOwn(obj, key)) {
 		return delete obj[key];
 	}
 
@@ -185,7 +183,7 @@ export const appendToFormData = (obj, formData, prefix = '') => {
 	return formData;
 };
 
-export const getBody = ( // eslint-disable-line import/prefer-default-export
+export const getBody = (
 	method,
 	type,
 	id,

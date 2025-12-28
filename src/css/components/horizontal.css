@@ -2,7 +2,7 @@
 	display: table;
 	width: 100%;
 
-	& > .formosa-field {
+	& > .formosa-field { /* stylelint-disable-line nesting-selector-no-missing-scoping-root */
 		display: table-row;
 
 		& > .formosa-label-wrapper,
@@ -42,7 +42,7 @@
 		}
 	}
 
-	& > .formosa-field--label-after {
+	& > .formosa-field--label-after { /* stylelint-disable-line nesting-selector-no-missing-scoping-root */
 		.formosa-label-wrapper {
 			&:empty {
 				display: inline-block;

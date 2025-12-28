@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
-import FormosaContext from './FormosaContext';
+import { useMemo, useState } from 'react';
+import FormosaContext from './FormosaContext.jsx';
 import PropTypes from 'prop-types';
-import Spinner from './Spinner';
-import ToastContainer from './ToastContainer';
+import Spinner from './Spinner.jsx';
+import ToastContainer from './ToastContainer.jsx';
 
 export default function FormContainer({ children, loadingText = 'Loading...' }) {
 	const [showWarningPrompt, setShowWarningPrompt] = useState(true);
@@ -10,7 +10,7 @@ export default function FormContainer({ children, loadingText = 'Loading...' }) 
 
 	const removeToast = (toastId) => {
 		const newToasts = { ...toasts };
-		if (Object.prototype.hasOwnProperty.call(toasts, toastId)) {
+		if (Object.hasOwn(toasts, toastId)) {
 			delete newToasts[toastId];
 			setToasts(newToasts);
 		}

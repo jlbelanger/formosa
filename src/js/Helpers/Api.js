@@ -1,12 +1,12 @@
-import { deserialize } from './JsonApiDeserialize';
-import FormosaConfig from './Config';
+import { deserialize } from './JsonApiDeserialize.js';
+import FormosaConfig from './Config.js';
 import { trackPromise } from 'react-promise-tracker';
 
 export default class Api {
 	static instance() {
 		const responses = {};
 		return (url, showSpinner) => {
-			if (!Object.prototype.hasOwnProperty.call(responses, url)) {
+			if (!Object.hasOwn(responses, url)) {
 				responses[url] = Api.get(url, showSpinner);
 			}
 			return responses[url];
@@ -89,7 +89,7 @@ export default class Api {
 				return response.json();
 			})
 			.then((json) => {
-				if (Object.prototype.hasOwnProperty.call(json, 'data')) {
+				if (Object.hasOwn(json, 'data')) {
 					return deserialize(json);
 				}
 				return json;
@@ -107,7 +107,7 @@ export default class Api {
 	}
 
 	static deserialize(json) {
-		if (Object.prototype.hasOwnProperty.call(json, 'data')) {
+		if (Object.hasOwn(json, 'data')) {
 			return deserialize(json);
 		}
 		return json;

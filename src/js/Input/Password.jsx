@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import Input from '../Input';
+import Input from '../Input.jsx';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 export default function Password({
 	buttonAttributes = null,

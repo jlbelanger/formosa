@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 
 export default function Submit({
 	className = '',
@@ -29,6 +28,6 @@ export default function Submit({
 Submit.propTypes = {
 	className: PropTypes.string,
 	label: PropTypes.string,
-	prefix: PropTypes.node,
 	postfix: PropTypes.node,
+	prefix: PropTypes.node,
 };

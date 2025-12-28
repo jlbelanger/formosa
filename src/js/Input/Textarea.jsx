@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import FormContext from '../FormContext';
+import FormContext from '../FormContext.jsx';
 import get from 'get-value';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 
 export default function Textarea({
 	afterChange = null,
@@ -14,14 +14,14 @@ export default function Textarea({
 }) {
 	const { formState, setValues } = useContext(FormContext);
 
-	let currentValue = '';
-	if (setValue !== null) {
-		currentValue = value;
-	} else {
+	let currentValue;
+	if (setValue === null) {
 		if (formState === undefined) {
 			throw new Error('<Textarea> component must be inside a <Form> component.');
 		}
 		currentValue = get(formState.row, name);
+	} else {
+		currentValue = value;
 	}
 	if (currentValue === null || currentValue === undefined) {
 		currentValue = '';

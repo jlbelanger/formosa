@@ -30,7 +30,7 @@
 }
 
 .formosa-file-name {
-	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 .formosa-file-name--empty {

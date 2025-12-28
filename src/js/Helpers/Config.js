@@ -1,7 +1,7 @@
 export default class FormosaConfig {
 	static init(userConfig = {}) {
 		window.FORMOSA_CONFIG = {
-			apiPrefix: '' || userConfig.apiPrefix,
+			apiPrefix: userConfig.apiPrefix || '',
 		};
 	}
 

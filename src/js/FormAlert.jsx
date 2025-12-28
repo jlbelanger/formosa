@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import Alert from './Alert';
-import FormContext from './FormContext';
+import Alert from './Alert.jsx';
+import FormContext from './FormContext.jsx';
+import { useContext } from 'react';
 
 export default function FormAlert({ ...otherProps }) {
 	const { formState } = useContext(FormContext);

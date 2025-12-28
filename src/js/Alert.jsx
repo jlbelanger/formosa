@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import React from 'react';
 
 export default function Alert({
 	className = '',
@@ -27,7 +26,7 @@ export default function Alert({
 }
 
 Alert.propTypes = {
-	className: PropTypes.string,
 	children: PropTypes.node.isRequired,
+	className: PropTypes.string,
 	type: PropTypes.string,
 };

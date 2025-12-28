@@ -1,4 +1,4 @@
-import { normalizeOptions } from './Options';
+import { normalizeOptions } from './Options.js';
 
 describe('normalizeOptions', () => {
 	it('normalizes objects', () => {

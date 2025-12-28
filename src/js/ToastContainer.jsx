@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import FormosaContext from './FormosaContext';
-import Toast from './Toast';
+import FormosaContext from './FormosaContext.jsx';
+import Toast from './Toast.jsx';
+import { useContext } from 'react';
 
 export default function ToastContainer() {
 	const { toasts } = useContext(FormosaContext);
@@ -9,8 +9,8 @@ export default function ToastContainer() {
 			{Object.keys(toasts).map((id) => (
 				<Toast
 					className={toasts[id].className}
-					key={id}
 					id={id}
+					key={id}
 					milliseconds={toasts[id].milliseconds}
 					text={toasts[id].text}
 				/>
