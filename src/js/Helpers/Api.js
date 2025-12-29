@@ -1,11 +1,12 @@
-import { deserialize } from './JsonApiDeserialize';
+import { deserialize } from './JsonApiDeserialize.js';
+import FormosaConfig from './Config.js';
 import { trackPromise } from 'react-promise-tracker';
 
 export default class Api {
 	static instance() {
 		const responses = {};
 		return (url, showSpinner) => {
-			if (!Object.prototype.hasOwnProperty.call(responses, url)) {
+			if (!Object.hasOwn(responses, url)) {
 				responses[url] = Api.get(url, showSpinner);
 			}
 			return responses[url];
@@ -46,9 +47,10 @@ export default class Api {
 			options.body = body;
 		}
 
+		const apiPrefix = FormosaConfig.get('apiPrefix');
 		let fullUrl = url;
-		if (process.env.REACT_APP_API_URL && !url.startsWith('http')) {
-			fullUrl = `${process.env.REACT_APP_API_URL.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
+		if (apiPrefix && !url.startsWith('http')) {
+			fullUrl = `${apiPrefix.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
 		}
 
 		const event = new CustomEvent('formosaApiRequest', { cancelable: true, detail: { url: fullUrl, options } });
@@ -87,7 +89,7 @@ export default class Api {
 				return response.json();
 			})
 			.then((json) => {
-				if (Object.prototype.hasOwnProperty.call(json, 'data')) {
+				if (Object.hasOwn(json, 'data')) {
 					return deserialize(json);
 				}
 				return json;
@@ -105,7 +107,7 @@ export default class Api {
 	}
 
 	static deserialize(json) {
-		if (Object.prototype.hasOwnProperty.call(json, 'data')) {
+		if (Object.hasOwn(json, 'data')) {
 			return deserialize(json);
 		}
 		return json;

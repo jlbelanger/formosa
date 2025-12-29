@@ -1,0 +1,48 @@
+input.formosa-field__input--checkbox {
+	appearance: none;
+	border-radius: var(--formosa-checkbox-border-radius);
+	cursor: pointer;
+	height: var(--formosa-checkbox-size);
+	margin: 0 var(--formosa-checkbox-margin) 0 0;
+	vertical-align: middle;
+
+	&.formosa-field__input {
+		width: var(--formosa-checkbox-size);
+	}
+
+	.formosa-field--disabled & {
+		cursor: default;
+	}
+}
+
+.formosa-input-wrapper--checkbox {
+	position: relative;
+}
+
+.formosa-icon--check {
+	bottom: 0;
+	height: calc(var(--formosa-checkbox-size) - var(--formosa-checkbox-padding));
+	left: calc(var(--formosa-checkbox-padding) * .5);
+	pointer-events: none;
+	position: absolute;
+	top: calc(var(--formosa-checkbox-padding) * .5);
+	width: calc(var(--formosa-checkbox-size) - var(--formosa-checkbox-padding));
+
+	path {
+		fill: transparent;
+	}
+
+	.formosa-field--disabled & {
+		opacity: var(--formosa-disabled-opacity);
+	}
+
+	:checked + & path {
+		fill: var(--formosa-input-color);
+	}
+
+	& + .formosa-label-wrapper {
+		.formosa-label {
+			font-weight: normal;
+		}
+	}
+}

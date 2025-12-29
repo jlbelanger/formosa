@@ -1,0 +1,6 @@
+.formosa-field__note {
+	font-size: var(--formosa-note-font-size);
+	line-height: var(--formosa-note-line-height);
+	margin: var(--formosa-note-margin);
+	opacity: var(--formosa-note-opacity);
+}

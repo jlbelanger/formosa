@@ -5,7 +5,7 @@ import {
 	getBody,
 	getDirtyRelationships,
 	getSimpleRecord,
-} from './JsonApi';
+} from './JsonApi.js';
 
 describe('getSimpleRecord', () => {
 	it('works', () => {

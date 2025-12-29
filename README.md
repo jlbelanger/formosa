@@ -10,7 +10,7 @@ Formosa is a [React](https://www.npmjs.com/package/react) form component library
 - Displays toast messages (without additional library dependencies)
 - Shows spinner automatically during API requests (using [react-promise-tracker](https://www.npmjs.com/package/react-promise-tracker))
 - Excludes styles by default, so all styles can be completely customized; all elements have classes so they can be easily targeted
-- Includes optional basic SCSS, if you don't want to spend time styling form elements *yet again*; uses SCSS variables that can be overridden
+- Includes optional basic CSS, if you don't want to spend time styling form elements *yet again*; uses CSS variables that can be overridden
 - Supports nested field names (eg. `name="foo.bar"`)
 
 ## Requirements
@@ -31,9 +31,25 @@ yarn add https://github.com/jlbelanger/formosa
 
 ## Setup
 
+Call `FormosaConfig.init()` in `index.jsx`:
+
+``` jsx
+// src/index.jsx
+import App from './App';
+import { createRoot } from 'react-dom/client';
+import { FormosaConfig } from '@jlbelanger/formosa';
+import React from 'react';
+
+FormosaConfig.init({ apiPrefix: 'https://example.com/api' });
+
+const root = createRoot(document.getElementById('root'));
+root.render(<App />);
+```
+
 Your app must include the `<FormContainer>` component once (eg. in the main `App` component). All `<Form>`s must be inside this container. The `<FormContainer>` does not take any props; it is used to display a spinner during API requests and to display toast messages when forms are submitted.
 
 ```jsx
+// src/App.jsx
 import { Field, FormContainer, Form, Submit } from '@jlbelanger/formosa';
 import React, { useState } from 'react';
 
@@ -60,25 +76,22 @@ export default function App() {
 
 ### Styles
 
-By default, no styles are included. To include all styles (eg. in `src/index.scss`):
+By default, no styles are included. To include all styles:
 
-``` scss
-@use '@jlbelanger/formosa/src/scss/utilities/variables' with (
-	/* Your variable overrides go here. */
-);
-@use '@jlbelanger/formosa/src/style';
+``` jsx
+// src/App.jsx
+import '@jlbelanger/formosa/dist/formosa.css';
 ```
 
-To selectively include specific styles listed in the [components](https://github.com/jlbelanger/formosa/tree/main/src/scss/components) folder:
+To selectively include specific styles listed in the [components](https://github.com/jlbelanger/formosa/tree/main/src/css/components) folder:
 
-``` scss
-@use '@jlbelanger/formosa/src/scss/utilities/variables' with (
-	/* Your variable overrides go here. */
-);
-@use '@jlbelanger/formosa/src/scss/components/checkbox';
+``` jsx
+// src/App.jsx
+import '@jlbelanger/formosa/src/css/utilities/variables';
+import '@jlbelanger/formosa/src/css/components/checkbox';
 ```
 
-A list of Sass variables is available in [_variables.scss](https://github.com/jlbelanger/formosa/blob/main/src/scss/utilities/_variables.scss).
+A list of CSS variables is available in [variables.css](https://github.com/jlbelanger/formosa/blob/main/src/css/utilities/variables.css).
 
 ### Components
 

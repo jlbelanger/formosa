@@ -1,0 +1,49 @@
+.formosa-label-wrapper {
+	display: block;
+	margin-bottom: var(--formosa-label-margin);
+
+	&:empty {
+		display: none;
+	}
+}
+
+.formosa-label {
+	font-weight: var(--formosa-label-font-weight);
+
+	&[for] {
+		cursor: pointer;
+
+		.formosa-field--disabled & {
+			cursor: default;
+		}
+	}
+
+	.formosa-field--has-error & {
+		color: var(--formosa-label-error-color);
+	}
+}
+
+.formosa-radio__label {
+	cursor: pointer;
+
+	.formosa-field--disabled & {
+		cursor: default;
+	}
+}
+
+.formosa-label--required {
+	&::after {
+		content: ' *';
+	}
+}
+
+.formosa-field--label-after {
+	.formosa-label-wrapper {
+		display: inline-block;
+		margin: 0;
+
+		&:empty {
+			display: none;
+		}
+	}
+}

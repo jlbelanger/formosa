@@ -1,0 +1,19 @@
+.formosa-prefix {
+	border-bottom-right-radius: 0;
+	border-right-width: var(--formosa-prefix-border-width);
+	border-top-right-radius: 0;
+
+	&:focus {
+		position: relative;
+	}
+}
+
+.formosa-postfix {
+	border-bottom-left-radius: 0;
+	border-left-width: var(--formosa-postfix-border-width);
+	border-top-left-radius: 0;
+
+	&:focus {
+		position: relative;
+	}
+}

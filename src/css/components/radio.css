@@ -1,0 +1,72 @@
+.formosa-radio {
+	border: 0;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+.formosa-radio__legend {
+	bottom: 0;
+	clip-path: inset(1px 1px 1px 1px);
+	font-size: 0;
+	margin: 0;
+	overflow: hidden;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.formosa-radio--inline {
+	display: flex;
+	flex-wrap: wrap;
+
+	.formosa-radio__item {
+		margin-bottom: var(--formosa-radio-margin);
+		margin-right: var(--formosa-radio-margin-inline);
+	}
+}
+
+.formosa-radio__item {
+	position: relative;
+}
+
+.formosa-radio__item + .formosa-radio__item {
+	margin-top: var(--formosa-radio-margin);
+}
+
+.formosa-radio--inline .formosa-radio__item + .formosa-radio__item {
+	margin-top: 0;
+}
+
+input.formosa-radio__input {
+	appearance: none;
+	border-color: var(--formosa-input-background-color);
+	border-radius: var(--formosa-radio-border-radius);
+	border-width: var(--formosa-radio-border-width);
+	box-shadow: 0 0 0 var(--formosa-input-border-width) var(--formosa-input-border-color);
+	cursor: pointer;
+	height: var(--formosa-radio-size);
+	line-height: var(--formosa-input-line-height);
+	margin: 0 var(--formosa-radio-margin-side) 0 0;
+	padding: 0;
+	vertical-align: middle;
+
+	.formosa-field--disabled & {
+		cursor: default;
+	}
+
+	&.formosa-field__input {
+		width: var(--formosa-radio-size);
+	}
+
+	&:checked {
+		background-color: var(--formosa-input-color);
+	}
+
+	&:focus {
+		box-shadow:
+			0 0 0 var(--formosa-input-border-width) var(--formosa-focus-border-color),
+			0 0 0 calc(var(--formosa-input-border-width) + var(--formosa-focus-border-width)) var(--formosa-focus-box-shadow-color);
+	}
+}

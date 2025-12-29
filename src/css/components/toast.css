@@ -1,0 +1,98 @@
+.formosa-toast-container {
+	align-items: flex-end;
+	bottom: var(--formosa-toast-bottom);
+	display: flex;
+	flex-direction: column;
+	pointer-events: none;
+	position: fixed;
+	right: var(--formosa-toast-right);
+	z-index: var(--formosa-toast-zindex);
+}
+
+.formosa-toast {
+	align-items: center;
+	animation-fill-mode: forwards;
+	animation-name: formosa-slide-in-out;
+	background-color: var(--formosa-primary-background-color);
+	color: var(--formosa-primary-color);
+	display: flex;
+	margin: var(--formosa-toast-margin);
+	max-width: 90vw;
+	pointer-events: auto;
+}
+
+.formosa-toast__text {
+	padding: var(--formosa-toast-padding);
+}
+
+.formosa-toast__close {
+	background-color: transparent;
+	border: 0;
+	cursor: pointer;
+	font-size: 0;
+	height: 32px;
+	margin: 0 8px 0 0;
+	padding: 0;
+	width: 32px;
+
+	path {
+		fill: var(--formosa-primary-color);
+	}
+
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: transparent;
+	}
+}
+
+.formosa-toast--error {
+	background-color: var(--formosa-toast-error-background-color);
+	color: var(--formosa-toast-error-color);
+
+	.formosa-toast__close {
+		path {
+			fill: var(--formosa-toast-error-color);
+		}
+	}
+}
+
+.formosa-toast--success {
+	background-color: var(--formosa-toast-success-background-color);
+	color: var(--formosa-toast-success-color);
+
+	.formosa-toast__close {
+		path {
+			fill: var(--formosa-toast-success-color);
+		}
+	}
+}
+
+.formosa-toast--warning {
+	background-color: var(--formosa-toast-warning-background-color);
+	color: var(--formosa-toast-warning-color);
+
+	.formosa-toast__close {
+		path {
+			fill: var(--formosa-toast-warning-color);
+		}
+	}
+}
+
+@keyframes formosa-slide-in-out {
+	0% {
+		transform: translateX(200%) translateZ(0);
+	}
+
+	10% {
+		transform: translateX(0%) translateZ(0);
+	}
+
+	90% {
+		transform: translateX(0%) translateZ(0);
+	}
+
+	100% {
+		transform: translateX(200%) translateZ(0);
+	}
+}

@@ -1,0 +1,27 @@
+.formosa-select-wrapper {
+	display: table;
+	position: relative;
+}
+
+.formosa-field__input--select {
+	appearance: none;
+	cursor: pointer;
+	padding-right: var(--formosa-select-padding-right);
+
+	.formosa-field--disabled & {
+		cursor: default;
+	}
+}
+
+.formosa-icon--caret {
+	height: var(--formosa-select-arrow-size);
+	margin-top: calc(var(--formosa-select-arrow-size) * -.5);
+	position: absolute;
+	right: calc(var(--formosa-input-padding) + var(--formosa-input-border-width));
+	top: 50%;
+	width: var(--formosa-select-arrow-size);
+
+	path {
+		fill: var(--formosa-input-color);
+	}
+}

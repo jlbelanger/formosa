@@ -1,0 +1,69 @@
+.formosa-field--disabled {
+	& > .formosa-input-wrapper {
+		opacity: var(--formosa-disabled-opacity);
+	}
+
+	/* Undo iOS Safari styles. */
+	input:disabled,
+	select:disabled,
+	textarea:disabled {
+		opacity: 1;
+	}
+
+	input[type='file']:disabled {
+		opacity: 0;
+	}
+}
+
+.formosa-field__input,
+.formosa-field__input--select,
+.formosa-field__input--textarea,
+.formosa-file-input-wrapper {
+	background-color: var(--formosa-input-background-color);
+	border: var(--formosa-input-border-width) solid var(--formosa-input-border-color);
+	border-radius: var(--formosa-input-border-radius);
+	color: var(--formosa-input-color);
+	font-family: var(--formosa-input-font-family);
+	font-size: var(--formosa-input-font-size);
+	padding: var(--formosa-input-padding);
+
+	&:invalid {
+		box-shadow: none;
+
+		&:focus {
+			box-shadow: 0 0 0 var(--formosa-focus-border-width) var(--formosa-focus-box-shadow-color);
+		}
+	}
+
+	.formosa-field--has-error & {
+		border-color: var(--formosa-focus-error-border-color);
+
+		&:focus {
+			border-color: var(--formosa-focus-border-color);
+		}
+	}
+}
+
+.formosa-button,
+.formosa-field__input,
+.formosa-field__input--select,
+.formosa-file-input-wrapper {
+	line-height: var(--formosa-input-line-height);
+}
+
+.formosa-button,
+.formosa-field__input,
+.formosa-field__input--select,
+.formosa-field__input--textarea {
+	margin: 0;
+}
+
+.formosa-field__input,
+.formosa-field__input--textarea {
+	appearance: none; /* So focus style works on iOS. */
+}
+
+.formosa-field__input:not([size]) {
+	box-sizing: border-box;
+	width: 100%;
+}

@@ -4,10 +4,10 @@ const findIncluded = (included, id, type, mainRecord) => {
 			id: mainRecord.id,
 			type: mainRecord.type,
 		};
-		if (Object.prototype.hasOwnProperty.call(mainRecord, 'attributes')) {
+		if (Object.hasOwn(mainRecord, 'attributes')) {
 			output.attributes = mainRecord.attributes;
 		}
-		if (Object.prototype.hasOwnProperty.call(mainRecord, 'meta')) {
+		if (Object.hasOwn(mainRecord, 'meta')) {
 			output.meta = mainRecord.meta;
 		}
 		return output;
@@ -25,7 +25,7 @@ const deserializeSingle = (data, otherRows = [], included = [], mainRecord = nul
 		...data.attributes,
 	};
 
-	if (Object.prototype.hasOwnProperty.call(data, 'relationships')) {
+	if (Object.hasOwn(data, 'relationships')) {
 		let includedRecord;
 		Object.keys(data.relationships).forEach((relationshipName) => {
 			output[relationshipName] = data.relationships[relationshipName].data;
@@ -55,21 +55,21 @@ const deserializeSingle = (data, otherRows = [], included = [], mainRecord = nul
 		});
 	}
 
-	if (Object.prototype.hasOwnProperty.call(data, 'meta')) {
+	if (Object.hasOwn(data, 'meta')) {
 		output.meta = data.meta;
 	}
 
 	return output;
 };
 
-export const deserialize = (body) => { // eslint-disable-line import/prefer-default-export
+export const deserialize = (body) => {
 	if (Array.isArray(body.data)) {
 		const output = [];
 		body.data.forEach((data) => {
 			output.push(deserializeSingle(data, body.data, body.included, null));
 		});
 
-		if (Object.prototype.hasOwnProperty.call(body, 'meta')) {
+		if (Object.hasOwn(body, 'meta')) {
 			return { data: output, meta: body.meta };
 		}
 
