@@ -15,11 +15,12 @@
 	},
 	"scripts": {
 		"build": "vite build",
-		"lint": "yarn lint:css && yarn lint:js",
-		"lint:css": "node_modules/.bin/stylelint 'src/css/**/*.css'",
-		"lint:js": "node_modules/.bin/eslint .",
-		"start": "node_modules/.bin/update-browserslist-db && vite build --watch",
-		"test": "node_modules/.bin/jest --watch"
+		"lint": "npm run lint:css && npm run lint:js",
+		"lint:css": "npx stylelint 'src/css/**/*.css'",
+		"lint:js": "npx eslint .",
+		"start": "npx update-browserslist-db && vite build --watch",
+		"test:js": "npx jest",
+		"test:watch": "npx jest --watch"
 	},
 	"dependencies": {
 		"get-value": "^4.0.1",

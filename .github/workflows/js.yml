@@ -9,6 +9,7 @@ jobs:
       with:
         node-version: '24'
     - uses: actions/checkout@v3
-    - run: cd example && yarn install && cd ../
-    - run: yarn install
-    - run: yarn run lint
+    - run: cd example && npm install && cd ../
+    - run: npm install
+    - run: npm run lint
+    - run: npm run test:js

@@ -22,11 +22,7 @@ Formosa is a [React](https://www.npmjs.com/package/react) form component library
 **Warning: This package is still a work-in-progress. Use at your own risk.**
 
 ```bash
-# With npm:
 npm install --save https://github.com/jlbelanger/formosa
-
-# Or with yarn:
-yarn add https://github.com/jlbelanger/formosa
 ```
 
 ## Setup
@@ -389,7 +385,7 @@ import { Field, Form, Message, Submit } from '@jlbelanger/formosa';
 ### Requirements
 
 - [Git](https://git-scm.com/)
-- [Yarn](https://classic.yarnpkg.com/en/docs/install)
+- [Node](https://nodejs.org/)
 
 ### Setup
 
@@ -399,19 +395,19 @@ git clone https://github.com/jlbelanger/formosa.git
 cd formosa
 
 # Install dependencies
-yarn install
+npm install
 cd example
-yarn install
+npm install
 ```
 
 ### Run
 
 ``` bash
-yarn start
+npm start
 
 # In a new window:
 cd example
-yarn start
+npm start
 ```
 
 Your browser should automatically open http://localhost:3000/
@@ -419,13 +415,13 @@ Your browser should automatically open http://localhost:3000/
 ### Lint
 
 ``` bash
-yarn lint
+npm run lint
 ```
 
 ### Test
 
 ``` bash
-yarn test
+npm run test:watch
 ```
 
 ## Deployment
