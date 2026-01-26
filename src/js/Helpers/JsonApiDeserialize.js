@@ -12,7 +12,7 @@ const findIncluded = (included, id, type, mainRecord) => {
 		}
 		return output;
 	}
-	return included.find((data) => (data.id === id && data.type === type));
+	return included.find((data) => data.id === id && data.type === type);
 };
 
 const deserializeSingle = (data, otherRows = [], included = [], mainRecord = null) => {

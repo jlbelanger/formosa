@@ -904,12 +904,7 @@ function Ar() {
 }
 var kr = /* @__PURE__ */ Ar();
 const e = /* @__PURE__ */ Ut(kr);
-function ft({
-  className: t = "",
-  children: r,
-  type: n = null,
-  ...s
-}) {
+function ft({ className: t = "", children: r, type: n = null, ...s }) {
   if (!r)
     return null;
   let i = "formosa-alert";
@@ -1069,7 +1064,6 @@ class ce {
       return Promise.resolve();
     const l = fetch(u, a).then((f) => f.ok ? f.status === 204 ? {} : f.json() : f.json().catch((b) => {
       throw b instanceof SyntaxError ? {
-        // eslint-disable-line no-throw-literal
         errors: [
           {
             title: "Unable to connect to the server. Please try again later.",
@@ -1094,27 +1088,22 @@ class ce {
     return Object.hasOwn(r, "data") ? At(r) : r;
   }
 }
-const Ht = (t) => /* @__PURE__ */ be.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 8 8", ...t }, /* @__PURE__ */ be.createElement("path", { d: "M6.41 1l-.69.72L2.94 4.5l-.81-.78L1.41 3 0 4.41l.72.72 1.5 1.5.69.72.72-.72 3.5-3.5.72-.72L6.41 1z" })), fe = pe.createContext(
-  {
-    alertClass: "",
-    alertText: "",
-    errors: {},
-    files: {},
-    originalRow: {},
-    row: {},
-    response: null,
-    setRow: null,
-    toastClass: "",
-    toastText: "",
-    uuid: null
-  }
-);
-function Gt({
-  id: t = null,
-  name: r = ""
-}) {
+const Ht = (t) => /* @__PURE__ */ be.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 8 8", ...t }, /* @__PURE__ */ be.createElement("path", { d: "M6.41 1l-.69.72L2.94 4.5l-.81-.78L1.41 3 0 4.41l.72.72 1.5 1.5.69.72.72-.72 3.5-3.5.72-.72L6.41 1z" })), fe = pe.createContext({
+  alertClass: "",
+  alertText: "",
+  errors: {},
+  files: {},
+  originalRow: {},
+  row: {},
+  response: null,
+  setRow: null,
+  toastClass: "",
+  toastText: "",
+  uuid: null
+});
+function Gt({ id: t = null, name: r = "" }) {
   const { formState: n } = ae(fe), s = n && Object.hasOwn(n.errors, r), i = {};
-  return r && (i["data-name"] = r), (t || r) && (i.id = `${t || r}-error`), /* @__PURE__ */ h.jsx("div", { className: "formosa-field__error", ...i, children: s && n.errors[r].map((a) => /* @__PURE__ */ h.jsx("div", { children: a }, a)) });
+  return r && (i["data-name"] = r), (t || r) && (i.id = `${t || r}-error`), /* @__PURE__ */ h.jsx("div", { className: "formosa-field__error", ...i, children: s ? n.errors[r].map((a) => /* @__PURE__ */ h.jsx("div", { children: a }, a)) : null });
 }
 Gt.propTypes = {
   id: e.string,
@@ -1187,7 +1176,6 @@ const ue = (t, r, n = null) => {
   }), t;
 }, lt = (t) => /* @__PURE__ */ be.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 8 8", ...t }, /* @__PURE__ */ be.createElement("path", { d: "M1.41 0L0 1.41l.72.72L2.5 3.94.72 5.72 0 6.41l1.41 1.44.72-.72 1.81-1.81 1.78 1.81.69.72 1.44-1.44-.72-.69-1.81-1.78 1.81-1.81.72-.72L6.41 0l-.69.72L3.94 2.5 2.13.72 1.41 0z" }));
 function Zt({
-  // eslint-disable-line complexity
   afterAdd: t = null,
   afterChange: r = null,
   clearable: n = !0,
@@ -1309,7 +1297,7 @@ function Zt({
       ...v,
       children: [
         /* @__PURE__ */ h.jsxs("ul", { className: "formosa-autocomplete__values", children: [
-          te && te.map((L, W) => {
+          te ? te.map((L, W) => {
             let oe = L, de = !1;
             typeof oe == "object" && (oe = JSON.stringify(oe), de = !0);
             const ye = dt.find((vt) => de ? JSON.stringify(vt.value) === oe : vt.value === oe);
@@ -1338,8 +1326,8 @@ function Zt({
                 }
               )
             ] }, oe);
-          }),
-          wr && /* @__PURE__ */ h.jsx("li", { className: "formosa-autocomplete__value formosa-autocomplete__value--input", children: /* @__PURE__ */ h.jsx(
+          }) : null,
+          wr ? /* @__PURE__ */ h.jsx("li", { className: "formosa-autocomplete__value formosa-autocomplete__value--input", children: /* @__PURE__ */ h.jsx(
             "input",
             {
               ...b,
@@ -1355,9 +1343,9 @@ function Zt({
               type: "text",
               value: se
             }
-          ) })
+          ) }) : null
         ] }),
-        Ae && me.length > 0 && /* @__PURE__ */ h.jsx("ul", { className: `formosa-autocomplete__options ${J}`.trim(), ...y, children: me.map((L, W) => {
+        Ae && me.length > 0 ? /* @__PURE__ */ h.jsx("ul", { className: `formosa-autocomplete__options ${J}`.trim(), ...y, children: me.map((L, W) => {
           let oe = ["formosa-autocomplete__option"];
           we === W && oe.push("formosa-autocomplete__option--highlighted"), oe = oe.join(" ");
           let de = L.value, ye = !1;
@@ -1387,8 +1375,8 @@ function Zt({
             },
             de
           );
-        }) }),
-        gt && /* @__PURE__ */ h.jsx("div", { children: /* @__PURE__ */ h.jsxs(
+        }) }) : null,
+        gt ? /* @__PURE__ */ h.jsx("div", { children: /* @__PURE__ */ h.jsxs(
           "button",
           {
             className: `formosa-autocomplete__clear ${i}`.trim(),
@@ -1401,17 +1389,8 @@ function Zt({
               j
             ]
           }
-        ) }),
-        /* @__PURE__ */ h.jsx(
-          "input",
-          {
-            ...I,
-            name: P,
-            ref: B,
-            type: "hidden",
-            value: se
-          }
-        )
+        ) }) : null,
+        /* @__PURE__ */ h.jsx("input", { ...I, name: P, ref: B, type: "hidden", value: se })
       ]
     }
   );
@@ -1431,30 +1410,18 @@ Zt.propTypes = {
   inputAttributes: e.object,
   inputClassName: e.string,
   labelFn: e.func,
-  labelKey: e.oneOfType([
-    e.func,
-    e.string
-  ]),
+  labelKey: e.oneOfType([e.func, e.string]),
   loadingText: e.string,
   max: e.number,
   name: e.string,
-  optionButtonAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
+  optionButtonAttributes: e.oneOfType([e.func, e.object]),
   optionButtonClassName: e.string,
   optionLabelFn: e.func,
   optionListAttributes: e.object,
   optionListClassName: e.string,
-  optionListItemAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
+  optionListItemAttributes: e.oneOfType([e.func, e.object]),
   optionListItemClassName: e.string,
-  options: e.oneOfType([
-    e.array,
-    e.object
-  ]),
+  options: e.oneOfType([e.array, e.object]),
   placeholder: e.string,
   readOnly: e.bool,
   removeButtonAttributes: e.object,
@@ -1474,14 +1441,8 @@ Zt.propTypes = {
     e.object,
     e.string
   ]),
-  valueKey: e.oneOfType([
-    e.func,
-    e.string
-  ]),
-  valueListItemAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
+  valueKey: e.oneOfType([e.func, e.string]),
+  valueListItemAttributes: e.oneOfType([e.func, e.object]),
   wrapperAttributes: e.object,
   wrapperClassName: e.string
 };
@@ -1547,7 +1508,6 @@ Qt.propTypes = {
   value: e.bool
 };
 function Kt({
-  // eslint-disable-line complexity
   afterChange: t = null,
   className: r = "",
   disabled: n = !1,
@@ -1670,43 +1630,22 @@ Kt.propTypes = {
   disabled: e.bool,
   fieldsetAttributes: e.object,
   fieldsetClassName: e.string,
-  iconAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
+  iconAttributes: e.oneOfType([e.func, e.object]),
   iconClassName: e.string,
   iconHeight: e.number,
   iconWidth: e.number,
-  inputAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
-  itemAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
+  inputAttributes: e.oneOfType([e.func, e.object]),
+  itemAttributes: e.oneOfType([e.func, e.object]),
   itemClassName: e.string,
-  itemLabelAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
+  itemLabelAttributes: e.oneOfType([e.func, e.object]),
   itemLabelClassName: e.string,
-  itemSpanAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
+  itemSpanAttributes: e.oneOfType([e.func, e.object]),
   itemSpanClassName: e.string,
-  labelKey: e.oneOfType([
-    e.func,
-    e.string
-  ]),
+  labelKey: e.oneOfType([e.func, e.string]),
   legend: e.string,
   loadingText: e.string,
   name: e.string,
-  options: e.oneOfType([
-    e.array,
-    e.object
-  ]),
+  options: e.oneOfType([e.array, e.object]),
   readOnly: e.bool,
   setValue: e.func,
   showLoading: e.bool,
@@ -1716,13 +1655,9 @@ Kt.propTypes = {
     e.arrayOf(e.object),
     e.arrayOf(e.string)
   ]),
-  valueKey: e.oneOfType([
-    e.func,
-    e.string
-  ])
+  valueKey: e.oneOfType([e.func, e.string])
 };
 function er({
-  // eslint-disable-line complexity
   afterChange: t = null,
   buttonAttributes: r = null,
   buttonClassName: n = "",
@@ -1802,7 +1737,7 @@ function er({
   _ && (I.name = _);
   const R = {};
   return (c || _) && (R.id = `${c || _}-remove`), /* @__PURE__ */ h.jsxs(h.Fragment, { children: [
-    F && b && p.map((x) => {
+    F && b ? p.map((x) => {
       const k = /* @__PURE__ */ h.jsx(
         "img",
         {
@@ -1815,17 +1750,10 @@ function er({
         x
       );
       return O ? /* @__PURE__ */ h.jsx("a", { className: `formosa-file-link ${m}`.trim(), href: x, ...g, children: k }, x) : k;
-    }),
+    }) : null,
     /* @__PURE__ */ h.jsxs("div", { className: `formosa-file-wrapper ${Q}`.trim(), ...Y, children: [
       /* @__PURE__ */ h.jsxs("div", { className: `formosa-file-input-wrapper ${v}`.trim(), ...w, children: [
-        /* @__PURE__ */ h.jsx(
-          "div",
-          {
-            className: `formosa-file-name${$ ? "" : " formosa-file-name--empty"}`,
-            id: `${c || _}-name`,
-            children: $ || a
-          }
-        ),
+        /* @__PURE__ */ h.jsx("div", { className: `formosa-file-name${$ ? "" : " formosa-file-name--empty"}`, id: `${c || _}-name`, children: $ || a }),
         !S && /* @__PURE__ */ h.jsxs(h.Fragment, { children: [
           /* @__PURE__ */ h.jsx(
             "input",
@@ -1840,19 +1768,10 @@ function er({
               ...ee
             }
           ),
-          /* @__PURE__ */ h.jsx(
-            "input",
-            {
-              disabled: i,
-              required: y,
-              type: "hidden",
-              value: U,
-              ...I
-            }
-          )
+          /* @__PURE__ */ h.jsx("input", { disabled: i, required: y, type: "hidden", value: U, ...I })
         ] })
       ] }),
-      F && !i && !S && /* @__PURE__ */ h.jsx(
+      F && !i && !S ? /* @__PURE__ */ h.jsx(
         "button",
         {
           className: `formosa-button formosa-button--remove-file formosa-postfix ${n}`.trim(),
@@ -1862,7 +1781,7 @@ function er({
           ...r,
           children: N
         }
-      )
+      ) : null
     ] })
   ] });
 }
@@ -1890,19 +1809,11 @@ er.propTypes = {
   removeText: e.string,
   required: e.bool,
   setValue: e.func,
-  value: e.oneOfType([
-    e.array,
-    e.object,
-    e.string
-  ]),
+  value: e.oneOfType([e.array, e.object, e.string]),
   wrapperAttributes: e.object,
   wrapperClassName: e.string
 };
-function ut({
-  children: t,
-  condition: r = !1,
-  ...n
-}) {
+function ut({ children: t, condition: r = !1, ...n }) {
   return r ? /* @__PURE__ */ h.jsx("div", { ...n, children: t }) : t;
 }
 ut.propTypes = {
@@ -1944,7 +1855,7 @@ function Ye({
         ...j
       }
     ),
-    a && /* @__PURE__ */ h.jsx("span", { className: "formosa-suffix", children: a })
+    a ? /* @__PURE__ */ h.jsx("span", { className: "formosa-suffix", children: a }) : null
   ] });
 }
 Ye.propTypes = {
@@ -1955,10 +1866,7 @@ Ye.propTypes = {
   setValue: e.func,
   suffix: e.string,
   type: e.string,
-  value: e.oneOfType([
-    e.number,
-    e.string
-  ])
+  value: e.oneOfType([e.number, e.string])
 };
 function tr({
   buttonAttributes: t = null,
@@ -2011,7 +1919,6 @@ tr.propTypes = {
   wrapperClassName: e.string
 };
 function rr({
-  // eslint-disable-line complexity
   afterChange: t = null,
   className: r = "",
   fieldsetAttributes: n = null,
@@ -2108,50 +2015,25 @@ rr.propTypes = {
   className: e.string,
   fieldsetAttributes: e.object,
   fieldsetClassName: e.string,
-  inputAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
-  itemAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
+  inputAttributes: e.oneOfType([e.func, e.object]),
+  itemAttributes: e.oneOfType([e.func, e.object]),
   itemClassName: e.string,
-  itemLabelAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
+  itemLabelAttributes: e.oneOfType([e.func, e.object]),
   itemLabelClassName: e.string,
-  itemSpanAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
+  itemSpanAttributes: e.oneOfType([e.func, e.object]),
   itemSpanClassName: e.string,
   label: e.string,
-  labelKey: e.oneOfType([
-    e.func,
-    e.string
-  ]),
+  labelKey: e.oneOfType([e.func, e.string]),
   legend: e.string,
   loadingText: e.string,
   name: e.string,
-  options: e.oneOfType([
-    e.array,
-    e.object
-  ]),
+  options: e.oneOfType([e.array, e.object]),
   required: e.bool,
   setValue: e.func,
   showLoading: e.bool,
   url: e.string,
-  value: e.oneOfType([
-    e.number,
-    e.object,
-    e.string
-  ]),
-  valueKey: e.oneOfType([
-    e.func,
-    e.string
-  ])
+  value: e.oneOfType([e.number, e.object, e.string]),
+  valueKey: e.oneOfType([e.func, e.string])
 };
 const Zr = (t) => /* @__PURE__ */ be.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 8 8", ...t }, /* @__PURE__ */ be.createElement("path", { d: "M3.5 0C1.57 0 0 1.57 0 3.5S1.57 7 3.5 7c.59 0 1.17-.14 1.66-.41a1 1 0 00.13.13l1 1a1.02 1.02 0 101.44-1.44l-1-1a1 1 0 00-.16-.13c.27-.49.44-1.06.44-1.66 0-1.93-1.57-3.5-3.5-3.5zm0 1C4.89 1 6 2.11 6 3.5c0 .66-.24 1.27-.66 1.72l-.03.03a1 1 0 00-.13.13c-.44.4-1.04.63-1.69.63-1.39 0-2.5-1.11-2.5-2.5s1.11-2.5 2.5-2.5z" }));
 function nr({
@@ -2165,13 +2047,7 @@ function nr({
   ...u
 }) {
   return /* @__PURE__ */ h.jsxs("div", { className: `formosa-search-wrapper ${c}`.trim(), ...a, children: [
-    /* @__PURE__ */ h.jsx(
-      Ye,
-      {
-        className: `formosa-field__input--search ${t}`.trim(),
-        ...u
-      }
-    ),
+    /* @__PURE__ */ h.jsx(Ye, { className: `formosa-field__input--search ${t}`.trim(), ...u }),
     /* @__PURE__ */ h.jsx(
       Zr,
       {
@@ -2195,7 +2071,6 @@ nr.propTypes = {
 };
 const Qr = (t) => /* @__PURE__ */ be.createElement("svg", { xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 8 8", ...t }, /* @__PURE__ */ be.createElement("path", { d: "M0 2l4 4 4-4H0z" }));
 function sr({
-  // eslint-disable-line complexity
   afterChange: t = null,
   className: r = "",
   hideBlank: n = !1,
@@ -2287,33 +2162,17 @@ sr.propTypes = {
   iconHeight: e.number,
   iconWidth: e.number,
   id: e.string,
-  labelKey: e.oneOfType([
-    e.func,
-    e.string
-  ]),
+  labelKey: e.oneOfType([e.func, e.string]),
   loadingText: e.string,
   multiple: e.bool,
   name: e.string,
-  optionAttributes: e.oneOfType([
-    e.func,
-    e.object
-  ]),
-  options: e.oneOfType([
-    e.array,
-    e.object
-  ]),
+  optionAttributes: e.oneOfType([e.func, e.object]),
+  options: e.oneOfType([e.array, e.object]),
   setValue: e.func,
   showLoading: e.bool,
   url: e.string,
-  value: e.oneOfType([
-    e.number,
-    e.object,
-    e.string
-  ]),
-  valueKey: e.oneOfType([
-    e.func,
-    e.string
-  ]),
+  value: e.oneOfType([e.number, e.object, e.string]),
+  valueKey: e.oneOfType([e.func, e.string]),
   wrapperAttributes: e.object,
   wrapperClassName: e.string
 };
@@ -2359,11 +2218,7 @@ or.propTypes = {
   value: e.string
 };
 const ir = (t, r) => r || (t === "select" ? sr : t === "textarea" ? or : t === "radio" ? rr : t === "checkbox" ? Qt : t === "password" ? tr : t === "search" ? nr : t === "autocomplete" ? Zt : t === "file" ? er : t === "checkbox-list" ? Kt : Ye);
-function Kr({
-  component: t = null,
-  type: r = "text",
-  ...n
-}) {
+function Kr({ component: t = null, type: r = "text", ...n }) {
   const s = ir(r, t);
   return /* @__PURE__ */ h.jsx(s, { type: r, ...n });
 }
@@ -2387,7 +2242,7 @@ function ar({
   const l = ["radio", "checkbox-list"].includes(a), f = {};
   return r && !l && (f.htmlFor = r), l && (f["aria-hidden"] = !0), /* @__PURE__ */ h.jsxs("div", { className: j, children: [
     /* @__PURE__ */ h.jsx("label", { className: `${u} ${t}`.trim(), ...f, ...c, children: n }),
-    s && /* @__PURE__ */ h.jsx("span", { className: "formosa-label__note", children: s })
+    s ? /* @__PURE__ */ h.jsx("span", { className: "formosa-label__note", children: s }) : null
   ] });
 }
 ar.propTypes = {
@@ -2399,7 +2254,6 @@ ar.propTypes = {
   type: e.string
 };
 function en({
-  // eslint-disable-line complexity
   component: t = null,
   disabled: r = !1,
   id: n = null,
@@ -2446,8 +2300,8 @@ function en({
   c && M.push(c), _ && M.push("formosa-field--has-suffix");
   const V = ["formosa-input-inner-wrapper"];
   return i && V.push(i), /* @__PURE__ */ h.jsxs("div", { className: F.join(" "), ...N, children: [
-    u && b === "before" && z,
-    u && b === "after" && /* @__PURE__ */ h.jsx("div", { className: "formosa-label-wrapper" }),
+    u && b === "before" ? z : null,
+    u && b === "after" ? /* @__PURE__ */ h.jsx("div", { className: "formosa-label-wrapper" }) : null,
     /* @__PURE__ */ h.jsxs("div", { className: M.join(" "), ...a, children: [
       /* @__PURE__ */ h.jsxs(
         ut,
@@ -2458,13 +2312,13 @@ function en({
           children: [
             g,
             ee,
-            u && b === "after" && z,
-            d && /* @__PURE__ */ h.jsx("div", { className: "formosa-field__note", children: d }),
+            u && b === "after" ? z : null,
+            d ? /* @__PURE__ */ h.jsx("div", { className: "formosa-field__note", children: d }) : null,
             m
           ]
         }
       ),
-      H && H.showInlineErrors && /* @__PURE__ */ h.jsx(Gt, { id: n, name: w })
+      H && H.showInlineErrors ? /* @__PURE__ */ h.jsx(Gt, { id: n, name: w }) : null
     ] })
   ] });
 }
@@ -2482,11 +2336,7 @@ en.propTypes = {
   labelNote: e.string,
   labelPosition: e.string,
   name: e.string,
-  note: e.oneOfType([
-    e.func,
-    e.object,
-    e.string
-  ]),
+  note: e.oneOfType([e.func, e.object, e.string]),
   postfix: e.node,
   prefix: e.node,
   readOnly: e.bool,
@@ -2496,20 +2346,18 @@ en.propTypes = {
   wrapperAttributes: e.object,
   wrapperClassName: e.string
 };
-const $e = pe.createContext(
-  {
-    toasts: {},
-    showWarningPrompt: !0,
-    addToast: () => {
-    },
-    removeToast: () => {
-    },
-    disableWarningPrompt: () => {
-    },
-    enableWarningPrompt: () => {
-    }
+const $e = pe.createContext({
+  toasts: {},
+  showWarningPrompt: !0,
+  addToast: () => {
+  },
+  removeToast: () => {
+  },
+  disableWarningPrompt: () => {
+  },
+  enableWarningPrompt: () => {
   }
-);
+});
 var nt, Ft;
 function tn() {
   return Ft || (Ft = 1, nt = function(r) {
@@ -2667,7 +2515,11 @@ const he = /* @__PURE__ */ Ut(on), Ne = (t) => ({
         Object.keys(t.relationships[a].data).forEach((c) => {
           const u = t.relationships[a].data[c];
           if (u) {
-            const j = Je(u, We(n, a), i[a][c]);
+            const j = Je(
+              u,
+              We(n, a),
+              i[a][c]
+            );
             s = s.concat(j);
           }
         });
@@ -2754,7 +2606,6 @@ function Wt(t, r, n) {
   return Vt.randomUUID && !t ? Vt.randomUUID() : gn(t);
 }
 function cr({
-  // eslint-disable-line complexity
   afterNoSubmit: t = null,
   beforeSubmit: r = null,
   children: n = null,
@@ -2788,16 +2639,7 @@ function cr({
       return;
     let z = d;
     f && (z = `${d}/${f}`), w && (z += `?${w}`);
-    const K = dn(
-      b,
-      d,
-      f,
-      y,
-      Z,
-      O,
-      u,
-      j
-    );
+    const K = dn(b, d, f, y, Z, O, u, j);
     J({
       ...y,
       alertClass: "",
@@ -2850,7 +2692,7 @@ function cr({
     });
   };
   return b && d && !Object.hasOwn(N, "onSubmit") && (N.onSubmit = Q), l && (N.id = l), /* @__PURE__ */ h.jsxs("form", { ...N, children: [
-    P && y.alertText && /* @__PURE__ */ h.jsx(ft, { type: y.alertClass, children: y.alertText }),
+    P && y.alertText ? /* @__PURE__ */ h.jsx(ft, { type: y.alertClass, children: y.alertText }) : null,
     n
   ] });
 }
@@ -2860,14 +2702,8 @@ cr.propTypes = {
   children: e.node,
   clearOnSubmit: e.bool,
   defaultRow: e.object,
-  errorMessageText: e.oneOfType([
-    e.func,
-    e.string
-  ]),
-  errorToastText: e.oneOfType([
-    e.func,
-    e.string
-  ]),
+  errorMessageText: e.oneOfType([e.func, e.string]),
+  errorToastText: e.oneOfType([e.func, e.string]),
   filterBody: e.func,
   filterValues: e.func,
   htmlId: e.string,
@@ -2876,20 +2712,11 @@ cr.propTypes = {
   params: e.string,
   path: e.string,
   preventEmptyRequest: e.bool,
-  preventEmptyRequestText: e.oneOfType([
-    e.bool,
-    e.string
-  ]),
+  preventEmptyRequestText: e.oneOfType([e.bool, e.string]),
   relationshipNames: e.array,
   showMessage: e.bool,
-  successMessageText: e.oneOfType([
-    e.func,
-    e.string
-  ]),
-  successToastText: e.oneOfType([
-    e.func,
-    e.string
-  ])
+  successMessageText: e.oneOfType([e.func, e.string]),
+  successToastText: e.oneOfType([e.func, e.string])
 };
 function bn({
   afterSubmitFailure: t = null,
@@ -2957,14 +2784,17 @@ function bn({
       row: S
     };
     _ !== null && he(N, `files.${m}`, _), f(N), l.setRow && l.setRow(S);
-  }, d = Jt(() => ({
-    formState: l,
-    setFormState: f,
-    clearAlert: () => f({ ...l, alertText: "", alertClass: "" }),
-    clearErrors: () => f({ ...l, errors: {} }),
-    getDirtyKeys: () => b(l.row, l.originalRow),
-    setValues: w
-  }), [l]);
+  }, d = Jt(
+    () => ({
+      formState: l,
+      setFormState: f,
+      clearAlert: () => f({ ...l, alertText: "", alertClass: "" }),
+      clearErrors: () => f({ ...l, errors: {} }),
+      getDirtyKeys: () => b(l.row, l.originalRow),
+      setValues: w
+    }),
+    [l]
+  );
   return /* @__PURE__ */ h.jsx(fe.Provider, { value: d, children: /* @__PURE__ */ h.jsx(cr, { ...c, children: n }) });
 }
 bn.propTypes = {
@@ -2986,20 +2816,24 @@ function fr({ loadingText: t = "Loading..." }) {
 fr.propTypes = {
   loadingText: e.string
 };
-function ur({
-  className: t = "",
-  id: r,
-  milliseconds: n,
-  text: s
-}) {
+function ur({ className: t = "", id: r, milliseconds: n, text: s }) {
   const { removeToast: i } = ae($e);
-  return /* @__PURE__ */ h.jsxs("div", { "aria-live": "polite", className: `formosa-toast ${t}`.trim(), role: "alert", style: { animationDuration: `${n}ms` }, children: [
-    /* @__PURE__ */ h.jsx("div", { className: "formosa-toast__text", children: s }),
-    /* @__PURE__ */ h.jsxs("button", { className: "formosa-toast__close", onClick: () => i(r), type: "button", children: [
-      /* @__PURE__ */ h.jsx(lt, { "aria-hidden": "true", className: "formosa-toast__close-icon", height: 12, width: 12 }),
-      "Close"
-    ] })
-  ] });
+  return /* @__PURE__ */ h.jsxs(
+    "div",
+    {
+      "aria-live": "polite",
+      className: `formosa-toast ${t}`.trim(),
+      role: "alert",
+      style: { animationDuration: `${n}ms` },
+      children: [
+        /* @__PURE__ */ h.jsx("div", { className: "formosa-toast__text", children: s }),
+        /* @__PURE__ */ h.jsxs("button", { className: "formosa-toast__close", onClick: () => i(r), type: "button", children: [
+          /* @__PURE__ */ h.jsx(lt, { "aria-hidden": "true", className: "formosa-toast__close-icon", height: 12, width: 12 }),
+          "Close"
+        ] })
+      ]
+    }
+  );
 }
 ur.propTypes = {
   className: e.string,
@@ -3040,14 +2874,17 @@ function jn({ children: t, loadingText: r = "Loading..." }) {
     s(!1);
   }, l = () => {
     s(!0);
-  }, f = Jt(() => ({
-    toasts: i,
-    showWarningPrompt: n,
-    addToast: u,
-    removeToast: c,
-    disableWarningPrompt: j,
-    enableWarningPrompt: l
-  }), [i, n]);
+  }, f = Jt(
+    () => ({
+      toasts: i,
+      showWarningPrompt: n,
+      addToast: u,
+      removeToast: c,
+      disableWarningPrompt: j,
+      enableWarningPrompt: l
+    }),
+    [i, n]
+  );
   return /* @__PURE__ */ h.jsxs($e.Provider, { value: f, children: [
     t,
     /* @__PURE__ */ h.jsx(fr, { loadingText: r }),
@@ -3058,13 +2895,7 @@ jn.propTypes = {
   children: e.node.isRequired,
   loadingText: e.string
 };
-function On({
-  className: t = "",
-  label: r = "Submit",
-  prefix: n = null,
-  postfix: s = null,
-  ...i
-}) {
+function On({ className: t = "", label: r = "Submit", prefix: n = null, postfix: s = null, ...i }) {
   return /* @__PURE__ */ h.jsxs("div", { className: "formosa-field formosa-field--submit", children: [
     /* @__PURE__ */ h.jsx("div", { className: "formosa-label-wrapper formosa-label-wrapper--submit" }),
     /* @__PURE__ */ h.jsxs("div", { className: "formosa-input-wrapper formosa-input-wrapper--submit", children: [

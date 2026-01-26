@@ -1,11 +1,4 @@
-import {
-	cleanRecord,
-	cleanRelationship,
-	filterByKey,
-	getBody,
-	getDirtyRelationships,
-	getSimpleRecord,
-} from './JsonApi.js';
+import { cleanRecord, cleanRelationship, filterByKey, getBody, getDirtyRelationships, getSimpleRecord } from './JsonApi.js';
 
 describe('getSimpleRecord', () => {
 	it('works', () => {
@@ -16,11 +9,7 @@ describe('getSimpleRecord', () => {
 describe('cleanRelationship', () => {
 	describe('with an object', () => {
 		it('works', () => {
-			expect(
-				cleanRelationship({ id: '1', type: 'foo', foo: 'bar' })
-			).toEqual(
-				{ id: '1', type: 'foo' }
-			);
+			expect(cleanRelationship({ id: '1', type: 'foo', foo: 'bar' })).toEqual({ id: '1', type: 'foo' });
 		});
 	});
 
@@ -30,7 +19,7 @@ describe('cleanRelationship', () => {
 				cleanRelationship([
 					{ id: '1', type: 'foo', foo: 'bar' },
 					{ id: '2', type: 'foo', foo: 'bar' },
-				])
+				]),
 			).toEqual([
 				{ id: '1', type: 'foo' },
 				{ id: '2', type: 'foo' },
@@ -41,80 +30,75 @@ describe('cleanRelationship', () => {
 
 describe('cleanRecord', () => {
 	describe('with no attributes or relationships', () => {
-		it('works', () => {
+		it('returns null', () => {
 			expect(
-				cleanRecord({ id: '1', type: 'foo', attributes: {}, relationships: {} })
-			).toEqual(
-				null
-			);
+				cleanRecord({ id: '1', type: 'foo', attributes: {}, relationships: {} }),
+			).toEqual(null);
 		});
 	});
 
 	describe('with attributes only', () => {
-		it('works', () => {
+		it('removes relationships', () => {
 			expect(
-				cleanRecord({ id: '1', type: 'foo', attributes: { foo: 'bar' }, relationships: {} })
-			).toEqual(
-				{ id: '1', type: 'foo', attributes: { foo: 'bar' } }
-			);
+				cleanRecord({ id: '1', type: 'foo', attributes: { foo: 'bar' }, relationships: {} }),
+			).toEqual({
+				id: '1',
+				type: 'foo',
+				attributes: { foo: 'bar' },
+			});
 		});
 	});
 
 	describe('with relationships only', () => {
-		it('works', () => {
+		it('removes attributes', () => {
 			expect(
-				cleanRecord({ id: '1', type: 'foo', attributes: {}, relationships: { foo: 'bar' } })
-			).toEqual(
-				{ id: '1', type: 'foo', relationships: { foo: 'bar' } }
-			);
+				cleanRecord({ id: '1', type: 'foo', attributes: {}, relationships: { foo: 'bar' } }),
+			).toEqual({
+				id: '1',
+				type: 'foo',
+				relationships: { foo: 'bar' },
+			});
 		});
 	});
 
 	describe('with attributes and relationships', () => {
-		it('works', () => {
+		it('keeps attributes and relationships', () => {
 			expect(
-				cleanRecord({ id: '1', type: 'foo', attributes: { foo: 'bar' }, relationships: { foo: 'bar' } })
-			).toEqual(
-				{ id: '1', type: 'foo', attributes: { foo: 'bar' }, relationships: { foo: 'bar' } }
-			);
+				cleanRecord({ id: '1', type: 'foo', attributes: { foo: 'bar' }, relationships: { foo: 'bar' } }),
+			).toEqual({
+				id: '1',
+				type: 'foo',
+				attributes: { foo: 'bar' },
+				relationships: { foo: 'bar' },
+			});
 		});
 	});
 });
 
 describe('filterByKey', () => {
 	it('works', () => {
-		expect(
-			filterByKey(['a', 'a.b', 'a.b.c', 'd'], 'a')
-		).toEqual(
-			['b', 'b.c']
-		);
+		expect(filterByKey(['a', 'a.b', 'a.b.c', 'd'], 'a')).toEqual(['b', 'b.c']);
 	});
 });
 
 describe('getDirtyRelationships', () => {
 	it('works', () => {
 		expect(
-			getDirtyRelationships(['a', 'a.b', 'a.b.c', 'd', 'e', 'e.0', 'e.2', 'f', 'f.0.g'], 'a')
-		).toEqual(
-			{
-				a: {
-					b: {
-						c: {},
-					},
+			getDirtyRelationships(['a', 'a.b', 'a.b.c', 'd', 'e', 'e.0', 'e.2', 'f', 'f.0.g'], 'a'),
+		).toEqual({
+			a: {
+				b: {
+					c: {},
 				},
-				d: {},
-				e: [
-					{},
-					undefined,
-					{},
-				],
-				f: [
-					{
-						g: {},
-					},
-				],
-			}
-		);
+			},
+			d: {},
+			e: [{}, undefined, {}],
+			f: [
+				{
+					g: {},
+				},
+			],
+		});
 	});
 });
 
@@ -187,13 +171,7 @@ describe('getBody', () => {
 			'notes.1.content',
 			'notes.1.user',
 		];
-		const relationshipNames = [
-			'author',
-			'tags',
-			'notes',
-			'notes.user',
-			'notes.citations',
-		];
+		const relationshipNames = ['author', 'tags', 'notes', 'notes.user', 'notes.citations'];
 		expect(getBody('PUT', 'articles', '1', { row, files: [] }, dirtyKeys, relationshipNames)).toEqual({
 			data: {
 				id: '1',

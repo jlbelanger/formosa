@@ -61,10 +61,12 @@ export default class Api {
 		const promise = fetch(fullUrl, options)
 			.then((response) => {
 				if (!response.ok) {
-					return response.json()
+					return response
+						.json()
 						.catch((error) => {
 							if (error instanceof SyntaxError) {
-								throw { // eslint-disable-line no-throw-literal
+								// eslint-disable-next-line no-throw-literal
+								throw {
 									errors: [
 										{
 											title: 'Unable to connect to the server. Please try again later.',

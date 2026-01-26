@@ -80,7 +80,7 @@ export default function Form({
 			if (isArray) {
 				let itemDirtyKeys;
 				Object.keys(newValue).forEach((newIndex) => {
-					const oldIndex = oldValue ? oldValue.findIndex((o) => (o.id === newValue[newIndex].id)) : -1;
+					const oldIndex = oldValue ? oldValue.findIndex((o) => o.id === newValue[newIndex].id) : -1;
 					itemDirtyKeys = getDirtyKeys(newValue[newIndex], oldIndex > -1 ? oldValue[oldIndex] : {});
 					itemDirtyKeys = itemDirtyKeys.map((k2) => `${key}.${newIndex}.${k2}`);
 					dirtyKeys = dirtyKeys.concat(itemDirtyKeys);
@@ -128,20 +128,21 @@ export default function Form({
 		}
 	};
 
-	const value = useMemo(() => ({
-		formState,
-		setFormState,
-		clearAlert: () => (setFormState({ ...formState, alertText: '', alertClass: '' })),
-		clearErrors: () => (setFormState({ ...formState, errors: {} })),
-		getDirtyKeys: () => (getDirtyKeys(formState.row, formState.originalRow)),
-		setValues,
-	}), [formState]);
+	const value = useMemo(
+		() => ({
+			formState,
+			setFormState,
+			clearAlert: () => setFormState({ ...formState, alertText: '', alertClass: '' }),
+			clearErrors: () => setFormState({ ...formState, errors: {} }),
+			getDirtyKeys: () => getDirtyKeys(formState.row, formState.originalRow),
+			setValues,
+		}),
+		[formState],
+	);
 
 	return (
 		<FormContext.Provider value={value}>
-			<FormInner {...otherProps}>
-				{children}
-			</FormInner>
+			<FormInner {...otherProps}>{children}</FormInner>
 		</FormContext.Provider>
 	);
 }

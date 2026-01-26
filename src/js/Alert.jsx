@@ -1,11 +1,6 @@
 import PropTypes from 'prop-types';
 
-export default function Alert({
-	className = '',
-	children,
-	type = null,
-	...otherProps
-}) {
+export default function Alert({ className = '', children, type = null, ...otherProps }) {
 	if (!children) {
 		return null;
 	}

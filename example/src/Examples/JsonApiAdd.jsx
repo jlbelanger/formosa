@@ -21,7 +21,9 @@ export default function JsonApiAdd() {
 				<Submit />
 			</Form>
 
-			<code className="code"><pre>{JSON.stringify(row, null, 2)}</pre></code>
+			<code className="code">
+				<pre>{JSON.stringify(row, null, 2)}</pre>
+			</code>
 		</>
 	);
 }

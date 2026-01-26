@@ -9,7 +9,7 @@
 		"build": "vite build"
 	},
 	"dependencies": {
-		"@jlbelanger/formosa": "link:..",
+		"@jlbelanger/formosa": "jlbelanger/formosa#b5b1cadff7eb2a354e470d5a583a624d06217c3a",
 		"@vitejs/plugin-react": "^5.1.2",
 		"postcss": "^8.5.6",
 		"postcss-preset-env": "^10.5.0",

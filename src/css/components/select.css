@@ -15,7 +15,7 @@
 
 .formosa-icon--caret {
 	height: var(--formosa-select-arrow-size);
-	margin-top: calc(var(--formosa-select-arrow-size) * -.5);
+	margin-top: calc(var(--formosa-select-arrow-size) * -0.5);
 	position: absolute;
 	right: calc(var(--formosa-input-padding) + var(--formosa-input-border-width));
 	top: 50%;

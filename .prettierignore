@@ -1,0 +1,4 @@
+dist
+**/*.js
+**/*.jsx
+src/css/utilities/variables.css

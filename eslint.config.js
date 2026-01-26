@@ -50,13 +50,7 @@ export default defineConfig([
 			'@stylistic/array-bracket-newline': ['error', 'consistent'],
 			'@stylistic/arrow-parens': ['error', 'always'],
 			'@stylistic/brace-style': ['error', '1tbs'],
-			'@stylistic/comma-dangle': ['error', {
-				arrays: 'always-multiline',
-				objects: 'always-multiline',
-				imports: 'always-multiline',
-				exports: 'always-multiline',
-				functions: 'never',
-			}],
+			'@stylistic/comma-dangle': ['error', 'always-multiline'],
 			'@stylistic/curly-newline': ['error', { minElements: 1 }],
 			'@stylistic/function-call-argument-newline': ['error', 'consistent'],
 			'@stylistic/function-call-spacing': ['error', 'never'],
@@ -70,7 +64,10 @@ export default defineConfig([
 			'@stylistic/multiline-ternary': 0,
 			'@stylistic/newline-per-chained-call': 0, // TODO.
 			'@stylistic/no-confusing-arrow': ['error'],
+			'@stylistic/no-extra-parens': ['error', 'all', { ignoreJSX: 'multi-line', nestedBinaryExpressions: false }],
 			'@stylistic/no-extra-semi': ['error'],
+			'@stylistic/no-mixed-operators': ['error'],
+			'@stylistic/no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 0 }],
 			'@stylistic/no-multi-spaces': ['error'],
 			'@stylistic/object-curly-newline': [
 				'error',
@@ -100,7 +97,7 @@ export default defineConfig([
 			'arrow-body-style': ['error'],
 			'block-scoped-var': ['error'],
 			camelcase: ['error', { properties: 'never' }],
-			'capitalized-comments': ['error', 'always', { ignoreConsecutiveComments: true }],
+			'capitalized-comments': ['error', 'always', { ignoreConsecutiveComments: true, ignorePattern: 'prettier' }],
 			complexity: ['error'],
 			'consistent-return': ['error'],
 			'consistent-this': ['error'],
@@ -193,7 +190,7 @@ export default defineConfig([
 			'react/jsx-handler-names': 'error',
 			// 'react/jsx-no-bind': 'error', // TODO.
 			'react/jsx-no-constructed-context-values': 'error',
-			// 'react/jsx-no-leaked-render': 'error', // TODO.
+			'react/jsx-no-leaked-render': 'error',
 			'react/jsx-no-script-url': 'error',
 			'react/jsx-no-useless-fragment': 'error',
 			'react/jsx-pascal-case': 'error',
@@ -216,7 +213,7 @@ export default defineConfig([
 			'react/no-set-state': 'error',
 			'react/no-this-in-sfc': 'error',
 			'react/no-typos': 'error',
-			// 'react/no-unstable-nested-components': 'error', // TODO.
+			'react/no-unstable-nested-components': 'error',
 			'react/no-unused-class-component-methods': 'error',
 			'react/no-unused-prop-types': 'error',
 			'react/no-unused-state': 'error',

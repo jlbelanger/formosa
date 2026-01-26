@@ -6,7 +6,8 @@ import Label from './Label.jsx';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 
-export default function Field({ // eslint-disable-line complexity
+// eslint-disable-next-line complexity
+export default function Field({
 	component = null,
 	disabled = false,
 	id = null,
@@ -63,9 +64,7 @@ export default function Field({ // eslint-disable-line complexity
 	}
 
 	const InputComponent = getInputElement(type, component);
-	const input = (
-		<InputComponent {...inputProps} />
-	);
+	const input = <InputComponent {...inputProps} />;
 
 	if (type === 'hidden') {
 		return input;
@@ -129,8 +128,8 @@ export default function Field({ // eslint-disable-line complexity
 
 	return (
 		<div className={wrapperClassNameList.join(' ')} {...wrapperAttributes}>
-			{label && labelPosition === 'before' && labelComponent}
-			{label && labelPosition === 'after' && <div className="formosa-label-wrapper" />}
+			{label && labelPosition === 'before' ? labelComponent : null}
+			{label && labelPosition === 'after' ? <div className="formosa-label-wrapper" /> : null}
 			<div className={inputWrapperClassNameList.join(' ')} {...inputWrapperAttributes}>
 				<ConditionalWrapper
 					className={inputInnerWrapperClassNameList.join(' ')}
@@ -139,13 +138,11 @@ export default function Field({ // eslint-disable-line complexity
 				>
 					{prefix}
 					{input}
-					{label && labelPosition === 'after' && labelComponent}
-					{note && (
-						<div className="formosa-field__note">{note}</div>
-					)}
+					{label && labelPosition === 'after' ? labelComponent : null}
+					{note ? <div className="formosa-field__note">{note}</div> : null}
 					{postfix}
 				</ConditionalWrapper>
-				{formState && formState.showInlineErrors && <Error id={id} name={name} />}
+				{formState && formState.showInlineErrors ? <Error id={id} name={name} /> : null}
 			</div>
 		</div>
 	);
@@ -165,11 +162,7 @@ Field.propTypes = {
 	labelNote: PropTypes.string,
 	labelPosition: PropTypes.string,
 	name: PropTypes.string,
-	note: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-		PropTypes.string,
-	]),
+	note: PropTypes.oneOfType([PropTypes.func, PropTypes.object, PropTypes.string]),
 	postfix: PropTypes.node,
 	prefix: PropTypes.node,
 	readOnly: PropTypes.bool,

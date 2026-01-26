@@ -43,21 +43,19 @@ export const normalizeOptions = (options, labelKey, valueKey = null) => {
 };
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#Escaping
-export const escapeRegExp = (string) => (string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&'));
+export const escapeRegExp = (string) => string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
 
-const toSlug = (s) => (
-	s
-		.normalize('NFD')
-		.replace(/[\u0300-\u036f]/g, '')
-		.toLowerCase()
-		.replace(/ & /g, '-and-')
-		.replace(/<[^>]+>/g, '')
-		.replace(/['’.]/g, '')
-		.replace(/[^a-z0-9-]+/g, '-')
-		.replace(/^-+/, '')
-		.replace(/-+$/, '')
-		.replace(/--+/g, '-')
-);
+const toSlug = (s) => s
+	.normalize('NFD')
+	.replace(/[\u0300-\u036f]/g, '')
+	.toLowerCase()
+	.replace(/ & /g, '-and-')
+	.replace(/<[^>]+>/g, '')
+	.replace(/['’.]/g, '')
+	.replace(/[^a-z0-9-]+/g, '-')
+	.replace(/^-+/, '')
+	.replace(/-+$/, '')
+	.replace(/--+/g, '-');
 
 export const filterByKey = (records, key, value) => {
 	value = value.toLowerCase();

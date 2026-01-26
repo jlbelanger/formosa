@@ -22,10 +22,10 @@ input.formosa-field__input--checkbox {
 .formosa-icon--check {
 	bottom: 0;
 	height: calc(var(--formosa-checkbox-size) - var(--formosa-checkbox-padding));
-	left: calc(var(--formosa-checkbox-padding) * .5);
+	left: calc(var(--formosa-checkbox-padding) * 0.5);
 	pointer-events: none;
 	position: absolute;
-	top: calc(var(--formosa-checkbox-padding) * .5);
+	top: calc(var(--formosa-checkbox-padding) * 0.5);
 	width: calc(var(--formosa-checkbox-size) - var(--formosa-checkbox-padding));
 
 	path {

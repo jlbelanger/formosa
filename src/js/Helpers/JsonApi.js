@@ -137,7 +137,11 @@ export const getIncludedRecords = (data, dirtyKeys, relationshipNames) => {
 				Object.keys(data.relationships[relName].data).forEach((relIndex) => {
 					const record = data.relationships[relName].data[relIndex];
 					if (record) {
-						const records = getIncludedRecordData(record, filterByKey(relationshipNames, relName), dirtyRelationships[relName][relIndex]);
+						const records = getIncludedRecordData(
+							record,
+							filterByKey(relationshipNames, relName),
+							dirtyRelationships[relName][relIndex],
+						);
 						output = output.concat(records);
 					}
 				});
@@ -153,7 +157,7 @@ export const getIncludedRecords = (data, dirtyKeys, relationshipNames) => {
 	});
 
 	// Remove records with only an id/type.
-	return output.filter((record) => (Object.keys(record).length > 2));
+	return output.filter((record) => Object.keys(record).length > 2);
 };
 
 export const unset = (obj, key) => {
@@ -183,16 +187,7 @@ export const appendToFormData = (obj, formData, prefix = '') => {
 	return formData;
 };
 
-export const getBody = (
-	method,
-	type,
-	id,
-	formState,
-	dirtyKeys,
-	relationshipNames,
-	filterBody = null,
-	filterValues = null
-) => {
+export const getBody = (method, type, id, formState, dirtyKeys, relationshipNames, filterBody = null, filterValues = null) => {
 	let body = null;
 
 	if (method === 'PUT' || method === 'POST') {
@@ -279,7 +274,7 @@ export const getBody = (
 		}
 
 		// Handle file fields.
-		const filenames = fileKeys.filter((filename) => (formState.files[filename] !== false));
+		const filenames = fileKeys.filter((filename) => formState.files[filename] !== false);
 		if (filenames.length > 0) {
 			const formData = appendToFormData(body, new FormData());
 			formData.append('meta[files]', JSON.stringify(filenames));

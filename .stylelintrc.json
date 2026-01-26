@@ -1,9 +1,6 @@
 {
 	"extends": "stylelint-config-standard",
-	"plugins": [
-		"stylelint-order",
-		"@stylistic/stylelint-plugin"
-	],
+	"plugins": ["stylelint-order", "@stylistic/stylelint-plugin"],
 	"rules": {
 		"at-rule-no-unknown": [true, { "ignoreAtRules": ["define-mixin", "mixin"] }],
 		"declaration-no-important": true,
@@ -12,9 +9,17 @@
 		"order/properties-alphabetical-order": true,
 		"selector-class-pattern": "[a-z0-9_-]+",
 		"selector-id-pattern": "[a-z0-9_-]+",
+		"@stylistic/block-closing-brace-empty-line-before": "never",
+		"@stylistic/color-hex-case": "lower",
 		"@stylistic/indentation": "tab",
+		"@stylistic/max-empty-lines": 1,
 		"@stylistic/max-line-length": 150,
-		"@stylistic/number-leading-zero": "never",
+		"@stylistic/media-feature-colon-space-after": "always",
+		"@stylistic/no-empty-first-line": true,
+		"@stylistic/number-leading-zero": "always",
+		"@stylistic/number-no-trailing-zeros": true,
+		"@stylistic/selector-combinator-space-after": "always",
+		"@stylistic/selector-combinator-space-before": "always",
 		"@stylistic/string-quotes": "single"
 	}
 }

@@ -6,7 +6,8 @@ import get from 'get-value';
 import { normalizeOptions } from '../Helpers/Options.js';
 import PropTypes from 'prop-types';
 
-export default function Select({ // eslint-disable-line complexity
+// eslint-disable-next-line complexity
+export default function Select({
 	afterChange = null,
 	className = '',
 	hideBlank = false,
@@ -41,7 +42,7 @@ export default function Select({ // eslint-disable-line complexity
 			api(url, false)
 				.catch((error) => {
 					if (Object.hasOwn(error, 'errors')) {
-						setLoadError(error.errors.map((e) => (e.title)).join(' '));
+						setLoadError(error.errors.map((e) => e.title).join(' '));
 						setIsLoading(false);
 					}
 				})
@@ -64,11 +65,15 @@ export default function Select({ // eslint-disable-line complexity
 	}, [showLoading]);
 
 	if (isLoading) {
-		return (<div className="formosa-spinner" role="status">{loadingText}</div>);
+		return (
+			<div className="formosa-spinner" role="status">
+				{loadingText}
+			</div>
+		);
 	}
 
 	if (loadError) {
-		return (<div className="formosa-field__error">{loadError}</div>);
+		return <div className="formosa-field__error">{loadError}</div>;
 	}
 
 	let currentValue;
@@ -90,7 +95,9 @@ export default function Select({ // eslint-disable-line complexity
 	const onChange = (e) => {
 		let newValue;
 		if (multiple) {
-			newValue = Array.from(e.target.options).filter((option) => (option.selected)).map((option) => (option.value));
+			newValue = Array.from(e.target.options)
+				.filter((option) => option.selected)
+				.map((option) => option.value);
 		} else {
 			newValue = e.target.value;
 			const option = e.target.querySelector(`[value="${newValue.replace(/"/g, '\\"')}"]`);
@@ -146,7 +153,9 @@ export default function Select({ // eslint-disable-line complexity
 					}
 
 					return (
-						<option key={optionValueVal} value={optionValueVal} {...optionProps}>{optionValue.label}</option>
+						<option key={optionValueVal} value={optionValueVal} {...optionProps}>
+							{optionValue.label}
+						</option>
 					);
 				})}
 			</select>
@@ -172,33 +181,17 @@ Select.propTypes = {
 	iconHeight: PropTypes.number,
 	iconWidth: PropTypes.number,
 	id: PropTypes.string,
-	labelKey: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
+	labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 	loadingText: PropTypes.string,
 	multiple: PropTypes.bool,
 	name: PropTypes.string,
-	optionAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
-	options: PropTypes.oneOfType([
-		PropTypes.array,
-		PropTypes.object,
-	]),
+	optionAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+	options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	setValue: PropTypes.func,
 	showLoading: PropTypes.bool,
 	url: PropTypes.string,
-	value: PropTypes.oneOfType([
-		PropTypes.number,
-		PropTypes.object,
-		PropTypes.string,
-	]),
-	valueKey: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
+	value: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.string]),
+	valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
 };

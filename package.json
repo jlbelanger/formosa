@@ -15,9 +15,10 @@
 	},
 	"scripts": {
 		"build": "vite build",
-		"lint": "npm run lint:css && npm run lint:js",
+		"lint": "npm run lint:css && npm run lint:js && npm run lint:prettier",
 		"lint:css": "npx stylelint 'src/css/**/*.css'",
 		"lint:js": "npx eslint .",
+		"lint:prettier": "npx prettier . --check",
 		"start": "npx update-browserslist-db && vite build --watch",
 		"test:js": "npx jest",
 		"test:watch": "npx jest --watch"
@@ -46,6 +47,7 @@
 		"globals": "^16.5.0",
 		"jest": "^30.2.0",
 		"postcss": "^8.5.6",
+		"prettier": "^3.7.4",
 		"react": "^19.2.3",
 		"react-dom": "^19.2.3",
 		"stylelint": "^16.26.1",

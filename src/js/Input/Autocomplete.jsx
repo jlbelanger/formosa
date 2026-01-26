@@ -6,7 +6,8 @@ import FormContext from '../FormContext.jsx';
 import get from 'get-value';
 import PropTypes from 'prop-types';
 
-export default function Autocomplete({ // eslint-disable-line complexity
+// eslint-disable-next-line complexity
+export default function Autocomplete({
 	afterAdd = null,
 	afterChange = null,
 	clearable = true,
@@ -69,7 +70,7 @@ export default function Autocomplete({ // eslint-disable-line complexity
 			api(url, false)
 				.catch((error) => {
 					if (Object.hasOwn(error, 'errors')) {
-						setLoadError(error.errors.map((e) => (e.title)).join(' '));
+						setLoadError(error.errors.map((e) => e.title).join(' '));
 						setIsLoading(false);
 					}
 				})
@@ -92,11 +93,15 @@ export default function Autocomplete({ // eslint-disable-line complexity
 	}, [showLoading]);
 
 	if (isLoading) {
-		return (<div className="formosa-spinner" role="status">{loadingText}</div>);
+		return (
+			<div className="formosa-spinner" role="status">
+				{loadingText}
+			</div>
+		);
 	}
 
 	if (loadError) {
-		return (<div className="formosa-field__error">{loadError}</div>);
+		return <div className="formosa-field__error">{loadError}</div>;
 	}
 
 	let currentValue = null;
@@ -119,18 +124,20 @@ export default function Autocomplete({ // eslint-disable-line complexity
 		if (!currentValue) {
 			return false;
 		}
-		return currentValue.findIndex((v) => {
-			if (typeof v === 'object') {
-				return JSON.stringify(v) === JSON.stringify(option.value);
-			}
-			return v === option.value;
-		}) > -1;
+		return (
+			currentValue.findIndex((v) => {
+				if (typeof v === 'object') {
+					return JSON.stringify(v) === JSON.stringify(option.value);
+				}
+				return v === option.value;
+			}) > -1
+		);
 	};
 
 	let filteredOptions = [];
 	if (filter) {
 		filteredOptions = filterByKey(optionValues, 'label', filter);
-		filteredOptions = filteredOptions.filter((option) => (!isSelected(option)));
+		filteredOptions = filteredOptions.filter((option) => !isSelected(option));
 	}
 
 	const focus = () => {
@@ -213,7 +220,7 @@ export default function Autocomplete({ // eslint-disable-line complexity
 			e.preventDefault();
 			addValue(filteredOptions[highlightedIndex].value);
 		} else if (e.key === 'ArrowDown') {
-			if (highlightedIndex >= (filteredOptions.length - 1)) {
+			if (highlightedIndex >= filteredOptions.length - 1) {
 				setHighlightedIndex(0);
 			} else {
 				setHighlightedIndex(highlightedIndex + 1);
@@ -285,7 +292,7 @@ export default function Autocomplete({ // eslint-disable-line complexity
 			{...wrapperAttributes}
 		>
 			<ul className="formosa-autocomplete__values">
-				{currentValue && currentValue.map((v, index) => {
+				{currentValue ? currentValue.map((v, index) => {
 					let val = v;
 					let isJson = false;
 					if (typeof val === 'object') {
@@ -293,9 +300,8 @@ export default function Autocomplete({ // eslint-disable-line complexity
 						isJson = true;
 					}
 
-					const option = optionValues.find((o) => (
-						isJson ? JSON.stringify(o.value) === val : o.value === val
-					));
+					// eslint-disable-next-line @stylistic/no-extra-parens
+					const option = optionValues.find((o) => (isJson ? JSON.stringify(o.value) === val : o.value === val));
 
 					let label = '';
 					if (labelFn) {
@@ -343,8 +349,8 @@ export default function Autocomplete({ // eslint-disable-line complexity
 							)}
 						</li>
 					);
-				})}
-				{canAddValues && (
+				}) : null}
+				{canAddValues ? (
 					<li className="formosa-autocomplete__value formosa-autocomplete__value--input">
 						<input
 							{...inputAttributes}
@@ -361,10 +367,10 @@ export default function Autocomplete({ // eslint-disable-line complexity
 							value={filter}
 						/>
 					</li>
-				)}
+				) : null}
 			</ul>
 
-			{isOpen && filteredOptions.length > 0 && (
+			{isOpen && filteredOptions.length > 0 ? (
 				<ul className={`formosa-autocomplete__options ${optionListClassName}`.trim()} {...optionListAttributes}>
 					{filteredOptions.map((option, index) => {
 						let optionClassName = ['formosa-autocomplete__option'];
@@ -421,9 +427,9 @@ export default function Autocomplete({ // eslint-disable-line complexity
 						);
 					})}
 				</ul>
-			)}
+			) : null}
 
-			{showClear && (
+			{showClear ? (
 				<div>
 					<button
 						className={`formosa-autocomplete__clear ${clearButtonClassName}`.trim()}
@@ -436,15 +442,9 @@ export default function Autocomplete({ // eslint-disable-line complexity
 						{clearText}
 					</button>
 				</div>
-			)}
+			) : null}
 
-			<input
-				{...otherProps}
-				name={name}
-				ref={hiddenInputRef}
-				type="hidden"
-				value={filter}
-			/>
+			<input {...otherProps} name={name} ref={hiddenInputRef} type="hidden" value={filter} />
 		</div>
 	);
 }
@@ -464,30 +464,18 @@ Autocomplete.propTypes = {
 	inputAttributes: PropTypes.object,
 	inputClassName: PropTypes.string,
 	labelFn: PropTypes.func,
-	labelKey: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
+	labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 	loadingText: PropTypes.string,
 	max: PropTypes.number,
 	name: PropTypes.string,
-	optionButtonAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
+	optionButtonAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	optionButtonClassName: PropTypes.string,
 	optionLabelFn: PropTypes.func,
 	optionListAttributes: PropTypes.object,
 	optionListClassName: PropTypes.string,
-	optionListItemAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
+	optionListItemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	optionListItemClassName: PropTypes.string,
-	options: PropTypes.oneOfType([
-		PropTypes.array,
-		PropTypes.object,
-	]),
+	options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	placeholder: PropTypes.string,
 	readOnly: PropTypes.bool,
 	removeButtonAttributes: PropTypes.object,
@@ -507,14 +495,8 @@ Autocomplete.propTypes = {
 		PropTypes.object,
 		PropTypes.string,
 	]),
-	valueKey: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
-	valueListItemAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
+	valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+	valueListItemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
 };

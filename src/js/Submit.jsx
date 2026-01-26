@@ -1,12 +1,6 @@
 import PropTypes from 'prop-types';
 
-export default function Submit({
-	className = '',
-	label = 'Submit',
-	prefix = null,
-	postfix = null,
-	...otherProps
-}) {
+export default function Submit({ className = '', label = 'Submit', prefix = null, postfix = null, ...otherProps }) {
 	return (
 		<div className="formosa-field formosa-field--submit">
 			<div className="formosa-label-wrapper formosa-label-wrapper--submit" />

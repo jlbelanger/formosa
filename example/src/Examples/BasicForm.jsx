@@ -7,12 +7,7 @@ export default function BasicForm() {
 	const [horizontal, setHorizontal] = useState(false);
 	const [responsive, setResponsive] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
-	const options = [
-		'Apple',
-		'Peach',
-		'Banana',
-		'Pear',
-	];
+	const options = ['Apple', 'Peach', 'Banana', 'Pear'];
 
 	const onSubmit = (e) => {
 		e.preventDefault();
@@ -318,7 +313,9 @@ export default function BasicForm() {
 				<Submit />
 			</Form>
 
-			<code className="code"><pre>{JSON.stringify(row, null, 2)}</pre></code>
+			<code className="code">
+				<pre>{JSON.stringify(row, null, 2)}</pre>
+			</code>
 		</>
 	);
 }

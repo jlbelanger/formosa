@@ -2,7 +2,8 @@
 	display: table;
 	width: 100%;
 
-	& > .formosa-field { /* stylelint-disable-line nesting-selector-no-missing-scoping-root */
+	/* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
+	& > .formosa-field {
 		display: table-row;
 
 		& > .formosa-label-wrapper,
@@ -24,8 +25,8 @@
 			width: 100%;
 
 			& > .formosa-icon--check {
-				left: calc((var(--formosa-checkbox-padding) * .5) + var(--formosa-horizontal-fields-padding));
-				top: calc((var(--formosa-checkbox-padding) * .5) + var(--formosa-horizontal-fields-padding));
+				left: calc((var(--formosa-checkbox-padding) * 0.5) + var(--formosa-horizontal-fields-padding));
+				top: calc((var(--formosa-checkbox-padding) * 0.5) + var(--formosa-horizontal-fields-padding));
 			}
 		}
 
@@ -42,7 +43,8 @@
 		}
 	}
 
-	& > .formosa-field--label-after { /* stylelint-disable-line nesting-selector-no-missing-scoping-root */
+	/* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
+	& > .formosa-field--label-after {
 		.formosa-label-wrapper {
 			&:empty {
 				display: inline-block;

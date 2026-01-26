@@ -47,10 +47,18 @@ export default function Extras() {
 			</button>
 
 			<h2>Spinners</h2>
-			<button className="formosa-button" onClick={onClickShowFullscreenSpinner} type="button">Show Fullscreen Spinner</button>
-			{showFullscreenSpinner && (<span className="formosa-spinner formosa-spinner--fullscreen" role="status">Loading...</span>)}
+			<button className="formosa-button" onClick={onClickShowFullscreenSpinner} type="button">
+				Show Fullscreen Spinner
+			</button>
+			{showFullscreenSpinner ? (
+				<span className="formosa-spinner formosa-spinner--fullscreen" role="status">
+					Loading...
+				</span>
+			) : null}
 			<div style={{ display: 'inline-block', marginLeft: '1rem', verticalAlign: 'middle' }}>
-				<span className="formosa-spinner" role="status">Loading...</span>
+				<span className="formosa-spinner" role="status">
+					Loading...
+				</span>
 			</div>
 		</>
 	);

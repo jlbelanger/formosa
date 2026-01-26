@@ -3,7 +3,8 @@ import FormContext from '../FormContext.jsx';
 import get from 'get-value';
 import PropTypes from 'prop-types';
 
-export default function File({ // eslint-disable-line complexity
+// eslint-disable-next-line complexity
+export default function File({
 	afterChange = null,
 	buttonAttributes = null,
 	buttonClassName = '',
@@ -77,7 +78,7 @@ export default function File({ // eslint-disable-line complexity
 				output.push(URL.createObjectURL(v.item(i)));
 			}
 		} else if (Array.isArray(v)) {
-			return v.map((v2) => (`${imagePrefix}${v2}`));
+			return v.map((v2) => `${imagePrefix}${v2}`);
 		} else if (typeof v === 'object') {
 			output.push(URL.createObjectURL(v));
 		} else if (typeof v === 'string') {
@@ -144,36 +145,31 @@ export default function File({ // eslint-disable-line complexity
 
 	return (
 		<>
-			{(hasValue && imagePreview) && (
-				srcs.map((src) => {
-					const img = (
-						<img
-							alt=""
-							className={`formosa-file-image ${imageClassName}`.trim()}
-							height={imageHeight}
-							key={src}
-							src={src}
-							{...imageAttributes}
-						/>
+			{hasValue && imagePreview ? srcs.map((src) => {
+				const img = (
+					<img
+						alt=""
+						className={`formosa-file-image ${imageClassName}`.trim()}
+						height={imageHeight}
+						key={src}
+						src={src}
+						{...imageAttributes}
+					/>
+				);
+
+				if (linkImage) {
+					return (
+						<a className={`formosa-file-link ${linkClassName}`.trim()} href={src} key={src} {...linkAttributes}>
+							{img}
+						</a>
 					);
+				}
 
-					if (linkImage) {
-						return (
-							<a className={`formosa-file-link ${linkClassName}`.trim()} href={src} key={src} {...linkAttributes}>
-								{img}
-							</a>
-						);
-					}
-
-					return img;
-				})
-			)}
+				return img;
+			}) : null}
 			<div className={`formosa-file-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
 				<div className={`formosa-file-input-wrapper ${prefixClassName}`.trim()} {...inputWrapperAttributes}>
-					<div
-						className={`formosa-file-name${filenames ? '' : ' formosa-file-name--empty'}`}
-						id={`${id || name}-name`}
-					>
+					<div className={`formosa-file-name${filenames ? '' : ' formosa-file-name--empty'}`} id={`${id || name}-name`}>
 						{filenames || emptyText}
 					</div>
 					{!readOnly && (
@@ -188,17 +184,11 @@ export default function File({ // eslint-disable-line complexity
 								{...props}
 								{...otherProps}
 							/>
-							<input
-								disabled={disabled}
-								required={required}
-								type="hidden"
-								value={currentValue}
-								{...hiddenProps}
-							/>
+							<input disabled={disabled} required={required} type="hidden" value={currentValue} {...hiddenProps} />
 						</>
 					)}
 				</div>
-				{hasValue && !disabled && !readOnly && (
+				{hasValue && !disabled && !readOnly ? (
 					<button
 						className={`formosa-button formosa-button--remove-file formosa-postfix ${buttonClassName}`.trim()}
 						onClick={onRemove}
@@ -208,7 +198,7 @@ export default function File({ // eslint-disable-line complexity
 					>
 						{removeText}
 					</button>
-				)}
+				) : null}
 			</div>
 		</>
 	);
@@ -238,11 +228,7 @@ File.propTypes = {
 	removeText: PropTypes.string,
 	required: PropTypes.bool,
 	setValue: PropTypes.func,
-	value: PropTypes.oneOfType([
-		PropTypes.array,
-		PropTypes.object,
-		PropTypes.string,
-	]),
+	value: PropTypes.oneOfType([PropTypes.array, PropTypes.object, PropTypes.string]),
 	wrapperAttributes: PropTypes.object,
 	wrapperClassName: PropTypes.string,
 };

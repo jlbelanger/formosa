@@ -10,7 +10,7 @@ Formosa is a [React](https://www.npmjs.com/package/react) form component library
 - Displays toast messages (without additional library dependencies)
 - Shows spinner automatically during API requests (using [react-promise-tracker](https://www.npmjs.com/package/react-promise-tracker))
 - Excludes styles by default, so all styles can be completely customized; all elements have classes so they can be easily targeted
-- Includes optional basic CSS, if you don't want to spend time styling form elements *yet again*; uses CSS variables that can be overridden
+- Includes optional basic CSS, if you don't want to spend time styling form elements _yet again_; uses CSS variables that can be overridden
 - Supports nested field names (eg. `name="foo.bar"`)
 
 ## Requirements
@@ -29,7 +29,7 @@ npm install --save https://github.com/jlbelanger/formosa
 
 Call `FormosaConfig.init()` in `index.jsx`:
 
-``` jsx
+```jsx
 // src/index.jsx
 import App from './App';
 import { createRoot } from 'react-dom/client';
@@ -54,9 +54,7 @@ export default function App() {
 
 	return (
 		<main>
-			<header>
-				Formosa Example
-			</header>
+			<header>Formosa Example</header>
 
 			<FormContainer>
 				<Form row={row} setRow={setRow}>
@@ -74,14 +72,14 @@ export default function App() {
 
 By default, no styles are included. To include all styles:
 
-``` jsx
+```jsx
 // src/App.jsx
 import '@jlbelanger/formosa/dist/formosa.css';
 ```
 
 To selectively include specific styles listed in the [components](https://github.com/jlbelanger/formosa/tree/main/src/css/components) folder:
 
-``` jsx
+```jsx
 // src/App.jsx
 import '@jlbelanger/formosa/src/css/utilities/variables';
 import '@jlbelanger/formosa/src/css/components/checkbox';
@@ -95,7 +93,7 @@ A list of CSS variables is available in [variables.css](https://github.com/jlbel
 
 Each `<Form>` must have `row` and `setRow` props. Typically, these values will come from `const [row, setRow] = useState({});` in your own component. The `<Field>`s will update the `row` using `setRow`. That means that the original `row` and the values in the form are always in sync, so you can display or update the `row` yourself, and the `<Form>` will still contain the correct values.
 
-``` jsx
+```jsx
 import { Form } from '@jlbelanger/formosa';
 
 // ----------------------------------------
@@ -134,30 +132,30 @@ import { Form } from '@jlbelanger/formosa';
 </form>
 ```
 
-|Attribute   |Default |Notes|
-|------------|--------|-----|
-|row         |`{}`    |Required. Default values for fields. For edit forms, the existing record's values should be specified here.|
-|setRow      |`null`  |Required. Function for updating row in state.|
-|showMessage |`true`  |If true, the inline `<Message>` component will be included at the top of the form. Set this to `false` if you want to include the `<Message>` somewhere else.|
-|htmlId      |`''`    |Since `id` is used for JSON:API, this attribute sets the `id=""` attribute on the form.|
+| Attribute   | Default | Notes                                                                                                                                                         |
+| ----------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| row         | `{}`    | Required. Default values for fields. For edit forms, the existing record's values should be specified here.                                                   |
+| setRow      | `null`  | Required. Function for updating row in state.                                                                                                                 |
+| showMessage | `true`  | If true, the inline `<Message>` component will be included at the top of the form. Set this to `false` if you want to include the `<Message>` somewhere else. |
+| htmlId      | `''`    | Since `id` is used for JSON:API, this attribute sets the `id=""` attribute on the form.                                                                       |
 
 The following attributes are for JSON:API forms only.
 
-|Attribute          |Default |Notes|
-|-------------------|--------|-----|
-|method             |`null`  |Required for JSON:API requests. (eg. `PUT`, `POST`, `DELETE`)|
-|path               |`null`  |Required for JSON:API requests. (eg. `users`)|
-|id                 |`''`    |Required for JSON:API `PUT` and `DELETE` requests. (eg. `'123'`)|
-|afterSubmit        |`null`  |Function to be called after a successful form submission.|
-|clearOnSubmit      |`false` |If true, after a successful form submission, the data in the form will be replaced with `defaultRow`.|
-|defaultRow         |`{}`    |For add forms, default values can be specified here. eg. `{ country: 'CA' }` You should specify the same values for `row` too (eg. to allow adding multiple records using the same form without reloading the page).|
-|filterBody         |`null`  |Function to modify the request body before it is converted to JSON and sent to the API.|
-|filterValues       |`null`  |Function to modify the form values before they are separated into attributes and relationships, converted to JSON, and sent to the API.|
-|params             |`''`    |Additional query args to include in the API request. (eg. `include=user`)|
-|preventEmptyRequest|`false` |If true, a toast message will appear if the user tries to save the form without making any changes.|
-|relationshipNames  |`[]`    |If the form contains any inputs that control relationship values, this needs to be set to properly serialize the API request.|
-|successMessageText |`''`    |Text to be shown in the `<Message>` component after a successful form submission. (eg. `Profile updated successfully.`)|
-|successToastText   |`''`    |Text to be shown in a toast after a successful form submission. (eg. `Profile updated successfully.`)|
+| Attribute           | Default | Notes                                                                                                                                                                                                                |
+| ------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| method              | `null`  | Required for JSON:API requests. (eg. `PUT`, `POST`, `DELETE`)                                                                                                                                                        |
+| path                | `null`  | Required for JSON:API requests. (eg. `users`)                                                                                                                                                                        |
+| id                  | `''`    | Required for JSON:API `PUT` and `DELETE` requests. (eg. `'123'`)                                                                                                                                                     |
+| afterSubmit         | `null`  | Function to be called after a successful form submission.                                                                                                                                                            |
+| clearOnSubmit       | `false` | If true, after a successful form submission, the data in the form will be replaced with `defaultRow`.                                                                                                                |
+| defaultRow          | `{}`    | For add forms, default values can be specified here. eg. `{ country: 'CA' }` You should specify the same values for `row` too (eg. to allow adding multiple records using the same form without reloading the page). |
+| filterBody          | `null`  | Function to modify the request body before it is converted to JSON and sent to the API.                                                                                                                              |
+| filterValues        | `null`  | Function to modify the form values before they are separated into attributes and relationships, converted to JSON, and sent to the API.                                                                              |
+| params              | `''`    | Additional query args to include in the API request. (eg. `include=user`)                                                                                                                                            |
+| preventEmptyRequest | `false` | If true, a toast message will appear if the user tries to save the form without making any changes.                                                                                                                  |
+| relationshipNames   | `[]`    | If the form contains any inputs that control relationship values, this needs to be set to properly serialize the API request.                                                                                        |
+| successMessageText  | `''`    | Text to be shown in the `<Message>` component after a successful form submission. (eg. `Profile updated successfully.`)                                                                                              |
+| successToastText    | `''`    | Text to be shown in a toast after a successful form submission. (eg. `Profile updated successfully.`)                                                                                                                |
 
 #### [Field](https://github.com/jlbelanger/formosa/blob/main/src/js/Field.js)
 
@@ -165,7 +163,7 @@ The `<Field>` component offers a simple way to display any kind of input along w
 
 If you don't want a horizontal form, or if you want more control over how the fields are displayed, you can use the `<Input>` and `<Label>` components instead (and possibly create your own `<Field>`-type component).
 
-``` jsx
+```jsx
 import { Field } from '@jlbelanger/formosa';
 
 // ----------------------------------------
@@ -213,20 +211,20 @@ import { Field } from '@jlbelanger/formosa';
 </div>
 ```
 
-|Attribute       |Default   |Notes|
-|----------------|----------|-----|
-|name            |N/A       |Required.|
-|component       |`null`    |If none of the standard `type`s do what you need, use your own component.|
-|id              |`null`    |If not specified, it will default to the value of `name`.|
-|label           |`''`      |     |
-|labelNote       |`''`      |     |
-|labelPosition   |`'before'`|Alternately, `'after'`.|
-|note            |`''`      |     |
-|prefix          |`null`    |     |
-|postfix         |`null`    |     |
-|suffix          |`null`    |     |
-|type            |`'text'`  |Accepts any standard HTML type (eg. text, email, file, select, textarea) as well as 'autocomplete'.|
-|wrapperClassName|`''`      |     |
+| Attribute        | Default    | Notes                                                                                               |
+| ---------------- | ---------- | --------------------------------------------------------------------------------------------------- |
+| name             | N/A        | Required.                                                                                           |
+| component        | `null`     | If none of the standard `type`s do what you need, use your own component.                           |
+| id               | `null`     | If not specified, it will default to the value of `name`.                                           |
+| label            | `''`       |                                                                                                     |
+| labelNote        | `''`       |                                                                                                     |
+| labelPosition    | `'before'` | Alternately, `'after'`.                                                                             |
+| note             | `''`       |                                                                                                     |
+| prefix           | `null`     |                                                                                                     |
+| postfix          | `null`     |                                                                                                     |
+| suffix           | `null`     |                                                                                                     |
+| type             | `'text'`   | Accepts any standard HTML type (eg. text, email, file, select, textarea) as well as 'autocomplete'. |
+| wrapperClassName | `''`       |                                                                                                     |
 
 #### [Submit](https://github.com/jlbelanger/formosa/blob/main/src/js/Submit.js)
 
@@ -234,7 +232,7 @@ The `<Submit>` component offers a simple way to display the submit button in a h
 
 If you aren't using a horizontal form, or if you want more control over how the submit button is displayed, you can use a regular old `<button type="submit">Submit</button>`; as long as it is inside the `<Form>`, it will work. (Or, to display the button outside the `<Form>`, you can give the `<Form>` an `htmlId` prop, and add `form="whatever-the-htmlId-is"` to the `<button>`).
 
-``` jsx
+```jsx
 import { Submit } from '@jlbelanger/formosa';
 
 // ----------------------------------------
@@ -281,17 +279,17 @@ import { Submit } from '@jlbelanger/formosa';
 </div>
 ```
 
-|Attribute |Default   |Notes|
-|----------|----------|-----|
-|label     |`'Submit'`|     |
-|prefix    |`null`    |Text/HTML displayed before the button.|
-|postfix   |`null`    |Text/HTML displayed after the button.|
+| Attribute | Default    | Notes                                  |
+| --------- | ---------- | -------------------------------------- |
+| label     | `'Submit'` |                                        |
+| prefix    | `null`     | Text/HTML displayed before the button. |
+| postfix   | `null`     | Text/HTML displayed after the button.  |
 
 #### [Label](https://github.com/jlbelanger/formosa/blob/main/src/js/Label.js)
 
 The `<Label>` component offers a simple way to display field labels by adding a few extra classes to help with styling (eg. `formosa-label--required` for required fields). This component is included in the `<Field>` component, so if you are using `<Field>`, you don't need this component.
 
-``` jsx
+```jsx
 import { Label } from '@jlbelanger/formosa';
 
 // ----------------------------------------
@@ -330,10 +328,10 @@ import { Label } from '@jlbelanger/formosa';
 </div>
 ```
 
-|Attribute |Default |Notes|
-|----------|--------|-----|
-|label     |`''`    |     |
-|note      |`''`    |Text/HTML displayed after the label.|
+| Attribute | Default | Notes                                |
+| --------- | ------- | ------------------------------------ |
+| label     | `''`    |                                      |
+| note      | `''`    | Text/HTML displayed after the label. |
 
 ### [Message](https://github.com/jlbelanger/formosa/blob/main/src/js/Message.js)
 
@@ -341,7 +339,7 @@ The `<Message>` component displays success and error messages after the form is 
 
 However, if you want to customize the position of the `<Message>`, set `showMessage={false}` on the `<Form>` and include this component as a child of the `<Form>` wherever you want messages to appear.
 
-``` jsx
+```jsx
 import { Message } from '@jlbelanger/formosa';
 
 // ----------------------------------------
@@ -377,8 +375,8 @@ import { Field, Form, Message, Submit } from '@jlbelanger/formosa';
 - [Glick](https://github.com/jlbelanger/glick)
 - [Food Tracker](https://github.com/jlbelanger/food)
 - [Crudnick](https://github.com/jlbelanger/crudnick)
-	- [Corrieography Admin](https://github.com/jlbelanger/corrie-admin)
-	- [Jenny's Wardrobe Admin](https://github.com/jlbelanger/wardrobe-admin)
+  - [Corrieography Admin](https://github.com/jlbelanger/corrie-admin)
+  - [Jenny's Wardrobe Admin](https://github.com/jlbelanger/wardrobe-admin)
 
 ## Development
 
@@ -389,7 +387,7 @@ import { Field, Form, Message, Submit } from '@jlbelanger/formosa';
 
 ### Setup
 
-``` bash
+```bash
 # Clone the repo
 git clone https://github.com/jlbelanger/formosa.git
 cd formosa
@@ -402,7 +400,7 @@ npm install
 
 ### Run
 
-``` bash
+```bash
 npm start
 
 # In a new window:
@@ -414,13 +412,13 @@ Your browser should automatically open http://localhost:3000/
 
 ### Lint
 
-``` bash
+```bash
 npm run lint
 ```
 
 ### Test
 
-``` bash
+```bash
 npm run test:watch
 ```
 
@@ -428,6 +426,6 @@ npm run test:watch
 
 Note: The deploy script included in this repo depends on other scripts that only exist in my private repos. If you want to deploy this repo, you'll have to create your own script.
 
-``` bash
+```bash
 ./deploy.sh
 ```

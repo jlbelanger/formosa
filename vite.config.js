@@ -24,14 +24,8 @@ export default defineConfig({
 	},
 	css: {
 		postcss: {
-			plugins: [
-				postcssMixins,
-				postcssPresetEnv,
-			],
+			plugins: [postcssMixins, postcssPresetEnv],
 		},
 	},
-	plugins: [
-		react(),
-		svgr(),
-	],
+	plugins: [react(), svgr()],
 });

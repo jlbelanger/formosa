@@ -5,7 +5,8 @@ import get from 'get-value';
 import { normalizeOptions } from '../Helpers/Options.js';
 import PropTypes from 'prop-types';
 
-export default function Radio({ // eslint-disable-line complexity
+// eslint-disable-next-line complexity
+export default function Radio({
 	afterChange = null,
 	className = '',
 	fieldsetAttributes = null,
@@ -41,7 +42,7 @@ export default function Radio({ // eslint-disable-line complexity
 			api(url, false)
 				.catch((error) => {
 					if (Object.hasOwn(error, 'errors')) {
-						setLoadError(error.errors.map((e) => (e.title)).join(' '));
+						setLoadError(error.errors.map((e) => e.title).join(' '));
 						setIsLoading(false);
 					}
 				})
@@ -64,11 +65,15 @@ export default function Radio({ // eslint-disable-line complexity
 	}, [showLoading]);
 
 	if (isLoading) {
-		return (<div className="formosa-spinner" role="status">{loadingText}</div>);
+		return (
+			<div className="formosa-spinner" role="status">
+				{loadingText}
+			</div>
+		);
 	}
 
 	if (loadError) {
-		return (<div className="formosa-field__error">{loadError}</div>);
+		return <div className="formosa-field__error">{loadError}</div>;
 	}
 
 	let currentValue;
@@ -180,48 +185,23 @@ Radio.propTypes = {
 	className: PropTypes.string,
 	fieldsetAttributes: PropTypes.object,
 	fieldsetClassName: PropTypes.string,
-	inputAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
-	itemAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
+	inputAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+	itemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	itemClassName: PropTypes.string,
-	itemLabelAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
+	itemLabelAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	itemLabelClassName: PropTypes.string,
-	itemSpanAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
+	itemSpanAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	itemSpanClassName: PropTypes.string,
 	label: PropTypes.string,
-	labelKey: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
+	labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 	legend: PropTypes.string,
 	loadingText: PropTypes.string,
 	name: PropTypes.string,
-	options: PropTypes.oneOfType([
-		PropTypes.array,
-		PropTypes.object,
-	]),
+	options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	required: PropTypes.bool,
 	setValue: PropTypes.func,
 	showLoading: PropTypes.bool,
 	url: PropTypes.string,
-	value: PropTypes.oneOfType([
-		PropTypes.number,
-		PropTypes.object,
-		PropTypes.string,
-	]),
-	valueKey: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
+	value: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.string]),
+	valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 };

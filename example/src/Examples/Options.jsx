@@ -11,12 +11,7 @@ export default function Options() {
 		pear: 'Pear',
 	};
 
-	const optionsArray = [
-		'Apple',
-		'Peach',
-		'Banana',
-		'Pear',
-	];
+	const optionsArray = ['Apple', 'Peach', 'Banana', 'Pear'];
 
 	const optionsArrayOfObjects = [
 		{ randomValueName: '1', randomLabelName: 'Apple' },
@@ -313,7 +308,9 @@ export default function Options() {
 				<Submit />
 			</Form>
 
-			<code className="code"><pre>{JSON.stringify(row, null, 2)}</pre></code>
+			<code className="code">
+				<pre>{JSON.stringify(row, null, 2)}</pre>
+			</code>
 		</>
 	);
 }

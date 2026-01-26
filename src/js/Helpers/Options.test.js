@@ -2,12 +2,14 @@ import { normalizeOptions } from './Options.js';
 
 describe('normalizeOptions', () => {
 	it('normalizes objects', () => {
-		expect(normalizeOptions({
-			apple: 'Apple',
-			peach: 'Peach',
-			banana: 'Banana',
-			pear: 'Pear',
-		})).toEqual([
+		expect(
+			normalizeOptions({
+				apple: 'Apple',
+				peach: 'Peach',
+				banana: 'Banana',
+				pear: 'Pear',
+			}),
+		).toEqual([
 			{
 				value: 'apple',
 				label: 'Apple',
@@ -28,12 +30,14 @@ describe('normalizeOptions', () => {
 	});
 
 	it('normalizes arrays of strings', () => {
-		expect(normalizeOptions([
-			'Apple',
-			'Peach',
-			'Banana',
-			'Pear',
-		])).toEqual([
+		expect(
+			normalizeOptions([
+				'Apple',
+				'Peach',
+				'Banana',
+				'Pear',
+			]),
+		).toEqual([
 			{
 				value: 'Apple',
 				label: 'Apple',
@@ -54,12 +58,18 @@ describe('normalizeOptions', () => {
 	});
 
 	it('normalizes arrays of JSON:API objects', () => {
-		expect(normalizeOptions([
-			{ id: '1', type: 'food', name: 'Apple' },
-			{ id: '2', type: 'food', name: 'Peach' },
-			{ id: '3', type: 'food', name: 'Banana' },
-			{ id: '4', type: 'food', name: 'Pear' },
-		], 'name', 'id')).toEqual([
+		expect(
+			normalizeOptions(
+				[
+					{ id: '1', type: 'food', name: 'Apple' },
+					{ id: '2', type: 'food', name: 'Peach' },
+					{ id: '3', type: 'food', name: 'Banana' },
+					{ id: '4', type: 'food', name: 'Pear' },
+				],
+				'name',
+				'id',
+			),
+		).toEqual([
 			{
 				id: '1',
 				type: 'food',

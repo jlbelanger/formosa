@@ -7,7 +7,8 @@ import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { v4 as uuidv4 } from 'uuid'; // eslint-disable-line import/no-unresolved
 
-export default function FormInner({ // eslint-disable-line complexity
+// eslint-disable-next-line complexity
+export default function FormInner({
 	afterNoSubmit = null,
 	beforeSubmit = null,
 	children = null,
@@ -59,16 +60,7 @@ export default function FormInner({ // eslint-disable-line complexity
 			url += `?${params}`;
 		}
 
-		const body = getBody(
-			method,
-			path,
-			id,
-			formState,
-			dirtyKeys,
-			relationshipNames,
-			filterBody,
-			filterValues
-		);
+		const body = getBody(method, path, id, formState, dirtyKeys, relationshipNames, filterBody, filterValues);
 
 		setFormState({
 			...formState,
@@ -162,7 +154,7 @@ export default function FormInner({ // eslint-disable-line complexity
 
 	return (
 		<form {...otherProps}>
-			{showMessage && formState.alertText && (<Alert type={formState.alertClass}>{formState.alertText}</Alert>)}
+			{showMessage && formState.alertText ? <Alert type={formState.alertClass}>{formState.alertText}</Alert> : null}
 			{children}
 		</form>
 	);
@@ -174,14 +166,8 @@ FormInner.propTypes = {
 	children: PropTypes.node,
 	clearOnSubmit: PropTypes.bool,
 	defaultRow: PropTypes.object,
-	errorMessageText: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
-	errorToastText: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
+	errorMessageText: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+	errorToastText: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 	filterBody: PropTypes.func,
 	filterValues: PropTypes.func,
 	htmlId: PropTypes.string,
@@ -190,18 +176,9 @@ FormInner.propTypes = {
 	params: PropTypes.string,
 	path: PropTypes.string,
 	preventEmptyRequest: PropTypes.bool,
-	preventEmptyRequestText: PropTypes.oneOfType([
-		PropTypes.bool,
-		PropTypes.string,
-	]),
+	preventEmptyRequestText: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 	relationshipNames: PropTypes.array,
 	showMessage: PropTypes.bool,
-	successMessageText: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
-	successToastText: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
+	successMessageText: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+	successToastText: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 };

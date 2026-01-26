@@ -20,8 +20,7 @@
 	--formosa-input-font-size: 18px;
 	--formosa-input-padding: 8px;
 	--formosa-input-line-height: 1.5;
-	/* stylelint-disable-next-line @stylistic/max-line-length */
-	--formosa-input-height: calc(((var(--formosa-input-border-width) + var(--formosa-input-padding)) * 2) + (var(--formosa-input-font-size) * var(--formosa-input-line-height)));
+	--formosa-input-height: calc(((var(--formosa-input-border-width) + var(--formosa-input-padding)) * 2) + (var(--formosa-input-font-size) * var(--formosa-input-line-height))); /* stylelint-disable-line @stylistic/max-line-length */
 
 	/* Autocomplete clear. */
 	--formosa-autocomplete-clear-size: calc(var(--formosa-input-height) - (var(--formosa-input-border-width) * 2));
@@ -29,8 +28,8 @@
 	--formosa-autocomplete-clear-color-hover: #000;
 
 	/* Autocomplete options. */
-	--formosa-autocomplete-options-background-color: var(--formosa-input-background-color);
 	--formosa-autocomplete-options-background-color-highlighted: hsl(from var(--formosa-primary-background-color) h s calc(l * 1.35));
+	--formosa-autocomplete-options-background-color: var(--formosa-input-background-color);
 	--formosa-autocomplete-options-border-color: var(--formosa-input-border-color);
 
 	/* Autocomplete values. */
@@ -41,7 +40,7 @@
 
 	/* Buttons. */
 	--formosa-button-background-color: var(--formosa-primary-background-color);
-	--formosa-button-background-color-hover: hsl(from var(--formosa-button-background-color) h s calc(l * .85));
+	--formosa-button-background-color-hover: hsl(from var(--formosa-button-background-color) h s calc(l * 0.85));
 	--formosa-button-color: var(--formosa-primary-color);
 	--formosa-button-border-color: var(--formosa-button-background-color);
 	--formosa-button-font-weight: normal;
@@ -50,19 +49,19 @@
 
 	/* Danger buttons. */
 	--formosa-button-danger-background-color: var(--formosa-error-background-color);
-	--formosa-button-danger-background-color-hover: hsl(from var(--formosa-button-danger-background-color) h s calc(l * .85));
+	--formosa-button-danger-background-color-hover: hsl(from var(--formosa-button-danger-background-color) h s calc(l * 0.85));
 	--formosa-button-danger-border-color: var(--formosa-button-danger-background-color);
 	--formosa-button-danger-color: var(--formosa-error-color);
 
 	/* Warning buttons. */
 	--formosa-button-warning-background-color: var(--formosa-warning-background-color);
-	--formosa-button-warning-background-color-hover: hsl(from var(--formosa-button-warning-background-color) h s calc(l * .85));
+	--formosa-button-warning-background-color-hover: hsl(from var(--formosa-button-warning-background-color) h s calc(l * 0.85));
 	--formosa-button-warning-border-color: var(--formosa-button-warning-background-color);
 	--formosa-button-warning-color: var(--formosa-warning-color);
 
 	/* Success buttons. */
 	--formosa-button-success-background-color: var(--formosa-success-background-color);
-	--formosa-button-success-background-color-hover: hsl(from var(--formosa-button-success-background-color) h s calc(l * .85));
+	--formosa-button-success-background-color-hover: hsl(from var(--formosa-button-success-background-color) h s calc(l * 0.85));
 	--formosa-button-success-border-color: var(--formosa-button-success-background-color);
 	--formosa-button-success-color: var(--formosa-success-color);
 
@@ -97,7 +96,7 @@
 	/* Notes. */
 	--formosa-note-font-size: 85%;
 	--formosa-note-line-height: 1.4;
-	--formosa-note-opacity: .75;
+	--formosa-note-opacity: 0.75;
 	--formosa-note-margin: 4px 0 0;
 
 	/* Passwords. */
@@ -148,7 +147,7 @@
 	--formosa-autocomplete-zindex: 9996;
 
 	/* Misc. */
-	--formosa-disabled-opacity: .5;
+	--formosa-disabled-opacity: 0.5;
 	--formosa-field-error-color: var(--formosa-color-danger);
 	--formosa-horizontal-fields-padding: 8px;
 	--formosa-margin-large: 24px;

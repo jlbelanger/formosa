@@ -2,10 +2,7 @@ import FormContext from './FormContext.jsx';
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 
-export default function Error({
-	id = null,
-	name = '',
-}) {
+export default function Error({ id = null, name = '' }) {
 	const { formState } = useContext(FormContext);
 	const hasError = formState && Object.hasOwn(formState.errors, name);
 
@@ -20,7 +17,7 @@ export default function Error({
 
 	return (
 		<div className="formosa-field__error" {...props}>
-			{hasError && formState.errors[name].map((e) => (<div key={e}>{e}</div>))}
+			{hasError ? formState.errors[name].map((e) => <div key={e}>{e}</div>) : null}
 		</div>
 	);
 }

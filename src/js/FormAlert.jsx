@@ -10,6 +10,8 @@ export default function FormAlert({ ...otherProps }) {
 	}
 
 	return (
-		<Alert type={formState.alertClass} {...otherProps}>{formState.alertText}</Alert>
+		<Alert type={formState.alertClass} {...otherProps}>
+			{formState.alertText}
+		</Alert>
 	);
 }

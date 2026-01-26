@@ -6,7 +6,8 @@ import get from 'get-value';
 import { normalizeOptions } from '../Helpers/Options.js';
 import PropTypes from 'prop-types';
 
-export default function CheckboxList({ // eslint-disable-line complexity
+// eslint-disable-next-line complexity
+export default function CheckboxList({
 	afterChange = null,
 	className = '',
 	disabled = false,
@@ -47,7 +48,7 @@ export default function CheckboxList({ // eslint-disable-line complexity
 			api(url, false)
 				.catch((error) => {
 					if (Object.hasOwn(error, 'errors')) {
-						setLoadError(error.errors.map((e) => (e.title)).join(' '));
+						setLoadError(error.errors.map((e) => e.title).join(' '));
 						setIsLoading(false);
 					}
 				})
@@ -70,11 +71,15 @@ export default function CheckboxList({ // eslint-disable-line complexity
 	}, [showLoading]);
 
 	if (isLoading) {
-		return (<div className="formosa-spinner" role="status">{loadingText}</div>);
+		return (
+			<div className="formosa-spinner" role="status">
+				{loadingText}
+			</div>
+		);
 	}
 
 	if (loadError) {
-		return (<div className="formosa-field__error">{loadError}</div>);
+		return <div className="formosa-field__error">{loadError}</div>;
 	}
 
 	let currentValue = [];
@@ -89,6 +94,7 @@ export default function CheckboxList({ // eslint-disable-line complexity
 	if (currentValue === null || currentValue === undefined || currentValue === '') {
 		currentValue = [];
 	}
+	// eslint-disable-next-line @stylistic/no-extra-parens
 	const currentValueStringified = currentValue.map((val) => (typeof val === 'object' ? JSON.stringify(val) : val));
 
 	const onChange = (e) => {
@@ -210,43 +216,22 @@ CheckboxList.propTypes = {
 	disabled: PropTypes.bool,
 	fieldsetAttributes: PropTypes.object,
 	fieldsetClassName: PropTypes.string,
-	iconAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
+	iconAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	iconClassName: PropTypes.string,
 	iconHeight: PropTypes.number,
 	iconWidth: PropTypes.number,
-	inputAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
-	itemAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
+	inputAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+	itemAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	itemClassName: PropTypes.string,
-	itemLabelAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
+	itemLabelAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	itemLabelClassName: PropTypes.string,
-	itemSpanAttributes: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.object,
-	]),
+	itemSpanAttributes: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
 	itemSpanClassName: PropTypes.string,
-	labelKey: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
+	labelKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 	legend: PropTypes.string,
 	loadingText: PropTypes.string,
 	name: PropTypes.string,
-	options: PropTypes.oneOfType([
-		PropTypes.array,
-		PropTypes.object,
-	]),
+	options: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 	readOnly: PropTypes.bool,
 	setValue: PropTypes.func,
 	showLoading: PropTypes.bool,
@@ -256,8 +241,5 @@ CheckboxList.propTypes = {
 		PropTypes.arrayOf(PropTypes.object),
 		PropTypes.arrayOf(PropTypes.string),
 	]),
-	valueKey: PropTypes.oneOfType([
-		PropTypes.func,
-		PropTypes.string,
-	]),
+	valueKey: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 };

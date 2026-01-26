@@ -14,10 +14,7 @@ export default function Search({
 }) {
 	return (
 		<div className={`formosa-search-wrapper ${wrapperClassName}`.trim()} {...wrapperAttributes}>
-			<Input
-				className={`formosa-field__input--search ${className}`.trim()}
-				{...otherProps}
-			/>
+			<Input className={`formosa-field__input--search ${className}`.trim()} {...otherProps} />
 			<SearchIcon
 				aria-hidden="true"
 				className={`formosa-icon--search ${iconClassName}`.trim()}

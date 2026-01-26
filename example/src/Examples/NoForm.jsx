@@ -74,8 +74,12 @@ export default function Routes() {
 
 	return (
 		<>
-			<button className="formosa-button" onClick={populate} type="button">Populate</button>
-			<button className="formosa-button" onClick={clear} type="button">Clear</button>
+			<button className="formosa-button" onClick={populate} type="button">
+				Populate
+			</button>
+			<button className="formosa-button" onClick={clear} type="button">
+				Clear
+			</button>
 
 			<div style={{ display: 'flex' }}>
 				<div style={{ marginRight: '8px', width: '50%' }}>
@@ -149,7 +153,9 @@ export default function Routes() {
 						<Field name="checkbox-list-object" type="checkbox-list" options={optionsObject} />
 					</Form>
 
-					<code><pre style={{ fontSize: '12px', whiteSpace: 'break-spaces' }}>{JSON.stringify(row, null, 2)}</pre></code>
+					<code>
+						<pre style={{ fontSize: '12px', whiteSpace: 'break-spaces' }}>{JSON.stringify(row, null, 2)}</pre>
+					</code>
 				</div>
 			</div>
 		</>

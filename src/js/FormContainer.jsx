@@ -41,14 +41,17 @@ export default function FormContainer({ children, loadingText = 'Loading...' }) 
 		setShowWarningPrompt(true);
 	};
 
-	const value = useMemo(() => ({
-		toasts,
-		showWarningPrompt,
-		addToast,
-		removeToast,
-		disableWarningPrompt,
-		enableWarningPrompt,
-	}), [toasts, showWarningPrompt]);
+	const value = useMemo(
+		() => ({
+			toasts,
+			showWarningPrompt,
+			addToast,
+			removeToast,
+			disableWarningPrompt,
+			enableWarningPrompt,
+		}),
+		[toasts, showWarningPrompt],
+	);
 
 	return (
 		<FormosaContext.Provider value={value}>

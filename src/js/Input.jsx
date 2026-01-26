@@ -59,7 +59,7 @@ export default function Input({
 				{...props}
 				{...otherProps}
 			/>
-			{suffix && <span className="formosa-suffix">{suffix}</span>}
+			{suffix ? <span className="formosa-suffix">{suffix}</span> : null}
 		</ConditionalWrapper>
 	);
 }
@@ -72,8 +72,5 @@ Input.propTypes = {
 	setValue: PropTypes.func,
 	suffix: PropTypes.string,
 	type: PropTypes.string,
-	value: PropTypes.oneOfType([
-		PropTypes.number,
-		PropTypes.string,
-	]),
+	value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

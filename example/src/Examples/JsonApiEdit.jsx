@@ -1,9 +1,4 @@
-import {
-	Api,
-	Field,
-	Form,
-	Submit,
-} from '@jlbelanger/formosa';
+import { Api, Field, Form, Submit } from '@jlbelanger/formosa';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
@@ -23,19 +18,17 @@ export default function JsonApiEdit() {
 		return null;
 	}
 
-	const toSlug = (s) => (
-		s
-			.normalize('NFD')
-			.replace(/[\u0300-\u036f]/g, '')
-			.toLowerCase()
-			.replace(/ & /g, '-and-')
-			.replace(/<[^>]+>/g, '')
-			.replace(/['’.]/g, '')
-			.replace(/[^a-z0-9-]+/g, '-')
-			.replace(/^-+/, '')
-			.replace(/-+$/, '')
-			.replace(/--+/g, '-')
-	);
+	const toSlug = (s) => s
+		.normalize('NFD')
+		.replace(/[\u0300-\u036f]/g, '')
+		.toLowerCase()
+		.replace(/ & /g, '-and-')
+		.replace(/<[^>]+>/g, '')
+		.replace(/['’.]/g, '')
+		.replace(/[^a-z0-9-]+/g, '-')
+		.replace(/^-+/, '')
+		.replace(/-+$/, '')
+		.replace(/--+/g, '-');
 
 	const afterChangeName = (e) => ({ slug: toSlug(e.target.value) });
 
@@ -45,7 +38,9 @@ export default function JsonApiEdit() {
 				<h1 style={{ margin: 0 }}>{`Edit ${row.name}`}</h1>
 
 				<Form method="DELETE" path="food" id={row.id} showMessage={false}>
-					<button className="formosa-button formosa-button--danger" type="submit">Delete</button>
+					<button className="formosa-button formosa-button--danger" type="submit">
+						Delete
+					</button>
 				</Form>
 			</div>
 
@@ -62,7 +57,9 @@ export default function JsonApiEdit() {
 				<Submit />
 			</Form>
 
-			<code className="code"><pre>{JSON.stringify(row, null, 2)}</pre></code>
+			<code className="code">
+				<pre>{JSON.stringify(row, null, 2)}</pre>
+			</code>
 		</>
 	);
 }
