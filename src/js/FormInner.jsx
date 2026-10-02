@@ -76,8 +76,23 @@ export default function FormInner({
 
 		Api.request(method, url, bodyString)
 			.catch((response) => {
+				let alertText = typeof errorMessageText === 'function' ? errorMessageText(response) : errorMessageText;
+				const toastText = typeof errorToastText === 'function' ? errorToastText(response) : errorToastText;
+				if (!alertText && !toastText && response.name === 'TypeError') {
+					alertText = 'Error connecting to server.';
+				}
+
 				if (!Object.hasOwn(response, 'errors') || !Array.isArray(response.errors)) {
 					// This is not a JSON:API-style error response.
+					setFormState({
+						...formState,
+						alertClass: 'error',
+						alertText,
+						response,
+						toastClass: 'error',
+						toastText,
+						uuid: uuidv4(),
+					});
 					throw response;
 				}
 
@@ -108,11 +123,11 @@ export default function FormInner({
 				setFormState({
 					...formState,
 					alertClass: 'error',
-					alertText: typeof errorMessageText === 'function' ? errorMessageText(response) : errorMessageText,
+					alertText,
 					errors,
 					response,
 					toastClass: 'error',
-					toastText: typeof errorToastText === 'function' ? errorToastText(response) : errorToastText,
+					toastText,
 					uuid: uuidv4(),
 				});
 			})
